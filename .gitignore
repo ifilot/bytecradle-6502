@@ -1,0 +1,11 @@
+*.bak
+*.kicad_pcb-bak
+*.sch-bak
+*.zip
+scratch/
+archive/
+.DS_Store
+*/GERBERS/*
+*.lck
+\#auto_saved_files\#
+fp-info-cache
