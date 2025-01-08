@@ -28699,7 +28699,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_DIP:DIP-32_W15.24mm_Socket"
+		(property "Footprint" "Socket:DIP_Socket-32_W11.9_W12.7_W15.24_W17.78_W18.5_3M_232-1285-00-0602J"
 			(at 346.71 63.5 0)
 			(effects
 				(font
@@ -30632,7 +30632,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "Crystal"
+		(property "Value" "1.8432 MHz"
 			(at 113.03 213.3599 90)
 			(effects
 				(font
@@ -30641,7 +30641,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Crystal:Crystal_HC50_Horizontal"
+		(property "Footprint" "Crystal:Crystal_HC50_Vertical"
 			(at 109.22 212.09 0)
 			(effects
 				(font
@@ -32149,7 +32149,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "edgeconn:DIP-60_200_ELL"
 			(at 243.84 237.49 0)
 			(effects
 				(font
@@ -34829,7 +34829,7 @@
 				)
 			)
 		)
-		(property "Value" "R_Network08"
+		(property "Value" "10k"
 			(at 35.814 129.54 90)
 			(effects
 				(font
