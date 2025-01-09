@@ -13508,6 +13508,12 @@
 		(uuid "0ca7b0da-ac0a-4f0f-a53e-c5317ef3ed7d")
 	)
 	(junction
+		(at 31.75 243.84)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "127e595d-c0ff-42c5-b5e2-5756403eabdd")
+	)
+	(junction
 		(at 238.76 52.07)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -13536,12 +13542,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "255dbdbd-844b-4fb7-85e6-71fba919696f")
-	)
-	(junction
-		(at 31.75 245.11)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "26ea7204-d626-4438-973c-979eb52cc506")
 	)
 	(junction
 		(at 360.68 222.25)
@@ -13650,12 +13650,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "7d1d4c23-9eab-4adf-9c72-451c9d5c7c44")
-	)
-	(junction
-		(at 31.75 250.19)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "7f294ebf-7db8-493d-9f1f-d32bada417b8")
 	)
 	(junction
 		(at 210.82 86.36)
@@ -14030,6 +14024,16 @@
 			(type default)
 		)
 		(uuid "06cd01ea-d2af-45a8-aef4-2e8a00104f50")
+	)
+	(wire
+		(pts
+			(xy 31.75 243.84) (xy 31.75 242.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "06e95a42-589c-4f5a-9d58-4d494959d868")
 	)
 	(wire
 		(pts
@@ -14530,16 +14534,6 @@
 			(type default)
 		)
 		(uuid "4c54a8d2-524a-40dd-bf43-edbc5b6cb25c")
-	)
-	(wire
-		(pts
-			(xy 256.54 59.69) (xy 260.35 59.69)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5048693e-d798-47d1-ac4d-8d12e77149fd")
 	)
 	(wire
 		(pts
@@ -15273,16 +15267,6 @@
 	)
 	(wire
 		(pts
-			(xy 31.75 250.19) (xy 31.75 245.11)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "92d4484f-266c-4e4c-98e1-96a9f5aa5b9e")
-	)
-	(wire
-		(pts
 			(xy 391.16 222.25) (xy 391.16 224.79)
 		)
 		(stroke
@@ -15450,16 +15434,6 @@
 			(type default)
 		)
 		(uuid "a9e40897-a250-44c4-87fc-8d929e2e645b")
-	)
-	(wire
-		(pts
-			(xy 260.35 59.69) (xy 260.35 57.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "aa10cae6-d353-4035-9811-8372326a583d")
 	)
 	(wire
 		(pts
@@ -15713,7 +15687,7 @@
 	)
 	(wire
 		(pts
-			(xy 143.51 107.95) (xy 146.05 107.95)
+			(xy 120.65 105.41) (xy 123.19 105.41)
 		)
 		(stroke
 			(width 0)
@@ -15923,7 +15897,7 @@
 	)
 	(wire
 		(pts
-			(xy 31.75 245.11) (xy 31.75 242.57)
+			(xy 31.75 245.11) (xy 31.75 243.84)
 		)
 		(stroke
 			(width 0)
@@ -16311,9 +16285,9 @@
 		)
 		(uuid "1ebea644-246d-4991-911b-782b32e70f11")
 	)
-	(text "0x0000-0x7FFF"
+	(text "0x0000-0x7FFF\n(32 KiB)"
 		(exclude_from_sim no)
-		(at 335.788 124.206 0)
+		(at 335.788 123.444 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -16331,9 +16305,9 @@
 		)
 		(uuid "508e0fb9-cd74-4521-95bc-6e59caeca62a")
 	)
-	(text "0x8000-0xBFFF\nexcl. 0x9FXX"
+	(text "0x8000-0xBFFF\nexcl. 0x9FXX\n(~ 16 KiB)"
 		(exclude_from_sim no)
-		(at 266.192 122.936 0)
+		(at 266.446 122.174 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -16361,9 +16335,9 @@
 		)
 		(uuid "9c906806-3f2f-48ee-bad0-197c1796c901")
 	)
-	(text "0xC000-0xFFFF"
+	(text "0xC000-0xFFFF\n(16 KiB)"
 		(exclude_from_sim no)
-		(at 334.772 37.338 0)
+		(at 334.518 35.814 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -16371,13 +16345,14 @@
 		)
 		(uuid "9de4af62-0e0d-4b3e-893f-83e53fb38954")
 	)
-	(text "Latch on descending edge"
+	(text "Latch LOW-to-HIGH\nHappens when CLK goes low"
 		(exclude_from_sim no)
-		(at 248.666 105.156 0)
+		(at 239.014 105.918 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
+			(justify left)
 		)
 		(uuid "ae7257e1-10c2-487b-9d3c-520a7c8c2091")
 	)
@@ -18181,6 +18156,28 @@
 			)
 		)
 	)
+	(global_label "~{NMI}"
+		(shape input)
+		(at 238.76 275.59 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "4e96c3c4-e70c-4af8-b862-bc25f0ca5726")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 232.3881 275.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "D2"
 		(shape input)
 		(at 261.62 81.28 180)
@@ -19587,6 +19584,28 @@
 			)
 		)
 	)
+	(global_label "~{IRQ}"
+		(shape input)
+		(at 146.05 105.41 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "7f69f2fd-72fc-4bd0-9bcc-f8803d40ad8c")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 139.8595 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "CA2"
 		(shape input)
 		(at 210.82 236.22 0)
@@ -20465,6 +20484,28 @@
 			)
 		)
 	)
+	(global_label "~{RES}"
+		(shape input)
+		(at 146.05 97.79 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "a41bf41d-cf79-41b2-b353-7ef55ea3b6e7")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 139.4363 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "A13"
 		(shape input)
 		(at 265.43 161.29 180)
@@ -20533,7 +20574,7 @@
 	)
 	(global_label "~{CLK}"
 		(shape input)
-		(at 146.05 100.33 180)
+		(at 123.19 97.79 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -20543,7 +20584,7 @@
 		)
 		(uuid "a5961464-763b-473b-941c-ecc499ba317d")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 139.4967 100.33 0)
+			(at 116.6367 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -20588,6 +20629,28 @@
 		(uuid "a7595de2-4c79-4f23-a18b-1b9365fde0ab")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 231.7229 262.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "~{NMI}"
+		(shape input)
+		(at 146.05 90.17 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "a8f3c8f6-52b7-47f7-a52b-b9fe84327ab6")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 139.6781 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21737,7 +21800,7 @@
 	)
 	(global_label "R{slash}~{W}"
 		(shape input)
-		(at 256.54 59.69 180)
+		(at 260.35 57.15 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -21747,7 +21810,7 @@
 		)
 		(uuid "dd539052-c007-4564-8994-0eb9e0f04ba6")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 249.5029 59.69 0)
+			(at 253.3129 57.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -22417,7 +22480,7 @@
 	)
 	(global_label "CLK"
 		(shape input)
-		(at 146.05 92.71 180)
+		(at 123.19 90.17 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -22427,7 +22490,7 @@
 		)
 		(uuid "f798bf25-4820-4176-8c12-722ec012002b")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 139.4967 92.71 0)
+			(at 116.6367 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23628,6 +23691,73 @@
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059"
 					(reference "#PWR056")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 31.75 243.84 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0c62c193-4a3a-4673-9a20-3d6dec3623d0")
+		(property "Reference" "#PWR0142"
+			(at 25.4 243.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 27.94 243.8399 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 31.75 243.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 31.75 243.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 31.75 243.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "9784d2c7-706b-4bcd-bab2-e284917d932e")
+		)
+		(instances
+			(project "bytecradle-6502-single-board"
+				(path "/70c9e9e4-d560-4927-af97-189b3a969059"
+					(reference "#PWR0142")
 					(unit 1)
 				)
 			)
@@ -26748,7 +26878,7 @@
 				)
 			)
 		)
-		(property "Value" "220"
+		(property "Value" "560"
 			(at 319.786 232.41 90)
 			(effects
 				(font
@@ -28949,7 +29079,7 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint_Probe")
-		(at 146.05 107.95 0)
+		(at 123.19 105.41 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -28958,7 +29088,7 @@
 		(fields_autoplaced yes)
 		(uuid "5b717e24-648f-4175-b361-61ebcb19e711")
 		(property "Reference" "TP3"
-			(at 149.86 105.0924 0)
+			(at 127 102.5524 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -28967,7 +29097,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 149.86 107.6324 0)
+			(at 127 105.0924 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -28976,7 +29106,7 @@
 			)
 		)
 		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical"
-			(at 151.13 107.95 0)
+			(at 128.27 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -28985,7 +29115,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 151.13 107.95 0)
+			(at 128.27 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -28994,7 +29124,7 @@
 			)
 		)
 		(property "Description" "test point (alternative probe-style design)"
-			(at 146.05 107.95 0)
+			(at 123.19 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -30151,6 +30281,73 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint_Probe")
+		(at 146.05 90.17 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6b5aa33d-18e2-40fc-96f6-14277864719c")
+		(property "Reference" "TP4"
+			(at 149.86 87.3124 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "~{NMI}"
+			(at 149.86 89.8524 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical"
+			(at 151.13 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 151.13 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point (alternative probe-style design)"
+			(at 146.05 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "7f5536e2-7a51-451e-a4eb-67b217ec6fdf")
+		)
+		(instances
+			(project "bytecradle-6502-single-board"
+				(path "/70c9e9e4-d560-4927-af97-189b3a969059"
+					(reference "TP4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "65xx-library:W65C22NxP")
 		(at 200.66 238.76 0)
 		(unit 1)
@@ -30916,10 +31113,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "73ce4f19-8076-410d-92e9-1c73be570413")
 		(property "Reference" "U17"
-			(at 176.53 210.8514 0)
+			(at 168.402 210.312 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -30927,7 +31123,7 @@
 			)
 		)
 		(property "Value" "74HC688"
-			(at 176.53 213.3914 0)
+			(at 168.402 212.852 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -31452,6 +31648,73 @@
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059"
 					(reference "#PWR058")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint_Probe")
+		(at 146.05 105.41 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "801c09a8-7109-4bda-877b-3666b1290f9a")
+		(property "Reference" "TP6"
+			(at 149.86 102.5524 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "~{IRQ}"
+			(at 149.86 105.0924 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical"
+			(at 151.13 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 151.13 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point (alternative probe-style design)"
+			(at 146.05 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "30bf3871-c5d2-427c-af66-6bc22691f1d9")
+		)
+		(instances
+			(project "bytecradle-6502-single-board"
+				(path "/70c9e9e4-d560-4927-af97-189b3a969059"
+					(reference "TP6")
 					(unit 1)
 				)
 			)
@@ -33003,7 +33266,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "SW_DIP_x04"
+		(property "Value" "CLOCKDIV"
 			(at 60.96 130.8099 90)
 			(effects
 				(font
@@ -33080,10 +33343,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "a2fe0bb0-c333-4091-a177-482e25c49e1e")
 		(property "Reference" "Y1"
-			(at 113.03 210.8199 90)
+			(at 112.522 212.09 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -33092,7 +33354,7 @@
 			)
 		)
 		(property "Value" "1.8432 MHz"
-			(at 113.03 213.3599 90)
+			(at 110.236 215.646 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -34175,6 +34437,73 @@
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059"
 					(reference "C18")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint_Probe")
+		(at 146.05 97.79 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "abf18692-f53e-4a4d-92a1-0b3bfac0c40a")
+		(property "Reference" "TP5"
+			(at 149.86 94.9324 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "~{RES}"
+			(at 149.86 97.4724 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical"
+			(at 151.13 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 151.13 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point (alternative probe-style design)"
+			(at 146.05 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "391518e9-8581-4d39-b994-8277b0594031")
+		)
+		(instances
+			(project "bytecradle-6502-single-board"
+				(path "/70c9e9e4-d560-4927-af97-189b3a969059"
+					(reference "TP5")
 					(unit 1)
 				)
 			)
@@ -35933,7 +36262,7 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint_Probe")
-		(at 146.05 100.33 0)
+		(at 123.19 97.79 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -35942,7 +36271,7 @@
 		(fields_autoplaced yes)
 		(uuid "cb5f636e-7b0a-4ba8-82ac-fdba2693b5ba")
 		(property "Reference" "TP2"
-			(at 149.86 97.4724 0)
+			(at 127 94.9324 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -35951,7 +36280,7 @@
 			)
 		)
 		(property "Value" "~{CLK}"
-			(at 149.86 100.0124 0)
+			(at 127 97.4724 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -35960,7 +36289,7 @@
 			)
 		)
 		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical"
-			(at 151.13 100.33 0)
+			(at 128.27 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -35969,7 +36298,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 151.13 100.33 0)
+			(at 128.27 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -35978,7 +36307,7 @@
 			)
 		)
 		(property "Description" "test point (alternative probe-style design)"
-			(at 146.05 100.33 0)
+			(at 123.19 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -37256,73 +37585,6 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 238.76 275.59 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "dcf3cf8d-4b2e-42bb-b00c-4c7cfa32d79c")
-		(property "Reference" "#PWR049"
-			(at 232.41 275.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 234.95 275.5899 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 238.76 275.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 238.76 275.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 238.76 275.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "36f223ea-6d57-4eb3-a118-b2a04f7decb2")
-		)
-		(instances
-			(project "bytecradle-6502-single-board"
-				(path "/70c9e9e4-d560-4927-af97-189b3a969059"
-					(reference "#PWR049")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
 		(at 118.11 275.59 270)
 		(unit 1)
 		(exclude_from_sim no)
@@ -38235,7 +38497,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 143.51 107.95 270)
+		(at 120.65 105.41 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -38244,7 +38506,7 @@
 		(fields_autoplaced yes)
 		(uuid "e7fdc1ea-3f47-45e2-bd9f-627a497761c9")
 		(property "Reference" "#PWR065"
-			(at 137.16 107.95 0)
+			(at 114.3 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -38253,7 +38515,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 139.7 107.9499 90)
+			(at 116.84 105.4099 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -38262,7 +38524,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 143.51 107.95 0)
+			(at 120.65 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -38271,7 +38533,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 143.51 107.95 0)
+			(at 120.65 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -38280,7 +38542,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 143.51 107.95 0)
+			(at 120.65 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -38747,10 +39009,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "ef852097-7401-49e0-87bb-d26534de4dc1")
 		(property "Reference" "U12"
-			(at 59.69 213.3914 0)
+			(at 50.8 213.106 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -38758,7 +39019,7 @@
 			)
 		)
 		(property "Value" "74HC688"
-			(at 59.69 215.9314 0)
+			(at 50.8 215.646 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -38998,7 +39259,7 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint_Probe")
-		(at 146.05 92.71 0)
+		(at 123.19 90.17 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -39007,7 +39268,7 @@
 		(fields_autoplaced yes)
 		(uuid "f2e337ce-fe55-4c8e-939b-246eacfc8db5")
 		(property "Reference" "TP1"
-			(at 149.86 89.8524 0)
+			(at 127 87.3124 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -39016,7 +39277,7 @@
 			)
 		)
 		(property "Value" "CLK"
-			(at 149.86 92.3924 0)
+			(at 127 89.8524 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -39025,7 +39286,7 @@
 			)
 		)
 		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical"
-			(at 151.13 92.71 0)
+			(at 128.27 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -39034,7 +39295,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 151.13 92.71 0)
+			(at 128.27 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -39043,7 +39304,7 @@
 			)
 		)
 		(property "Description" "test point (alternative probe-style design)"
-			(at 146.05 92.71 0)
+			(at 123.19 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)

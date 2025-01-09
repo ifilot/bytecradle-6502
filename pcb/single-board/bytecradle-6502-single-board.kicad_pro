@@ -232,7 +232,10 @@
     "equivalence_files": []
   },
   "erc": {
-    "erc_exclusions": [],
+    "erc_exclusions": [
+      "pin_not_driven|1397000|292100|d6b6c25e-9846-4567-a687-56b439734948|00000000-0000-0000-0000-000000000000|/70c9e9e4-d560-4927-af97-189b3a969059|/70c9e9e4-d560-4927-af97-189b3a969059|",
+      "pin_not_driven|1397000|342900|f86680d5-f71e-4dad-bb38-4f1efa4d77e5|00000000-0000-0000-0000-000000000000|/70c9e9e4-d560-4927-af97-189b3a969059|/70c9e9e4-d560-4927-af97-189b3a969059|"
+    ],
     "meta": {
       "version": 0
     },
@@ -482,9 +485,9 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "",
+      "plot": "GERBERS/",
       "pos_files": "",
-      "specctra_dsn": "",
+      "specctra_dsn": "bytecradle-6502-single-board.dsn",
       "step": "",
       "svg": "",
       "vrml": ""
