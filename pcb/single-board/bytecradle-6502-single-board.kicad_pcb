@@ -544,8 +544,8 @@
 			)
 		)
 		(property "Value" "74HC02"
-			(at 3.81 17.57 -90)
-			(layer "F.Fab")
+			(at 3.81 17.57 270)
+			(layer "F.SilkS")
 			(uuid "c0b4b6da-8d1d-44dc-b996-8f011fdc9490")
 			(effects
 				(font
@@ -4103,7 +4103,7 @@
 		)
 		(property "Value" "W65C51NxP"
 			(at 7.62 35.35 0)
-			(layer "F.Fab")
+			(layer "F.SilkS")
 			(uuid "7452a016-f73c-49bb-9220-ba04c1ec581d")
 			(effects
 				(font
@@ -22237,7 +22237,7 @@
 			)
 		)
 		(property "Value" "100uF"
-			(at 1.25 4.4 0)
+			(at 5.548 0 90)
 			(layer "F.SilkS")
 			(uuid "aad8f9bb-dd24-40aa-9328-38ecf2c2cdce")
 			(effects
@@ -25449,7 +25449,7 @@
 		)
 		(property "Value" "74HC08"
 			(at 3.81 17.57 0)
-			(layer "F.Fab")
+			(layer "F.SilkS")
 			(uuid "a6caf286-cf8f-4794-bf5e-180a9b1ef01f")
 			(effects
 				(font
@@ -27175,7 +27175,7 @@
 		)
 		(property "Value" "W65C22NxP"
 			(at 7.62 50.59 0)
-			(layer "F.Fab")
+			(layer "F.SilkS")
 			(uuid "8b28440e-f966-4fd2-91ef-358d646dccf3")
 			(effects
 				(font

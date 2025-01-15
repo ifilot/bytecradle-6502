@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "bargraph8")(type "KiCad")(uri "D:/PROGRAMMING/KiCAD/bytecradle-6502/pcb/components/bargraph8.kicad_sym")(options "")(descr ""))
+)
