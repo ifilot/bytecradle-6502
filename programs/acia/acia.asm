@@ -19,7 +19,7 @@
 ;-------------------------------------------------------------------------------
 boot:                   ; reset vector points here
     sei                 ; disable interrupts
-    cld                 ; clear decimal mode (optional for 65c02, but good practice)
+    cld                 ; clear decimal mode 
     ldx #$ff            ; initialize stack pointer to top of stack
     txs                 ; transfer x to stack pointer (sp)
     ldx #$00            ; prepare to clear the zero page
@@ -36,10 +36,10 @@ clear_zp:
 ; Initialize I/O
 ;-------------------------------------------------------------------------------
 init:
-    LDA #%00011110
-    STA ACIA_CTRL    ; Write to ACIA control register
-    LDA #%11001010         ; No parity, no echo, no interrupts.
-    STA ACIA_CMD
+    lda #%00011110
+    sta ACIA_CTRL 	; Write to ACIA control register
+    lda #%11001010      ; No parity, no echo, no interrupts.
+    sta ACIA_CMD
     rts
         
 ;-------------------------------------------------------------------------------
@@ -47,28 +47,28 @@ init:
 ;-------------------------------------------------------------------------------
 main:
     ldx #00
-SEND_STRING:
-    LDA STRING,X     ; Load the current character from the string
-    BEQ exit         ; If character is null (end of string), exit
-    jsr transmit
-    INX              ; Increment X to point to the next character
-    JMP SEND_STRING  ; Repeat for the next character
+nextchar:
+    lda string,x     	; Load the current character from the string
+    beq exit         	; if character is null (end of string), exit
+    jsr transmit        ; transmit byte over serial
+    inx              	; increment X to point to the next character
+    jmp nextchar  	; repeat for the next character
 
 transmit:
     pha
-    STA ACIA_DATA    ; Write the character to the ACIA data register
-    LDA     #$FF           ; Initialize delay loop.
-TXDELAY:        
-    DEC                    ; Decrement A.
-    BNE     TXDELAY        ; Until A gets to 0.
-    PLA                    ; Restore A.
-    RTS                    ; Return.
+    sta ACIA_DATA    	; Write the character to the ACIA data register
+    lda #$FF        	; Initialize delay loop.
+txdelay:        
+    dec                 ; decrement A.
+    bne txdelay         ; until A gets to 0.
+    pla                 ; restore A.
+    rts
 
 exit:
     jmp loop
 
-    STRING:
-        .BYTE "Hello World", 0  ; Null-terminated string
+    string:
+        .byte $1B, $5B, $31, $3B, $31, $3B, $34, $6D, "The Quick Brown Fox Jumps Over The Lazy Dog!", 0  ; Null-terminated string
 
 ;-------------------------------------------------------------------------------
 ; Infinite loop
