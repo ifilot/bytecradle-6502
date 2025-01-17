@@ -13604,6 +13604,12 @@
 		(uuid "501b6202-4942-409e-8578-d12e58531c95")
 	)
 	(junction
+		(at 181.61 204.47)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "522a6b14-cee3-409b-a21f-c76e63a6e1dd")
+	)
+	(junction
 		(at 57.15 143.51)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -13674,6 +13680,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "9610f01e-0d8f-4387-92fc-b61728dbc0b4")
+	)
+	(junction
+		(at 73.66 220.98)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a14b6b82-759d-45bf-86ec-5a88281b42ac")
 	)
 	(junction
 		(at 295.91 91.44)
@@ -13850,6 +13862,10 @@
 		(uuid "49173f13-1f04-4530-b1d0-ec55e5466134")
 	)
 	(no_connect
+		(at 101.6 241.3)
+		(uuid "4bd823ae-04a0-4bb3-92a5-511ae160afab")
+	)
+	(no_connect
 		(at 91.44 148.59)
 		(uuid "4ce86296-7cad-4ae9-9fdb-c088435418dc")
 	)
@@ -13920,6 +13936,10 @@
 	(no_connect
 		(at 130.81 148.59)
 		(uuid "d5362358-e54a-460e-bcb2-43d77237f65b")
+	)
+	(no_connect
+		(at 101.6 246.38)
+		(uuid "dc71b038-4c6c-4506-8e19-11677e579892")
 	)
 	(no_connect
 		(at 321.31 204.47)
@@ -14084,6 +14104,16 @@
 			(type default)
 		)
 		(uuid "0c433dc9-0bfd-43d3-8e6b-94b5e3c2e4b5")
+	)
+	(wire
+		(pts
+			(xy 72.39 220.98) (xy 73.66 220.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0c4ddf78-1981-410d-9e2e-85fc7fa68c56")
 	)
 	(wire
 		(pts
@@ -14444,6 +14474,16 @@
 			(type default)
 		)
 		(uuid "43152e5b-91b7-495c-9b26-d6d7a68a145e")
+	)
+	(wire
+		(pts
+			(xy 182.88 204.47) (xy 181.61 204.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "43155f6a-3332-4dab-aa60-a802e6cb9b72")
 	)
 	(wire
 		(pts
@@ -14874,6 +14914,16 @@
 			(type default)
 		)
 		(uuid "6e849d3c-0b97-4232-9717-cd57d0397407")
+	)
+	(wire
+		(pts
+			(xy 179.07 204.47) (xy 181.61 204.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "701364d4-46b0-4e99-acb1-a45dcd76a09b")
 	)
 	(wire
 		(pts
@@ -15507,6 +15557,16 @@
 	)
 	(wire
 		(pts
+			(xy 190.5 201.93) (xy 190.5 204.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ad3c0586-030f-4856-9a71-322e27705798")
+	)
+	(wire
+		(pts
 			(xy 40.64 143.51) (xy 57.15 143.51)
 		)
 		(stroke
@@ -15724,6 +15784,16 @@
 			(type default)
 		)
 		(uuid "c4c3b58e-ca4c-4a3a-92a5-3df9a67662f5")
+	)
+	(wire
+		(pts
+			(xy 181.61 218.44) (xy 190.5 218.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c52ab1f1-cf1f-4196-8490-87e9df636977")
 	)
 	(wire
 		(pts
@@ -15984,6 +16054,26 @@
 			(type default)
 		)
 		(uuid "e06e0fa1-2610-4ba8-bbaa-ea72152b0a1e")
+	)
+	(wire
+		(pts
+			(xy 73.66 215.9) (xy 73.66 220.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e0eb23ed-c93d-43f9-b6fd-fc06c67e05aa")
+	)
+	(wire
+		(pts
+			(xy 73.66 220.98) (xy 81.28 220.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e10a2939-486c-426e-b917-35ea0c9f6bbc")
 	)
 	(wire
 		(pts
@@ -16254,6 +16344,16 @@
 			(type default)
 		)
 		(uuid "fdab328e-5a2c-4c76-8788-5abb951be049")
+	)
+	(wire
+		(pts
+			(xy 181.61 204.47) (xy 181.61 218.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "febbf686-9fe9-4d72-971a-34346bb3d47c")
 	)
 	(wire
 		(pts
@@ -19520,7 +19620,7 @@
 	)
 	(global_label "~{IRQC51}"
 		(shape input)
-		(at 81.28 220.98 180)
+		(at 72.39 220.98 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -19530,7 +19630,7 @@
 		)
 		(uuid "7d524ec6-7427-49c6-a04f-81c1d6e3ae97")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 71.4005 220.98 0)
+			(at 62.5105 220.98 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -22282,7 +22382,7 @@
 	)
 	(global_label "~{IRQC22}"
 		(shape input)
-		(at 190.5 218.44 180)
+		(at 179.07 204.47 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -22292,7 +22392,7 @@
 		)
 		(uuid "f1245b07-8013-49e7-a23c-d448361bdfe1")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 180.6205 218.44 0)
+			(at 169.1905 204.47 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23902,73 +24002,6 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 101.6 246.38 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "0ff90871-ff1e-48d0-9dd5-314a014ef144")
-		(property "Reference" "#PWR029"
-			(at 107.95 246.38 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 105.41 246.3799 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 101.6 246.38 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 101.6 246.38 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 101.6 246.38 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "8c97f7f7-f174-4b3f-995b-dc6a45274dbc")
-		)
-		(instances
-			(project "bytecradle-6502-single-board"
-				(path "/70c9e9e4-d560-4927-af97-189b3a969059"
-					(reference "#PWR029")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
 		(at 177.8 157.48 90)
 		(unit 1)
 		(exclude_from_sim no)
@@ -24497,46 +24530,46 @@
 			)
 		)
 		(pin "14"
-			(uuid "1a4ffef4-8c22-45cb-8448-21336243f027")
+			(uuid "1a4ffef4-8c22-45cb-8448-21336243f028")
 		)
 		(pin "13"
-			(uuid "4e9d56a0-8b67-4e88-b07f-b715aa12fb4f")
+			(uuid "4e9d56a0-8b67-4e88-b07f-b715aa12fb50")
 		)
 		(pin "1"
-			(uuid "e32c407d-5920-4bec-b279-2a2a3e18fcd9")
+			(uuid "e32c407d-5920-4bec-b279-2a2a3e18fcda")
 		)
 		(pin "6"
-			(uuid "6d0e7726-0c48-45fb-af04-cd2e38bda2e1")
+			(uuid "6d0e7726-0c48-45fb-af04-cd2e38bda2e2")
 		)
 		(pin "2"
-			(uuid "8c35234a-f7f0-4223-a570-2a3ec6dd04c0")
+			(uuid "8c35234a-f7f0-4223-a570-2a3ec6dd04c1")
 		)
 		(pin "4"
-			(uuid "8f9fd862-f068-42aa-96d0-368ac53b89a9")
+			(uuid "8f9fd862-f068-42aa-96d0-368ac53b89aa")
 		)
 		(pin "10"
-			(uuid "69884d1e-b510-47fe-ac80-89e62c6d3ad0")
+			(uuid "69884d1e-b510-47fe-ac80-89e62c6d3ad1")
 		)
 		(pin "9"
-			(uuid "f07fc2dd-d691-4457-b23f-da45e71a509d")
+			(uuid "f07fc2dd-d691-4457-b23f-da45e71a509e")
 		)
 		(pin "5"
-			(uuid "ee7b8b39-1405-40d4-9cc3-e0c6931fab28")
+			(uuid "ee7b8b39-1405-40d4-9cc3-e0c6931fab29")
 		)
 		(pin "12"
-			(uuid "8c99225e-11d8-4729-a5ee-2fdaf7fe606f")
+			(uuid "8c99225e-11d8-4729-a5ee-2fdaf7fe6070")
 		)
 		(pin "3"
-			(uuid "3dd3a719-a337-4df9-8129-4cd250577011")
+			(uuid "3dd3a719-a337-4df9-8129-4cd250577012")
 		)
 		(pin "8"
-			(uuid "293acea5-71ec-481f-914a-a15394cb4a7f")
+			(uuid "293acea5-71ec-481f-914a-a15394cb4a80")
 		)
 		(pin "11"
-			(uuid "1df36b14-ba4c-4a1a-8982-fb580e77cfd6")
+			(uuid "1df36b14-ba4c-4a1a-8982-fb580e77cfd7")
 		)
 		(pin "7"
-			(uuid "52b0a0c3-4a00-47e1-af1f-4b6f21311dbe")
+			(uuid "52b0a0c3-4a00-47e1-af1f-4b6f21311dbf")
 		)
 		(instances
 			(project "bytecradle-6502-single-board"
@@ -26025,6 +26058,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:VCC")
+		(at 190.5 201.93 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "34bda98d-a859-4676-900d-1922663626c2")
+		(property "Reference" "#PWR029"
+			(at 190.5 205.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VCC"
+			(at 190.5 196.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 190.5 201.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 190.5 201.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VCC\""
+			(at 190.5 201.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "67b3f866-3358-49d0-ac2a-0bc36d50b954")
+		)
+		(instances
+			(project "bytecradle-6502-single-board"
+				(path "/70c9e9e4-d560-4927-af97-189b3a969059"
+					(reference "#PWR029")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "74xx:74HC245")
 		(at 302.26 48.26 270)
 		(mirror x)
@@ -27116,46 +27215,46 @@
 			)
 		)
 		(pin "4"
-			(uuid "a393c1f6-7f46-43d4-9fb8-ee5f476ee44e")
+			(uuid "a393c1f6-7f46-43d4-9fb8-ee5f476ee44f")
 		)
 		(pin "8"
-			(uuid "92ed144a-64ae-4beb-b0ff-1803ab6b96b9")
+			(uuid "92ed144a-64ae-4beb-b0ff-1803ab6b96ba")
 		)
 		(pin "9"
-			(uuid "d8615021-85ed-467b-90d4-51d0955caac1")
+			(uuid "d8615021-85ed-467b-90d4-51d0955caac2")
 		)
 		(pin "11"
-			(uuid "dbd8938b-199c-45fe-b1d4-ee7278a9fbc7")
+			(uuid "dbd8938b-199c-45fe-b1d4-ee7278a9fbc8")
 		)
 		(pin "5"
-			(uuid "bef972b0-2a95-4a96-aedd-a412939a70ad")
+			(uuid "bef972b0-2a95-4a96-aedd-a412939a70ae")
 		)
 		(pin "12"
-			(uuid "81229c18-c9dc-4624-8bd3-c74ee7f1be35")
+			(uuid "81229c18-c9dc-4624-8bd3-c74ee7f1be36")
 		)
 		(pin "1"
-			(uuid "d6b6c25e-9846-4567-a687-56b439734948")
+			(uuid "d6b6c25e-9846-4567-a687-56b439734949")
 		)
 		(pin "6"
-			(uuid "b5a19626-88d8-43f6-bb47-7f65d8ce2228")
+			(uuid "b5a19626-88d8-43f6-bb47-7f65d8ce2229")
 		)
 		(pin "2"
-			(uuid "f86680d5-f71e-4dad-bb38-4f1efa4d77e5")
+			(uuid "f86680d5-f71e-4dad-bb38-4f1efa4d77e6")
 		)
 		(pin "3"
-			(uuid "0c7892fc-a124-440a-a3c0-7288665b8856")
+			(uuid "0c7892fc-a124-440a-a3c0-7288665b8857")
 		)
 		(pin "10"
-			(uuid "8212df24-1aad-47d6-bd95-0a0825447d7a")
+			(uuid "8212df24-1aad-47d6-bd95-0a0825447d7b")
 		)
 		(pin "14"
-			(uuid "98d817e9-3402-417b-8936-f963a7c76aa6")
+			(uuid "98d817e9-3402-417b-8936-f963a7c76aa7")
 		)
 		(pin "13"
-			(uuid "33bca8ec-c919-436d-889c-e3dcd0a74932")
+			(uuid "33bca8ec-c919-436d-889c-e3dcd0a74933")
 		)
 		(pin "7"
-			(uuid "63923a19-a0c1-41c2-8b0d-5c7fc707d0a5")
+			(uuid "63923a19-a0c1-41c2-8b0d-5c7fc707d0a6")
 		)
 		(instances
 			(project "bytecradle-6502-single-board"
@@ -27420,46 +27519,46 @@
 			)
 		)
 		(pin "14"
-			(uuid "1a4ffef4-8c22-45cb-8448-21336243f027")
+			(uuid "1a4ffef4-8c22-45cb-8448-21336243f029")
 		)
 		(pin "13"
-			(uuid "4e9d56a0-8b67-4e88-b07f-b715aa12fb4f")
+			(uuid "4e9d56a0-8b67-4e88-b07f-b715aa12fb51")
 		)
 		(pin "1"
-			(uuid "e32c407d-5920-4bec-b279-2a2a3e18fcd9")
+			(uuid "e32c407d-5920-4bec-b279-2a2a3e18fcdb")
 		)
 		(pin "6"
-			(uuid "6d0e7726-0c48-45fb-af04-cd2e38bda2e1")
+			(uuid "6d0e7726-0c48-45fb-af04-cd2e38bda2e3")
 		)
 		(pin "2"
-			(uuid "8c35234a-f7f0-4223-a570-2a3ec6dd04c0")
+			(uuid "8c35234a-f7f0-4223-a570-2a3ec6dd04c2")
 		)
 		(pin "4"
-			(uuid "8f9fd862-f068-42aa-96d0-368ac53b89a9")
+			(uuid "8f9fd862-f068-42aa-96d0-368ac53b89ab")
 		)
 		(pin "10"
-			(uuid "69884d1e-b510-47fe-ac80-89e62c6d3ad0")
+			(uuid "69884d1e-b510-47fe-ac80-89e62c6d3ad2")
 		)
 		(pin "9"
-			(uuid "f07fc2dd-d691-4457-b23f-da45e71a509d")
+			(uuid "f07fc2dd-d691-4457-b23f-da45e71a509f")
 		)
 		(pin "5"
-			(uuid "ee7b8b39-1405-40d4-9cc3-e0c6931fab28")
+			(uuid "ee7b8b39-1405-40d4-9cc3-e0c6931fab2a")
 		)
 		(pin "12"
-			(uuid "8c99225e-11d8-4729-a5ee-2fdaf7fe606f")
+			(uuid "8c99225e-11d8-4729-a5ee-2fdaf7fe6071")
 		)
 		(pin "3"
-			(uuid "3dd3a719-a337-4df9-8129-4cd250577011")
+			(uuid "3dd3a719-a337-4df9-8129-4cd250577013")
 		)
 		(pin "8"
-			(uuid "293acea5-71ec-481f-914a-a15394cb4a7f")
+			(uuid "293acea5-71ec-481f-914a-a15394cb4a81")
 		)
 		(pin "11"
-			(uuid "1df36b14-ba4c-4a1a-8982-fb580e77cfd6")
+			(uuid "1df36b14-ba4c-4a1a-8982-fb580e77cfd8")
 		)
 		(pin "7"
-			(uuid "52b0a0c3-4a00-47e1-af1f-4b6f21311dbe")
+			(uuid "52b0a0c3-4a00-47e1-af1f-4b6f21311dc0")
 		)
 		(instances
 			(project "bytecradle-6502-single-board"
@@ -29670,46 +29769,46 @@
 			)
 		)
 		(pin "4"
-			(uuid "a393c1f6-7f46-43d4-9fb8-ee5f476ee44e")
+			(uuid "a393c1f6-7f46-43d4-9fb8-ee5f476ee450")
 		)
 		(pin "8"
-			(uuid "92ed144a-64ae-4beb-b0ff-1803ab6b96b9")
+			(uuid "92ed144a-64ae-4beb-b0ff-1803ab6b96bb")
 		)
 		(pin "9"
-			(uuid "d8615021-85ed-467b-90d4-51d0955caac1")
+			(uuid "d8615021-85ed-467b-90d4-51d0955caac3")
 		)
 		(pin "11"
-			(uuid "dbd8938b-199c-45fe-b1d4-ee7278a9fbc7")
+			(uuid "dbd8938b-199c-45fe-b1d4-ee7278a9fbc9")
 		)
 		(pin "5"
-			(uuid "bef972b0-2a95-4a96-aedd-a412939a70ad")
+			(uuid "bef972b0-2a95-4a96-aedd-a412939a70af")
 		)
 		(pin "12"
-			(uuid "81229c18-c9dc-4624-8bd3-c74ee7f1be35")
+			(uuid "81229c18-c9dc-4624-8bd3-c74ee7f1be37")
 		)
 		(pin "1"
-			(uuid "d6b6c25e-9846-4567-a687-56b439734948")
+			(uuid "d6b6c25e-9846-4567-a687-56b43973494a")
 		)
 		(pin "6"
-			(uuid "b5a19626-88d8-43f6-bb47-7f65d8ce2228")
+			(uuid "b5a19626-88d8-43f6-bb47-7f65d8ce222a")
 		)
 		(pin "2"
-			(uuid "f86680d5-f71e-4dad-bb38-4f1efa4d77e5")
+			(uuid "f86680d5-f71e-4dad-bb38-4f1efa4d77e7")
 		)
 		(pin "3"
-			(uuid "0c7892fc-a124-440a-a3c0-7288665b8856")
+			(uuid "0c7892fc-a124-440a-a3c0-7288665b8858")
 		)
 		(pin "10"
-			(uuid "8212df24-1aad-47d6-bd95-0a0825447d7a")
+			(uuid "8212df24-1aad-47d6-bd95-0a0825447d7c")
 		)
 		(pin "14"
-			(uuid "98d817e9-3402-417b-8936-f963a7c76aa6")
+			(uuid "98d817e9-3402-417b-8936-f963a7c76aa8")
 		)
 		(pin "13"
-			(uuid "33bca8ec-c919-436d-889c-e3dcd0a74932")
+			(uuid "33bca8ec-c919-436d-889c-e3dcd0a74934")
 		)
 		(pin "7"
-			(uuid "63923a19-a0c1-41c2-8b0d-5c7fc707d0a5")
+			(uuid "63923a19-a0c1-41c2-8b0d-5c7fc707d0a7")
 		)
 		(instances
 			(project "bytecradle-6502-single-board"
@@ -29773,46 +29872,46 @@
 			)
 		)
 		(pin "14"
-			(uuid "1a4ffef4-8c22-45cb-8448-21336243f027")
+			(uuid "1a4ffef4-8c22-45cb-8448-21336243f02a")
 		)
 		(pin "13"
-			(uuid "4e9d56a0-8b67-4e88-b07f-b715aa12fb4f")
+			(uuid "4e9d56a0-8b67-4e88-b07f-b715aa12fb52")
 		)
 		(pin "1"
-			(uuid "e32c407d-5920-4bec-b279-2a2a3e18fcd9")
+			(uuid "e32c407d-5920-4bec-b279-2a2a3e18fcdc")
 		)
 		(pin "6"
-			(uuid "6d0e7726-0c48-45fb-af04-cd2e38bda2e1")
+			(uuid "6d0e7726-0c48-45fb-af04-cd2e38bda2e4")
 		)
 		(pin "2"
-			(uuid "8c35234a-f7f0-4223-a570-2a3ec6dd04c0")
+			(uuid "8c35234a-f7f0-4223-a570-2a3ec6dd04c3")
 		)
 		(pin "4"
-			(uuid "8f9fd862-f068-42aa-96d0-368ac53b89a9")
+			(uuid "8f9fd862-f068-42aa-96d0-368ac53b89ac")
 		)
 		(pin "10"
-			(uuid "69884d1e-b510-47fe-ac80-89e62c6d3ad0")
+			(uuid "69884d1e-b510-47fe-ac80-89e62c6d3ad3")
 		)
 		(pin "9"
-			(uuid "f07fc2dd-d691-4457-b23f-da45e71a509d")
+			(uuid "f07fc2dd-d691-4457-b23f-da45e71a50a0")
 		)
 		(pin "5"
-			(uuid "ee7b8b39-1405-40d4-9cc3-e0c6931fab28")
+			(uuid "ee7b8b39-1405-40d4-9cc3-e0c6931fab2b")
 		)
 		(pin "12"
-			(uuid "8c99225e-11d8-4729-a5ee-2fdaf7fe606f")
+			(uuid "8c99225e-11d8-4729-a5ee-2fdaf7fe6072")
 		)
 		(pin "3"
-			(uuid "3dd3a719-a337-4df9-8129-4cd250577011")
+			(uuid "3dd3a719-a337-4df9-8129-4cd250577014")
 		)
 		(pin "8"
-			(uuid "293acea5-71ec-481f-914a-a15394cb4a7f")
+			(uuid "293acea5-71ec-481f-914a-a15394cb4a82")
 		)
 		(pin "11"
-			(uuid "1df36b14-ba4c-4a1a-8982-fb580e77cfd6")
+			(uuid "1df36b14-ba4c-4a1a-8982-fb580e77cfd9")
 		)
 		(pin "7"
-			(uuid "52b0a0c3-4a00-47e1-af1f-4b6f21311dbe")
+			(uuid "52b0a0c3-4a00-47e1-af1f-4b6f21311dc1")
 		)
 		(instances
 			(project "bytecradle-6502-single-board"
@@ -32224,6 +32323,74 @@
 		)
 	)
 	(symbol
+		(lib_id "power:VCC")
+		(at 73.66 208.28 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "89575490-c133-44e4-8ea4-cc73b69fa780")
+		(property "Reference" "#PWR028"
+			(at 73.66 212.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VCC"
+			(at 73.6599 204.47 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 73.66 208.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 73.66 208.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VCC\""
+			(at 73.66 208.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "19f449c3-d6c7-4794-9a1a-6f59c6f570d7")
+		)
+		(instances
+			(project "bytecradle-6502-single-board"
+				(path "/70c9e9e4-d560-4927-af97-189b3a969059"
+					(reference "#PWR028")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 377.19 149.86 270)
 		(unit 1)
@@ -33130,46 +33297,46 @@
 			)
 		)
 		(pin "4"
-			(uuid "a393c1f6-7f46-43d4-9fb8-ee5f476ee44e")
+			(uuid "a393c1f6-7f46-43d4-9fb8-ee5f476ee451")
 		)
 		(pin "8"
-			(uuid "92ed144a-64ae-4beb-b0ff-1803ab6b96b9")
+			(uuid "92ed144a-64ae-4beb-b0ff-1803ab6b96bc")
 		)
 		(pin "9"
-			(uuid "d8615021-85ed-467b-90d4-51d0955caac1")
+			(uuid "d8615021-85ed-467b-90d4-51d0955caac4")
 		)
 		(pin "11"
-			(uuid "dbd8938b-199c-45fe-b1d4-ee7278a9fbc7")
+			(uuid "dbd8938b-199c-45fe-b1d4-ee7278a9fbca")
 		)
 		(pin "5"
-			(uuid "bef972b0-2a95-4a96-aedd-a412939a70ad")
+			(uuid "bef972b0-2a95-4a96-aedd-a412939a70b0")
 		)
 		(pin "12"
-			(uuid "81229c18-c9dc-4624-8bd3-c74ee7f1be35")
+			(uuid "81229c18-c9dc-4624-8bd3-c74ee7f1be38")
 		)
 		(pin "1"
-			(uuid "d6b6c25e-9846-4567-a687-56b439734948")
+			(uuid "d6b6c25e-9846-4567-a687-56b43973494b")
 		)
 		(pin "6"
-			(uuid "b5a19626-88d8-43f6-bb47-7f65d8ce2228")
+			(uuid "b5a19626-88d8-43f6-bb47-7f65d8ce222b")
 		)
 		(pin "2"
-			(uuid "f86680d5-f71e-4dad-bb38-4f1efa4d77e5")
+			(uuid "f86680d5-f71e-4dad-bb38-4f1efa4d77e8")
 		)
 		(pin "3"
-			(uuid "0c7892fc-a124-440a-a3c0-7288665b8856")
+			(uuid "0c7892fc-a124-440a-a3c0-7288665b8859")
 		)
 		(pin "10"
-			(uuid "8212df24-1aad-47d6-bd95-0a0825447d7a")
+			(uuid "8212df24-1aad-47d6-bd95-0a0825447d7d")
 		)
 		(pin "14"
-			(uuid "98d817e9-3402-417b-8936-f963a7c76aa6")
+			(uuid "98d817e9-3402-417b-8936-f963a7c76aa9")
 		)
 		(pin "13"
-			(uuid "33bca8ec-c919-436d-889c-e3dcd0a74932")
+			(uuid "33bca8ec-c919-436d-889c-e3dcd0a74935")
 		)
 		(pin "7"
-			(uuid "63923a19-a0c1-41c2-8b0d-5c7fc707d0a5")
+			(uuid "63923a19-a0c1-41c2-8b0d-5c7fc707d0a8")
 		)
 		(instances
 			(project "bytecradle-6502-single-board"
@@ -34712,6 +34879,74 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 186.69 204.47 270)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ae883ce3-ef15-411b-8e40-427260601c5a")
+		(property "Reference" "R8"
+			(at 186.69 206.756 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1k"
+			(at 186.436 204.47 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 186.69 206.248 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 186.69 204.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 186.69 204.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "2d37235f-0f29-4c7f-9b48-f3d006994fe9")
+		)
+		(pin "1"
+			(uuid "05b7ee0b-f8ca-4233-add6-abeadd6627ef")
+		)
+		(instances
+			(project "bytecradle-6502-single-board"
+				(path "/70c9e9e4-d560-4927-af97-189b3a969059"
+					(reference "R8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 147.32 134.62 270)
 		(unit 1)
@@ -34840,6 +35075,74 @@
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059"
 					(reference "#PWR0138")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 73.66 212.09 0)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b2cfc247-883b-4266-984f-4ab0402ab11a")
+		(property "Reference" "R2"
+			(at 71.374 212.09 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1k"
+			(at 73.66 211.836 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 71.882 212.09 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 73.66 212.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 73.66 212.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "51e35075-c2ea-4b77-aadf-88d3daff4df0")
+		)
+		(pin "1"
+			(uuid "665f866d-18b3-40cd-8d63-b02be4132f9a")
+		)
+		(instances
+			(project "bytecradle-6502-single-board"
+				(path "/70c9e9e4-d560-4927-af97-189b3a969059"
+					(reference "R2")
 					(unit 1)
 				)
 			)
@@ -35082,73 +35385,6 @@
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059"
 					(reference "J1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 101.6 241.3 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b5cef146-2658-40a1-ac2e-e5ad8450e883")
-		(property "Reference" "#PWR028"
-			(at 107.95 241.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 105.41 241.2999 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 101.6 241.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 101.6 241.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 101.6 241.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "0e6593ab-4401-49e7-92b5-281920318d30")
-		)
-		(instances
-			(project "bytecradle-6502-single-board"
-				(path "/70c9e9e4-d560-4927-af97-189b3a969059"
-					(reference "#PWR028")
 					(unit 1)
 				)
 			)
@@ -38141,46 +38377,46 @@
 			)
 		)
 		(pin "14"
-			(uuid "1a4ffef4-8c22-45cb-8448-21336243f027")
+			(uuid "1a4ffef4-8c22-45cb-8448-21336243f02b")
 		)
 		(pin "13"
-			(uuid "4e9d56a0-8b67-4e88-b07f-b715aa12fb4f")
+			(uuid "4e9d56a0-8b67-4e88-b07f-b715aa12fb53")
 		)
 		(pin "1"
-			(uuid "e32c407d-5920-4bec-b279-2a2a3e18fcd9")
+			(uuid "e32c407d-5920-4bec-b279-2a2a3e18fcdd")
 		)
 		(pin "6"
-			(uuid "6d0e7726-0c48-45fb-af04-cd2e38bda2e1")
+			(uuid "6d0e7726-0c48-45fb-af04-cd2e38bda2e5")
 		)
 		(pin "2"
-			(uuid "8c35234a-f7f0-4223-a570-2a3ec6dd04c0")
+			(uuid "8c35234a-f7f0-4223-a570-2a3ec6dd04c4")
 		)
 		(pin "4"
-			(uuid "8f9fd862-f068-42aa-96d0-368ac53b89a9")
+			(uuid "8f9fd862-f068-42aa-96d0-368ac53b89ad")
 		)
 		(pin "10"
-			(uuid "69884d1e-b510-47fe-ac80-89e62c6d3ad0")
+			(uuid "69884d1e-b510-47fe-ac80-89e62c6d3ad4")
 		)
 		(pin "9"
-			(uuid "f07fc2dd-d691-4457-b23f-da45e71a509d")
+			(uuid "f07fc2dd-d691-4457-b23f-da45e71a50a1")
 		)
 		(pin "5"
-			(uuid "ee7b8b39-1405-40d4-9cc3-e0c6931fab28")
+			(uuid "ee7b8b39-1405-40d4-9cc3-e0c6931fab2c")
 		)
 		(pin "12"
-			(uuid "8c99225e-11d8-4729-a5ee-2fdaf7fe606f")
+			(uuid "8c99225e-11d8-4729-a5ee-2fdaf7fe6073")
 		)
 		(pin "3"
-			(uuid "3dd3a719-a337-4df9-8129-4cd250577011")
+			(uuid "3dd3a719-a337-4df9-8129-4cd250577015")
 		)
 		(pin "8"
-			(uuid "293acea5-71ec-481f-914a-a15394cb4a7f")
+			(uuid "293acea5-71ec-481f-914a-a15394cb4a83")
 		)
 		(pin "11"
-			(uuid "1df36b14-ba4c-4a1a-8982-fb580e77cfd6")
+			(uuid "1df36b14-ba4c-4a1a-8982-fb580e77cfda")
 		)
 		(pin "7"
-			(uuid "52b0a0c3-4a00-47e1-af1f-4b6f21311dbe")
+			(uuid "52b0a0c3-4a00-47e1-af1f-4b6f21311dc2")
 		)
 		(instances
 			(project "bytecradle-6502-single-board"
@@ -39445,46 +39681,46 @@
 			)
 		)
 		(pin "4"
-			(uuid "a393c1f6-7f46-43d4-9fb8-ee5f476ee44e")
+			(uuid "a393c1f6-7f46-43d4-9fb8-ee5f476ee452")
 		)
 		(pin "8"
-			(uuid "92ed144a-64ae-4beb-b0ff-1803ab6b96b9")
+			(uuid "92ed144a-64ae-4beb-b0ff-1803ab6b96bd")
 		)
 		(pin "9"
-			(uuid "d8615021-85ed-467b-90d4-51d0955caac1")
+			(uuid "d8615021-85ed-467b-90d4-51d0955caac5")
 		)
 		(pin "11"
-			(uuid "dbd8938b-199c-45fe-b1d4-ee7278a9fbc7")
+			(uuid "dbd8938b-199c-45fe-b1d4-ee7278a9fbcb")
 		)
 		(pin "5"
-			(uuid "bef972b0-2a95-4a96-aedd-a412939a70ad")
+			(uuid "bef972b0-2a95-4a96-aedd-a412939a70b1")
 		)
 		(pin "12"
-			(uuid "81229c18-c9dc-4624-8bd3-c74ee7f1be35")
+			(uuid "81229c18-c9dc-4624-8bd3-c74ee7f1be39")
 		)
 		(pin "1"
-			(uuid "d6b6c25e-9846-4567-a687-56b439734948")
+			(uuid "d6b6c25e-9846-4567-a687-56b43973494c")
 		)
 		(pin "6"
-			(uuid "b5a19626-88d8-43f6-bb47-7f65d8ce2228")
+			(uuid "b5a19626-88d8-43f6-bb47-7f65d8ce222c")
 		)
 		(pin "2"
-			(uuid "f86680d5-f71e-4dad-bb38-4f1efa4d77e5")
+			(uuid "f86680d5-f71e-4dad-bb38-4f1efa4d77e9")
 		)
 		(pin "3"
-			(uuid "0c7892fc-a124-440a-a3c0-7288665b8856")
+			(uuid "0c7892fc-a124-440a-a3c0-7288665b885a")
 		)
 		(pin "10"
-			(uuid "8212df24-1aad-47d6-bd95-0a0825447d7a")
+			(uuid "8212df24-1aad-47d6-bd95-0a0825447d7e")
 		)
 		(pin "14"
-			(uuid "98d817e9-3402-417b-8936-f963a7c76aa6")
+			(uuid "98d817e9-3402-417b-8936-f963a7c76aaa")
 		)
 		(pin "13"
-			(uuid "33bca8ec-c919-436d-889c-e3dcd0a74932")
+			(uuid "33bca8ec-c919-436d-889c-e3dcd0a74936")
 		)
 		(pin "7"
-			(uuid "63923a19-a0c1-41c2-8b0d-5c7fc707d0a5")
+			(uuid "63923a19-a0c1-41c2-8b0d-5c7fc707d0a9")
 		)
 		(instances
 			(project "bytecradle-6502-single-board"
