@@ -8,7 +8,7 @@
 .PSC02
 
 .define ACIA_DATA       $9F04
-.define ACIA_ST         $9F05
+.define ACIA_STAT       $9F05
 .define ACIA_CMD        $9F06
 .define ACIA_CTRL       $9F07
 
@@ -30,45 +30,36 @@ clear_zp:
     bne clear_zp        ; loop until x overflows back to 0
 
     jsr init            ; initialize VIAs
+    cli                 ; enable interrupts
     jmp main
 
 ;-------------------------------------------------------------------------------
 ; Initialize I/O
 ;-------------------------------------------------------------------------------
 init:
-    lda #%00011110
+    lda #$1E	        ; use 8N1 with a 9600 baud
     sta ACIA_CTRL 	; Write to ACIA control register
-    lda #%11001010      ; No parity, no echo, no interrupts.
+    lda #%00001001      ; No parity, no echo, no interrupts.
     sta ACIA_CMD
+    lda #'@'            ; print '@' on boot
+    jsr charout
+    lda #':'
+    jsr charout
     rts
         
 ;-------------------------------------------------------------------------------
 ; MAIN routine
 ;-------------------------------------------------------------------------------
 main:
-    ldx #00
-nextchar:
-    lda string,x     	; Load the current character from the string
-    beq exit         	; if character is null (end of string), exit
-    jsr transmit        ; transmit byte over serial
-    inx              	; increment X to point to the next character
-    jmp nextchar  	; repeat for the next character
+    jmp main
 
-transmit:
-    pha
+charout:
     sta ACIA_DATA    	; Write the character to the ACIA data register
     lda #$FF        	; Initialize delay loop.
 txdelay:        
     dec                 ; decrement A.
     bne txdelay         ; until A gets to 0.
-    pla                 ; restore A.
     rts
-
-exit:
-    jmp loop
-
-    string:
-        .byte $1B, $5B, $31, $3B, $31, $3B, $34, $6D, "The Quick Brown Fox Jumps Over The Lazy Dog!", 0  ; Null-terminated string
 
 ;-------------------------------------------------------------------------------
 ; Infinite loop
@@ -77,9 +68,23 @@ loop:
     jmp loop
 
 ;-------------------------------------------------------------------------------
+; interrupt service routine
+;-------------------------------------------------------------------------------
+isr:
+    pha			; put A on stack
+    lda ACIA_STAT	; check status
+    and #$08		; check for bit 3
+    beq isr_exit	; if not set, exit isr
+    lda ACIA_DATA	; else transmit the byte back
+    jsr charout 
+isr_exit:
+    pla			; recover A
+    rti
+
+;-------------------------------------------------------------------------------
 ; Vectors
 ;-------------------------------------------------------------------------------
 .segment "VECTORS"
     .word boot          ; reset
     .word boot          ; nmi
-    .word boot          ; irq/brk
+    .word isr           ; irq/brk
