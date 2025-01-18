@@ -37,7 +37,7 @@ clear_zp:
 ; Initialize I/O
 ;-------------------------------------------------------------------------------
 init:
-    lda #$1E	        ; use 8N1 with a 9600 baud
+    lda #$1F	        ; use 8N1 with a 19200 baud
     sta ACIA_CTRL 	; Write to ACIA control register
     lda #%00001001      ; No parity, no echo, no interrupts.
     sta ACIA_CMD
