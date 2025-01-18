@@ -53,12 +53,25 @@ init:
 main:
     jmp main
 
+
+;-------------------------------------------------------------------------------
+; CHAROUT routine
+;
+; Prints a character to the ACIA; note that software delay is needed to prevent
+; transmitting data to the ACIA while it is still transmitting. At 10 MhZ, we
+; need to wait 1E7 * 10 / 19200 = 5208 clock cycles. The inner loop consumes
+; 256 * 5 = 1280 cycles. Thus, we take 5 outer loops and have some margin.
+;-------------------------------------------------------------------------------
 charout:
-    sta ACIA_DATA    	; Write the character to the ACIA data register
-    lda #$FF        	; Initialize delay loop.
-txdelay:        
-    dec                 ; decrement A.
-    bne txdelay         ; until A gets to 0.
+    sta ACIA_DATA    	; write the character to the ACIA data register
+    ldx #5              ; number of outer loops, see description above 
+delay_outer:
+    lda #$FF        	; initialize inner loop
+delay_inner:        
+    dec                 ; decrement A; 2 cycles
+    bne delay_inner     ; check if zero; 3 cycles
+    dex                 ; decrement X
+    bne delay_outer
     rts
 
 ;-------------------------------------------------------------------------------
