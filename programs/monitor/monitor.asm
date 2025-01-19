@@ -11,6 +11,8 @@
 .define TBPR		$12
 .define TBPL		$13
 .define TB              $0200		; store textbuffer in page 2
+.define CMDBUF          $0300           ; position of command buffer
+.define CMDLENGTH       $0310           ; number of bytes in buffer, max 16
 
 .define ESC		$1B		; VT100 escape character
 
@@ -34,15 +36,16 @@ boot:                   ; reset vector points here
     bne @nextbyte       ; loop until x overflows back to 0
     stz TBPL            ; reset textbuffer left pointer
     stz TBPR		; reset textbuffer right pointer
+    stz CMDLENGTH       ; clear command length size
 
-    jsr init            ; initialize UART
+    jsr init_acia       ; initialize UART
     cli                 ; enable interrupts
     jmp main		; go to main routine
 
 ;-------------------------------------------------------------------------------
 ; Initialize I/O
 ;-------------------------------------------------------------------------------
-init:
+init_acia:
     lda #$1F	        ; use 8N1 with a 19200 baud
     sta ACIA_CTRL 	; write to ACIA control register
     lda #%00001001      ; No parity, no echo, no interrupts.
@@ -52,7 +55,7 @@ init:
 termbootstr:
     .byte ESC,"[2J",ESC,"[HByteCradle 6502",ESC,"[B",ESC,"[1G","ACIA echo test",0
 newlinestr:
-    .byte ESC,"[B",ESC,"[1G@:",0
+    .byte ESC,"[B",ESC,"[1G",0
         
 ;-------------------------------------------------------------------------------
 ; MAIN routine
@@ -63,7 +66,7 @@ main:
     lda #>termbootstr   ; load upper byte
     sta $11
     jsr stringout
-    jsr nlout
+    jsr newcmdline
 
 loop:
     lda TBPL		; load textbuffer left pointer
@@ -71,27 +74,94 @@ loop:
     beq loop            ; if the same, do nothing
     ldx TBPL		; else, load left pointer
     lda TB,x		; load value stored in text buffer
-    ;cmp #$0D		; check for carriage return
-    ;beq exec
+    cmp #$0D		; check for carriage return
+    beq exec
+    cmp #$7F		; check for delete key
+    beq backspace
+
+    ldx CMDLENGTH       ; load command length
+    cpx #$10
+    beq exitloop        ; refuse to store when maxbuffer
+    sta CMDBUF,x        ; store in position
     jsr charout		; if not, simply print character
-    inc TBPL            ; increment left pointer
+    inc CMDLENGTH	; increment command length
+exitloop:
+    inc TBPL		; increment text buffer left pointer
     jmp loop
 
+; user has pressed RETURN: try to interpret command execute it
 exec:
+    jsr parsecmd	; parse the command
+    stz TBPL            ; reset text buffer
+    stz TBPR
+    stz CMDLENGTH	; reset command length
+    jsr newcmdline	; provide new command line
+    jmp loop
+
+; user has pressed backspace: remove character from command buffer
+backspace:
+    lda CMDLENGTH	; skip if buffer is empty
+    beq exitbp
+    lda #$08
+    jsr charout
+    lda #' '
+    jsr charout
+    lda #$08
+    jsr charout
+    dec CMDLENGTH
+exitbp:
+    inc TBPL
     jmp loop
 
 ;-------------------------------------------------------------------------------
-; NLOUT routine
-; Garbles: X,y
+; PARSECMD routine
 ;
-; Moves the cursor to the next line
+; Parses the command buffer and executes the command based on the buffer
 ;-------------------------------------------------------------------------------
-nlout:
+parsecmd:
+    ldx #00
+    lda CMDBUF,x
+    cmp #'H'
+    beq cmdhelloworld
+    rts
+
+cmdhelloworld:
+    jsr newline
+    lda #<helloworldstr
+    sta $10
+    lda #>helloworldstr
+    sta $11
+    jsr stringout
+    rts
+
+helloworldstr:
+    .byte "Hello World!", 0
+
+;-------------------------------------------------------------------------------
+; NEWLINE routine
+;
+; print new line to the screen
+;-------------------------------------------------------------------------------
+newline:
     lda #<newlinestr	; load lower byte
     sta $10
     lda #>newlinestr	; load upper byte
     sta $11
     jsr stringout
+    rts
+
+;-------------------------------------------------------------------------------
+; NEWCMDLINE routine
+; Garbles: X,y
+;
+; Moves the cursor to the next line
+;-------------------------------------------------------------------------------
+newcmdline:
+    jsr newline
+    lda #'@'
+    jsr charout
+    lda #':'
+    jsr charout
     rts
 
 ;-------------------------------------------------------------------------------
