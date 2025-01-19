@@ -1,7 +1,4 @@
-;
-; this simple program interfaces with the ACIA chip; it echoes the characters
-; typed in over the UART back to the user
-;
+; this code is a simple monitor class for the ByteCradle 6502
 
 .PSC02
 
@@ -9,6 +6,11 @@
 .define ACIA_STAT       $9F05
 .define ACIA_CMD        $9F06
 .define ACIA_CTRL       $9F07
+
+; textbuffer variables
+.define TBPR		$12
+.define TBPL		$13
+.define TB              $0200		; store textbuffer in page 2
 
 .define ESC		$1B		; VT100 escape character
 
@@ -20,33 +22,31 @@
 boot:                   ; reset vector points here
     sei                 ; disable interrupts
     cld                 ; clear decimal mode 
+
     ldx #$ff            ; initialize stack pointer to top of stack
     txs                 ; transfer x to stack pointer (sp)
-    ldx #$00            ; prepare to clear the zero page
-    lda #$00            ; clear a register
-clear_zp:
-    sta $00,x           ; clear zero page by storing 0
-    inx                 ; increment y
-    bne clear_zp        ; loop until x overflows back to 0
 
-    jsr init            ; initialize VIAs
+    ldx #$00            ; prepare to clear the zero page
+@nextbyte:
+    stz $00,x           ; clear zero page by storing 0
+    stz TB,x            ; clear textbuffer by storing 0
+    inx                 ; increment x
+    bne @nextbyte       ; loop until x overflows back to 0
+    stz TBPL            ; reset textbuffer left pointer
+    stz TBPR		; reset textbuffer right pointer
+
+    jsr init            ; initialize UART
     cli                 ; enable interrupts
-    jmp main
+    jmp main		; go to main routine
 
 ;-------------------------------------------------------------------------------
 ; Initialize I/O
 ;-------------------------------------------------------------------------------
 init:
     lda #$1F	        ; use 8N1 with a 19200 baud
-    sta ACIA_CTRL 	; Write to ACIA control register
+    sta ACIA_CTRL 	; write to ACIA control register
     lda #%00001001      ; No parity, no echo, no interrupts.
-    sta ACIA_CMD
-    lda #<termbootstr   ; load lower byte
-    sta $10
-    lda #>termbootstr   ; load upper byte
-    sta $11
-    jsr stringout
-    jsr nlout
+    sta ACIA_CMD	; write to ACIA command register
     rts
 
 termbootstr:
@@ -58,8 +58,27 @@ newlinestr:
 ; MAIN routine
 ;-------------------------------------------------------------------------------
 main:
-    jmp main
+    lda #<termbootstr   ; load lower byte
+    sta $10
+    lda #>termbootstr   ; load upper byte
+    sta $11
+    jsr stringout
+    jsr nlout
 
+loop:
+    lda TBPL		; load textbuffer left pointer
+    cmp TBPR            ; load textbuffer right pointer
+    beq loop            ; if the same, do nothing
+    ldx TBPL		; else, load left pointer
+    lda TB,x		; load value stored in text buffer
+    ;cmp #$0D		; check for carriage return
+    ;beq exec
+    jsr charout		; if not, simply print character
+    inc TBPL            ; increment left pointer
+    jmp loop
+
+exec:
+    jmp loop
 
 ;-------------------------------------------------------------------------------
 ; NLOUT routine
@@ -118,12 +137,6 @@ delay_inner:
     rts
 
 ;-------------------------------------------------------------------------------
-; Infinite loop
-;-------------------------------------------------------------------------------
-loop:
-    jmp loop
-
-;-------------------------------------------------------------------------------
 ; interrupt service routine
 ;-------------------------------------------------------------------------------
 isr:
@@ -131,31 +144,15 @@ isr:
     lda ACIA_STAT	; check status
     and #$08		; check for bit 3
     beq isr_exit	; if not set, exit isr
-    lda ACIA_DATA	; else transmit the byte back
-    cmp #$0D		; check for CR
-    beq newline         ; print newline
-    cmp #$7F            ; check for delete
-    beq backspace	; run backspace routine
-    jsr charout 	; else do normal print of character
+    lda ACIA_DATA	; load byte
+    phx
+    ldx TBPR		; load pointer index
+    sta TB,x            ; store character
+    inc TBPR
+    plx			; recover X
 isr_exit:
     pla			; recover A
     rti
-
-newline:
-    jsr nlout
-    jmp isr_exit
-   
-backspace:
-    lda #$08
-    jsr charout
-    lda #' '
-    jsr charout
-    lda #$08
-    jsr charout
-    jmp isr_exit	; exit interrupt
-
-bsstr:
-    .byte ESC,"[D ",ESC,"[D",0
 
 ;-------------------------------------------------------------------------------
 ; Vectors
