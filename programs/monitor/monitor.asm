@@ -8,13 +8,26 @@
 .define ACIA_CTRL       $9F07
 
 ; textbuffer variables
-.define TBPR		$12
-.define TBPL		$13
+.define TBPR		$02
+.define TBPL		$03
 .define TB              $0200		; store textbuffer in page 2
 .define CMDBUF          $0300           ; position of command buffer
 .define CMDLENGTH       $0310           ; number of bytes in buffer, max 16
 
+.define LF		$0A		; LF character (line feed)
 .define ESC		$1B		; VT100 escape character
+
+; buffer addresses (ZP)
+.define BUF1		$04
+.define BUF2		$05
+.define BUF3		$06
+.define BUF4		$07
+.define	BUF5		$08
+.define BUF6		$09
+.define STRLB  		$10		; string low byte
+.define STRHB		$11		; string high byte
+.define MALB		$14		; monitor address low byte
+.define MAHB		$15		; monitor address high byte
 
 .segment "CODE"
 
@@ -39,6 +52,11 @@ boot:                   ; reset vector points here
     stz CMDLENGTH       ; clear command length size
 
     jsr init_acia       ; initialize UART
+    lda #<resetscroll
+    sta STRLB
+    lda #>resetscroll
+    sta STRHB
+    jsr stringout
     cli                 ; enable interrupts
     jmp main		; go to main routine
 
@@ -53,18 +71,26 @@ init_acia:
     rts
 
 termbootstr:
-    .byte ESC,"[2J",ESC,"[HByteCradle 6502",ESC,"[B",ESC,"[1G","ACIA echo test",0
+    .byte ESC,"[2J",ESC,"[H"		; reset terminal
+    .byte "*******************",LF
+    .byte "  ByteCradle 6502  ",LF
+    .byte "  ---------------  ",LF
+    .byte "  MONITOR PROGRAM  ",LF
+    .byte "*******************",LF
+    .byte 0				; terminating char
 newlinestr:
-    .byte ESC,"[B",ESC,"[1G",0
+    .byte LF,0
+resetscroll:
+    .byte ESC,"[r",0
         
 ;-------------------------------------------------------------------------------
 ; MAIN routine
 ;-------------------------------------------------------------------------------
 main:
     lda #<termbootstr   ; load lower byte
-    sta $10
+    sta STRLB
     lda #>termbootstr   ; load upper byte
-    sta $11
+    sta STRHB
     jsr stringout
     jsr newcmdline
 
@@ -123,15 +149,87 @@ parsecmd:
     lda CMDBUF,x
     cmp #'H'
     beq cmdhelloworld
+    cmp #'R'
+    beq cmdhexdump
     rts
 
 cmdhelloworld:
     jsr newline
     lda #<helloworldstr
-    sta $10
+    sta STRLB
     lda #>helloworldstr
-    sta $11
+    sta STRHB
     jsr stringout
+    rts
+
+; perform a hexdump of 256 bytes to the screen starting at position indicated
+; by the user
+cmdhexdump:
+    lda #$00
+    sta MALB		; load lower byte
+    lda #$C0
+    sta MAHB		; load upper byte
+    stz BUF2		; line counter
+@nextline:
+    jsr newline		; start with a new line (first segment: addr)
+    lda MAHB		; load high byte of memory address
+    jsr printhex	; print it
+    lda MALB		; load low byte of memory address
+    jsr printhex	; print it
+    lda #' '		; load space
+    jsr charout		; print it twice
+    jsr charout
+    ldy #0		; number of bytes to print (second segment)
+@nextbyte:
+    phy			; put y on stack as printhex garbles it
+    lda (MALB),y	; load byte
+    jsr printhex	; print byte in hex format, garbles y
+    lda #' '		; add space
+    jsr charout
+    ply			; restore y from stack
+    iny
+    cpy #8		; check if halfway
+    bne @skip		; if not, skip
+    lda #' '		; print two spaces to seperate 8 bit segments
+    jsr charout
+    jsr charout
+@skip:
+    cpy #16		; check if 16 bytes are printed
+    bne @nextbyte	; if not, next byte
+    lda #' '		; else space
+    jsr charout
+    lda #'|'		; add nice delimeter
+    jsr charout
+    ldy #0		; number of bytes to print (third segment)
+@nextchar:
+    phy			; y will be garbed in charout routine
+    lda (MALB),y	; load byte again
+    cmp #$1F		; check if value is less than $20
+    bcc @printdot	; if so, print a dot
+    cmp #$7F 		; check if value is greater than or equal to $7F
+    bcs @printdot	; if so, print a dot
+    jmp @next
+@printdot:
+    lda #'.'		; load dot character
+@next:
+    jsr charout		; print character
+    ply			; restore y
+    iny
+    cpy #16		; check if 16 characters have been consumed
+    bne @nextchar	; if not, next character
+    lda #'|'		; else print terminating char
+    jsr charout
+    lda MALB		; load low byte of monitor address
+    clc			; prepare for add (clear carry)
+    adc #16		; add 16
+    sta MALB		; store in low byte
+    lda MAHB		; load high byte
+    adc #0		; add with carry (if there is a carry)
+    sta MAHB		; store back in high byte
+    inc BUF2
+    lda BUF2		; load line counter
+    cmp #16		; check whether 16 lines are printed
+    bne @nextline	; if not, next line
     rts
 
 helloworldstr:
@@ -144,9 +242,9 @@ helloworldstr:
 ;-------------------------------------------------------------------------------
 newline:
     lda #<newlinestr	; load lower byte
-    sta $10
+    sta STRLB
     lda #>newlinestr	; load upper byte
-    sta $11
+    sta STRHB
     jsr stringout
     rts
 
@@ -175,12 +273,47 @@ newcmdline:
 stringout:
     ldy #0
 @nextchar:
-    lda ($10),y		; load character from string
+    lda (STRLB),y	; load character from string
     beq @exit		; if terminating character is read, exit
     jsr charout		; else, print char
     iny			; increment y
     jmp @nextchar	; read next char
 @exit:
+    rts
+
+;-------------------------------------------------------------------------------
+; PRINTHEX routine
+;
+; print a byte loaded in A to the screen in hexadecimal formatting
+;-------------------------------------------------------------------------------
+printhex:
+    sta BUF1
+    lsr	a		; shift right; MSB is always set to 0
+    lsr a
+    lsr a
+    lsr a
+    jsr printnibble
+    lda BUF1
+    and #$0F
+    jsr printnibble
+    rts
+
+;-------------------------------------------------------------------------------
+; PRINTNIBBLE routine
+;
+; print the four LSB of the value in A to the screen; assumess that the four MSB
+; of A are already reset
+;-------------------------------------------------------------------------------
+printnibble:
+    cmp #10
+    bcs @alpha
+    adc #'0'
+    jmp @exit
+@alpha:
+    clc
+    adc #'a'-10
+@exit:
+    jsr charout
     rts
 
 ;-------------------------------------------------------------------------------
