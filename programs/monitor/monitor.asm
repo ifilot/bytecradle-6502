@@ -6,6 +6,7 @@
 .define ACIA_STAT       $9F05
 .define ACIA_CMD        $9F06
 .define ACIA_CTRL       $9F07
+.define BREG		$9F00
 
 ; textbuffer variables
 .define TBPR		$02
@@ -13,6 +14,7 @@
 .define TB              $0200		; store textbuffer in page 2
 .define CMDBUF          $0300           ; position of command buffer
 .define CMDLENGTH       $0310           ; number of bytes in buffer, max 16
+.define ROMSTART        $0400		; custom code to start a program on a different rom
 
 .define LF		$0A		; LF character (line feed)
 .define ESC		$1B		; VT100 escape character
@@ -51,12 +53,14 @@ boot:                   ; reset vector points here
     stz TBPR		; reset textbuffer right pointer
     stz CMDLENGTH       ; clear command length size
 
+    jsr init_romstart
     jsr init_acia       ; initialize UART
     lda #<resetscroll
     sta STRLB
     lda #>resetscroll
     sta STRHB
     jsr stringout
+
     cli                 ; enable interrupts
     jmp main		; go to main routine
 
@@ -68,6 +72,19 @@ init_acia:
     sta ACIA_CTRL 	; write to ACIA control register
     lda #%00001001      ; No parity, no echo, no interrupts.
     sta ACIA_CMD	; write to ACIA command register
+    rts
+
+;-------------------------------------------------------------------------------
+; Copy romstart routine from ROM to RAM
+;-------------------------------------------------------------------------------
+init_romstart:
+    ldx #0
+@next:
+    lda romstart,x
+    sta ROMSTART,x
+    inx
+    cpx #$20
+    bne @next
     rts
 
 termbootstr:
@@ -85,6 +102,9 @@ resetscroll:
         
 ;-------------------------------------------------------------------------------
 ; MAIN routine
+;
+; Consumes the text buffer and executes commands when a RETURN is entered.
+; Previous text can be removed using BACKSPACE
 ;-------------------------------------------------------------------------------
 main:
     lda #<termbootstr   ; load lower byte
@@ -139,6 +159,14 @@ exitbp:
     inc TBPL
     jmp loop
 
+romstart:
+    lda #1
+    sta BREG
+    jsr $C000
+    lda #0
+    sta BREG
+    rts
+
 ;-------------------------------------------------------------------------------
 ; PARSECMD routine
 ;
@@ -156,12 +184,7 @@ parsecmd:
     rts
 
 cmdhelloworld:
-    jsr newline
-    lda #<helloworldstr
-    sta STRLB
-    lda #>helloworldstr
-    sta STRHB
-    jsr stringout
+    jsr ROMSTART
     rts
 
 ; prepare for hexdump; read start address from user input and store
