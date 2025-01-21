@@ -388,7 +388,7 @@ printnibble:
     jmp @exit
 @alpha:
     clc
-    adc #'a'-10
+    adc #'A'-10
 @exit:
     jsr charout
     rts
@@ -403,13 +403,13 @@ printnibble:
 ; and "BNE" both take 3 clock cyles, so we need about 173 iterations of these.
 ;-------------------------------------------------------------------------------
 charout:
-    phx			; preserve X
+    pha			; preserve A
     sta ACIA_DATA    	; write the character to the ACIA data register
-    lda #173        	; initialize inner loop
+    lda #173		; initialize inner loop
 @inner:
     dec                 ; decrement A; 2 cycles
     bne @inner		; check if zero; 3 cycles
-    plx
+    pla
     rts
 
 ;-------------------------------------------------------------------------------
