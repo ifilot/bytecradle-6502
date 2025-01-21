@@ -1,9 +1,9 @@
 void setup() {
   // Initialize Serial (USB connection to computer)
-  Serial.begin(19200);
+  Serial.begin(115200);
 
   // Initialize Serial1 (Hardware serial for incoming data)
-  Serial1.begin(19200); // Match the baud rate of your ACIA
+  Serial1.begin(115200); // Match the baud rate of your ACIA
 }
 
 void loop() {

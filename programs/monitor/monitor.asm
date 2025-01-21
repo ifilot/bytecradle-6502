@@ -64,7 +64,7 @@ boot:                   ; reset vector points here
 ; Initialize I/O
 ;-------------------------------------------------------------------------------
 init_acia:
-    lda #$1F	        ; use 8N1 with a 19200 baud
+    lda #$10	        ; use 8N1 with a 115200 baud
     sta ACIA_CTRL 	; write to ACIA control register
     lda #%00001001      ; No parity, no echo, no interrupts.
     sta ACIA_CMD	; write to ACIA command register
@@ -151,6 +151,8 @@ parsecmd:
     beq cmdhelloworld
     cmp #'R'
     beq cmdhexdump
+    cmp #'T'
+    beq cmdtest
     rts
 
 cmdhelloworld:
@@ -162,13 +164,39 @@ cmdhelloworld:
     jsr stringout
     rts
 
+; prepare for hexdump; read start address from user input and store
+; this in the zero page
+cmdhexdump:
+    lda CMDBUF+1	; read high byte
+    ldx CMDBUF+2
+    jsr char2num	; try to convert
+    bcs @error
+    sta MAHB		; store high byte
+    lda CMDBUF+3	; read low byte
+    ldx CMDBUF+4
+    jsr char2num	; try to convert
+    bcs @error
+    sta MALB		; store low byte
+    jsr hexdump		; perform hexdump
+@error:
+    rts
+
+cmdtest:
+    lda CMDBUF+1
+    ldx CMDBUF+2
+    jsr char2num
+    bcs @error
+    jsr printhex
+@error:
+    rts
+
+;-------------------------------------------------------------------------------
+; HEXDUMP routine
+;
 ; perform a hexdump of 256 bytes to the screen starting at position indicated
 ; by the user
-cmdhexdump:
-    lda #$00
-    sta MALB		; load lower byte
-    lda #$C0
-    sta MAHB		; load upper byte
+;-------------------------------------------------------------------------------
+hexdump:
     stz BUF2		; line counter
 @nextline:
     jsr newline		; start with a new line (first segment: addr)
@@ -282,6 +310,55 @@ stringout:
     rts
 
 ;-------------------------------------------------------------------------------
+; CHAR2NUM routine
+;
+; convert characters stored in a,x to a single number stored in A;
+; sets C on an error
+;-------------------------------------------------------------------------------
+char2num:
+    jsr char2nibble
+    bcs @exit		; error on carry set
+    asl a		; shift left 4 bits to create higher byte
+    asl a
+    asl a
+    asl a
+    sta BUF1		; store in buffer on ZP
+    txa			; transfer lower byte from X to A
+    jsr char2nibble	; repeat
+    bcs @exit		; error on carry set
+    ora BUF1		; combine nibbles
+@exit:
+    rts
+
+;-------------------------------------------------------------------------------
+; CHAR2NIBBLE routine
+;
+; convert hexcharacter stored in a to a numerical value
+; sets C on an error
+;-------------------------------------------------------------------------------
+char2nibble:
+    cmp #'0'		; is >= '0'?
+    bcc @error		; if not, throw error 
+    cmp #'9'+1         	; is > '9'?
+    bcc @conv		; if not, char between 0-9 -> convert
+    cmp #'A'		; is >= 'A'?
+    bcc @error		; if not, throw error
+    cmp #'F'+1		; is > 'F'?
+    bcs @error          ; if so, throw error
+    sec
+    sbc #'A'-10		; subtract
+    jmp @exit
+@conv:
+    sec
+    sbc #'0'
+    jmp @exit
+@error:
+    sec			; set carry
+@exit:
+    clc
+    rts
+
+;-------------------------------------------------------------------------------
 ; PRINTHEX routine
 ;
 ; print a byte loaded in A to the screen in hexadecimal formatting
@@ -322,20 +399,16 @@ printnibble:
 ;
 ; Prints a character to the ACIA; note that software delay is needed to prevent
 ; transmitting data to the ACIA while it is still transmitting. At 10 MhZ, we
-; need to wait 1E7 * 10 / 19200 = 5208 clock cycles. The inner loop consumes
-; 256 * 5 = 1280 cycles. Thus, we take 5 outer loops and have some margin.
+; need to wait 1E7 * 10 / 115200 = 868 clock cycles. The combination of "DEC"
+; and "BNE" both take 3 clock cyles, so we need about 173 iterations of these.
 ;-------------------------------------------------------------------------------
 charout:
     phx			; preserve X
     sta ACIA_DATA    	; write the character to the ACIA data register
-    ldx #5              ; number of outer loops, see description above 
-delay_outer:
-    lda #$FF        	; initialize inner loop
-delay_inner:        
+    lda #173        	; initialize inner loop
+@inner:
     dec                 ; decrement A; 2 cycles
-    bne delay_inner     ; check if zero; 3 cycles
-    dex                 ; decrement X
-    bne delay_outer
+    bne @inner		; check if zero; 3 cycles
     plx
     rts
 
