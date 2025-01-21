@@ -14,6 +14,7 @@
 .define TB              $0200		; store textbuffer in page 2
 .define CMDBUF          $0300           ; position of command buffer
 .define CMDLENGTH       $0310           ; number of bytes in buffer, max 16
+.define JUMPSTART       $0312
 .define ROMSTART        $0400		; custom code to start a program on a different rom
 
 .define LF		$0A		; LF character (line feed)
@@ -85,6 +86,13 @@ init_romstart:
     inx
     cpx #$20
     bne @next
+
+    lda #$FE
+    sta JUMPSTART
+    lda #$FF
+    sta JUMPSTART+1
+    lda #$6C		; optcode for indirect jump
+    sta JUMPSTART-1
     rts
 
 termbootstr:
@@ -160,9 +168,9 @@ exitbp:
     jmp loop
 
 romstart:
-    lda #1
+    lda #2
     sta BREG
-    jsr $C000
+    jsr JUMPSTART-1
     lda #0
     sta BREG
     rts
