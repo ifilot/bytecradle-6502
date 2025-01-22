@@ -12,7 +12,7 @@
 	.macpack	longbranch
 	.forceimport	__STARTUP__
 	.import		_sprintf
-	.import		_charout
+	.import		_stringout
 	.export		_main
 
 .segment	"RODATA"
@@ -31,73 +31,55 @@ L0017:
 .segment	"CODE"
 
 	lda     #$01
-	jsr     pusha
-	jsr     pusha
-	dea
-	jsr     pusha
-	jsr     decsp7
+	jsr     pusha0
+	jsr     pusha0
+	jsr     push0
+	jsr     decsp5
 	lda     #$00
 	jsr     pusha
-	sta     (sp)
-	tax
-L0026:	lda     (sp)
-	cmp     #$0A
-	bcs     L0027
+L0020:	sta     (sp)
+	cmp     #$14
+	bcs     L001F
 	ldy     #$09
-	lda     (sp),y
+	jsr     ldaxysp
 	clc
+	ldy     #$0A
+	adc     (sp),y
+	pha
+	txa
 	iny
 	adc     (sp),y
+	tax
+	pla
+	ldy     #$06
+	jsr     staxysp
+	ldy     #$09
+	jsr     ldaxysp
+	ldy     #$0A
+	jsr     staxysp
+	ldy     #$07
+	jsr     ldaxysp
 	ldy     #$08
-	sta     (sp),y
-	iny
-	lda     (sp),y
-	iny
-	sta     (sp),y
-	ldy     #$08
-	lda     (sp),y
-	iny
-	sta     (sp),y
-	lda     #$03
+	jsr     staxysp
+	lda     #$01
 	jsr     leaa0sp
 	jsr     pushax
 	lda     #<(L0017)
 	ldx     #>(L0017)
 	jsr     pushax
-	ldy     #$0E
-	lda     (sp),y
-	jsr     pusha0
+	ldy     #$11
+	jsr     pushwysp
 	ldy     #$06
 	jsr     _sprintf
-	lda     #$03
+	lda     #$01
 	jsr     leaa0sp
-	ldy     #$01
-	jsr     staxysp
-	bra     L001E
-L001C:	ldy     #$02
-	jsr     ldaxysp
-	sta     regsave
-	stx     regsave+1
-	ina
-	bne     L0022
-	inx
-L0022:	ldy     #$01
-	jsr     staxysp
-	lda     (regsave)
-	jsr     _charout
-L001E:	ldy     #$02
-	jsr     ldaxysp
-	sta     ptr1
-	stx     ptr1+1
-	lda     (ptr1)
-	bne     L001C
-	tax
+	jsr     _stringout
+	ldx     #$00
 	lda     (sp)
 	ina
-	sta     (sp)
-	bra     L0026
-L0027:	txa
-	ldy     #$0B
+	bra     L0020
+L001F:	lda     #$00
+	ldy     #$0C
 	jmp     addysp
 
 .endproc

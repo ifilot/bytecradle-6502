@@ -1,13 +1,12 @@
 all: fibonacci.bin
 
 fibonacci.bin: sbc.cfg interrupt.o vectors.o wait.o main.o uart.o sbc.lib
+	cp -v /usr/share/cc65/lib/supervision.lib sbc.lib 
+	ar65 a sbc.lib crt0.o
 	ld65 -C sbc.cfg -m main.map interrupt.o vectors.o wait.o main.o uart.o -o fibonacci.bin sbc.lib
 
 crt0.o: crt0.s
 	ca65 --cpu 65c02 crt0.s
-
-sbc.lib: crt0.o
-	ar65 a sbc.lib crt0.o
 
 main.s: main.c
 	cc65 -t none -O --cpu 65c02 main.c

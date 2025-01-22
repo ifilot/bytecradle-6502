@@ -1,6 +1,6 @@
 ; this code is a simple monitor class for the ByteCradle 6502
 
-.export _charout
+.export _charout, _stringout
 
 .PSC02
 
@@ -8,6 +8,9 @@
 .define ACIA_STAT       $9F05
 .define ACIA_CMD        $9F06
 .define ACIA_CTRL       $9F07
+
+.define STRLB		$10
+.define STRHB		$11
 
 .segment "CODE"
 
@@ -29,3 +32,24 @@ _charout:
     bne @inner		; check if zero; 3 cycles
     pla
     rts
+
+;-------------------------------------------------------------------------------
+; STRINGOUT routine
+; Garbles: A, Y
+;
+; Loops over a string and print its characters until a zero-terminating character 
+; is found. Assumes that $10 is used on the zero page to store the address of
+; the string.
+;-------------------------------------------------------------------------------
+_stringout:
+    sta STRLB		; store low byte
+    stx STRHB		; store high byte
+    ldy #0
+@nextchar:
+    lda (STRLB),y       ; load character from string
+    beq @exit           ; if terminating character is read, exit
+    jsr _charout        ; else, print char
+    iny                 ; increment y
+    jmp @nextchar       ; read next char
+@exit:
+    rts    

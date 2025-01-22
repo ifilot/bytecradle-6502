@@ -3,24 +3,21 @@
 
 extern void wait();
 extern void __fastcall__ charout(char c);
+extern void __fastcall__ stringout(char* c);
 
 int main() {
-    uint8_t a = 1;
-    uint8_t b = 1;
-    uint8_t c = 0;
+    uint16_t a = 1;
+    uint16_t b = 1;
+    uint16_t c = 0;
     char buf[5];
-    char *ch;
     uint8_t i = 0;
 
-    for(i=0; i<10; i++) {
+    for(i=0; i<20; i++) {
         c = a+b;
 	a = b;
 	b = c;
 	sprintf(buf, "%i\n", a);
-	ch = buf;
-	while(*ch != 0) {
-	    charout(*ch++);
-	}
+	stringout(buf);
     }
 
     return 0;
