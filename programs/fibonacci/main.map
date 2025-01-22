@@ -7,32 +7,92 @@ vectors.o:
 wait.o:
     CODE              Offs=00001A  Size=000004  Align=00001  Fill=0000
 main.o:
-    CODE              Offs=00001E  Size=00003A  Align=00001  Fill=0000
-    RODATA            Offs=000000  Size=00000C  Align=00001  Fill=0000
+    CODE              Offs=00001E  Size=00008F  Align=00001  Fill=0000
+    RODATA            Offs=000000  Size=000004  Align=00001  Fill=0000
+uart.o:
+    CODE              Offs=0000AD  Size=00000B  Align=00001  Fill=0000
+sbc.lib(_directerrno.o):
+    CODE              Offs=0000B8  Size=000009  Align=00001  Fill=0000
+sbc.lib(_hextab.o):
+    RODATA            Offs=000004  Size=000010  Align=00001  Fill=0000
+sbc.lib(_longminstr.o):
+    RODATA            Offs=000014  Size=00000C  Align=00001  Fill=0000
+sbc.lib(_oserror.o):
+    BSS               Offs=000000  Size=000001  Align=00001  Fill=0000
+sbc.lib(_printf.o):
+    CODE              Offs=0000C1  Size=0003A5  Align=00001  Fill=0000
+    BSS               Offs=000001  Size=00002B  Align=00001  Fill=0000
+    DATA              Offs=000000  Size=000003  Align=00001  Fill=0000
+sbc.lib(_seterrno.o):
+    CODE              Offs=000466  Size=000009  Align=00001  Fill=0000
 sbc.lib(addysp.o):
-    CODE              Offs=000058  Size=00000E  Align=00001  Fill=0000
+    CODE              Offs=00046F  Size=00000E  Align=00001  Fill=0000
+sbc.lib(axlong.o):
+    CODE              Offs=00047D  Size=00000D  Align=00001  Fill=0000
 sbc.lib(condes.o):
-    CODE              Offs=000066  Size=00000C  Align=00001  Fill=0000
-    DATA              Offs=000000  Size=000025  Align=00001  Fill=0000
+    CODE              Offs=00048A  Size=00000C  Align=00001  Fill=0000
+    DATA              Offs=000003  Size=000025  Align=00001  Fill=0000
     ONCE              Offs=000000  Size=00000C  Align=00001  Fill=0000
 sbc.lib(copydata.o):
-    CODE              Offs=000072  Size=00002D  Align=00001  Fill=0000
+    CODE              Offs=000496  Size=00002D  Align=00001  Fill=0000
 sbc.lib(crt0.o):
-    STARTUP           Offs=000000  Size=00001D  Align=00001  Fill=0000
+    STARTUP           Offs=000000  Size=000018  Align=00001  Fill=0000
+sbc.lib(ctype.o):
+    RODATA            Offs=000020  Size=00008B  Align=00001  Fill=0000
+sbc.lib(ctypemask.o):
+    CODE              Offs=0004C3  Size=00001E  Align=00001  Fill=0000
+sbc.lib(decsp4.o):
+    CODE              Offs=0004E1  Size=00000D  Align=00001  Fill=0000
+sbc.lib(decsp6.o):
+    CODE              Offs=0004EE  Size=00000D  Align=00001  Fill=0000
+sbc.lib(decsp7.o):
+    CODE              Offs=0004FB  Size=00000D  Align=00001  Fill=0000
+sbc.lib(errno.o):
+    BSS               Offs=00002C  Size=000002  Align=00001  Fill=0000
+sbc.lib(incsp2.o):
+    CODE              Offs=000508  Size=000015  Align=00001  Fill=0000
+sbc.lib(incsp6.o):
+    CODE              Offs=00051D  Size=000005  Align=00001  Fill=0000
 sbc.lib(ldaxsp.o):
-    CODE              Offs=00009F  Size=000009  Align=00001  Fill=0000
+    CODE              Offs=000522  Size=000009  Align=00001  Fill=0000
+sbc.lib(leaaxsp.o):
+    CODE              Offs=00052B  Size=00000C  Align=00001  Fill=0000
+sbc.lib(lneg.o):
+    CODE              Offs=000537  Size=00001E  Align=00001  Fill=0000
+sbc.lib(lpush.o):
+    CODE              Offs=000555  Size=00001E  Align=00001  Fill=0000
+sbc.lib(ltoa.o):
+    CODE              Offs=000573  Size=000093  Align=00001  Fill=0000
+sbc.lib(memcpy.o):
+    CODE              Offs=000606  Size=00003C  Align=00001  Fill=0000
+sbc.lib(popptr1.o):
+    CODE              Offs=000642  Size=00000E  Align=00001  Fill=0000
+sbc.lib(push1.o):
+    CODE              Offs=000650  Size=000005  Align=00001  Fill=0000
+sbc.lib(pusha.o):
+    CODE              Offs=000655  Size=000016  Align=00001  Fill=0000
 sbc.lib(pushax.o):
-    CODE              Offs=0000A8  Size=00001A  Align=00001  Fill=0000
+    CODE              Offs=00066B  Size=00001A  Align=00001  Fill=0000
+sbc.lib(pushwsp.o):
+    CODE              Offs=000685  Size=00001C  Align=00001  Fill=0000
+sbc.lib(sprintf.o):
+    CODE              Offs=0006A1  Size=00002B  Align=00001  Fill=0000
+    BSS               Offs=00002E  Size=000001  Align=00001  Fill=0000
 sbc.lib(staxsp.o):
-    CODE              Offs=0000C2  Size=00000B  Align=00001  Fill=0000
-sbc.lib(subysp.o):
-    CODE              Offs=0000CD  Size=00000D  Align=00001  Fill=0000
+    CODE              Offs=0006CC  Size=00000B  Align=00001  Fill=0000
+sbc.lib(strlen.o):
+    CODE              Offs=0006D7  Size=000016  Align=00001  Fill=0000
+sbc.lib(strlower.o):
+    CODE              Offs=0006ED  Size=000027  Align=00001  Fill=0000
+sbc.lib(vsnprintf.o):
+    CODE              Offs=000714  Size=0000DA  Align=00001  Fill=0000
+    DATA              Offs=000028  Size=000008  Align=00001  Fill=0000
+sbc.lib(vsprintf.o):
+    CODE              Offs=0007EE  Size=000012  Align=00001  Fill=0000
 sbc.lib(zerobss.o):
-    CODE              Offs=0000DA  Size=000023  Align=00001  Fill=0000
+    CODE              Offs=000800  Size=000023  Align=00001  Fill=0000
 sbc.lib(zeropage.o):
     ZEROPAGE          Offs=000000  Size=00001A  Align=00001  Fill=0000
-uart.o:
-    CODE              Offs=0000FD  Size=00000B  Align=00001  Fill=0000
 
 
 Segment list:
@@ -40,53 +100,90 @@ Segment list:
 Name                   Start     End    Size  Align
 ----------------------------------------------------
 ZEROPAGE              000080  000099  00001A  00001
-DATA                  001000  001024  000025  00001
-STARTUP               00C025  00C041  00001D  00001
-ONCE                  00C042  00C04D  00000C  00001
-CODE                  00C04E  00C155  000108  00001
-RODATA                00C156  00C161  00000C  00001
+DATA                  001000  00102F  000030  00001
+BSS                   001030  00105E  00002F  00001
+STARTUP               00C030  00C047  000018  00001
+ONCE                  00C048  00C053  00000C  00001
+CODE                  00C054  00C876  000823  00001
+RODATA                00C877  00C921  0000AB  00001
 VECTORS               00FFFA  00FFFF  000006  00001
 
 
 Exports list by name:
 ---------------------
-__BSS_RUN__               001025 RLA    __BSS_SIZE__              000000 REA    
-__CONSTRUCTOR_COUNT__     000000 REA    __CONSTRUCTOR_TABLE__     00C042 RLA    
+__BSS_RUN__               001030 RLA    __BSS_SIZE__              00002F REA    
+__CONSTRUCTOR_COUNT__     000000 REA    __CONSTRUCTOR_TABLE__     00C048 RLA    
 __DATA_LOAD__             00C000 RLA    __DATA_RUN__              001000 RLA    
-__DATA_SIZE__             000025 REA    __DESTRUCTOR_COUNT__      000000 REA    
-__DESTRUCTOR_TABLE__      00C042 RLA    __RAM_SIZE__              002000 REA    
+__DATA_SIZE__             000030 REA    __DESTRUCTOR_COUNT__      000000 REA    
+__DESTRUCTOR_TABLE__      00C048 RLA    __RAM_SIZE__              002000 REA    
 __RAM_START__             001000 RLA    __STARTUP__               000001 REA    
-_charout                  00C14B RLA    _init                     00C025 RLA    
-_irq_int                  00C04E RLA    _main                     00C06C RLA    
-_nmi_int                  00C064 RLA    _stop                     00C06B RLA    
-addysp                    00C0A7 RLA    copydata                  00C0C0 RLA    
-donelib                   00C0B4 RLA    initlib                   00C042 RLA    
-ldax0sp                   00C0ED RLA    ptr1                      000088 RLZ    
-ptr2                      00008A RLZ    pushax                    00C0FA RLA    
-regsave                   000084 RLZ    sp                        000080 RLZ    
-stax0sp                   00C110 RLA    subysp                    00C11B RLA    
-tmp1                      000090 RLZ    zerobss                   00C128 RLA    
+__ctype                   00C897 RLA    __ctypeidx                00C8A2 RLA    
+__directerrno             00C10C RLA    __errno                   00105C RLA    
+__hextab                  00C87B RLA    __longminstr              00C88B RLA    
+__oserror                 001030 RLA    __printf                  00C208 RLA    
+__seterrno                00C4BA RLA    _charout                  00C101 RLA    
+_init                     00C030 RLA    _irq_int                  00C054 RLA    
+_ltoa                     00C5DF RLA    _main                     00C072 RLA    
+_memcpy                   00C65A RLA    _nmi_int                  00C06A RLA    
+_sprintf                  00C6F5 RLA    _stop                     00C071 RLA    
+_strlen                   00C72B RLA    _strlower                 00C741 RLA    
+_ultoa                    00C61E RLA    _vsprintf                 00C842 RLA    
+addysp                    00C4C4 RLA    axlong                    00C4D1 RLA    
+axulong                   00C4D7 RLA    copydata                  00C4EA RLA    
+ctypemaskdirect           00C51B RLA    decsp4                    00C535 RLA    
+decsp6                    00C542 RLA    decsp7                    00C54F RLA    
+donelib                   00C4DE RLA    incsp2                    00C563 RLA    
+incsp6                    00C571 RLA    initlib                   00C048 RLA    
+ldaxysp                   00C578 RLA    leaa0sp                   00C57F RLA    
+negeax                    00C58B RLA    popax                     00C55C RLA    
+popptr1                   00C696 RLA    ptr1                      000088 RLZ    
+ptr2                      00008A RLZ    ptr3                      00008C RLZ    
+push1                     00C6A4 RLA    pusha                     00C6AD RLA    
+pusha0                    00C6C1 RLA    pushax                    00C6C3 RLA    
+pusheax                   00C5B0 RLA    pushw0sp                  00C6D9 RLA    
+regbank                   000094 RLZ    regsave                   000084 RLZ    
+sp                        000080 RLZ    sreg                      000082 RLZ    
+staxysp                   00C722 RLA    tmp1                      000090 RLZ    
+vsnprintf                 00C76B RLA    zerobss                   00C854 RLA    
 
 
 
 Exports list by value:
 ----------------------
-__BSS_SIZE__              000000 REA    __CONSTRUCTOR_COUNT__     000000 REA    
-__DESTRUCTOR_COUNT__      000000 REA    __STARTUP__               000001 REA    
-__DATA_SIZE__             000025 REA    sp                        000080 RLZ    
-regsave                   000084 RLZ    ptr1                      000088 RLZ    
-ptr2                      00008A RLZ    tmp1                      000090 RLZ    
-__DATA_RUN__              001000 RLA    __RAM_START__             001000 RLA    
-__BSS_RUN__               001025 RLA    __RAM_SIZE__              002000 REA    
-__DATA_LOAD__             00C000 RLA    _init                     00C025 RLA    
-__CONSTRUCTOR_TABLE__     00C042 RLA    __DESTRUCTOR_TABLE__      00C042 RLA    
-initlib                   00C042 RLA    _irq_int                  00C04E RLA    
-_nmi_int                  00C064 RLA    _stop                     00C06B RLA    
-_main                     00C06C RLA    addysp                    00C0A7 RLA    
-donelib                   00C0B4 RLA    copydata                  00C0C0 RLA    
-ldax0sp                   00C0ED RLA    pushax                    00C0FA RLA    
-stax0sp                   00C110 RLA    subysp                    00C11B RLA    
-zerobss                   00C128 RLA    _charout                  00C14B RLA    
+__CONSTRUCTOR_COUNT__     000000 REA    __DESTRUCTOR_COUNT__      000000 REA    
+__STARTUP__               000001 REA    __BSS_SIZE__              00002F REA    
+__DATA_SIZE__             000030 REA    sp                        000080 RLZ    
+sreg                      000082 RLZ    regsave                   000084 RLZ    
+ptr1                      000088 RLZ    ptr2                      00008A RLZ    
+ptr3                      00008C RLZ    tmp1                      000090 RLZ    
+regbank                   000094 RLZ    __DATA_RUN__              001000 RLA    
+__RAM_START__             001000 RLA    __BSS_RUN__               001030 RLA    
+__oserror                 001030 RLA    __errno                   00105C RLA    
+__RAM_SIZE__              002000 REA    __DATA_LOAD__             00C000 RLA    
+_init                     00C030 RLA    __CONSTRUCTOR_TABLE__     00C048 RLA    
+__DESTRUCTOR_TABLE__      00C048 RLA    initlib                   00C048 RLA    
+_irq_int                  00C054 RLA    _nmi_int                  00C06A RLA    
+_stop                     00C071 RLA    _main                     00C072 RLA    
+_charout                  00C101 RLA    __directerrno             00C10C RLA    
+__printf                  00C208 RLA    __seterrno                00C4BA RLA    
+addysp                    00C4C4 RLA    axlong                    00C4D1 RLA    
+axulong                   00C4D7 RLA    donelib                   00C4DE RLA    
+copydata                  00C4EA RLA    ctypemaskdirect           00C51B RLA    
+decsp4                    00C535 RLA    decsp6                    00C542 RLA    
+decsp7                    00C54F RLA    popax                     00C55C RLA    
+incsp2                    00C563 RLA    incsp6                    00C571 RLA    
+ldaxysp                   00C578 RLA    leaa0sp                   00C57F RLA    
+negeax                    00C58B RLA    pusheax                   00C5B0 RLA    
+_ltoa                     00C5DF RLA    _ultoa                    00C61E RLA    
+_memcpy                   00C65A RLA    popptr1                   00C696 RLA    
+push1                     00C6A4 RLA    pusha                     00C6AD RLA    
+pusha0                    00C6C1 RLA    pushax                    00C6C3 RLA    
+pushw0sp                  00C6D9 RLA    _sprintf                  00C6F5 RLA    
+staxysp                   00C722 RLA    _strlen                   00C72B RLA    
+_strlower                 00C741 RLA    vsnprintf                 00C76B RLA    
+_vsprintf                 00C842 RLA    zerobss                   00C854 RLA    
+__hextab                  00C87B RLA    __longminstr              00C88B RLA    
+__ctype                   00C897 RLA    __ctypeidx                00C8A2 RLA    
 
 
 
@@ -116,53 +213,167 @@ __RAM_START__ ([linker generated]):
     crt0.o                    crt0.s(9)
 __STARTUP__ (crt0.o):
     main.o                    main.s(13)
+__ctype (ctype.o):
+    ctypemask.o               common/ctypemask.s(23)
+__ctypeidx (ctype.o):
+    ctypemask.o               common/ctypemask.s(24)
+__directerrno (_directerrno.o):
+    vsnprintf.o               /build/cc65-dle5vO/cc65-2.19/asminc/errno.inc(10)
+__errno (errno.o):
+    _seterrno.o               /build/cc65-dle5vO/cc65-2.19/asminc/errno.inc(7)
+__hextab (_hextab.o):
+    ltoa.o                    common/ltoa.s(10)
+__longminstr (_longminstr.o):
+    ltoa.o                    common/ltoa.s(10)
+__oserror (_oserror.o):
+    _directerrno.o            /build/cc65-dle5vO/cc65-2.19/asminc/errno.inc(7)
+__printf (_printf.o):
+    vsnprintf.o               common/vsnprintf.s(10)
+__seterrno (_seterrno.o):
+    _directerrno.o            /build/cc65-dle5vO/cc65-2.19/asminc/errno.inc(9)
 _charout (uart.o):
-    crt0.o                    crt0.s(6)
-    main.o                    main.s(14)
+    main.o                    main.s(15)
 _init (crt0.o):
     vectors.o                 vectors.s(7)
 _irq_int (interrupt.o):
     vectors.o                 vectors.s(8)
+_ltoa (ltoa.o):
+    _printf.o                 common/_printf.s(12)
 _main (main.o):
     crt0.o                    crt0.s(6)
+_memcpy (memcpy.o):
+    vsnprintf.o               common/vsnprintf.s(10)
 _nmi_int (interrupt.o):
     vectors.o                 vectors.s(8)
+_sprintf (sprintf.o):
+    main.o                    main.s(14)
 _stop (wait.o):
     interrupt.o               interrupt.s(1)
+_strlen (strlen.o):
+    _printf.o                 common/_printf.s(13)
+_strlower (strlower.o):
+    _printf.o                 common/_printf.s(13)
+_ultoa (ltoa.o):
+    _printf.o                 common/_printf.s(12)
+_vsprintf (vsprintf.o):
+    sprintf.o                 common/sprintf.s(8)
 addysp (addysp.o):
-    main.o                    main.s(61)
+    incsp6.o                  runtime/incsp6.s(8)
+    sprintf.o                 common/sprintf.s(8)
+    main.o                    main.s(104)
+axlong (axlong.o):
+    _printf.o                 common/_printf.s(11)
+axulong (axlong.o):
+    _printf.o                 common/_printf.s(11)
 copydata (copydata.o):
     crt0.o                    crt0.s(11)
+ctypemaskdirect (ctypemask.o):
+    strlower.o                common/strlower.s(14)
+decsp4 (decsp4.o):
+    lpush.o                   runtime/lpush.s(12)
+    sprintf.o                 common/sprintf.s(8)
+decsp6 (decsp6.o):
+    _printf.o                 common/_printf.s(11)
+decsp7 (decsp7.o):
+    main.o                    main.s(104)
 donelib (condes.o):
     crt0.o                    crt0.s(11)
+incsp2 (incsp2.o):
+    popptr1.o                 runtime/popptr1.s(8)
+    vsnprintf.o               common/vsnprintf.s(9)
+incsp6 (incsp6.o):
+    vsnprintf.o               common/vsnprintf.s(9)
 initlib (condes.o):
     crt0.o                    crt0.s(11)
-ldax0sp (ldaxsp.o):
-    main.o                    main.s(61)
+ldaxysp (ldaxsp.o):
+    vsnprintf.o               common/vsnprintf.s(9)
+    main.o                    main.s(104)
+leaa0sp (leaaxsp.o):
+    main.o                    main.s(104)
+negeax (lneg.o):
+    ltoa.o                    common/ltoa.s(9)
+popax (incsp2.o):
+    memcpy.o                  common/memcpy.s(14)
+    ltoa.o                    common/ltoa.s(9)
+    _printf.o                 common/_printf.s(11)
+    vsnprintf.o               common/vsnprintf.s(9)
+popptr1 (popptr1.o):
+    memcpy.o                  common/memcpy.s(14)
+    ltoa.o                    common/ltoa.s(9)
 ptr1 (zeropage.o):
+    strlower.o                common/strlower.s(13)
+    popptr1.o                 runtime/popptr1.s(9)
+    memcpy.o                  common/memcpy.s(15)
+    ltoa.o                    common/ltoa.s(11)
+    _printf.o                 /build/cc65-dle5vO/cc65-2.19/asminc/zeropage.inc(12)
+    vsnprintf.o               common/vsnprintf.s(11)
     copydata.o                common/copydata.s(9)
     zerobss.o                 common/zerobss.s(9)
+    sprintf.o                 common/sprintf.s(9)
     main.o                    main.s(11)
 ptr2 (zeropage.o):
+    strlower.o                common/strlower.s(13)
+    strlen.o                  common/strlen.s(12)
+    memcpy.o                  common/memcpy.s(15)
+    ltoa.o                    common/ltoa.s(11)
+    _printf.o                 /build/cc65-dle5vO/cc65-2.19/asminc/zeropage.inc(12)
     copydata.o                common/copydata.s(9)
+ptr3 (zeropage.o):
+    memcpy.o                  common/memcpy.s(15)
+    ltoa.o                    common/ltoa.s(11)
+push1 (push1.o):
+    _printf.o                 common/_printf.s(11)
+pusha (pusha.o):
+    main.o                    main.s(104)
+pusha0 (pushax.o):
+    push1.o                   runtime/push1.s(8)
+    main.o                    main.s(104)
 pushax (pushax.o):
-    main.o                    main.s(61)
+    _printf.o                 common/_printf.s(11)
+    main.o                    main.s(104)
+pusheax (lpush.o):
+    _printf.o                 common/_printf.s(11)
+pushw0sp (pushwsp.o):
+    vsprintf.o                common/vsprintf.s(8)
+regbank (zeropage.o):
+    _printf.o                 /build/cc65-dle5vO/cc65-2.19/asminc/zeropage.inc(14)
 regsave (zeropage.o):
     main.o                    main.s(10)
 sp (zeropage.o):
-    subysp.o                  runtime/subysp.s(9)
+    popptr1.o                 runtime/popptr1.s(9)
+    memcpy.o                  common/memcpy.s(15)
+    lpush.o                   runtime/lpush.s(13)
+    incsp2.o                  runtime/incsp2.s(8)
+    decsp6.o                  runtime/decsp6.s(8)
+    _printf.o                 /build/cc65-dle5vO/cc65-2.19/asminc/zeropage.inc(11)
+    vsnprintf.o               common/vsnprintf.s(11)
+    pushwsp.o                 runtime/pushwsp.s(8)
+    decsp4.o                  runtime/decsp4.s(8)
     staxsp.o                  runtime/staxsp.s(8)
+    sprintf.o                 common/sprintf.s(9)
     pushax.o                  runtime/pushax.s(8)
+    pusha.o                   runtime/pusha.s(8)
+    leaaxsp.o                 runtime/leaaxsp.s(8)
     ldaxsp.o                  runtime/ldaxsp.s(8)
+    decsp7.o                  runtime/decsp7.s(8)
     crt0.o                    /usr/share/cc65/asminc/zeropage.inc(11)
     addysp.o                  runtime/addysp.s(8)
     main.o                    main.s(10)
-stax0sp (staxsp.o):
-    main.o                    main.s(61)
-subysp (subysp.o):
-    main.o                    main.s(61)
+sreg (zeropage.o):
+    lneg.o                    runtime/lneg.s(11)
+    ltoa.o                    common/ltoa.s(11)
+    lpush.o                   runtime/lpush.s(13)
+    axlong.o                  runtime/axlong.s(9)
+    _printf.o                 /build/cc65-dle5vO/cc65-2.19/asminc/zeropage.inc(11)
+staxysp (staxsp.o):
+    vsprintf.o                common/vsprintf.s(8)
+    main.o                    main.s(104)
 tmp1 (zeropage.o):
+    ltoa.o                    common/ltoa.s(11)
+    _printf.o                 /build/cc65-dle5vO/cc65-2.19/asminc/zeropage.inc(13)
     copydata.o                common/copydata.s(9)
+vsnprintf (vsnprintf.o):
+    vsprintf.o                common/vsprintf.s(9)
 zerobss (zerobss.o):
     crt0.o                    crt0.s(11)
 

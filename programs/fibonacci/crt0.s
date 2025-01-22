@@ -21,8 +21,6 @@
 ; A little light 6502 housekeeping
 
 _init:
-	  LDA 'A'
-          jsr _charout
 ; ---------------------------------------------------------------------------
 ; Set cc65 argument stack pointer
 

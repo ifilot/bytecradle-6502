@@ -192,6 +192,7 @@ parsecmd:
     rts
 
 cmdhelloworld:
+    jsr newline
     jsr ROMSTART
     rts
 

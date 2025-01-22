@@ -1,7 +1,7 @@
 all: fibonacci.bin
 
-fibonacci.bin: sbc.cfg interrupt.o vectors.o wait.o main.o sbc.lib uart.o
-	ld65 -C sbc.cfg -m main.map interrupt.o vectors.o wait.o main.o sbc.lib uart.o -o fibonacci.bin
+fibonacci.bin: sbc.cfg interrupt.o vectors.o wait.o main.o uart.o sbc.lib
+	ld65 -C sbc.cfg -m main.map interrupt.o vectors.o wait.o main.o uart.o -o fibonacci.bin sbc.lib
 
 crt0.o: crt0.s
 	ca65 --cpu 65c02 crt0.s
