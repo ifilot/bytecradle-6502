@@ -605,6 +605,18 @@
     [
       "70c9e9e4-d560-4927-af97-189b3a969059",
       "Root"
+    ],
+    [
+      "827db9dd-783f-4cba-8659-0d2990fc93f7",
+      "romram"
+    ],
+    [
+      "bcedce6a-a6f9-425e-8009-a5ad68076e72",
+      "via"
+    ],
+    [
+      "3d872660-efc1-47d1-8462-3fe65fa54b72",
+      "uart"
     ]
   ],
   "text_variables": {}

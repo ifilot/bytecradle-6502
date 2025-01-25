@@ -3,19 +3,19 @@
     "GenerationSoftware": {
       "Vendor": "KiCad",
       "Application": "Pcbnew",
-      "Version": "(6.0.9)"
+      "Version": "8.0.2"
     },
-    "CreationDate": "2023-08-16T20:18:11+02:00"
+    "CreationDate": "2025-01-25T11:51:25+01:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
-      "Name": "sdcard-prototype",
-      "GUID": "73646361-7264-42d7-9072-6f746f747970",
+      "Name": "sdcard-board",
+      "GUID": "73646361-7264-42d6-926f-6172642e6b69",
       "Revision": "rev?"
     },
     "Size": {
-      "X": 82.65,
-      "Y": 67.41
+      "X": 96.62,
+      "Y": 94.08
     },
     "LayerNumber": 2,
     "BoardThickness": 1.6,
@@ -34,47 +34,47 @@
   ],
   "FilesAttributes": [
     {
-      "Path": "sdcard-prototype-F_Cu.gbr",
+      "Path": "sdcard-board-F_Cu.gbr",
       "FileFunction": "Copper,L1,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "sdcard-prototype-B_Cu.gbr",
+      "Path": "sdcard-board-B_Cu.gbr",
       "FileFunction": "Copper,L2,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "sdcard-prototype-F_Paste.gbr",
+      "Path": "sdcard-board-F_Paste.gbr",
       "FileFunction": "SolderPaste,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "sdcard-prototype-B_Paste.gbr",
+      "Path": "sdcard-board-B_Paste.gbr",
       "FileFunction": "SolderPaste,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "sdcard-prototype-F_Silkscreen.gbr",
+      "Path": "sdcard-board-F_Silkscreen.gbr",
       "FileFunction": "Legend,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "sdcard-prototype-B_Silkscreen.gbr",
+      "Path": "sdcard-board-B_Silkscreen.gbr",
       "FileFunction": "Legend,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "sdcard-prototype-F_Mask.gbr",
+      "Path": "sdcard-board-F_Mask.gbr",
       "FileFunction": "SolderMask,Top",
       "FilePolarity": "Negative"
     },
     {
-      "Path": "sdcard-prototype-B_Mask.gbr",
+      "Path": "sdcard-board-B_Mask.gbr",
       "FileFunction": "SolderMask,Bot",
       "FilePolarity": "Negative"
     },
     {
-      "Path": "sdcard-prototype-Edge_Cuts.gbr",
+      "Path": "sdcard-board-Edge_Cuts.gbr",
       "FileFunction": "Profile",
       "FilePolarity": "Positive"
     }

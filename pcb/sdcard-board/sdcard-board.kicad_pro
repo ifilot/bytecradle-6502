@@ -490,9 +490,9 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "",
+      "plot": "GERBERS/",
       "pos_files": "",
-      "specctra_dsn": "",
+      "specctra_dsn": "sdcard-board.dsn",
       "step": "",
       "svg": "",
       "vrml": ""
