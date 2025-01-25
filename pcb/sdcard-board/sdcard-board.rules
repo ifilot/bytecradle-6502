@@ -11,7 +11,7 @@
     (via_costs 50)
     (plane_via_costs 5)
     (start_ripup_costs 100)
-    (start_pass_no 2095)
+    (start_pass_no 4769)
     (layer_rule F.Cu
       (active on)
       (preferred_direction horizontal)
@@ -68,11 +68,11 @@
     D6 D7 A0 A1 ~{RES} ~{IRQ} A13 ~{CS}
     CLK MOSI MISO "Net-(R1-Pad1)" ~{CLKSTART} A2 "~{CLKSTART_DB}" "~{SER_RD}"
     A5 "~{SDOUT_SET}" "~{SDOUT_RESET}" "~{SDCS_RESET}" "~{SDCS_SET}" "~{SER_WR}" ~{CLKSTOP} "SD_SPI"
-    "Net-(U3-Pad3)" CLKSTOP ~{CLK} "Net-(U4-Pad3)" "Net-(U4-Pad12)" 16MHz A9 R{slash}~{W}
-    A8 "Net-(U6-Pad10)" A11 A14 "unconnected-(U6-Pad11)" A6 A10 ~{NMI}
-    A15 A4 ~{I{slash}O} A12 A7 A3 "Net-(U1A-Q)" "unconnected-(U1B-Q-Pad5)"
-    "unconnected-(U1A-~{Q}-Pad4)" "unconnected-(U5-Q3-Pad11)" "unconnected-(U5-Q1-Pad13)" "unconnected-(U5-Q2-Pad12)" "unconnected-(U7-~{Q7}-Pad7)" "unconnected-(U8-QH'-Pad9)" "unconnected-(X1-NC-Pad1)" "unconnected-(J1-Pin_8-Pad8)"
-    "unconnected-(J1-Pin_35-Pad35)" "unconnected-(J1-Pin_20-Pad20)" "unconnected-(J1-Pin_16-Pad16)" "unconnected-(J1-Pin_37-Pad37)" "unconnected-(J1-Pin_22-Pad22)" "Net-(U10-~{E0})" "unconnected-(U10-~{Y5}-Pad10)"
+    "Net-(U3-Pad3)" CLKSTOP "Net-(U4-Pad3)" "Net-(U4-Pad12)" 16MHz A9 R{slash}~{W} A8
+    A11 A14 A6 A10 ~{NMI} A15 A4 ~{I{slash}O}
+    A12 A7 A3 "Net-(U1A-Q)" "unconnected-(U1B-Q-Pad5)" "unconnected-(U1A-~{Q}-Pad4)" "unconnected-(U5-Q3-Pad11)" "unconnected-(U5-Q1-Pad13)"
+    "unconnected-(U5-Q2-Pad12)" "unconnected-(U7-~{Q7}-Pad7)" "unconnected-(U8-QH'-Pad9)" "unconnected-(X1-NC-Pad1)" "unconnected-(J1-Pin_8-Pad8)" "unconnected-(J1-Pin_35-Pad35)" "unconnected-(J1-Pin_20-Pad20)" "unconnected-(J1-Pin_16-Pad16)"
+    "unconnected-(J1-Pin_37-Pad37)" "unconnected-(J1-Pin_22-Pad22)" "Net-(U10-~{E0})" "unconnected-(U10-~{Y5}-Pad10)" SDCLK ~{SDCLK} "Net-(U6-Pad13)" "Net-(U7-~{PL})"
     (clearance_class "kicad_default")
     (via_rule kicad_default)
     (rule
