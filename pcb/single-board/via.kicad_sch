@@ -2,7 +2,7 @@
 	(version 20231120)
 	(generator "eeschema")
 	(generator_version "8.0")
-	(uuid "13157746-176b-4d19-8651-4e31696aa7eb")
+	(uuid "0758e7d2-9d9c-4c5d-80a2-eef43b376643")
 	(paper "A4")
 	(title_block
 		(title "ByteCradle 6502 - Versatile Interface Adapter")
@@ -4581,7 +4581,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "00418bde-df08-488e-a3a7-83909d3ab9ce")
-		(property "Reference" "#PWR0134"
+		(property "Reference" "#PWR0141"
 			(at 130.81 43.18 0)
 			(effects
 				(font
@@ -4632,7 +4632,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0134")
+					(reference "#PWR0141")
 					(unit 1)
 				)
 			)
@@ -4716,7 +4716,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0ce26d0f-f455-450e-b4f1-2223178dbe7a")
-		(property "Reference" "#PWR0133"
+		(property "Reference" "#PWR0140"
 			(at 100.33 113.03 0)
 			(effects
 				(font
@@ -4767,7 +4767,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0133")
+					(reference "#PWR0140")
 					(unit 1)
 				)
 			)
@@ -4904,7 +4904,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "2556e1c0-707d-4ca5-96fd-7b79b273d603")
-		(property "Reference" "#PWR0119"
+		(property "Reference" "#PWR0126"
 			(at 31.75 71.12 0)
 			(effects
 				(font
@@ -4955,7 +4955,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0119")
+					(reference "#PWR0126")
 					(unit 1)
 				)
 			)
@@ -4971,7 +4971,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "2676176b-4350-45d3-8889-764fdeef0086")
-		(property "Reference" "#PWR0129"
+		(property "Reference" "#PWR0136"
 			(at 82.55 52.07 0)
 			(effects
 				(font
@@ -5022,7 +5022,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0129")
+					(reference "#PWR0136")
 					(unit 1)
 				)
 			)
@@ -5038,7 +5038,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "28d6d023-b41a-4b6a-8330-3065004358e4")
-		(property "Reference" "#PWR0120"
+		(property "Reference" "#PWR0127"
 			(at 31.75 73.66 0)
 			(effects
 				(font
@@ -5089,7 +5089,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0120")
+					(reference "#PWR0127")
 					(unit 1)
 				)
 			)
@@ -5105,7 +5105,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "2d837f25-e5c3-4a1c-992b-3ed4c5331409")
-		(property "Reference" "#PWR0128"
+		(property "Reference" "#PWR0135"
 			(at 78.74 34.29 0)
 			(effects
 				(font
@@ -5155,7 +5155,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0128")
+					(reference "#PWR0135")
 					(unit 1)
 				)
 			)
@@ -5355,7 +5355,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "33337560-156b-494a-8ac8-dc4c61690498")
-		(property "Reference" "#PWR0121"
+		(property "Reference" "#PWR0128"
 			(at 31.75 76.2 0)
 			(effects
 				(font
@@ -5406,7 +5406,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0121")
+					(reference "#PWR0128")
 					(unit 1)
 				)
 			)
@@ -5422,7 +5422,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "39edb451-dae1-4e9a-8d68-d33e2763b3cc")
-		(property "Reference" "#PWR0139"
+		(property "Reference" "#PWR0146"
 			(at 146.05 91.44 0)
 			(effects
 				(font
@@ -5473,7 +5473,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0139")
+					(reference "#PWR0146")
 					(unit 1)
 				)
 			)
@@ -5489,7 +5489,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3a1622cf-3d6d-4cea-a410-8a629a68e54a")
-		(property "Reference" "#PWR0138"
+		(property "Reference" "#PWR0145"
 			(at 135.89 43.18 0)
 			(effects
 				(font
@@ -5540,7 +5540,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0138")
+					(reference "#PWR0145")
 					(unit 1)
 				)
 			)
@@ -5556,7 +5556,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3af0a2f8-8951-482c-acf5-5e18d7e06f1a")
-		(property "Reference" "#PWR0132"
+		(property "Reference" "#PWR0139"
 			(at 90.17 113.03 0)
 			(effects
 				(font
@@ -5607,7 +5607,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0132")
+					(reference "#PWR0139")
 					(unit 1)
 				)
 			)
@@ -5623,7 +5623,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3dfd6735-9e3d-4c88-b028-9fd1322b5a39")
-		(property "Reference" "#PWR0117"
+		(property "Reference" "#PWR0124"
 			(at 31.75 53.34 0)
 			(effects
 				(font
@@ -5674,7 +5674,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0117")
+					(reference "#PWR0124")
 					(unit 1)
 				)
 			)
@@ -5690,7 +5690,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "452fb270-2f49-4b23-b79b-03d762fc3df5")
-		(property "Reference" "#PWR0137"
+		(property "Reference" "#PWR0144"
 			(at 120.65 91.44 0)
 			(effects
 				(font
@@ -5741,7 +5741,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0137")
+					(reference "#PWR0144")
 					(unit 1)
 				)
 			)
@@ -5939,7 +5939,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4e6183bd-fb43-4c98-98cd-4306d9784bc8")
-		(property "Reference" "#PWR0136"
+		(property "Reference" "#PWR0143"
 			(at 120.65 68.58 0)
 			(effects
 				(font
@@ -5990,7 +5990,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0136")
+					(reference "#PWR0143")
 					(unit 1)
 				)
 			)
@@ -6006,7 +6006,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5ca79173-1221-49eb-9838-188f54ea73d7")
-		(property "Reference" "#PWR0127"
+		(property "Reference" "#PWR0134"
 			(at 50.8 105.41 0)
 			(effects
 				(font
@@ -6056,7 +6056,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0127")
+					(reference "#PWR0134")
 					(unit 1)
 				)
 			)
@@ -6072,7 +6072,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "746add96-248e-4f80-b905-3690c14615d6")
-		(property "Reference" "#PWR0125"
+		(property "Reference" "#PWR0132"
 			(at 31.75 86.36 0)
 			(effects
 				(font
@@ -6123,7 +6123,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0125")
+					(reference "#PWR0132")
 					(unit 1)
 				)
 			)
@@ -6207,7 +6207,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9014f6d1-7c19-4ba6-a31d-e24db376c39f")
-		(property "Reference" "#PWR0123"
+		(property "Reference" "#PWR0130"
 			(at 31.75 81.28 0)
 			(effects
 				(font
@@ -6258,7 +6258,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0123")
+					(reference "#PWR0130")
 					(unit 1)
 				)
 			)
@@ -6342,7 +6342,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a529e407-29d7-42ec-bd3e-39421d3a7a29")
-		(property "Reference" "#PWR0114"
+		(property "Reference" "#PWR0121"
 			(at 31.75 45.72 0)
 			(effects
 				(font
@@ -6393,7 +6393,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0114")
+					(reference "#PWR0121")
 					(unit 1)
 				)
 			)
@@ -6409,7 +6409,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a67b98db-a4c4-49ce-b12e-93f19163ccab")
-		(property "Reference" "#PWR0116"
+		(property "Reference" "#PWR0123"
 			(at 31.75 50.8 0)
 			(effects
 				(font
@@ -6460,7 +6460,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0116")
+					(reference "#PWR0123")
 					(unit 1)
 				)
 			)
@@ -6476,7 +6476,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b3f54505-0fe5-4019-a8c0-93964f5cb1d1")
-		(property "Reference" "#PWR0135"
+		(property "Reference" "#PWR0142"
 			(at 120.65 66.04 0)
 			(effects
 				(font
@@ -6527,7 +6527,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0135")
+					(reference "#PWR0142")
 					(unit 1)
 				)
 			)
@@ -6543,7 +6543,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "bb5927dd-c9aa-4b32-8473-60f0ff66c732")
-		(property "Reference" "#PWR0115"
+		(property "Reference" "#PWR0122"
 			(at 31.75 48.26 0)
 			(effects
 				(font
@@ -6594,7 +6594,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0115")
+					(reference "#PWR0122")
 					(unit 1)
 				)
 			)
@@ -6610,7 +6610,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "bfcaeaff-2d91-449e-b023-bcf0f0c3edab")
-		(property "Reference" "#PWR0118"
+		(property "Reference" "#PWR0125"
 			(at 31.75 68.58 0)
 			(effects
 				(font
@@ -6661,7 +6661,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0118")
+					(reference "#PWR0125")
 					(unit 1)
 				)
 			)
@@ -6677,7 +6677,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c7f5bac9-b38e-4a10-91a3-d0e19c13b1ae")
-		(property "Reference" "#PWR0112"
+		(property "Reference" "#PWR0119"
 			(at 21.59 29.21 0)
 			(effects
 				(font
@@ -6728,7 +6728,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0112")
+					(reference "#PWR0119")
 					(unit 1)
 				)
 			)
@@ -6744,7 +6744,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "de1aeb20-fe4a-4f3f-a1d3-7b02213c36f7")
-		(property "Reference" "#PWR0124"
+		(property "Reference" "#PWR0131"
 			(at 31.75 83.82 0)
 			(effects
 				(font
@@ -6795,7 +6795,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0124")
+					(reference "#PWR0131")
 					(unit 1)
 				)
 			)
@@ -6811,7 +6811,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f1f26d1f-35ed-4d9a-b166-92ce157cb769")
-		(property "Reference" "#PWR0130"
+		(property "Reference" "#PWR0137"
 			(at 88.9 35.56 0)
 			(effects
 				(font
@@ -6861,7 +6861,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0130")
+					(reference "#PWR0137")
 					(unit 1)
 				)
 			)
@@ -6877,7 +6877,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f2f0a83e-cfe0-4125-87bf-333a32f73794")
-		(property "Reference" "#PWR0122"
+		(property "Reference" "#PWR0129"
 			(at 41.91 78.74 0)
 			(effects
 				(font
@@ -6928,7 +6928,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0122")
+					(reference "#PWR0129")
 					(unit 1)
 				)
 			)
@@ -6944,7 +6944,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f3dcbb53-edb7-45d2-89ff-31617971a1ea")
-		(property "Reference" "#PWR0131"
+		(property "Reference" "#PWR0138"
 			(at 88.9 109.22 0)
 			(effects
 				(font
@@ -6994,7 +6994,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0131")
+					(reference "#PWR0138")
 					(unit 1)
 				)
 			)
@@ -7010,7 +7010,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "fca50155-dadf-414b-a716-2ad348fd6860")
-		(property "Reference" "#PWR0126"
+		(property "Reference" "#PWR0133"
 			(at 50.8 41.91 0)
 			(effects
 				(font
@@ -7060,7 +7060,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0126")
+					(reference "#PWR0133")
 					(unit 1)
 				)
 			)
@@ -7076,7 +7076,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "fe5ead88-554d-481d-9cce-d732a8aa660a")
-		(property "Reference" "#PWR0113"
+		(property "Reference" "#PWR0120"
 			(at 31.75 29.21 0)
 			(effects
 				(font
@@ -7127,7 +7127,7 @@
 		(instances
 			(project "bytecradle-6502-single-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/bcedce6a-a6f9-425e-8009-a5ad68076e72"
-					(reference "#PWR0113")
+					(reference "#PWR0120")
 					(unit 1)
 				)
 			)
