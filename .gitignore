@@ -10,3 +10,4 @@ archive/
 \#auto_saved_files\#
 fp-info-cache
 *.swp
+*.wrl
