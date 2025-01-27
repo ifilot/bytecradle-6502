@@ -7154,7 +7154,7 @@
 		)
 		(uuid "fbe0356e-50a1-4337-a080-2afa1c36a428")
 	)
-	(text "0x8000-0xBFFF\n(~ 16 KiB)"
+	(text "0x8000-0xBFFF\n(~ 16 KiB)\n[A15 & ~{A14}]"
 		(exclude_from_sim no)
 		(at 152.146 25.654 0)
 		(effects
@@ -7196,7 +7196,7 @@
 	)
 	(text "LOW MEMORY"
 		(exclude_from_sim no)
-		(at 224.536 20.066 0)
+		(at 224.79 18.796 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7235,6 +7235,18 @@
 		)
 		(uuid "7e279b05-f378-4089-946e-8772cf345c46")
 	)
+	(text "RAM / ROM"
+		(exclude_from_sim no)
+		(at 24.892 16.256 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+				(thickness 0.508)
+				(bold yes)
+			)
+		)
+		(uuid "80809c74-e041-41ee-8b11-826a1d52a3ea")
+	)
 	(text "Latch LOW-to-HIGH\nHappens when CLK goes low"
 		(exclude_from_sim no)
 		(at 58.674 98.044 0)
@@ -7246,9 +7258,9 @@
 		)
 		(uuid "88ddd10d-4b05-48b3-bd36-9bf79a4473ac")
 	)
-	(text "0x0000-0x7EFF\n(32 KiB)"
+	(text "0x0000-0x7EFF\n(32 KiB)\n[~{A15} & I/O]"
 		(exclude_from_sim no)
-		(at 225.298 25.654 0)
+		(at 224.79 24.384 0)
 		(effects
 			(font
 				(size 1.27 1.27)
