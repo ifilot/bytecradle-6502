@@ -27,7 +27,7 @@
 .define BUF4		$07
 .define	BUF5		$08
 .define BUF6		$09
-.define STRLB  		$10		; string low byte
+.define STRLB		$10		; string low byte
 .define STRHB		$11		; string high byte
 .define MALB		$14		; monitor address low byte
 .define MAHB		$15		; monitor address high byte
@@ -69,8 +69,8 @@ boot:                   ; reset vector points here
 ; Initialize I/O
 ;-------------------------------------------------------------------------------
 init_acia:
-    lda #$10	        ; use 8N1 with a 115200 baud
-    sta ACIA_CTRL 	; write to ACIA control register
+    lda #$10		; use 8N1 with a 115200 baud
+    sta ACIA_CTRL	; write to ACIA control register
     lda #%00001001      ; No parity, no echo, no interrupts.
     sta ACIA_CMD	; write to ACIA command register
     rts
@@ -97,11 +97,10 @@ init_romstart:
 
 termbootstr:
     .byte ESC,"[2J",ESC,"[H"		; reset terminal
-    .byte "*******************",LF
-    .byte "  ByteCradle 6502  ",LF
-    .byte "  ---------------  ",LF
-    .byte "  MONITOR PROGRAM  ",LF
-    .byte "*******************",LF
+    .byte "****************************",LF
+    .byte "*  ByteCradle 6502  MONITOR *",LF
+    .byte "*****************************",LF
+    .byte "Press -m- to see a menu",LF
     .byte 0				; terminating char
 newlinestr:
     .byte LF,0
@@ -183,43 +182,129 @@ romstart:
 parsecmd:
     ldx #00
     lda CMDBUF,x
-    cmp #'H'
-    beq cmdhelloworld
-    cmp #'R'
-    beq cmdhexdump
-    cmp #'T'
-    beq cmdtest
+    cmp #'b'
+    beq cmdchrambank	; change ram bank?
+    cmp #'m'
+    beq cmdshowmenu	; show the menu?
+    cmp #'r'
+    beq cmdrunfar	; run program?
+    jsr hex4
+    bcs errorhex	; try to parse the first four chars as 16-byte hex
+    lda CMDBUF,X
+    cmp #'.'
+    beq cmdreadfar
+    cmp #':'
+    beq cmdwritefar
+    jmp errorhex
     rts
 
-cmdhelloworld:
+errorhex:
     jsr newline
-    jsr ROMSTART
+    lda #<@errorstr
+    sta STRLB
+    lda #>@errorstr
+    sta STRHB
+    jsr stringout
+    rts
+
+@errorstr:
+    .asciiz "Error parsing hex address"
+
+; jump table because instructions lie further in memory than +/- 128 bytes
+cmdrunfar:
+    jmp cmdrun
+
+cmdreadfar:
+    jmp cmdread
+
+cmdwritefar:
+    jmp cmdwrite
+
+; change ram bank
+cmdchrambank:
+    rts
+
+@str:
+    .asciiz "Changing RAM bank to: "
+
+; show a menu to the user
+cmdshowmenu:
+    jsr newline
+    lda #<@str
+    sta STRLB
+    lda #>@str
+    sta STRHB
+    jsr stringout
+    rts
+
+@str:
+    .byte LF,"Commands:",LF,LF
+    .byte "  XXXX.[XXXX]         list memory contents",LF
+    .byte "  XXXX: XX [XX]       change memory contents ",LF
+    .byte "  r XXXX              run from address",LF
+    .byte "  b XX                change RAM bank",LF
+    .byte 0
+
+; run program starting at address
+cmdrun:
+    rts
+
+cmdread:
+    lda BUF2
+    sta BUF4
+    lda BUF3
+    sta BUF5
+    inx
+    jsr hex4
+    bcs @error
+    jmp cmdhexdump
+
+@error:
+    jmp errorhex
+
+cmdwrite:
     rts
 
 ; prepare for hexdump; read start address from user input and store
 ; this in the zero page
 cmdhexdump:
-    lda CMDBUF+1	; read high byte
-    ldx CMDBUF+2
-    jsr char2num	; try to convert
-    bcs @error
+    lda BUF4
     sta MAHB		; store high byte
-    lda CMDBUF+3	; read low byte
-    ldx CMDBUF+4
-    jsr char2num	; try to convert
-    bcs @error
+    lda BUF5
     sta MALB		; store low byte
     jsr hexdump		; perform hexdump
-@error:
     rts
 
-cmdtest:
-    lda CMDBUF+1
-    ldx CMDBUF+2
+;-------------------------------------------------------------------------------
+; HEX4 routine
+;
+; Try to convert 4 characters to a 16 bit hexadecimal address
+;
+;-------------------------------------------------------------------------------
+hex4:
+    jsr hex42
+    bcs @exit
+    sta BUF2
+    inx
+    inx
+    jsr hex42
+    bcs @exit
+    sta BUF3
+    inx
+    inx
+@exit:
+    rts
+
+hex42:
+    phx
+    lda CMDBUF,x	; load high byte
+    tay
+    inx
+    lda CMDBUF,x	; load low byte
+    tax
+    tya
     jsr char2num
-    bcs @error
-    jsr printhex
-@error:
+    plx
     rts
 
 ;-------------------------------------------------------------------------------
@@ -229,7 +314,6 @@ cmdtest:
 ; by the user
 ;-------------------------------------------------------------------------------
 hexdump:
-    stz BUF2		; line counter
 @nextline:
     jsr newline		; start with a new line (first segment: addr)
     lda MAHB		; load high byte of memory address
@@ -266,7 +350,7 @@ hexdump:
     lda (MALB),y	; load byte again
     cmp #$1F		; check if value is less than $20
     bcc @printdot	; if so, print a dot
-    cmp #$7F 		; check if value is greater than or equal to $7F
+    cmp #$7F		; check if value is greater than or equal to $7F
     bcs @printdot	; if so, print a dot
     jmp @next
 @printdot:
@@ -286,14 +370,18 @@ hexdump:
     lda MAHB		; load high byte
     adc #0		; add with carry (if there is a carry)
     sta MAHB		; store back in high byte
-    inc BUF2
-    lda BUF2		; load line counter
-    cmp #16		; check whether 16 lines are printed
-    bne @nextline	; if not, next line
+    lda MAHB
+    cmp BUF2		; compare upper byte of final address
+    bcc @nextlinefar	; MAHB is smaller than final, continue
+    bne @exit		; if larger, then simply stop
+    lda MALB
+    cmp BUF3		; compare lower byte
+    bcc @nextlinefar	; if less, continue
+    beq @nextlinefar	; if equal, one more lap to go
+@nextlinefar:
+    jmp @nextline
+@exit:
     rts
-
-helloworldstr:
-    .byte "Hello World!", 0
 
 ;-------------------------------------------------------------------------------
 ; NEWLINE routine
@@ -345,7 +433,7 @@ stringout:
 ; CHAR2NUM routine
 ;
 ; convert characters stored in a,x to a single number stored in A;
-; sets C on an error
+; sets C on an error, assume A contains high byte and X contains low byte
 ;-------------------------------------------------------------------------------
 char2num:
     jsr char2nibble
@@ -371,7 +459,7 @@ char2num:
 char2nibble:
     cmp #'0'		; is >= '0'?
     bcc @error		; if not, throw error 
-    cmp #'9'+1         	; is > '9'?
+    cmp #'9'+1		; is > '9'?
     bcc @conv		; if not, char between 0-9 -> convert
     cmp #'A'		; is >= 'A'?
     bcc @error		; if not, throw error
@@ -386,6 +474,7 @@ char2nibble:
     jmp @exit
 @error:
     sec			; set carry
+    rts
 @exit:
     clc
     rts
@@ -436,7 +525,7 @@ printnibble:
 ;-------------------------------------------------------------------------------
 charout:
     pha			; preserve A
-    sta ACIA_DATA    	; write the character to the ACIA data register
+    sta ACIA_DATA	; write the character to the ACIA data register
     lda #173		; initialize inner loop
 @inner:
     dec                 ; decrement A; 2 cycles
