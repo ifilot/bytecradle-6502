@@ -27,10 +27,17 @@
 .define BUF4		$07
 .define	BUF5		$08
 .define BUF6		$09
+.define BUF7		$0A
+.define BUF8		$0B
+
+; specific ZP addresses for the hexdump routine of the monitor
+.define STARTADDR	$0C
+.define ENDADDR		$0E
 .define STRLB		$10		; string low byte
 .define STRHB		$11		; string high byte
 .define MALB		$14		; monitor address low byte
 .define MAHB		$15		; monitor address high byte
+.define NRLINES		$16		; number of lines to print by hexdump routine
 
 .segment "CODE"
 
@@ -97,10 +104,24 @@ init_romstart:
 
 termbootstr:
     .byte ESC,"[2J",ESC,"[H"		; reset terminal
-    .byte "****************************",LF
-    .byte "*  ByteCradle 6502  MONITOR *",LF
-    .byte "*****************************",LF
-    .byte "Press -m- to see a menu",LF
+    .byte " ____             __           ____                      __   ___             ", LF
+    .byte "/\  _`\          /\ \__       /\  _`\                   /\ \ /\_ \            ", LF
+    .byte "\ \ \L\ \  __  __\ \ ,_\    __\ \ \/\_\  _ __    __     \_\ \\//\ \      __   ", LF
+    .byte " \ \  _ <'/\ \/\ \\ \ \/  /'__`\ \ \/_/_/\`'__\/'__`\   /'_` \ \ \ \   /'__`\ ", LF
+    .byte "  \ \ \L\ \ \ \_\ \\ \ \_/\  __/\ \ \L\ \ \ \//\ \L\.\_/\ \L\ \ \_\ \_/\  __/ ", LF
+    .byte "   \ \____/\/`____ \\ \__\ \____\\ \____/\ \_\\ \__/.\_\ \___,_\/\____\ \____\", LF
+    .byte "    \/___/  `/___/> \\/__/\/____/ \/___/  \/_/ \/__/\/_/\/__,_ /\/____/\/____/", LF
+    .byte "               /\___/                                                          ", LF
+    .byte "               \/__/                                                           ", LF
+    .byte "  ____  ______     __      ___                                                 ", LF
+    .byte " /'___\/\  ___\  /'__`\  /'___`\                                               ", LF
+    .byte "/\ \__/\ \ \__/ /\ \/\ \/\_\ /\ \                                              ", LF
+    .byte "\ \  _``\ \___``\ \ \ \ \/_/// /__                                             ", LF
+    .byte " \ \ \L\ \/\ \L\ \ \ \_\ \ // /_\ \                                            ", LF
+    .byte "  \ \____/\ \____/\ \____//\______/                                            ", LF
+    .byte "   \/___/  \/___/  \/___/ \/_____/                                             ", LF
+    .byte LF
+    .byte "Press -M- to see a menu",LF
     .byte 0				; terminating char
 newlinestr:
     .byte LF,0
@@ -118,7 +139,21 @@ main:
     sta STRLB
     lda #>termbootstr   ; load upper byte
     sta STRHB
-    jsr stringout
+@next:
+    ldy #0
+    lda (STRLB),Y
+    cmp #0
+    beq @exit
+    jsr charout
+    clc
+    lda STRLB
+    adc #1
+    sta STRLB
+    lda STRHB
+    adc #0
+    sta STRHB
+    jmp @next
+@exit:
     jsr newcmdline
 
 loop:
@@ -127,6 +162,7 @@ loop:
     beq loop            ; if the same, do nothing
     ldx TBPL		; else, load left pointer
     lda TB,x		; load value stored in text buffer
+    jsr chartoupper	; always convert character to upper case
     cmp #$0D		; check for carriage return
     beq exec
     cmp #$7F		; check for delete key
@@ -182,13 +218,17 @@ romstart:
 parsecmd:
     ldx #00
     lda CMDBUF,x
-    cmp #'b'
+    cmp #'B'
     beq cmdchrambank	; change ram bank?
-    cmp #'m'
+    cmp #'M'
     beq cmdshowmenu	; show the menu?
-    cmp #'r'
+    cmp #'R'
     beq cmdrunfar	; run program?
     jsr hex4
+    lda BUF2		; load high byte
+    sta STARTADDR+1	; store in memory
+    lda BUF3		; load low byte
+    sta STARTADDR	; store in memory
     bcs errorhex	; try to parse the first four chars as 16-byte hex
     lda CMDBUF,X
     cmp #'.'
@@ -241,8 +281,9 @@ cmdshowmenu:
     .byte LF,"Commands:",LF,LF
     .byte "  XXXX.[XXXX]         list memory contents",LF
     .byte "  XXXX: XX [XX]       change memory contents ",LF
-    .byte "  r XXXX              run from address",LF
-    .byte "  b XX                change RAM bank",LF
+    .byte "  R XXXX              run from address",LF
+    .byte "  B XX                change RAM bank",LF
+    .byte "  M                   show this menu",LF
     .byte 0
 
 ; run program starting at address
@@ -250,14 +291,15 @@ cmdrun:
     rts
 
 cmdread:
-    lda BUF2
-    sta BUF4
-    lda BUF3
-    sta BUF5
     inx
     jsr hex4
+    lda BUF2		; load high byte
+    sta ENDADDR+1	; store in memory
+    lda BUF3		; load low byte
+    sta ENDADDR		; store in memory
     bcs @error
-    jmp cmdhexdump
+    jsr hexdump
+    rts
 
 @error:
     jmp errorhex
@@ -265,20 +307,11 @@ cmdread:
 cmdwrite:
     rts
 
-; prepare for hexdump; read start address from user input and store
-; this in the zero page
-cmdhexdump:
-    lda BUF4
-    sta MAHB		; store high byte
-    lda BUF5
-    sta MALB		; store low byte
-    jsr hexdump		; perform hexdump
-    rts
-
 ;-------------------------------------------------------------------------------
 ; HEX4 routine
 ;
 ; Try to convert 4 characters to a 16 bit hexadecimal address
+; Store high byte in BUF2 and low byte in BUF3
 ;
 ;-------------------------------------------------------------------------------
 hex4:
@@ -310,10 +343,44 @@ hex42:
 ;-------------------------------------------------------------------------------
 ; HEXDUMP routine
 ;
-; perform a hexdump of 256 bytes to the screen starting at position indicated
-; by the user
 ;-------------------------------------------------------------------------------
 hexdump:
+    ; setup variables
+    lda STARTADDR	; set start address
+    sta MALB
+    lda STARTADDR+1
+    sta MAHB
+    
+    ; calculate the number of lines to be printed
+    sec			; clear carry flag before starting subtraction
+    lda ENDADDR		; load low byte of end address
+    sbc STARTADDR	; subtract low byte of end address
+    sta NRLINES
+    lda ENDADDR+1	; load high byte
+    sbc	STARTADDR+1	; subtract low byte
+    sta NRLINES+1
+
+    ; divide the result by 16, which is the number of lines that are going
+    ; to be printed
+    and #$0F		; take low nibble to transfer to low byte
+    asl			; shift left by 4
+    asl
+    asl
+    asl
+    sta BUF1		; store temporarily
+    lda NRLINES		; load low nibble
+    lsr
+    lsr
+    lsr
+    lsr
+    ora BUF1		; place upper nibble
+    sta NRLINES		; store in low byte
+    lda NRLINES+1
+    lsr
+    lsr
+    lsr
+    lsr
+    sta NRLINES+1	; store
 @nextline:
     jsr newline		; start with a new line (first segment: addr)
     lda MAHB		; load high byte of memory address
@@ -370,14 +437,15 @@ hexdump:
     lda MAHB		; load high byte
     adc #0		; add with carry (if there is a carry)
     sta MAHB		; store back in high byte
-    lda MAHB
-    cmp BUF2		; compare upper byte of final address
-    bcc @nextlinefar	; MAHB is smaller than final, continue
-    bne @exit		; if larger, then simply stop
-    lda MALB
-    cmp BUF3		; compare lower byte
-    bcc @nextlinefar	; if less, continue
-    beq @nextlinefar	; if equal, one more lap to go
+    lda NRLINES
+    ora NRLINES+1
+    beq @exit		; if zero, then exit, else decrement
+    lda NRLINES
+    sec			; set carry flag for subtraction
+    sbc #1		; subtract 1 from low byte of NRLINES
+    sta NRLINES		; store
+    bcs @nextlinefar	; if carry set, no borrow and continue
+    dec NRLINES+1
 @nextlinefar:
     jmp @nextline
 @exit:
@@ -512,6 +580,21 @@ printnibble:
     adc #'A'-10
 @exit:
     jsr charout
+    rts
+
+;-------------------------------------------------------------------------------
+; CHARTOUPPER
+;
+; Convert a character in A, if lowercase, to uppercase
+;-------------------------------------------------------------------------------
+chartoupper:
+    cmp #'a'
+    bcc @notlower
+    cmp #'z'+1
+    bcs @notlower
+    sec
+    sbc #$20
+@notlower:
     rts
 
 ;-------------------------------------------------------------------------------
