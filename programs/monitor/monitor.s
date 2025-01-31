@@ -602,14 +602,14 @@ chartoupper:
 ; Garbles: A
 ;
 ; Prints a character to the ACIA; note that software delay is needed to prevent
-; transmitting data to the ACIA while it is still transmitting. At 10 MhZ, we
-; need to wait 1E7 * 10 / 115200 = 868 clock cycles. The combination of "DEC"
-; and "BNE" both take 3 clock cyles, so we need about 173 iterations of these.
+; transmitting data to the ACIA while it is still transmitting. At 12 MhZ, we
+; need to wait 1.2E7 * 10 / 115200 = 208 clock cycles. The combination of "DEC"
+; and "BNE" both take 5 clock cyles, so we need about 173 iterations of these.
 ;-------------------------------------------------------------------------------
 charout:
     pha			; preserve A
     sta ACIA_DATA	; write the character to the ACIA data register
-    lda #173		; initialize inner loop
+    lda #209		; initialize inner loop
 @inner:
     dec                 ; decrement A; 2 cycles
     bne @inner		; check if zero; 3 cycles
