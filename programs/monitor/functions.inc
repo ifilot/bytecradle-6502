@@ -13,3 +13,4 @@
 .import printhex
 .import printnibble
 .import charout
+.import getchar

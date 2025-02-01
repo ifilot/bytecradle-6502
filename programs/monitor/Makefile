@@ -3,8 +3,8 @@ all: monitor.bin
 monitor.o: monitor.s
 	ca65 monitor.s -o monitor.o
 
-uart.o: uart.s
-	ca65 uart.s -o uart.o
+io.o: io.s
+	ca65 io.s -o io.o
 
 isr.o: isr.s
 	ca65 isr.s -o isr.o
@@ -12,8 +12,8 @@ isr.o: isr.s
 init.o: init.s
 	ca65 init.s -o init.o
 
-monitor.bin: monitor.o uart.o isr.o init.o
-	ld65 -o monitor.bin -C rom.cfg  monitor.o uart.o isr.o init.o && \
+monitor.bin: monitor.o io.o isr.o init.o
+	ld65 -o monitor.bin -C rom.cfg  monitor.o io.o isr.o init.o && \
 	md5sum monitor.bin
 
 flash: monitor.bin

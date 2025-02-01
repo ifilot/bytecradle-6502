@@ -30,11 +30,9 @@ main:
     jsr init            ; initialize system and fall to loop
 
 loop:
-    lda TBPL		    ; load textbuffer left pointer
-    cmp TBPR            ; load textbuffer right pointer
-    beq loop            ; if the same, do nothing
-    ldx TBPL		    ; else, load left pointer
-    lda TB,x		    ; load value stored in text buffer
+    jsr getchar
+    cmp #0
+    beq loop
     jsr chartoupper	    ; always convert character to upper case
     cmp #$0D		    ; check for carriage return
     beq exec
@@ -48,7 +46,6 @@ loop:
     jsr charout		    ; if not, simply print character
     inc CMDLENGTH	    ; increment command length
 exitloop:
-    inc TBPL		    ; increment text buffer left pointer
     jmp loop
 
 ; user has pressed RETURN: try to interpret command execute it
@@ -72,7 +69,6 @@ backspace:
     jsr charout
     dec CMDLENGTH
 exitbp:
-    inc TBPL
     jmp loop
 
 ;-------------------------------------------------------------------------------
@@ -86,23 +82,20 @@ parsecmd:
     cmp #'B'
     beq cmdchrambank	; change ram bank?
     cmp #'M'
-    beq cmdshowmenu	; show the menu?
+    beq cmdshowmenu	    ; show the menu?
+    cmp #'G'
+    beq cmdrunfar	    ; run program?
+    cmp #'W'
+    beq cmdwritefar	    ; write to memory?
     cmp #'R'
-    beq cmdrunfar	; run program?
-    jsr hex4
-    lda BUF2		; load high byte
-    sta STARTADDR+1	; store in memory
-    lda BUF3		; load low byte
-    sta STARTADDR	; store in memory
-    bcs errorhex	; try to parse the first four chars as 16-byte hex
-    lda CMDBUF,X
-    cmp #'.'
-    beq cmdreadfar
-    cmp #':'
-    beq cmdwritefar
-    jmp errorhex
+    beq cmdreadfar      ; read memory?
     rts
 
+;-------------------------------------------------------------------------------
+; ERRORHEX routine
+;
+; Print error message when unable to convert hex
+;-------------------------------------------------------------------------------
 errorhex:
     jsr newline
     lda #<@errorstr
@@ -120,9 +113,13 @@ cmdrunfar:
     jmp cmdrun
 
 cmdreadfar:
+    inx
+    jsr hex4tostart
     jmp cmdread
 
 cmdwritefar:
+    inx
+    jsr hex4tostart
     jmp cmdwrite
 
 ; change ram bank
@@ -132,7 +129,27 @@ cmdchrambank:
 @str:
     .asciiz "Changing RAM bank to: "
 
-; show a menu to the user
+;-------------------------------------------------------------------------------
+; HEX4TOSTART routine
+;
+; Try to set STARTADDR by reading 4 hex characters from command buffer
+;-------------------------------------------------------------------------------
+hex4tostart:
+    jsr hex4
+    bcs @error
+    lda BUF2
+    sta STARTADDR+1
+    lda BUF3
+    sta STARTADDR
+    rts
+@error:
+    jmp errorhex
+
+;-------------------------------------------------------------------------------
+; CMDSHOWMENU routine
+;
+; Print user menu
+;-------------------------------------------------------------------------------
 cmdshowmenu:
     jsr newline
     lda #<@str
@@ -144,40 +161,126 @@ cmdshowmenu:
 
 @str:
     .byte LF,"Commands:",LF,LF
-    .byte "  XXXX.[XXXX]         list memory contents",LF
-    .byte "  XXXX: XX [XX]       change memory contents ",LF
-    .byte "  R XXXX              run from address",LF
-    .byte "  B XX                change RAM bank",LF
+    .byte "  R<XXXX>[:<XXXX>]    read memory ",LF
+    .byte "  W<XXXX>             write to memory",LF
+    .byte "  G<XXXX>             run from address",LF
+    .byte "  B<XX>               change RAM bank",LF
     .byte "  M                   show this menu",LF
     .byte 0
 
+;-------------------------------------------------------------------------------
+; CMDRUN routine
+;
 ; run program starting at address
+;-------------------------------------------------------------------------------
 cmdrun:
-    rts
+    inx                 ; increment read pointer
+    jsr hex4
+    bcs @error
+    lda BUF2            ; load high byte
+    sta BUF4            ; store after low byte
+    jsr newline         ; print new line
+    jmp (BUF3)          ; go to address
 
+@error:
+    jmp errorhex
+
+;-------------------------------------------------------------------------------
+; CMDREAD routine
+;
+; Read memory and print contents to the screen
+;-------------------------------------------------------------------------------
 cmdread:
+    lda CMDBUF,x
+    cmp #':'
+    bne @skip
     inx
     jsr hex4
-    lda BUF2		; load high byte
-    sta ENDADDR+1	; store in memory
-    lda BUF3		; load low byte
-    sta ENDADDR		; store in memory
     bcs @error
+    lda BUF2		    ; load high byte
+    sta ENDADDR+1	    ; store in memory
+    lda BUF3		    ; load low byte
+    sta ENDADDR		    ; store in memory
+    jmp @hexdump
+@skip:
+    clc
+    lda STARTADDR
+    adc #$0F
+    sta ENDADDR
+    lda STARTADDR+1
+    adc #0
+    sta ENDADDR+1
+@hexdump:
     jsr hexdump
     rts
 
 @error:
     jmp errorhex
 
+;-------------------------------------------------------------------------------
+; CMDWRITE routine
+;
+; Quasi-interactive write function
+;-------------------------------------------------------------------------------
 cmdwrite:
+    ldy #0              ; value counter; increments till 16, then newline    
+@newline:
+    jsr newline
+    lda STARTADDR+1     ; load high byte
+    jsr printhex
+    lda STARTADDR       ; load low byte
+    jsr printhex
+    lda #':'
+    jsr charout
+    jmp @nexthex
+@loop:
+    jsr getchar
+    cmp #0
+    beq @loop
+    cmp #$0D            ; check for enter
+    beq @exit
+    jsr chartoupper
+    jsr charout
+    sta BUF2,y
+    iny
+    cpy #2              ; check if two chars have been read
+    bne @loop           ; if not, read another char
+    lda BUF2            ; load upper byte in A
+    ldx BUF3            ; load lower byte in X
+    jsr char2num        ; try to convert value
+    bcs @error          ; handle error
+    ply                 ; retrieve value counter
+    sta (STARTADDR),y   ; store in memory
+    iny
+    cpy #16             ; check if 16 values have been read
+    bne @nexthex
+    lda STARTADDR       ; load low byte
+    clc                 ; clear carry
+    adc #16
+    sta STARTADDR
+    lda STARTADDR+1     ; load high byte
+    adc #0              ; increment
+    sta STARTADDR+1
+    ldy #0              ; reset counter
+    jmp @newline
+@nexthex:
+    phy                 ; put value counter back on stack
+    lda #' '
+    jsr charout
+    ldy #0              ; reset chararacter counter
+    jmp @loop
+@exit:
+    ply                 ; clean stack
     rts
+@error:
+    ply                 ; clean stack
+    jmp errorhex
 
 ;-------------------------------------------------------------------------------
 ; HEX4 routine
 ;
 ; Try to convert 4 characters to a 16 bit hexadecimal address
-; Store high byte in BUF2 and low byte in BUF3
-;
+; Store high byte in BUF2 and low byte in BUF3.
 ;-------------------------------------------------------------------------------
 hex4:
     jsr hex42
@@ -207,7 +310,6 @@ hex42:
 
 ;-------------------------------------------------------------------------------
 ; HEXDUMP routine
-;
 ;-------------------------------------------------------------------------------
 hexdump:
     ; setup variables
@@ -316,10 +418,16 @@ hexdump:
 @exit:
     rts
 
+.segment "JUMPTABLE"
+    .byte $4C           ; $FFF4
+    .word charout
+    .byte $4C           ; $FFF7
+    .word stringout
+
 ;-------------------------------------------------------------------------------
 ; Vectors
 ;-------------------------------------------------------------------------------
 .segment "VECTORS"
-    .word boot          ; reset
-    .word boot          ; nmi
-    .word isr           ; irq/brk
+    .word boot          ; reset / $FFFA
+    .word boot          ; nmi / $FFFC
+    .word isr           ; irq/brk / $FFFE

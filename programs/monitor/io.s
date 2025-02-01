@@ -7,12 +7,31 @@
 .export printhex
 .export printnibble
 .export charout
+.export getchar
 
 .PSC02
 
 .include "constants.inc"
 
 .segment "CODE"
+
+;-------------------------------------------------------------------------------
+; GETCHAR routine
+;
+; retrieve a char from the key buffer
+;-------------------------------------------------------------------------------
+getchar:
+    lda TBPL		    ; load textbuffer left pointer
+    cmp TBPR            ; load textbuffer right pointer
+    beq @nokey          ; if the same, exit routine
+    ldx TBPL		    ; else, load left pointer
+    lda TB,x		    ; load value stored in text buffer
+    inc TBPL
+    jmp @exit
+@nokey:
+    lda #0
+@exit:
+    rts
 
 ;-------------------------------------------------------------------------------
 ; NEWLINE routine
@@ -45,21 +64,23 @@ newcmdline:
 
 ;-------------------------------------------------------------------------------
 ; STRINGOUT routine
-; Garbles: A, Y
+; Garbles: A
 ;
 ; Loops over a string and print its characters until a zero-terminating character 
 ; is found. Assumes that $10 is used on the zero page to store the address of
 ; the string.
 ;-------------------------------------------------------------------------------
 stringout:
+    phy             ; preserve y value
     ldy #0
 @nextchar:
     lda (STRLB),y	; load character from string
     beq @exit		; if terminating character is read, exit
     jsr charout		; else, print char
-    iny			; increment y
+    iny			    ; increment y
     jmp @nextchar	; read next char
 @exit:
+    ply             ; retrieve y from stack
     rts
 
 ;-------------------------------------------------------------------------------
@@ -71,12 +92,12 @@ stringout:
 char2num:
     jsr char2nibble
     bcs @exit		; error on carry set
-    asl a		; shift left 4 bits to create higher byte
+    asl a		    ; shift left 4 bits to create higher byte
     asl a
     asl a
     asl a
     sta BUF1		; store in buffer on ZP
-    txa			; transfer lower byte from X to A
+    txa			    ; transfer lower byte from X to A
     jsr char2nibble	; repeat
     bcs @exit		; error on carry set
     ora BUF1		; combine nibbles
@@ -97,7 +118,7 @@ char2nibble:
     cmp #'A'		; is >= 'A'?
     bcc @error		; if not, throw error
     cmp #'F'+1		; is > 'F'?
-    bcs @error          ; if so, throw error
+    bcs @error      ; if so, throw error
     sec
     sbc #'A'-10		; subtract
     jmp @exit
@@ -106,7 +127,7 @@ char2nibble:
     sbc #'0'
     jmp @exit
 @error:
-    sec			; set carry
+    sec			    ; set carry
     rts
 @exit:
     clc
@@ -131,6 +152,7 @@ chartoupper:
 ; PRINTHEX routine
 ;
 ; print a byte loaded in A to the screen in hexadecimal formatting
+; Uses: BUF1
 ;-------------------------------------------------------------------------------
 printhex:
     sta BUF1
