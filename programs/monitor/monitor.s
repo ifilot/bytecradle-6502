@@ -79,8 +79,6 @@ exitbp:
 parsecmd:
     ldx #00
     lda CMDBUF,x
-    cmp #'B'
-    beq cmdchrambank    ; change ram bank?
     cmp #'M'
     beq cmdshowmenu     ; show the menu?
     cmp #'G'
@@ -164,7 +162,6 @@ cmdshowmenu:
     .byte "  R<XXXX>[:<XXXX>]    read memory ",LF
     .byte "  W<XXXX>             write to memory",LF
     .byte "  G<XXXX>             run from address",LF
-    .byte "  B<XX>               change RAM bank",LF
     .byte "  M                   show this menu",LF
     .byte 0
 
