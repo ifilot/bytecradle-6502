@@ -21,11 +21,11 @@
 ; retrieve a char from the key buffer
 ;-------------------------------------------------------------------------------
 getchar:
-    lda TBPL		    ; load textbuffer left pointer
+    lda TBPL            ; load textbuffer left pointer
     cmp TBPR            ; load textbuffer right pointer
     beq @nokey          ; if the same, exit routine
-    ldx TBPL		    ; else, load left pointer
-    lda TB,x		    ; load value stored in text buffer
+    ldx TBPL            ; else, load left pointer
+    lda TB,x            ; load value stored in text buffer
     inc TBPL
     jmp @exit
 @nokey:
@@ -39,9 +39,9 @@ getchar:
 ; print new line to the screen
 ;-------------------------------------------------------------------------------
 newline:
-    lda #<@newlinestr	; load lower byte
+    lda #<@newlinestr   ; load lower byte
     sta STRLB
-    lda #>@newlinestr	; load upper byte
+    lda #>@newlinestr   ; load upper byte
     sta STRHB
     jsr stringout
     rts
@@ -74,11 +74,11 @@ stringout:
     phy             ; preserve y value
     ldy #0
 @nextchar:
-    lda (STRLB),y	; load character from string
-    beq @exit		; if terminating character is read, exit
-    jsr charout		; else, print char
-    iny			    ; increment y
-    jmp @nextchar	; read next char
+    lda (STRLB),y   ; load character from string
+    beq @exit       ; if terminating character is read, exit
+    jsr charout     ; else, print char
+    iny             ; increment y
+    jmp @nextchar   ; read next char
 @exit:
     ply             ; retrieve y from stack
     rts
@@ -91,16 +91,16 @@ stringout:
 ;-------------------------------------------------------------------------------
 char2num:
     jsr char2nibble
-    bcs @exit		; error on carry set
-    asl a		    ; shift left 4 bits to create higher byte
+    bcs @exit       ; error on carry set
+    asl a           ; shift left 4 bits to create higher byte
     asl a
     asl a
     asl a
-    sta BUF1		; store in buffer on ZP
-    txa			    ; transfer lower byte from X to A
-    jsr char2nibble	; repeat
-    bcs @exit		; error on carry set
-    ora BUF1		; combine nibbles
+    sta BUF1        ; store in buffer on ZP
+    txa             ; transfer lower byte from X to A
+    jsr char2nibble ; repeat
+    bcs @exit       ; error on carry set
+    ora BUF1        ; combine nibbles
 @exit:
     rts
 
@@ -111,23 +111,23 @@ char2num:
 ; sets C on an error
 ;-------------------------------------------------------------------------------
 char2nibble:
-    cmp #'0'		; is >= '0'?
-    bcc @error		; if not, throw error 
-    cmp #'9'+1		; is > '9'?
-    bcc @conv		; if not, char between 0-9 -> convert
-    cmp #'A'		; is >= 'A'?
-    bcc @error		; if not, throw error
-    cmp #'F'+1		; is > 'F'?
+    cmp #'0'        ; is >= '0'?
+    bcc @error      ; if not, throw error 
+    cmp #'9'+1      ; is > '9'?
+    bcc @conv       ; if not, char between 0-9 -> convert
+    cmp #'A'        ; is >= 'A'?
+    bcc @error      ; if not, throw error
+    cmp #'F'+1      ; is > 'F'?
     bcs @error      ; if so, throw error
     sec
-    sbc #'A'-10		; subtract
+    sbc #'A'-10     ; subtract
     jmp @exit
 @conv:
     sec
     sbc #'0'
     jmp @exit
 @error:
-    sec			    ; set carry
+    sec             ; set carry
     rts
 @exit:
     clc
@@ -156,7 +156,7 @@ chartoupper:
 ;-------------------------------------------------------------------------------
 printhex:
     sta BUF1
-    lsr	a		; shift right; MSB is always set to 0
+    lsr a           ; shift right; MSB is always set to 0
     lsr a
     lsr a
     lsr a
@@ -197,11 +197,11 @@ printnibble:
 ; 12 MHz : 208
 ;-------------------------------------------------------------------------------
 charout:
-    pha			; preserve A
-    sta ACIA_DATA	; write the character to the ACIA data register
-    lda #174		; initialize inner loop
+    pha             ; preserve A
+    sta ACIA_DATA   ; write the character to the ACIA data register
+    lda #174        ; initialize inner loop
 @inner:
-    dec                 ; decrement A; 2 cycles
-    bne @inner		; check if zero; 3 cycles
+    dec             ; decrement A; 2 cycles
+    bne @inner      ; check if zero; 3 cycles
     pla
     rts

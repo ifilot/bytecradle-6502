@@ -33,33 +33,33 @@ loop:
     jsr getchar
     cmp #0
     beq loop
-    jsr chartoupper	    ; always convert character to upper case
-    cmp #$0D		    ; check for carriage return
+    jsr chartoupper     ; always convert character to upper case
+    cmp #$0D            ; check for carriage return
     beq exec
-    cmp #$7F		    ; check for delete key
+    cmp #$7F            ; check for delete key
     beq backspace
 
     ldx CMDLENGTH       ; load command length
     cpx #$10
     beq exitloop        ; refuse to store when maxbuffer
     sta CMDBUF,x        ; store in position
-    jsr charout		    ; if not, simply print character
-    inc CMDLENGTH	    ; increment command length
+    jsr charout         ; if not, simply print character
+    inc CMDLENGTH       ; increment command length
 exitloop:
     jmp loop
 
 ; user has pressed RETURN: try to interpret command execute it
 exec:
-    jsr parsecmd	    ; parse the command
+    jsr parsecmd        ; parse the command
     stz TBPL            ; reset text buffer
     stz TBPR
-    stz CMDLENGTH	    ; reset command length
-    jsr newcmdline	    ; provide new command line
+    stz CMDLENGTH       ; reset command length
+    jsr newcmdline      ; provide new command line
     jmp loop
 
 ; user has pressed backspace: remove character from command buffer
 backspace:
-    lda CMDLENGTH	    ; skip if buffer is empty
+    lda CMDLENGTH       ; skip if buffer is empty
     beq exitbp
     lda #$08
     jsr charout
@@ -80,13 +80,13 @@ parsecmd:
     ldx #00
     lda CMDBUF,x
     cmp #'B'
-    beq cmdchrambank	; change ram bank?
+    beq cmdchrambank    ; change ram bank?
     cmp #'M'
-    beq cmdshowmenu	    ; show the menu?
+    beq cmdshowmenu     ; show the menu?
     cmp #'G'
-    beq cmdrunfar	    ; run program?
+    beq cmdrunfar       ; run program?
     cmp #'W'
-    beq cmdwritefar	    ; write to memory?
+    beq cmdwritefar     ; write to memory?
     cmp #'R'
     beq cmdreadfar      ; read memory?
     rts
@@ -197,10 +197,10 @@ cmdread:
     inx
     jsr hex4
     bcs @error
-    lda BUF2		    ; load high byte
-    sta ENDADDR+1	    ; store in memory
-    lda BUF3		    ; load low byte
-    sta ENDADDR		    ; store in memory
+    lda BUF2            ; load high byte
+    sta ENDADDR+1       ; store in memory
+    lda BUF3            ; load low byte
+    sta ENDADDR         ; store in memory
     jmp @hexdump
 @skip:
     clc
@@ -298,10 +298,10 @@ hex4:
 
 hex42:
     phx
-    lda CMDBUF,x	; load high byte
+    lda CMDBUF,x        ; load high byte
     tay
     inx
-    lda CMDBUF,x	; load low byte
+    lda CMDBUF,x        ; load low byte
     tax
     tya
     jsr char2num
@@ -313,105 +313,105 @@ hex42:
 ;-------------------------------------------------------------------------------
 hexdump:
     ; setup variables
-    lda STARTADDR	; set start address
+    lda STARTADDR       ; set start address
     sta MALB
     lda STARTADDR+1
     sta MAHB
-    
+
     ; calculate the number of lines to be printed
-    sec			; clear carry flag before starting subtraction
-    lda ENDADDR		; load low byte of end address
-    sbc STARTADDR	; subtract low byte of end address
+    sec                 ; clear carry flag before starting subtraction
+    lda ENDADDR         ; load low byte of end address
+    sbc STARTADDR       ; subtract low byte of end address
     sta NRLINES
-    lda ENDADDR+1	; load high byte
-    sbc	STARTADDR+1	; subtract low byte
+    lda ENDADDR+1       ; load high byte
+    sbc STARTADDR+1     ; subtract low byte
     sta NRLINES+1
 
     ; divide the result by 16, which is the number of lines that are going
     ; to be printed
-    and #$0F		; take low nibble to transfer to low byte
-    asl			; shift left by 4
+    and #$0F            ; take low nibble to transfer to low byte
+    asl                 ; shift left by 4
     asl
     asl
     asl
-    sta BUF1		; store temporarily
-    lda NRLINES		; load low nibble
+    sta BUF1            ; store temporarily
+    lda NRLINES         ; load low nibble
     lsr
     lsr
     lsr
     lsr
-    ora BUF1		; place upper nibble
-    sta NRLINES		; store in low byte
+    ora BUF1            ; place upper nibble
+    sta NRLINES         ; store in low byte
     lda NRLINES+1
     lsr
     lsr
     lsr
     lsr
-    sta NRLINES+1	; store
+    sta NRLINES+1       ; store
 @nextline:
-    jsr newline		; start with a new line (first segment: addr)
-    lda MAHB		; load high byte of memory address
-    jsr printhex	; print it
-    lda MALB		; load low byte of memory address
-    jsr printhex	; print it
-    lda #' '		; load space
-    jsr charout		; print it twice
+    jsr newline         ; start with a new line (first segment: addr)
+    lda MAHB            ; load high byte of memory address
+    jsr printhex        ; print it
+    lda MALB            ; load low byte of memory address
+    jsr printhex        ; print it
+    lda #' '            ; load space
+    jsr charout         ; print it twice
     jsr charout
-    ldy #0		; number of bytes to print (second segment)
+    ldy #0              ; number of bytes to print (second segment)
 @nextbyte:
-    phy			; put y on stack as printhex garbles it
-    lda (MALB),y	; load byte
-    jsr printhex	; print byte in hex format, garbles y
-    lda #' '		; add space
+    phy                 ; put y on stack as printhex garbles it
+    lda (MALB),y        ; load byte
+    jsr printhex        ; print byte in hex format, garbles y
+    lda #' '            ; add space
     jsr charout
-    ply			; restore y from stack
+    ply                 ; restore y from stack
     iny
-    cpy #8		; check if halfway
-    bne @skip		; if not, skip
-    lda #' '		; print two spaces to seperate 8 bit segments
+    cpy #8              ; check if halfway
+    bne @skip           ; if not, skip
+    lda #' '            ; print two spaces to seperate 8 bit segments
     jsr charout
     jsr charout
 @skip:
-    cpy #16		; check if 16 bytes are printed
-    bne @nextbyte	; if not, next byte
-    lda #' '		; else space
+    cpy #16             ; check if 16 bytes are printed
+    bne @nextbyte       ; if not, next byte
+    lda #' '            ; else space
     jsr charout
-    lda #'|'		; add nice delimeter
+    lda #'|'            ; add nice delimeter
     jsr charout
-    ldy #0		; number of bytes to print (third segment)
+    ldy #0              ; number of bytes to print (third segment)
 @nextchar:
-    phy			; y will be garbed in charout routine
-    lda (MALB),y	; load byte again
-    cmp #$1F		; check if value is less than $20
-    bcc @printdot	; if so, print a dot
-    cmp #$7F		; check if value is greater than or equal to $7F
-    bcs @printdot	; if so, print a dot
+    phy                 ; y will be garbed in charout routine
+    lda (MALB),y        ; load byte again
+    cmp #$1F            ; check if value is less than $20
+    bcc @printdot       ; if so, print a dot
+    cmp #$7F            ; check if value is greater than or equal to $7F
+    bcs @printdot       ; if so, print a dot
     jmp @next
 @printdot:
-    lda #'.'		; load dot character
+    lda #'.'            ; load dot character
 @next:
-    jsr charout		; print character
-    ply			; restore y
+    jsr charout         ; print character
+    ply                 ; restore y
     iny
-    cpy #16		; check if 16 characters have been consumed
-    bne @nextchar	; if not, next character
-    lda #'|'		; else print terminating char
+    cpy #16             ; check if 16 characters have been consumed
+    bne @nextchar       ; if not, next character
+    lda #'|'            ; else print terminating char
     jsr charout
-    lda MALB		; load low byte of monitor address
-    clc			; prepare for add (clear carry)
-    adc #16		; add 16
-    sta MALB		; store in low byte
-    lda MAHB		; load high byte
-    adc #0		; add with carry (if there is a carry)
-    sta MAHB		; store back in high byte
+    lda MALB            ; load low byte of monitor address
+    clc                 ; prepare for add (clear carry)
+    adc #16             ; add 16
+    sta MALB            ; store in low byte
+    lda MAHB            ; load high byte
+    adc #0              ; add with carry (if there is a carry)
+    sta MAHB            ; store back in high byte
     lda NRLINES
     ora NRLINES+1
-    beq @exit		; if zero, then exit, else decrement
+    beq @exit           ; if zero, then exit, else decrement
     lda NRLINES
-    sec			; set carry flag for subtraction
-    sbc #1		; subtract 1 from low byte of NRLINES
-    sta NRLINES		; store
-    bcs @nextlinefar	; if carry set, no borrow and continue
+    sec                 ; set carry flag for subtraction
+    sbc #1              ; subtract 1 from low byte of NRLINES
+    sta NRLINES         ; store
+    bcs @nextlinefar    ; if carry set, no borrow and continue
     dec NRLINES+1
 @nextlinefar:
     jmp @nextline
