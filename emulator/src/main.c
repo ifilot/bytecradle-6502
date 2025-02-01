@@ -23,6 +23,7 @@
 #include <termios.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <time.h>
 
 #include "ramrom.h"
 #include "vrEmu6502/vrEmu6502.h"
@@ -31,6 +32,7 @@
 void term_disable_blocking();
 void term_restore_default(struct termios *original);
 int kbhit();
+VrEmu6502 *cpu65c02;
 
 /**
  * @brief main function
@@ -38,11 +40,13 @@ int kbhit();
  * @return int 
  */
 int main(int argc, char *argv[]) {
-    // initialize memory from file
+    // check command-line arguments
     if(argc != 2) {
         fprintf(stderr, "Incorrect number of parameters!\n");
         exit(EXIT_FAILURE);
     }
+
+    // load the ROM memory using external file
     initrom(argv[1]);
 
     // modify terminal settings, but store original settings
@@ -51,7 +55,11 @@ int main(int argc, char *argv[]) {
     term_disable_blocking();
 
     // create CPU core
-    VrEmu6502 *cpu65c02 = vrEmu6502New(CPU_W65C02, memread, memwrite);
+    cpu65c02 = vrEmu6502New(CPU_W65C02, memread, memwrite);
+
+    // keep track of time, this is needed for keyboard polling
+    struct timespec start, current;
+    clock_gettime(CLOCK_MONOTONIC, &start);
 
     // boot CPU core
     if(cpu65c02) {
@@ -66,7 +74,14 @@ int main(int argc, char *argv[]) {
         // construct infinite loop
         while (1) {
             // check for keyboard input
-            kbhit();
+            clock_gettime(CLOCK_MONOTONIC, &current);
+            long elapsed_ms = (current.tv_sec - start.tv_sec) * 1000 +
+                              (current.tv_nsec - start.tv_nsec) / 1000000;
+
+            // only 'poll' the keyboard every 10 ms
+            if (elapsed_ms >= 10) {
+                kbhit();
+            }
 
             // keyboard input triggers interrupt
             if(keybuffer_ptr > keybuffer) {
@@ -94,11 +109,15 @@ int main(int argc, char *argv[]) {
 void term_disable_blocking() {
     struct termios t;
     tcgetattr(STDIN_FILENO, &t);
-    t.c_lflag &= ~(ICANON | ECHO);  // Disable line buffering and echo
+
+    // Disable line buffering and echo
+    t.c_lflag &= ~(ICANON | ECHO);
     tcsetattr(STDIN_FILENO, TCSANOW, &t);
 
     int flags = fcntl(STDIN_FILENO, F_GETFL, 0);
-    fcntl(STDIN_FILENO, F_SETFL, flags | O_NONBLOCK);  // Set non-blocking mode
+
+    // Set non-blocking mode
+    fcntl(STDIN_FILENO, F_SETFL, flags | O_NONBLOCK);
 }
 
 /**
@@ -121,6 +140,14 @@ int kbhit() {
     char ch;
     int bytes_read = read(STDIN_FILENO, &ch, 1);
     
+    // detect CTRL+R
+    if(ch == 0x12) {
+        keybuffer_ptr = keybuffer;
+        ch = getchar(); // consume character
+        vrEmu6502Reset(cpu65c02);        
+        return 0;
+    }
+
     if (bytes_read > 0) {
         *(keybuffer_ptr++) = ch;
         return 1;
