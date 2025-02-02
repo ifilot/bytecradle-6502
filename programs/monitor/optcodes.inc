@@ -6,6 +6,7 @@
 
 ;
 ; Addressing modes (operands):
+;
 ; $00: implicit
 ; $01: absolute
 ; $02: absolutex

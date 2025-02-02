@@ -8,494 +8,420 @@
 
 mnemonics:
     .byte "LDA "
-    .word parse_lda
+    .word data_lda
     .byte "STA "
-    .word parse_sta
+    .word data_sta
     .byte "LDX "
-    .word parse_ldx
+    .word data_ldx
     .byte "LDY "
-    .word parse_ldy
+    .word data_ldy
     .byte "STX "
-    .word parse_stx
+    .word data_stx
     .byte "STY "
-    .word parse_sty
+    .word data_sty
     .byte "ADC "
-    .word parse_adc
+    .word data_adc
     .byte "SBC "
-    .word parse_sbc
+    .word data_sbc
     .byte "CMP "
-    .word parse_cmp
+    .word data_cmp
     .byte "CPX "
-    .word parse_cpx
+    .word data_cpx
     .byte "CPY "
-    .word parse_cpy
+    .word data_cpy
     .byte "AND "
-    .word parse_and
+    .word data_and
     .byte "ORA "
-    .word parse_ora
+    .word data_ora
     .byte "EOR "
-    .word parse_eor
+    .word data_eor
     .byte "ASL "
-    .word parse_asl
+    .word data_asl
     .byte "LSR "
-    .word parse_lsr
+    .word data_lsr
     .byte "ROL "
-    .word parse_rol
+    .word data_rol
     .byte "ROR "
-    .word parse_ror
+    .word data_ror
     .byte "INC "
-    .word parse_inc
+    .word data_inc
     .byte "INX "
-    .word parse_inx
+    .word data_inx
     .byte "INY "
-    .word parse_iny
+    .word data_iny
     .byte "DEC "
-    .word parse_dec
+    .word data_dec
     .byte "DEX "
-    .word parse_dex
+    .word data_dex
     .byte "DEY "
-    .word parse_dey
+    .word data_dey
     .byte "JMP "
-    .word parse_jmp
+    .word data_jmp
     .byte "JSR "
-    .word parse_jsr
+    .word data_jsr
     .byte "RTS "
-    .word parse_rts
+    .word data_rts
     .byte "BCC "
-    .word parse_bcc
+    .word data_bcc
     .byte "BCS "
-    .word parse_bcs
+    .word data_bcs
     .byte "BEQ "
-    .word parse_beq
+    .word data_beq
     .byte "BNE "
-    .word parse_bne
+    .word data_bne
     .byte "BMI "
-    .word parse_bmi
+    .word data_bmi
     .byte "BPL "
-    .word parse_bpl
+    .word data_bpl
     .byte "BVC "
-    .word parse_bvc
+    .word data_bvc
     .byte "BVS "
-    .word parse_bvs
+    .word data_bvs
     .byte "CLC "
-    .word parse_clc
+    .word data_clc
     .byte "CLD "
-    .word parse_cld
+    .word data_cld
     .byte "CLI "
-    .word parse_cli
+    .word data_cli
     .byte "CLV "
-    .word parse_clv
+    .word data_clv
     .byte "SEC "
-    .word parse_sec
+    .word data_sec
     .byte "SED "
-    .word parse_sed
+    .word data_sed
     .byte "SEI "
-    .word parse_sei
+    .word data_sei
     .byte "PHA "
-    .word parse_pha
+    .word data_pha
     .byte "PHP "
-    .word parse_php
+    .word data_php
     .byte "PLA "
-    .word parse_pla
+    .word data_pla
     .byte "PLP "
-    .word parse_plp
+    .word data_plp
     .byte "BRK "
-    .word parse_brk
+    .word data_brk
     .byte "RTI "
-    .word parse_rti
+    .word data_rti
     .byte "NOP "
-    .word parse_nop
+    .word data_nop
     .byte "BIT "
-    .word parse_bit
+    .word data_bit
     .byte "TSX "
-    .word parse_tsx
+    .word data_tsx
     .byte "TXS "
-    .word parse_txs
+    .word data_txs
     .byte "TAX "
-    .word parse_tax
+    .word data_tax
     .byte "TAY "
-    .word parse_tay
+    .word data_tay
     .byte "TXA "
-    .word parse_txa
+    .word data_txa
     .byte "TYA "
-    .word parse_tya
+    .word data_tya
     .byte "TSB "
-    .word parse_tsb
+    .word data_tsb
     .byte "RMB0"
-    .word parse_rmb0
+    .word data_rmb0
     .byte "BBR0"
-    .word parse_bbr0
+    .word data_bbr0
     .byte "TRB "
-    .word parse_trb
+    .word data_trb
     .byte "RMB1"
-    .word parse_rmb1
+    .word data_rmb1
     .byte "BBR1"
-    .word parse_bbr1
+    .word data_bbr1
     .byte "RMB2"
-    .word parse_rmb2
+    .word data_rmb2
     .byte "BBR2"
-    .word parse_bbr2
+    .word data_bbr2
     .byte "RMB3"
-    .word parse_rmb3
+    .word data_rmb3
     .byte "BBR3"
-    .word parse_bbr3
+    .word data_bbr3
     .byte "RMB4"
-    .word parse_rmb4
+    .word data_rmb4
     .byte "BBR4"
-    .word parse_bbr4
+    .word data_bbr4
     .byte "RMB5"
-    .word parse_rmb5
+    .word data_rmb5
     .byte "PHY "
-    .word parse_phy
+    .word data_phy
     .byte "BBR5"
-    .word parse_bbr5
+    .word data_bbr5
     .byte "STZ "
-    .word parse_stz
+    .word data_stz
     .byte "RMB6"
-    .word parse_rmb6
+    .word data_rmb6
     .byte "BBR6"
-    .word parse_bbr6
+    .word data_bbr6
     .byte "RMB7"
-    .word parse_rmb7
+    .word data_rmb7
     .byte "PLY "
-    .word parse_ply
+    .word data_ply
     .byte "BBR7"
-    .word parse_bbr7
+    .word data_bbr7
     .byte "BRA "
-    .word parse_bra
+    .word data_bra
     .byte "SMB0"
-    .word parse_smb0
+    .word data_smb0
     .byte "BBS0"
-    .word parse_bbs0
+    .word data_bbs0
     .byte "SMB1"
-    .word parse_smb1
+    .word data_smb1
     .byte "BBS1"
-    .word parse_bbs1
+    .word data_bbs1
     .byte "SMB2"
-    .word parse_smb2
+    .word data_smb2
     .byte "BBS2"
-    .word parse_bbs2
+    .word data_bbs2
     .byte "SMB3"
-    .word parse_smb3
+    .word data_smb3
     .byte "BBS3"
-    .word parse_bbs3
+    .word data_bbs3
     .byte "SMB4"
-    .word parse_smb4
+    .word data_smb4
     .byte "WAI "
-    .word parse_wai
+    .word data_wai
     .byte "BBS4"
-    .word parse_bbs4
+    .word data_bbs4
     .byte "SMB5"
-    .word parse_smb5
+    .word data_smb5
     .byte "PHX "
-    .word parse_phx
+    .word data_phx
     .byte "STP "
-    .word parse_stp
+    .word data_stp
     .byte "BBS5"
-    .word parse_bbs5
+    .word data_bbs5
     .byte "SMB6"
-    .word parse_smb6
+    .word data_smb6
     .byte "BBS6"
-    .word parse_bbs6
+    .word data_bbs6
     .byte "SMB7"
-    .word parse_smb7
+    .word data_smb7
     .byte "PLX "
-    .word parse_plx
+    .word data_plx
     .byte "BBS7"
-    .word parse_bbs7
+    .word data_bbs7
 
 .segment "CODE"
 
-parse_lda:
-    rts
-
-parse_sta:
-    rts
-
-parse_ldx:
-    rts
-
-parse_ldy:
-    rts
-
-parse_stx:
-    rts
-
-parse_sty:
-    rts
-
-parse_adc:
-    rts
-
-parse_sbc:
-    rts
-
-parse_cmp:
-    rts
-
-parse_cpx:
-    rts
-
-parse_cpy:
-    rts
-
-parse_and:
-    rts
-
-parse_ora:
-    rts
-
-parse_eor:
-    rts
-
-parse_asl:
-    rts
-
-parse_lsr:
-    rts
-
-parse_rol:
-    rts
-
-parse_ror:
-    rts
-
-parse_inc:
-    rts
-
-parse_inx:
-    rts
-
-parse_iny:
-    rts
-
-parse_dec:
-    rts
-
-parse_dex:
-    rts
-
-parse_dey:
-    rts
-
-parse_jmp:
-    rts
-
-parse_jsr:
-    rts
-
-parse_rts:
-    rts
-
-parse_bcc:
-    rts
-
-parse_bcs:
-    rts
-
-parse_beq:
-    rts
-
-parse_bne:
-    rts
-
-parse_bmi:
-    rts
-
-parse_bpl:
-    rts
-
-parse_bvc:
-    rts
-
-parse_bvs:
-    rts
-
-parse_clc:
-    rts
-
-parse_cld:
-    rts
-
-parse_cli:
-    rts
-
-parse_clv:
-    rts
-
-parse_sec:
-    rts
-
-parse_sed:
-    rts
-
-parse_sei:
-    rts
-
-parse_pha:
-    rts
-
-parse_php:
-    rts
-
-parse_pla:
-    rts
-
-parse_plp:
-    rts
-
-parse_brk:
-    rts
-
-parse_rti:
-    rts
-
-parse_nop:
-    rts
-
-parse_bit:
-    rts
-
-parse_tsx:
-    rts
-
-parse_txs:
-    rts
-
-parse_tax:
-    rts
-
-parse_tay:
-    rts
-
-parse_txa:
-    rts
-
-parse_tya:
-    rts
-
-parse_tsb:
-    rts
-
-parse_rmb0:
-    rts
-
-parse_bbr0:
-    rts
-
-parse_trb:
-    rts
-
-parse_rmb1:
-    rts
-
-parse_bbr1:
-    rts
-
-parse_rmb2:
-    rts
-
-parse_bbr2:
-    rts
-
-parse_rmb3:
-    rts
-
-parse_bbr3:
-    rts
-
-parse_rmb4:
-    rts
-
-parse_bbr4:
-    rts
-
-parse_rmb5:
-    rts
-
-parse_phy:
-    rts
-
-parse_bbr5:
-    rts
-
-parse_stz:
-    rts
-
-parse_rmb6:
-    rts
-
-parse_bbr6:
-    rts
-
-parse_rmb7:
-    rts
-
-parse_ply:
-    rts
-
-parse_bbr7:
-    rts
-
-parse_bra:
-    rts
-
-parse_smb0:
-    rts
-
-parse_bbs0:
-    rts
-
-parse_smb1:
-    rts
-
-parse_bbs1:
-    rts
-
-parse_smb2:
-    rts
-
-parse_bbs2:
-    rts
-
-parse_smb3:
-    rts
-
-parse_bbs3:
-    rts
-
-parse_smb4:
-    rts
-
-parse_wai:
-    rts
-
-parse_bbs4:
-    rts
-
-parse_smb5:
-    rts
-
-parse_phx:
-    rts
-
-parse_stp:
-    rts
-
-parse_bbs5:
-    rts
-
-parse_smb6:
-    rts
-
-parse_bbs6:
-    rts
-
-parse_smb7:
-    rts
-
-parse_plx:
-    rts
-
-parse_bbs7:
-    rts
+;
+; For a given mnemonics, provide the optcode for the different types of
+; addressing modes (listed below).
+;
+; Addressing modes
+; ----------------
+; $00: implicit
+; $01: absolute
+; $02: absolutex
+; $03: absolutey
+; $04: accumulator
+; $05: immediate
+; $06: indirectx
+; $07: indirecty
+; $08: indirect
+; $09: relative
+; $0A: zeropage
+; $0B: zeropagex
+; $0C: zeropagey
+; $0D: indirectzeropage
+; $0E: absoluteindexedindirect
+; $0F: zeropagerelative
+;
+data_adc:
+    .byte $06,$61,$0A,$65,$05,$69,$01,$6D,$07,$71,$0D,$72,$0B,$75,$03,$79,$02,$7D
+data_and:
+    .byte $06,$21,$0A,$25,$05,$29,$01,$2D,$07,$31,$0D,$32,$0B,$35,$03,$39,$02,$3D
+data_asl:
+    .byte $0A,$06,$04,$0A,$01,$0E,$0B,$16,$02,$1E
+data_bbr0:
+    .byte $0F,$0F
+data_bbr1:
+    .byte $0F,$1F
+data_bbr2:
+    .byte $0F,$2F
+data_bbr3:
+    .byte $0F,$3F
+data_bbr4:
+    .byte $0F,$4F
+data_bbr5:
+    .byte $0F,$5F
+data_bbr6:
+    .byte $0F,$6F
+data_bbr7:
+    .byte $0F,$7F
+data_bbs0:
+    .byte $0F,$8F
+data_bbs1:
+    .byte $0F,$9F
+data_bbs2:
+    .byte $0F,$AF
+data_bbs3:
+    .byte $0F,$BF
+data_bbs4:
+    .byte $0F,$CF
+data_bbs5:
+    .byte $0F,$DF
+data_bbs6:
+    .byte $0F,$EF
+data_bbs7:
+    .byte $0F,$FF
+data_bcc:
+    .byte $09,$90
+data_bcs:
+    .byte $09,$B0
+data_beq:
+    .byte $09,$F0
+data_bit:
+    .byte $0A,$24,$01,$2C,$0B,$34,$02,$3C,$05,$89
+data_bmi:
+    .byte $09,$30
+data_bne:
+    .byte $09,$D0
+data_bpl:
+    .byte $09,$10
+data_bra:
+    .byte $09,$80
+data_brk:
+    .byte $00,$00
+data_bvc:
+    .byte $09,$50
+data_bvs:
+    .byte $09,$70
+data_clc:
+    .byte $00,$18
+data_cld:
+    .byte $00,$D8
+data_cli:
+    .byte $00,$58
+data_clv:
+    .byte $00,$B8
+data_cmp:
+    .byte $06,$C1,$0A,$C5,$05,$C9,$01,$CD,$07,$D1,$0D,$D2,$0B,$D5,$03,$D9,$02,$DD
+data_cpx:
+    .byte $05,$E0,$0A,$E4,$01,$EC
+data_cpy:
+    .byte $05,$C0,$0A,$C4,$01,$CC
+data_dec:
+    .byte $04,$3A,$0A,$C6,$01,$CE,$0B,$D6,$02,$DE
+data_dex:
+    .byte $00,$CA
+data_dey:
+    .byte $00,$88
+data_eor:
+    .byte $06,$41,$0A,$45,$05,$49,$01,$4D,$07,$51,$0D,$52,$0B,$55,$03,$59,$02,$5D
+data_inc:
+    .byte $04,$1A,$0A,$E6,$01,$EE,$0B,$F6,$02,$FE
+data_inx:
+    .byte $00,$E8
+data_iny:
+    .byte $00,$C8
+data_jmp:
+    .byte $01,$4C,$08,$6C,$0E,$7C
+data_jsr:
+    .byte $01,$20
+data_lda:
+    .byte $06,$A1,$0A,$A5,$05,$A9,$01,$AD,$07,$B1,$0D,$B2,$0B,$B5,$03,$B9,$02,$BD
+data_ldx:
+    .byte $05,$A2,$0A,$A6,$01,$AE,$0C,$B6,$03,$BE
+data_ldy:
+    .byte $05,$A0,$0A,$A4,$01,$AC,$0B,$B4,$02,$BC
+data_lsr:
+    .byte $0A,$46,$04,$4A,$01,$4E,$0B,$56,$02,$5E
+data_nop:
+    .byte $00,$EA
+data_ora:
+    .byte $06,$01,$0A,$05,$05,$09,$01,$0D,$07,$11,$0D,$12,$0B,$15,$03,$19,$02,$1D
+data_pha:
+    .byte $00,$48
+data_php:
+    .byte $00,$08
+data_phx:
+    .byte $00,$DA
+data_phy:
+    .byte $00,$5A
+data_pla:
+    .byte $00,$68
+data_plp:
+    .byte $00,$28
+data_plx:
+    .byte $00,$FA
+data_ply:
+    .byte $00,$7A
+data_rmb0:
+    .byte $0A,$07
+data_rmb1:
+    .byte $0A,$17
+data_rmb2:
+    .byte $0A,$27
+data_rmb3:
+    .byte $0A,$37
+data_rmb4:
+    .byte $0A,$47
+data_rmb5:
+    .byte $0A,$57
+data_rmb6:
+    .byte $0A,$67
+data_rmb7:
+    .byte $0A,$77
+data_rol:
+    .byte $0A,$26,$04,$2A,$01,$2E,$0B,$36,$02,$3E
+data_ror:
+    .byte $0A,$66,$04,$6A,$01,$6E,$0B,$76,$02,$7E
+data_rti:
+    .byte $00,$40
+data_rts:
+    .byte $00,$60
+data_sbc:
+    .byte $06,$E1,$0A,$E5,$05,$E9,$01,$ED,$07,$F1,$0D,$F2,$0B,$F5,$03,$F9,$02,$FD
+data_sec:
+    .byte $00,$38
+data_sed:
+    .byte $00,$F8
+data_sei:
+    .byte $00,$78
+data_smb0:
+    .byte $0A,$87
+data_smb1:
+    .byte $0A,$97
+data_smb2:
+    .byte $0A,$A7
+data_smb3:
+    .byte $0A,$B7
+data_smb4:
+    .byte $0A,$C7
+data_smb5:
+    .byte $0A,$D7
+data_smb6:
+    .byte $0A,$E7
+data_smb7:
+    .byte $0A,$F7
+data_sta:
+    .byte $06,$81,$0A,$85,$01,$8D,$07,$91,$0D,$92,$0B,$95,$03,$99,$02,$9D
+data_stp:
+    .byte $00,$DB
+data_stx:
+    .byte $0A,$86,$01,$8E,$0C,$96
+data_sty:
+    .byte $0A,$84,$01,$8C,$0B,$94
+data_stz:
+    .byte $0A,$64,$0B,$74,$01,$9C,$02,$9E
+data_tax:
+    .byte $00,$AA
+data_tay:
+    .byte $00,$A8
+data_trb:
+    .byte $0A,$14,$01,$1C
+data_tsb:
+    .byte $0A,$04,$01,$0C
+data_tsx:
+    .byte $00,$BA
+data_txa:
+    .byte $00,$8A
+data_txs:
+    .byte $00,$9A
+data_tya:
+    .byte $00,$98
+data_wai:
+    .byte $00,$CB
