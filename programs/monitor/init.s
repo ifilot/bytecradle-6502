@@ -94,7 +94,7 @@ printtitle:
     sta STRHB
 @next:
     ldy #0
-    lda (STRLB),Y
+    lda (STRLB),y
     cmp #0
     beq @exit
     jsr putchar
