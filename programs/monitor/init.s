@@ -122,12 +122,12 @@ termbootstr:
     .byte "               /\___/                                                          ", LF
     .byte "               \/__/                                                           ", LF
     .byte "  ____  ______     __      ___                                                 ", LF
-    .byte " /'___\/\  ___\  /'__`\  /'___`\                                               ", LF
-    .byte "/\ \__/\ \ \__/ /\ \/\ \/\_\ /\ \                                              ", LF
-    .byte "\ \  _``\ \___``\ \ \ \ \/_/// /__                                             ", LF
-    .byte " \ \ \L\ \/\ \L\ \ \ \_\ \ // /_\ \                                            ", LF
+    .byte " /'___\/\  ___\  /'__`\  /'___`\      BYTECRADLE 6502                          ", LF
+    .byte "/\ \__/\ \ \__/ /\ \/\ \/\_\ /\ \     ---------------                          ", LF
+    .byte "\ \  _``\ \___``\ \ \ \ \/_/// /__    MONITOR PROGRAM                          ", LF
+    .byte " \ \ \L\ \/\ \L\ \ \ \_\ \ // /_\ \   VERSION 0.1.0                            ", LF
     .byte "  \ \____/\ \____/\ \____//\______/                                            ", LF
-    .byte "   \/___/  \/___/  \/___/ \/_____/                                             ", LF
+    .byte "   \/___/  \/___/  \/___/ \/_____/    https://github.com/ifilot/bytecradle-6502", LF
     .byte LF
     .byte "Press -M- to see a menu",LF
     .byte 0				; terminating char
