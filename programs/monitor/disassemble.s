@@ -9,7 +9,7 @@
 ;-------------------------------------------------------------------------------
 ; DISASSEMBLE routine
 ;
-; Uses BUF2, BUF3 to hold entries
+; Uses BUF2-4 to hold data
 ;-------------------------------------------------------------------------------
 disassemble:
     ldx #0
@@ -17,6 +17,7 @@ disassemble:
     ldy #0
     stz BUF2                ; clear buffer
     stz BUF3
+    stz BUF4
 
     ; print address
     jsr puttab

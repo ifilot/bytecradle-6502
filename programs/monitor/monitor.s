@@ -5,6 +5,7 @@
 .include "constants.inc"
 .include "functions.inc"
 .include "disassemble.inc"
+.include "assemble.inc"
 
 .segment "BOOT"
 
@@ -80,7 +81,7 @@ parsecmd:
     ldx #00
     lda CMDBUF,x
     cmp #'M'
-    beq cmdshowmenu     ; show the menu?
+    beq cmdmenufar      ; show the menu?
     cmp #'G'
     beq cmdrunfar       ; run program?
     cmp #'W'
@@ -89,6 +90,8 @@ parsecmd:
     beq cmdreadfar      ; read memory?
     cmp #'D'
     beq cmddisfar       ; disassemble memory?
+    cmp #'A'
+    beq cmdasmfar       ; disassemble memory?
     rts
 
 ;-------------------------------------------------------------------------------
@@ -112,6 +115,9 @@ errorhex:
 cmdrunfar:
     jmp cmdrun
 
+cmdmenufar:
+    jmp cmdshowmenu
+
 cmdreadfar:
     inx
     jsr hex4tostart
@@ -127,6 +133,12 @@ cmddisfar:
     jsr hex4tostart
     jsr newline
     jmp disassemble
+
+cmdasmfar:
+    inx
+    jsr hex4tostart
+    jsr newline
+    jmp assemble
 
 ; change ram bank
 cmdchrambank:
