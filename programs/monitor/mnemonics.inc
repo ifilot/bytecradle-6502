@@ -204,11 +204,10 @@ mnemonics:
     .byte "BBS7"
     .word data_bbs7
 
-.segment "CODE"
-
 ;
-; For a given mnemonics, provide the optcode for the different types of
-; addressing modes (listed below).
+; For a given mnemonics, provide the optcodes for the different types of
+; addressing modes (listed below) as pairs. Each list of pairs is terminated
+; by $FF.
 ;
 ; Addressing modes
 ; ----------------
@@ -230,198 +229,198 @@ mnemonics:
 ; $0F: zeropagerelative
 ;
 data_adc:
-    .byte $06,$61,$0A,$65,$05,$69,$01,$6D,$07,$71,$0D,$72,$0B,$75,$03,$79,$02,$7D
+    .byte $06,$61,$0A,$65,$05,$69,$01,$6D,$07,$71,$0D,$72,$0B,$75,$03,$79,$02,$7D,$FF
 data_and:
-    .byte $06,$21,$0A,$25,$05,$29,$01,$2D,$07,$31,$0D,$32,$0B,$35,$03,$39,$02,$3D
+    .byte $06,$21,$0A,$25,$05,$29,$01,$2D,$07,$31,$0D,$32,$0B,$35,$03,$39,$02,$3D,$FF
 data_asl:
-    .byte $0A,$06,$04,$0A,$01,$0E,$0B,$16,$02,$1E
+    .byte $0A,$06,$04,$0A,$01,$0E,$0B,$16,$02,$1E,$FF
 data_bbr0:
-    .byte $0F,$0F
+    .byte $0F,$0F,$FF
 data_bbr1:
-    .byte $0F,$1F
+    .byte $0F,$1F,$FF
 data_bbr2:
-    .byte $0F,$2F
+    .byte $0F,$2F,$FF
 data_bbr3:
-    .byte $0F,$3F
+    .byte $0F,$3F,$FF
 data_bbr4:
-    .byte $0F,$4F
+    .byte $0F,$4F,$FF
 data_bbr5:
-    .byte $0F,$5F
+    .byte $0F,$5F,$FF
 data_bbr6:
-    .byte $0F,$6F
+    .byte $0F,$6F,$FF
 data_bbr7:
-    .byte $0F,$7F
+    .byte $0F,$7F,$FF
 data_bbs0:
-    .byte $0F,$8F
+    .byte $0F,$8F,$FF
 data_bbs1:
-    .byte $0F,$9F
+    .byte $0F,$9F,$FF
 data_bbs2:
-    .byte $0F,$AF
+    .byte $0F,$AF,$FF
 data_bbs3:
-    .byte $0F,$BF
+    .byte $0F,$BF,$FF
 data_bbs4:
-    .byte $0F,$CF
+    .byte $0F,$CF,$FF
 data_bbs5:
-    .byte $0F,$DF
+    .byte $0F,$DF,$FF
 data_bbs6:
-    .byte $0F,$EF
+    .byte $0F,$EF,$FF
 data_bbs7:
-    .byte $0F,$FF
+    .byte $0F,$FF,$FF
 data_bcc:
-    .byte $09,$90
+    .byte $09,$90,$FF
 data_bcs:
-    .byte $09,$B0
+    .byte $09,$B0,$FF
 data_beq:
-    .byte $09,$F0
+    .byte $09,$F0,$FF
 data_bit:
-    .byte $0A,$24,$01,$2C,$0B,$34,$02,$3C,$05,$89
+    .byte $0A,$24,$01,$2C,$0B,$34,$02,$3C,$05,$89,$FF
 data_bmi:
-    .byte $09,$30
+    .byte $09,$30,$FF
 data_bne:
-    .byte $09,$D0
+    .byte $09,$D0,$FF
 data_bpl:
-    .byte $09,$10
+    .byte $09,$10,$FF
 data_bra:
-    .byte $09,$80
+    .byte $09,$80,$FF
 data_brk:
-    .byte $00,$00
+    .byte $00,$00,$FF
 data_bvc:
-    .byte $09,$50
+    .byte $09,$50,$FF
 data_bvs:
-    .byte $09,$70
+    .byte $09,$70,$FF
 data_clc:
-    .byte $00,$18
+    .byte $00,$18,$FF
 data_cld:
-    .byte $00,$D8
+    .byte $00,$D8,$FF
 data_cli:
-    .byte $00,$58
+    .byte $00,$58,$FF
 data_clv:
-    .byte $00,$B8
+    .byte $00,$B8,$FF
 data_cmp:
-    .byte $06,$C1,$0A,$C5,$05,$C9,$01,$CD,$07,$D1,$0D,$D2,$0B,$D5,$03,$D9,$02,$DD
+    .byte $06,$C1,$0A,$C5,$05,$C9,$01,$CD,$07,$D1,$0D,$D2,$0B,$D5,$03,$D9,$02,$DD,$FF
 data_cpx:
-    .byte $05,$E0,$0A,$E4,$01,$EC
+    .byte $05,$E0,$0A,$E4,$01,$EC,$FF
 data_cpy:
-    .byte $05,$C0,$0A,$C4,$01,$CC
+    .byte $05,$C0,$0A,$C4,$01,$CC,$FF
 data_dec:
-    .byte $04,$3A,$0A,$C6,$01,$CE,$0B,$D6,$02,$DE
+    .byte $04,$3A,$0A,$C6,$01,$CE,$0B,$D6,$02,$DE,$FF
 data_dex:
-    .byte $00,$CA
+    .byte $00,$CA,$FF
 data_dey:
-    .byte $00,$88
+    .byte $00,$88,$FF
 data_eor:
-    .byte $06,$41,$0A,$45,$05,$49,$01,$4D,$07,$51,$0D,$52,$0B,$55,$03,$59,$02,$5D
+    .byte $06,$41,$0A,$45,$05,$49,$01,$4D,$07,$51,$0D,$52,$0B,$55,$03,$59,$02,$5D,$FF
 data_inc:
-    .byte $04,$1A,$0A,$E6,$01,$EE,$0B,$F6,$02,$FE
+    .byte $04,$1A,$0A,$E6,$01,$EE,$0B,$F6,$02,$FE,$FF
 data_inx:
-    .byte $00,$E8
+    .byte $00,$E8,$FF
 data_iny:
-    .byte $00,$C8
+    .byte $00,$C8,$FF
 data_jmp:
-    .byte $01,$4C,$08,$6C,$0E,$7C
+    .byte $01,$4C,$08,$6C,$0E,$7C,$FF
 data_jsr:
-    .byte $01,$20
+    .byte $01,$20,$FF
 data_lda:
-    .byte $06,$A1,$0A,$A5,$05,$A9,$01,$AD,$07,$B1,$0D,$B2,$0B,$B5,$03,$B9,$02,$BD
+    .byte $06,$A1,$0A,$A5,$05,$A9,$01,$AD,$07,$B1,$0D,$B2,$0B,$B5,$03,$B9,$02,$BD,$FF
 data_ldx:
-    .byte $05,$A2,$0A,$A6,$01,$AE,$0C,$B6,$03,$BE
+    .byte $05,$A2,$0A,$A6,$01,$AE,$0C,$B6,$03,$BE,$FF
 data_ldy:
-    .byte $05,$A0,$0A,$A4,$01,$AC,$0B,$B4,$02,$BC
+    .byte $05,$A0,$0A,$A4,$01,$AC,$0B,$B4,$02,$BC,$FF
 data_lsr:
-    .byte $0A,$46,$04,$4A,$01,$4E,$0B,$56,$02,$5E
+    .byte $0A,$46,$04,$4A,$01,$4E,$0B,$56,$02,$5E,$FF
 data_nop:
-    .byte $00,$EA
+    .byte $00,$EA,$FF
 data_ora:
-    .byte $06,$01,$0A,$05,$05,$09,$01,$0D,$07,$11,$0D,$12,$0B,$15,$03,$19,$02,$1D
+    .byte $06,$01,$0A,$05,$05,$09,$01,$0D,$07,$11,$0D,$12,$0B,$15,$03,$19,$02,$1D,$FF
 data_pha:
-    .byte $00,$48
+    .byte $00,$48,$FF
 data_php:
-    .byte $00,$08
+    .byte $00,$08,$FF
 data_phx:
-    .byte $00,$DA
+    .byte $00,$DA,$FF
 data_phy:
-    .byte $00,$5A
+    .byte $00,$5A,$FF
 data_pla:
-    .byte $00,$68
+    .byte $00,$68,$FF
 data_plp:
-    .byte $00,$28
+    .byte $00,$28,$FF
 data_plx:
-    .byte $00,$FA
+    .byte $00,$FA,$FF
 data_ply:
-    .byte $00,$7A
+    .byte $00,$7A,$FF
 data_rmb0:
-    .byte $0A,$07
+    .byte $0A,$07,$FF
 data_rmb1:
-    .byte $0A,$17
+    .byte $0A,$17,$FF
 data_rmb2:
-    .byte $0A,$27
+    .byte $0A,$27,$FF
 data_rmb3:
-    .byte $0A,$37
+    .byte $0A,$37,$FF
 data_rmb4:
-    .byte $0A,$47
+    .byte $0A,$47,$FF
 data_rmb5:
-    .byte $0A,$57
+    .byte $0A,$57,$FF
 data_rmb6:
-    .byte $0A,$67
+    .byte $0A,$67,$FF
 data_rmb7:
-    .byte $0A,$77
+    .byte $0A,$77,$FF
 data_rol:
-    .byte $0A,$26,$04,$2A,$01,$2E,$0B,$36,$02,$3E
+    .byte $0A,$26,$04,$2A,$01,$2E,$0B,$36,$02,$3E,$FF
 data_ror:
-    .byte $0A,$66,$04,$6A,$01,$6E,$0B,$76,$02,$7E
+    .byte $0A,$66,$04,$6A,$01,$6E,$0B,$76,$02,$7E,$FF
 data_rti:
-    .byte $00,$40
+    .byte $00,$40,$FF
 data_rts:
-    .byte $00,$60
+    .byte $00,$60,$FF
 data_sbc:
-    .byte $06,$E1,$0A,$E5,$05,$E9,$01,$ED,$07,$F1,$0D,$F2,$0B,$F5,$03,$F9,$02,$FD
+    .byte $06,$E1,$0A,$E5,$05,$E9,$01,$ED,$07,$F1,$0D,$F2,$0B,$F5,$03,$F9,$02,$FD,$FF
 data_sec:
-    .byte $00,$38
+    .byte $00,$38,$FF
 data_sed:
-    .byte $00,$F8
+    .byte $00,$F8,$FF
 data_sei:
-    .byte $00,$78
+    .byte $00,$78,$FF
 data_smb0:
-    .byte $0A,$87
+    .byte $0A,$87,$FF
 data_smb1:
-    .byte $0A,$97
+    .byte $0A,$97,$FF
 data_smb2:
-    .byte $0A,$A7
+    .byte $0A,$A7,$FF
 data_smb3:
-    .byte $0A,$B7
+    .byte $0A,$B7,$FF
 data_smb4:
-    .byte $0A,$C7
+    .byte $0A,$C7,$FF
 data_smb5:
-    .byte $0A,$D7
+    .byte $0A,$D7,$FF
 data_smb6:
-    .byte $0A,$E7
+    .byte $0A,$E7,$FF
 data_smb7:
-    .byte $0A,$F7
+    .byte $0A,$F7,$FF
 data_sta:
-    .byte $06,$81,$0A,$85,$01,$8D,$07,$91,$0D,$92,$0B,$95,$03,$99,$02,$9D
+    .byte $06,$81,$0A,$85,$01,$8D,$07,$91,$0D,$92,$0B,$95,$03,$99,$02,$9D,$FF
 data_stp:
-    .byte $00,$DB
+    .byte $00,$DB,$FF
 data_stx:
-    .byte $0A,$86,$01,$8E,$0C,$96
+    .byte $0A,$86,$01,$8E,$0C,$96,$FF
 data_sty:
-    .byte $0A,$84,$01,$8C,$0B,$94
+    .byte $0A,$84,$01,$8C,$0B,$94,$FF
 data_stz:
-    .byte $0A,$64,$0B,$74,$01,$9C,$02,$9E
+    .byte $0A,$64,$0B,$74,$01,$9C,$02,$9E,$FF
 data_tax:
-    .byte $00,$AA
+    .byte $00,$AA,$FF
 data_tay:
-    .byte $00,$A8
+    .byte $00,$A8,$FF
 data_trb:
-    .byte $0A,$14,$01,$1C
+    .byte $0A,$14,$01,$1C,$FF
 data_tsb:
-    .byte $0A,$04,$01,$0C
+    .byte $0A,$04,$01,$0C,$FF
 data_tsx:
-    .byte $00,$BA
+    .byte $00,$BA,$FF
 data_txa:
-    .byte $00,$8A
+    .byte $00,$8A,$FF
 data_txs:
-    .byte $00,$9A
+    .byte $00,$9A,$FF
 data_tya:
-    .byte $00,$98
+    .byte $00,$98,$FF
 data_wai:
-    .byte $00,$CB
+    .byte $00,$CB,$FF

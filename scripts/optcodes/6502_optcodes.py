@@ -26,7 +26,7 @@ def main():
         for mode in v:
             data += '$%02X,' % mode[0]
             data += '$%02X,' % mode[1]
-        data = data[:-1]
+        data += '$%02X' % 0xFF # terminating char
         lines.append('    .byte %s' % data)
     
     for line in lines:
