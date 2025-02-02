@@ -2,7 +2,7 @@
 
 .import stringout
 .import newcmdline
-.import charout
+.import putchar
 
 .export init
 
@@ -97,7 +97,7 @@ printtitle:
     lda (STRLB),Y
     cmp #0
     beq @exit
-    jsr charout
+    jsr putchar
     clc
     lda STRLB
     adc #1

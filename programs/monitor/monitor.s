@@ -3,10 +3,10 @@
 ;-------------------------------------------------------------------------------
 
 .include "constants.inc"
-
 .include "functions.inc"
+.include "disassemble.inc"
 
-.segment "CODE"
+.segment "BOOT"
 
 ;-------------------------------------------------------------------------------
 ; Boot sequence
@@ -43,7 +43,7 @@ loop:
     cpx #$10
     beq exitloop        ; refuse to store when maxbuffer
     sta CMDBUF,x        ; store in position
-    jsr charout         ; if not, simply print character
+    jsr putchar         ; if not, simply print character
     inc CMDLENGTH       ; increment command length
 exitloop:
     jmp loop
@@ -62,11 +62,11 @@ backspace:
     lda CMDLENGTH       ; skip if buffer is empty
     beq exitbp
     lda #$08
-    jsr charout
+    jsr putchar
     lda #' '
-    jsr charout
+    jsr putchar
     lda #$08
-    jsr charout
+    jsr putchar
     dec CMDLENGTH
 exitbp:
     jmp loop
@@ -87,6 +87,8 @@ parsecmd:
     beq cmdwritefar     ; write to memory?
     cmp #'R'
     beq cmdreadfar      ; read memory?
+    cmp #'D'
+    beq cmddisfar       ; disassemble memory?
     rts
 
 ;-------------------------------------------------------------------------------
@@ -119,6 +121,12 @@ cmdwritefar:
     inx
     jsr hex4tostart
     jmp cmdwrite
+
+cmddisfar:
+    inx
+    jsr hex4tostart
+    jsr newline
+    jmp disassemble
 
 ; change ram bank
 cmdchrambank:
@@ -162,6 +170,7 @@ cmdshowmenu:
     .byte "  R<XXXX>[:<XXXX>]    read memory ",LF
     .byte "  W<XXXX>             write to memory",LF
     .byte "  G<XXXX>             run from address",LF
+    .byte "  D<XXXX>             disassemble from address",LF
     .byte "  M                   show this menu",LF
     .byte 0
 
@@ -224,11 +233,11 @@ cmdwrite:
 @newline:
     jsr newline
     lda STARTADDR+1     ; load high byte
-    jsr printhex
+    jsr puthex
     lda STARTADDR       ; load low byte
-    jsr printhex
+    jsr puthex
     lda #':'
-    jsr charout
+    jsr putchar
     jmp @nexthex
 @loop:
     jsr getchar
@@ -237,7 +246,7 @@ cmdwrite:
     cmp #$0D            ; check for enter
     beq @exit
     jsr chartoupper
-    jsr charout
+    jsr putchar
     sta BUF2,y
     iny
     cpy #2              ; check if two chars have been read
@@ -263,7 +272,7 @@ cmdwrite:
 @nexthex:
     phy                 ; put value counter back on stack
     lda #' '
-    jsr charout
+    jsr putchar
     ldy #0              ; reset chararacter counter
     jmp @loop
 @exit:
@@ -348,36 +357,36 @@ hexdump:
 @nextline:
     jsr newline         ; start with a new line (first segment: addr)
     lda MAHB            ; load high byte of memory address
-    jsr printhex        ; print it
+    jsr puthex        ; print it
     lda MALB            ; load low byte of memory address
-    jsr printhex        ; print it
+    jsr puthex        ; print it
     lda #' '            ; load space
-    jsr charout         ; print it twice
-    jsr charout
+    jsr putchar         ; print it twice
+    jsr putchar
     ldy #0              ; number of bytes to print (second segment)
 @nextbyte:
-    phy                 ; put y on stack as printhex garbles it
+    phy                 ; put y on stack as puthex garbles it
     lda (MALB),y        ; load byte
-    jsr printhex        ; print byte in hex format, garbles y
+    jsr puthex        ; print byte in hex format, garbles y
     lda #' '            ; add space
-    jsr charout
+    jsr putchar
     ply                 ; restore y from stack
     iny
     cpy #8              ; check if halfway
     bne @skip           ; if not, skip
     lda #' '            ; print two spaces to seperate 8 bit segments
-    jsr charout
-    jsr charout
+    jsr putchar
+    jsr putchar
 @skip:
     cpy #16             ; check if 16 bytes are printed
     bne @nextbyte       ; if not, next byte
     lda #' '            ; else space
-    jsr charout
+    jsr putchar
     lda #'|'            ; add nice delimeter
-    jsr charout
+    jsr putchar
     ldy #0              ; number of bytes to print (third segment)
 @nextchar:
-    phy                 ; y will be garbed in charout routine
+    phy                 ; y will be garbed in putchar routine
     lda (MALB),y        ; load byte again
     cmp #$1F            ; check if value is less than $20
     bcc @printdot       ; if so, print a dot
@@ -387,13 +396,13 @@ hexdump:
 @printdot:
     lda #'.'            ; load dot character
 @next:
-    jsr charout         ; print character
+    jsr putchar         ; print character
     ply                 ; restore y
     iny
     cpy #16             ; check if 16 characters have been consumed
     bne @nextchar       ; if not, next character
     lda #'|'            ; else print terminating char
-    jsr charout
+    jsr putchar
     lda MALB            ; load low byte of monitor address
     clc                 ; prepare for add (clear carry)
     adc #16             ; add 16
@@ -417,7 +426,7 @@ hexdump:
 
 .segment "JUMPTABLE"
     .byte $4C           ; $FFF4
-    .word charout
+    .word putchar
     .byte $4C           ; $FFF7
     .word stringout
 

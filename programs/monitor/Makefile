@@ -1,19 +1,18 @@
 all: monitor.bin
 
-monitor.o: monitor.s
-	ca65 monitor.s -o monitor.o
+# Compiler and flags
+AS      = ca65
+LD      = ld65
+CC      = cc65
 
-io.o: io.s
-	ca65 io.s -o io.o
+SRCS	:= $(wildcard *.s)
+OBJS	:= $(SRCS:.s=.o)
 
-isr.o: isr.s
-	ca65 isr.s -o isr.o
+%.o: %.s
+	$(AS) $< -o $@
 
-init.o: init.s
-	ca65 init.s -o init.o
-
-monitor.bin: monitor.o io.o isr.o init.o
-	ld65 -o monitor.bin -C rom.cfg  monitor.o io.o isr.o init.o && \
+monitor.bin: $(OBJS) rom.cfg
+	$(LD) -o monitor.bin $(OBJS) -C rom.cfg && \
 	md5sum monitor.bin
 
 flash: monitor.bin

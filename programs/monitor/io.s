@@ -4,9 +4,12 @@
 .export char2num
 .export char2nibble
 .export chartoupper
-.export printhex
+.export puthex
+.export putds
+.export putspace
+.export puttab
 .export printnibble
-.export charout
+.export putchar
 .export getchar
 
 .PSC02
@@ -39,14 +42,46 @@ getchar:
 ; print new line to the screen
 ;-------------------------------------------------------------------------------
 newline:
+    pha
     lda #<@newlinestr   ; load lower byte
     sta STRLB
     lda #>@newlinestr   ; load upper byte
     sta STRHB
     jsr stringout
+    pla
     rts
 @newlinestr:
     .byte LF,0
+
+;-------------------------------------------------------------------------------
+; PUTSPACE routine
+;
+; print single space
+;-------------------------------------------------------------------------------
+putspace:
+    lda #' '
+    jsr putchar
+    rts
+
+;-------------------------------------------------------------------------------
+; PUTDS routine
+;
+; print two spaces
+;-------------------------------------------------------------------------------
+putds:
+    jsr putspace
+    jsr putspace
+    rts
+
+;-------------------------------------------------------------------------------
+; PUTTAB routine
+;
+; print four spaces
+;-------------------------------------------------------------------------------
+puttab:
+    jsr putds
+    jsr putds
+    rts
 
 ;-------------------------------------------------------------------------------
 ; NEWCMDLINE routine
@@ -57,9 +92,9 @@ newline:
 newcmdline:
     jsr newline
     lda #'@'
-    jsr charout
+    jsr putchar
     lda #':'
-    jsr charout
+    jsr putchar
     rts
 
 ;-------------------------------------------------------------------------------
@@ -76,7 +111,7 @@ stringout:
 @nextchar:
     lda (STRLB),y   ; load character from string
     beq @exit       ; if terminating character is read, exit
-    jsr charout     ; else, print char
+    jsr putchar     ; else, print char
     iny             ; increment y
     jmp @nextchar   ; read next char
 @exit:
@@ -149,12 +184,12 @@ chartoupper:
     rts
 
 ;-------------------------------------------------------------------------------
-; PRINTHEX routine
+; PUTHEX routine
 ;
 ; print a byte loaded in A to the screen in hexadecimal formatting
 ; Uses: BUF1
 ;-------------------------------------------------------------------------------
-printhex:
+puthex:
     sta BUF1
     lsr a           ; shift right; MSB is always set to 0
     lsr a
@@ -181,11 +216,11 @@ printnibble:
     clc
     adc #'A'-10
 @exit:
-    jsr charout
+    jsr putchar
     rts
 
 ;-------------------------------------------------------------------------------
-; CHAROUT routine
+; putchar routine
 ; Garbles: A
 ;
 ; Prints a character to the ACIA; note that software delay is needed to prevent
@@ -196,7 +231,7 @@ printnibble:
 ; 10 MHz : 174
 ; 12 MHz : 208
 ;-------------------------------------------------------------------------------
-charout:
+putchar:
     pha             ; preserve A
     sta ACIA_DATA   ; write the character to the ACIA data register
     lda #174        ; initialize inner loop

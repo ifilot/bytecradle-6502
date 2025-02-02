@@ -10,7 +10,10 @@
 .import char2num
 .import char2nibble
 .import chartoupper
-.import printhex
+.import puthex
+.import putspace
+.import putds
+.import puttab
 .import printnibble
-.import charout
+.import putchar
 .import getchar
