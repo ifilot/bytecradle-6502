@@ -4,6 +4,8 @@
 
 .segment "DATA"
 
+.export optcodes
+
 ;
 ; Addressing modes (operands):
 ;

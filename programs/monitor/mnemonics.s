@@ -6,6 +6,8 @@
 
 .segment "DATA"
 
+.export mnemonics
+
 mnemonics:
     .byte "LDA "
     .word data_lda

@@ -1,8 +1,9 @@
 .include "constants.inc"
-.include "optcodes.inc"
 .include "functions.inc"
 
 .export disassemble
+
+.import optcodes
 
 .segment "CODE"
 

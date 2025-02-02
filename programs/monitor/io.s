@@ -122,17 +122,17 @@ stringout:
 ; CHAR2NUM routine
 ;
 ; convert characters stored in a,x to a single number stored in A;
-; sets C on an error, assume A contains high byte and X contains low byte
+; sets C on an error, assume A contains high nibble and X contains low nibble
 ;-------------------------------------------------------------------------------
 char2num:
     jsr char2nibble
     bcs @exit       ; error on carry set
-    asl a           ; shift left 4 bits to create higher byte
+    asl a           ; shift left 4 bits to create higher nibble
     asl a
     asl a
     asl a
     sta BUF1        ; store in buffer on ZP
-    txa             ; transfer lower byte from X to A
+    txa             ; transfer lower nibble from X to A
     jsr char2nibble ; repeat
     bcs @exit       ; error on carry set
     ora BUF1        ; combine nibbles

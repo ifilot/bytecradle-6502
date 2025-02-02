@@ -27,6 +27,7 @@
 .define BUF6		    $09
 .define BUF7		    $0A
 .define BUF8		    $0B
+.define BUF9            $17
 
 ; specific ZP addresses for the hexdump routine of the monitor
 .define STARTADDR	    $0C
