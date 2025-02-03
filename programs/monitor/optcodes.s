@@ -26,6 +26,7 @@
 ; $0E: absoluteindexedindirect
 ; $0F: zeropagerelative
 
+; mnemonic; number of params, mode, XX, optcode
 optcodes:
     .byte "BRK ", $01, $00, $00, $00 
     .byte "ORA ", $02, $06, $00, $01 

@@ -18,7 +18,7 @@
 .define LF		        $0A		; LF character (line feed)
 .define ESC		        $1B		; VT100 escape character
 
-; buffer addresses (ZP)
+; general buffer addresses (ZP)
 .define BUF1		    $04
 .define BUF2		    $05
 .define BUF3		    $06
@@ -27,7 +27,6 @@
 .define BUF6		    $09
 .define BUF7		    $0A
 .define BUF8		    $0B
-.define BUF9            $17
 
 ; specific ZP addresses for the hexdump routine of the monitor
 .define STARTADDR	    $0C
@@ -37,3 +36,10 @@
 .define MALB		    $14		; monitor address low byte
 .define MAHB		    $15		; monitor address high byte
 .define NRLINES		    $16		; number of lines to print by hexdump routine
+
+; additional ZP addresses for assembler
+.define CHAR1           $17
+.define CHAR2           $18
+.define CHAR3           $19
+.define CHAR4           $1A
+.define NRCHARS         $1B

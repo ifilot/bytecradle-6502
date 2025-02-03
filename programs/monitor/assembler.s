@@ -42,6 +42,7 @@ assemble:
     sta CMDBUF,y            ; store in buffer
     iny
     jsr putchar
+    inc CMDLENGTH
     jmp @retr
 @backspace:
     cpy #0
@@ -53,6 +54,7 @@ assemble:
     lda #$08
     jsr putchar
     dey
+    dec CMDLENGTH
     jmp @retr
 
     ; parse the command buffer
@@ -66,7 +68,7 @@ assemble:
 ; FINDMNEMONIC routine
 ;
 ; Finds jump address to handle a particular mnemonic, stores mnemonic dataset
-; address in BUF4 and BUF5
+; address in BUF4:5, BUF2:3 is used as a pointer to the mnemonics dataset
 ;-------------------------------------------------------------------------------
 findmnemonic:
     lda #<mnemonics         ; load lower byte
@@ -120,6 +122,7 @@ findmnemonic:
     jsr grabaddress
     bcs @error
     jsr printinstruction
+    jsr newline
 
     ; lda #' '
     ; jsr putchar
@@ -154,7 +157,7 @@ findmnemonic:
     jsr newline
     rts
 @errorstr:
-    .asciiz "    Invalid instruction, please try again."
+    .asciiz "    Invalid entry, please try again."
 
 
 ;-------------------------------------------------------------------------------
@@ -162,8 +165,8 @@ findmnemonic:
 ;
 ; Completely reset the line and print the instruction
 ;
-; BUF2 - upper byte or value
-; BUF3 - low byte or $00 (not used)
+; BUF2 - low byte or $00 (not used)
+; BUF3 - upper byte or value
 ; BUF6 - address mode
 ; BUF7 - optcode
 ;-------------------------------------------------------------------------------
@@ -203,6 +206,7 @@ printinstruction:
     adc BUF5                ; add offset high byte
     sta BUF5                ; store
 
+    ; print mnemonic
     ldy #0
 @next:
     lda (BUF4),y
@@ -211,29 +215,131 @@ printinstruction:
     cpy #4
     bne @next
     cmp #' '                ; check if last char was space
-    beq @skip
+    beq @printoperands
     lda #' '                ; if not, print a space
     jsr putchar
-@skip:
-    iny
-    lda (BUF4),y            ; grab number of bytes
-    cmp #1
-    beq @exit
-    cmp #2
-    beq @hex2
-    cmp #3
-    beq @hex4
-@hex2:
+
+    ; now print operands
+@printoperands:
+    ldy #4
+    lda (BUF4),y            ; grab number of operands
+    cmp #1                  ; only one byte?
+    beq @nothing
+
+    ldy #5
+    lda (BUF4),y            ; load address mode
+    cmp #1                  ; absolute address mode?
+    beq @op4
+    cmp #2                  ; absolute, x?
+    beq @absx
+    cmp #3                  ; absolute, y?
+    beq @absy
+    cmp #5                  ; immediate?
+    beq @im
+    cmp #9                  ; relative?
+    beq @op2
+    cmp #$A                 ; zero page?
+    beq @op2
+    cmp #$B                 ; zero page,x
+    beq @op2x
+    cmp #$C                 ; zero page,y
+    beq @op2y
+    cmp #$D                 ; zero page indirect
+    beq @op2in
+    jmp @nothing
+
+@nothing:                   ; print nothing
+    jsr puttab
+    rts
+@ind:                       ; print indirect
+    jsr @putinaddr
+    jsr putds
+    rts
+@indx:                      ; print indirect,x
+    jsr @putinaddr
+    jsr @putcommax
+    rts
+@indy:                      ; print indirect,y
+    jsr @putinaddr
+    jsr @putcommay
+    rts
+@absx:                      ; print absolute,x
+    jsr @putaddr
+    jsr @putcommax
+    jsr putds
+    rts
+@absy:                      ; print absolute,y
+    jsr @putaddr
+    jsr @putcommay
+    jsr putds
+    rts
+@op4:                       ; print HEX4
+    jsr @putaddr
+    rts
+@im:
+    lda #'#'
+    jsr putchar
+    jsr @putaddrl
+    lda #' '
+    jsr putchar
+    rts
+@op2:                       ; print HEX2
+    jsr @putaddrl
+    jsr putds
+    rts
+@op2in:                     ; indirect zero page
+    lda #'('
+    jsr putchar
+    jsr @putaddrl
+    lda #')'
+    jsr putchar
+    rts
+@op2x:
+    jsr @putaddrl
+    jsr @putcommax
+    rts
+@op2y:
+    jsr @putaddrl
+    jsr @putcommay
+    rts
+
+; print address low byte
+@putaddrl:
     lda BUF2
     jsr puthex
-    jmp @exit
-@hex4:
-    lda BUF2
-    jsr puthex
+    rts
+
+; print address
+@putaddr:
     lda BUF3
     jsr puthex
-@exit:
-    jsr newline
+    lda BUF2
+    jsr puthex
+    rts
+
+; print address between round parentheses
+@putinaddr:
+    lda #'('
+    jsr putchar
+    jsr @putaddr
+    lda #')'
+    jsr putchar
+    rts
+
+; print ",X"
+@putcommax:
+    lda #','
+    jsr putchar
+    lda #'X'
+    jsr putchar
+    rts
+
+; print ",Y"
+@putcommay:
+    lda #','
+    jsr putchar
+    lda #'Y'
+    jsr putchar
     rts
 
 @clearline:
@@ -243,73 +349,62 @@ printinstruction:
 ; GRABADDRESS routine
 ;
 ; Try to grab the address or value from the command buffer, store the result
-; in BUF2 and BUF3
+; in BUF2: lower byte, BUF3: upper byte
 ;-------------------------------------------------------------------------------
 grabaddress:
     ldy #0
     stz BUF2
     stz BUF3
+    stz NRCHARS
 @findspace:              ; search till first space is found
     iny
     lda CMDBUF,y
     cmp #' '
     bne @findspace
-@next:                   ; consume all spaces
     iny
+@next:                   ; consume all hexvalues
     lda CMDBUF,y
-    cmp #' '
-    beq @next
-@cont:
-    cmp #'('
-    beq @skip
-    cmp #'#'
-    beq @skip
-    
-    ; retrieve address or value based on address mode
-    lda BUF6
-    tax
-    lda @modes,x
-    sta BUF1
     cmp #0
-    beq @exit
-    cmp #1
-    beq @hex2
-    cmp #2
-    beq @hex2
-    cmp #$FF
-    beq @exit
+    beq @parse
+    jsr ishex
+    bcs @skip
+    ldx NRCHARS
+    sta CHAR1,x
+    inx
+    stx NRCHARS
+    cpx #4
+    beq @parse
 @skip:
     iny
-    lda CMDBUF,y
-    jmp @cont
-@hex2:
-    jsr @grabnibble
-    sta BUF2
-    lda BUF1
+    jmp @next
+@parse:
+    ldy #0
+    lda NRCHARS
+    cmp #4
+    beq @parse4
     cmp #2
-    beq @hex4
-    jmp @exit
-@hex4:
+    beq @parse2
+    jmp @error
+@parse4:
+    lda CHAR1,y
     iny
-    jsr @grabnibble
+    ldx CHAR1,y
+    iny
+    jsr char2num
     sta BUF3
+@parse2:
+    lda CHAR1,y
+    iny
+    ldx CHAR1,y
+    iny
+    jsr char2num
+    sta BUF2
     jmp @exit
+@error:
+    sec
+    rts
 @exit:
     clc
-    rts
-
-@modes:
-    ;      00  01  02  03  04  05  06  07  08  09  0A  0B  0C  0D  0E  0F
-    .byte $00,$02,$02,$02,$00,$01,$01,$01,$01,$FF,$01,$01,$01,$01,$FF,$FF
-
-@grabnibble:
-    lda CMDBUF,y    ; high nibble
-    pha             ; put high niblle on stack
-    iny
-    lda CMDBUF,y    ; low nibble
-    tax             ; put low nibble in x
-    pla             ; high nibble in a
-    jsr char2num
     rts
 
 ;-------------------------------------------------------------------------------
@@ -449,6 +544,7 @@ getmode:
     ldx #$03                ; absolute addressing with y-indexing
     jmp getoptcode
 @exiterror:
+    sec
     ldx #$FF                ; could not establish addressing mode, quit
     stx BUF6
     ldx #$00
@@ -489,9 +585,17 @@ getoptcode:
     jmp @exit
 @error:
     lda BUF6
-    cmp #0                  ; was addressing mode perhaps implied?
-    bne @cont
+    cmp #$00                ; was addressing mode perhaps implied?
+    beq @try04              ; try accumulator
+    cmp #$0A                ; was addressing mode zero-page?
+    beq @try09              ; try relative
+    jmp @unknown
+@try04:
     ldx #$04                ; try again for accumulator
+    jmp @reset
+@try09:
+    ldx #$09
+@reset:
     lda BUF7                ; grab counter
     asl                     ; multiply by 2
     sta BUF7                ; store back in 7
@@ -503,7 +607,7 @@ getoptcode:
     sbc #0                  ; apply any borrow
     sta BUF5                ; store upper byte
     jmp getoptcode
-@cont:
+@unknown:
     sec                     ; set carry
     lda #00                 ; reset A
 @exit:
@@ -524,4 +628,26 @@ clearbuffer:
     iny                     ; increment
     cpy #$10                ; check whether all cells are written
     bne @next               ; if not, go to next byte
+    rts
+
+;-------------------------------------------------------------------------------
+; ISHEX routine
+;
+; Checks whether value in register A is hex
+;-------------------------------------------------------------------------------
+ishex:
+    cmp #$30      
+    bcc @not_hex_digit
+    cmp #$3A      
+    bcc @is_hex_digit
+    cmp #$41      
+    bcc @not_hex_digit
+    cmp #$47      
+    bcc @is_hex_digit
+@not_hex_digit:
+    sec
+    jmp @done
+@is_hex_digit:
+    clc
+@done:
     rts
