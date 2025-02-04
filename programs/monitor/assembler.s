@@ -227,90 +227,106 @@ printinstruction:
     beq @nothing
 
     ldy #5
-    lda (BUF4),y            ; load address mode
-    cmp #1                  ; absolute address mode?
-    beq @op4
-    cmp #2                  ; absolute, x?
+    lda (BUF4),y             ; load address mode
+    cmp #$01                 ; absolute address mode?
+    beq @abs
+    cmp #$02                 ; absolute, x?
     beq @absx
-    cmp #3                  ; absolute, y?
+    cmp #$03                 ; absolute, y?
     beq @absy
-    cmp #5                  ; immediate?
+    cmp #$04                 ; accumulator
+    beq @nothing
+    cmp #$05                 ; immediate?
     beq @im
-    cmp #9                  ; relative?
-    beq @op2
-    cmp #$A                 ; zero page?
-    beq @op2
-    cmp #$B                 ; zero page,x
-    beq @op2x
-    cmp #$C                 ; zero page,y
-    beq @op2y
-    cmp #$D                 ; zero page indirect
-    beq @op2in
+    cmp #$06                 ; indirect x
+    beq @indx
+    cmp #$07                 ; indirect y
+    beq @indy
+    cmp #$08                 ; indirect (only for jump)
+    beq @ind
+    cmp #$09                 ; relative?
+    beq @relzp
+    cmp #$0A                 ; zero page?
+    beq @relzp
+    cmp #$0B                 ; zero page,x
+    beq @zpx
+    cmp #$0C                 ; zero page,y
+    beq @zpy
+    cmp #$0D                 ; zero page indirect
+    beq @zpind
+    cmp #$0E                 ; absoluteindexedindirect
+    beq @absind
+    cmp #$0F                 ; zeropagerelative
+    beq @zprel
     jmp @nothing
 
-@nothing:                   ; print nothing
+@nothing:                   ; print nothing ($00, $04)
     jsr puttab
     rts
-@ind:                       ; print indirect
-    jsr @putinaddr
-    jsr putds
+@abs:                       ; print absolute ($01)
+    jsr @putop4
     rts
-@indx:                      ; print indirect,x
-    jsr @putinaddr
+@absx:                      ; print absolute,x ($02)
+    jsr @putop4
     jsr @putcommax
     rts
-@indy:                      ; print indirect,y
-    jsr @putinaddr
+@absy:                      ; print absolute,y ($03)
+    jsr @putop4
     jsr @putcommay
     rts
-@absx:                      ; print absolute,x
-    jsr @putaddr
-    jsr @putcommax
-    jsr putds
-    rts
-@absy:                      ; print absolute,y
-    jsr @putaddr
-    jsr @putcommay
-    jsr putds
-    rts
-@op4:                       ; print HEX4
-    jsr @putaddr
-    rts
-@im:
+@im:                        ; immediate ($05)
     lda #'#'
     jsr putchar
-    jsr @putaddrl
-    lda #' '
-    jsr putchar
+    jsr @putop2
     rts
-@op2:                       ; print HEX2
-    jsr @putaddrl
-    jsr putds
+@indx:                      ; print indirect x ($06)
+    jsr @putinx
     rts
-@op2in:                     ; indirect zero page
+@indy:                      ; print indirect y ($07)
+    jsr @putiny
+    rts
+@ind:                       ; print indirect ($08)
+    jsr @putin4
+    rts
+@relzp:                     ; print relative ($09) or zeropage ($0A)
+    jsr @putop2
+    rts
+@zpx:                       ; print zeropage,x ($0B)
+    jsr @putinx
+    rts
+@zpy:                       ; print zeropage,x ($0C)
+    jsr @putiny
+    rts
+@zpind:                     ; print zeropage indirect ($0D)        
     lda #'('
     jsr putchar
-    jsr @putaddrl
+    jsr @putop2
     lda #')'
     jsr putchar
     rts
-@op2x:
-    jsr @putaddrl
+@absind:                    ; print absolute indexed indirect ($0E)
+    lda #'('
+    jsr @putop4
     jsr @putcommax
-    rts
-@op2y:
-    jsr @putaddrl
-    jsr @putcommay
+    lda #')'
+    jsr putchar
+@zprel:
+    lda BUF3
+    jsr puthex
+    lda #','
+    jsr putchar
+    lda BUF2
+    jsr puthex
     rts
 
 ; print address low byte
-@putaddrl:
+@putop2:
     lda BUF2
     jsr puthex
     rts
 
 ; print address
-@putaddr:
+@putop4:
     lda BUF3
     jsr puthex
     lda BUF2
@@ -318,12 +334,32 @@ printinstruction:
     rts
 
 ; print address between round parentheses
-@putinaddr:
+@putin4:
     lda #'('
     jsr putchar
-    jsr @putaddr
+    jsr @putop4
     lda #')'
     jsr putchar
+    rts
+
+; print address between round parentheses
+@putinx:
+    lda #'('
+    jsr putchar
+    jsr @putop2
+    jsr @putcommax
+    lda #')'
+    jsr putchar
+    rts
+
+; print address between round parentheses
+@putiny:
+    lda #'('
+    jsr putchar
+    jsr @putop2
+    lda #')'
+    jsr putchar
+    jsr @putcommay
     rts
 
 ; print ",X"
