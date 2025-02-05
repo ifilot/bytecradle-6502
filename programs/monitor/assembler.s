@@ -3,6 +3,8 @@
 
 .import optcodes
 .import mnemonics
+.import disassembleline
+.import printhexvals
 
 .export assemble
 
@@ -59,9 +61,46 @@ assemble:
 
     ; parse the command buffer
 @exec:
+    lda CMDLENGTH
+    cmp #0
+    beq @exit
     jsr findmnemonic
+    bcs @exit               ; quit on error
+    
+    ; store everything
+    ldy #0
+    lda BUF7                ; load opt code
+    sta (STARTADDR),y       ; store opt code
+    lda NRCHARS             ; grab number of chars
+    asl                     ; divide by 2
+    sta BUF8
+    cmp #0                  ; no operands to save?
+    beq @skip               ; if so, skip
+    iny
+    lda BUF2                ; else store BUF2
+    sta (STARTADDR),y
+    cmp #1                  ; was this all?
+    beq @skip               ; if so, kip
+    iny
+    lda BUF3                ; else store BUF3
+    sta (STARTADDR),y
+@skip:
+    jsr disassembleline
+    jsr printhexvals
+    jsr newline
     jsr clearbuffer
+
+    ; increment address pointer
+    lda STARTADDR
+    clc
+    adc BUF8
+    sta STARTADDR
+    lda STARTADDR+1
+    adc #0
+    sta STARTADDR+1
+
     jmp @nextinstruction
+@exit:
     rts
 
 ;-------------------------------------------------------------------------------
@@ -109,29 +148,10 @@ findmnemonic:
     lda (BUF2),y            ; load upper byte address
     sta BUF5                ; store in buffer
 
-    ; debugging: print address to screen
-    ; lda #' '
-    ; jsr putchar
-    ; lda BUF5
-    ; jsr puthex
-    ; lda BUF4
-    ; jsr puthex
-
     jsr getmode             ; retrieve addressing mode in X
     bcs @error
-    jsr grabaddress
+    jsr grabaddress         ; grab address
     bcs @error
-    jsr printinstruction
-    jsr newline
-
-    ; lda #' '
-    ; jsr putchar
-    ; lda BUF6
-    ; jsr puthex
-    ; lda #' '
-    ; jsr putchar
-    ; lda BUF7
-    ; jsr puthex
 
     rts
 @prepnext:                  ; nothing found, increment search pointer by 6
@@ -149,237 +169,14 @@ findmnemonic:
     rts
 
 @error:
-    lda #<@errorstr         ; load lower byte
-    sta STRLB
-    lda #>@errorstr         ; load upper byte
-    sta STRHB
-    jsr stringout
+    lda #>@errorstr         ; load lower byte
+    ldx #<@errorstr         ; load upper byte
+    jsr putstr
     jsr newline
+    sec
     rts
 @errorstr:
     .asciiz "    Invalid entry, please try again."
-
-
-;-------------------------------------------------------------------------------
-; PRINTINSTRUCTION routine
-;
-; Completely reset the line and print the instruction
-;
-; BUF2 - low byte or $00 (not used)
-; BUF3 - upper byte or value
-; BUF6 - address mode
-; BUF7 - optcode
-;-------------------------------------------------------------------------------
-printinstruction:
-    lda #<@clearline
-    sta STRLB
-    lda #>@clearline
-    sta STRHB
-    jsr stringout
-    jsr puttab
-    lda STARTADDR+1
-    jsr puthex
-    lda STARTADDR
-    jsr puthex
-    lda #':'
-    jsr putchar
-    lda #' '
-    jsr putchar
-
-    ; grab mnemonic from optcode table
-    ; calculate offset in BUF4:5
-    lda BUF7                ; grab optcode
-    stz BUF5
-    asl                     ; multiply by 2
-    rol BUF5
-    asl                     ; multiply by 4
-    rol BUF5
-    asl                     ; multiply by 8
-    rol BUF5
-    sta BUF4                ; store low byte (high byte in BUF4)
-
-    lda #<optcodes          ; load low byte of table address
-    clc
-    adc BUF4                ; add offset low byte
-    sta BUF4                ; store
-    lda #>optcodes          ; load high byte of table address
-    adc BUF5                ; add offset high byte
-    sta BUF5                ; store
-
-    ; print mnemonic
-    ldy #0
-@next:
-    lda (BUF4),y
-    jsr putchar
-    iny
-    cpy #4
-    bne @next
-    cmp #' '                ; check if last char was space
-    beq @printoperands
-    lda #' '                ; if not, print a space
-    jsr putchar
-
-    ; now print operands
-@printoperands:
-    ldy #4
-    lda (BUF4),y            ; grab number of operands
-    cmp #1                  ; only one byte?
-    beq @nothing
-
-    ldy #5
-    lda (BUF4),y             ; load address mode
-    cmp #$01                 ; absolute address mode?
-    beq @abs
-    cmp #$02                 ; absolute, x?
-    beq @absx
-    cmp #$03                 ; absolute, y?
-    beq @absy
-    cmp #$04                 ; accumulator
-    beq @nothing
-    cmp #$05                 ; immediate?
-    beq @im
-    cmp #$06                 ; indirect x
-    beq @indx
-    cmp #$07                 ; indirect y
-    beq @indy
-    cmp #$08                 ; indirect (only for jump)
-    beq @ind
-    cmp #$09                 ; relative?
-    beq @relzp
-    cmp #$0A                 ; zero page?
-    beq @relzp
-    cmp #$0B                 ; zero page,x
-    beq @zpx
-    cmp #$0C                 ; zero page,y
-    beq @zpy
-    cmp #$0D                 ; zero page indirect
-    beq @zpind
-    cmp #$0E                 ; absoluteindexedindirect
-    beq @absind
-    cmp #$0F                 ; zeropagerelative
-    beq @zprel
-    jmp @nothing
-
-@nothing:                   ; print nothing ($00, $04)
-    jsr puttab
-    rts
-@abs:                       ; print absolute ($01)
-    jsr @putop4
-    rts
-@absx:                      ; print absolute,x ($02)
-    jsr @putop4
-    jsr @putcommax
-    rts
-@absy:                      ; print absolute,y ($03)
-    jsr @putop4
-    jsr @putcommay
-    rts
-@im:                        ; immediate ($05)
-    lda #'#'
-    jsr putchar
-    jsr @putop2
-    rts
-@indx:                      ; print indirect x ($06)
-    jsr @putinx
-    rts
-@indy:                      ; print indirect y ($07)
-    jsr @putiny
-    rts
-@ind:                       ; print indirect ($08)
-    jsr @putin4
-    rts
-@relzp:                     ; print relative ($09) or zeropage ($0A)
-    jsr @putop2
-    rts
-@zpx:                       ; print zeropage,x ($0B)
-    jsr @putinx
-    rts
-@zpy:                       ; print zeropage,x ($0C)
-    jsr @putiny
-    rts
-@zpind:                     ; print zeropage indirect ($0D)        
-    lda #'('
-    jsr putchar
-    jsr @putop2
-    lda #')'
-    jsr putchar
-    rts
-@absind:                    ; print absolute indexed indirect ($0E)
-    lda #'('
-    jsr @putop4
-    jsr @putcommax
-    lda #')'
-    jsr putchar
-@zprel:
-    lda BUF3
-    jsr puthex
-    lda #','
-    jsr putchar
-    lda BUF2
-    jsr puthex
-    rts
-
-; print address low byte
-@putop2:
-    lda BUF2
-    jsr puthex
-    rts
-
-; print address
-@putop4:
-    lda BUF3
-    jsr puthex
-    lda BUF2
-    jsr puthex
-    rts
-
-; print address between round parentheses
-@putin4:
-    lda #'('
-    jsr putchar
-    jsr @putop4
-    lda #')'
-    jsr putchar
-    rts
-
-; print address between round parentheses
-@putinx:
-    lda #'('
-    jsr putchar
-    jsr @putop2
-    jsr @putcommax
-    lda #')'
-    jsr putchar
-    rts
-
-; print address between round parentheses
-@putiny:
-    lda #'('
-    jsr putchar
-    jsr @putop2
-    lda #')'
-    jsr putchar
-    jsr @putcommay
-    rts
-
-; print ",X"
-@putcommax:
-    lda #','
-    jsr putchar
-    lda #'X'
-    jsr putchar
-    rts
-
-; print ",Y"
-@putcommay:
-    lda #','
-    jsr putchar
-    lda #'Y'
-    jsr putchar
-    rts
-
-@clearline:
-    .byte ESC, "[2K", $0D, $00
 
 ;-------------------------------------------------------------------------------
 ; GRABADDRESS routine

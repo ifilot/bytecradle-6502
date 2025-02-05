@@ -1,6 +1,6 @@
 .export newline
 .export newcmdline
-.export stringout
+.export putstr
 .export char2num
 .export char2nibble
 .export chartoupper
@@ -39,16 +39,14 @@ getchar:
 ;-------------------------------------------------------------------------------
 ; NEWLINE routine
 ;
+; GARBLES: A,X,Y
+;
 ; print new line to the screen
 ;-------------------------------------------------------------------------------
 newline:
-    pha
-    lda #<@newlinestr   ; load lower byte
-    sta STRLB
-    lda #>@newlinestr   ; load upper byte
-    sta STRHB
-    jsr stringout
-    pla
+    lda #>@newlinestr   ; load lower byte
+    ldx #<@newlinestr   ; load upper byte
+    jsr putstr
     rts
 @newlinestr:
     .byte LF,0
@@ -98,15 +96,17 @@ newcmdline:
     rts
 
 ;-------------------------------------------------------------------------------
-; STRINGOUT routine
-; Garbles: A
+; PUTSTR routine
+; Garbles: A,X,Y
+; Input A:X contains HB:LB of string pointer
 ;
 ; Loops over a string and print its characters until a zero-terminating character 
 ; is found. Assumes that $10 is used on the zero page to store the address of
 ; the string.
 ;-------------------------------------------------------------------------------
-stringout:
-    phy             ; preserve y value
+putstr:
+    sta STRHB
+    stx STRLB
     ldy #0
 @nextchar:
     lda (STRLB),y   ; load character from string
@@ -115,7 +115,6 @@ stringout:
     iny             ; increment y
     jmp @nextchar   ; read next char
 @exit:
-    ply             ; retrieve y from stack
     rts
 
 ;-------------------------------------------------------------------------------

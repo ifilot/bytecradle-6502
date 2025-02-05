@@ -1,6 +1,6 @@
 .include "constants.inc"
 
-.import stringout
+.import putstr
 .import newcmdline
 .import putchar
 
@@ -36,11 +36,9 @@ init_zp_tb:
 ; Initialize screen
 ;-------------------------------------------------------------------------------
 init_screen:
-    lda #<@resetscroll
-    sta STRLB
     lda #>@resetscroll
-    sta STRHB
-    jsr stringout
+    ldx #<@resetscroll
+    jsr putstr
     rts
 
 @resetscroll:

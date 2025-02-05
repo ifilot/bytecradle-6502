@@ -101,11 +101,9 @@ parsecmd:
 ;-------------------------------------------------------------------------------
 errorhex:
     jsr newline
-    lda #<@errorstr
-    sta STRLB
     lda #>@errorstr
-    sta STRHB
-    jsr stringout
+    ldx #<@errorstr
+    jsr putstr
     rts
 
 @errorstr:
@@ -121,22 +119,26 @@ cmdmenufar:
 cmdreadfar:
     inx
     jsr hex4tostart
+    bcs exit_invalid
     jmp cmdread
 
 cmdwritefar:
     inx
     jsr hex4tostart
+    bcs exit_invalid
     jmp cmdwrite
 
 cmddisfar:
     inx
     jsr hex4tostart
+    bcs exit_invalid
     jsr newline
     jmp disassemble
 
 cmdasmfar:
     inx
     jsr hex4tostart
+    bcs exit_invalid
     jsr newline
     jmp assemble
 
@@ -146,6 +148,9 @@ cmdchrambank:
 
 @str:
     .asciiz "Changing RAM bank to: "
+
+exit_invalid:
+    rts
 
 ;-------------------------------------------------------------------------------
 ; HEX4TOSTART routine
@@ -170,11 +175,9 @@ hex4tostart:
 ;-------------------------------------------------------------------------------
 cmdshowmenu:
     jsr newline
-    lda #<@str
-    sta STRLB
     lda #>@str
-    sta STRHB
-    jsr stringout
+    ldx #<@str
+    jsr putstr
     rts
 
 @str:
@@ -440,7 +443,7 @@ hexdump:
     .byte $4C           ; $FFF4
     .word putchar
     .byte $4C           ; $FFF7
-    .word stringout
+    .word putstr
 
 ;-------------------------------------------------------------------------------
 ; Vectors

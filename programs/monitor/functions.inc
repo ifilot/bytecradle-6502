@@ -6,7 +6,7 @@
 .import isr
 .import newline
 .import newcmdline
-.import stringout
+.import putstr
 .import char2num
 .import char2nibble
 .import chartoupper
