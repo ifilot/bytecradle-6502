@@ -13,6 +13,9 @@
 ; DISASSEMBLE routine
 ;-------------------------------------------------------------------------------
 disassemble:
+    lda #>@str
+    ldx #<@str
+    jsr putstrnl
     ldx #0
 @nextoptcode:
     phx
@@ -36,9 +39,11 @@ disassemble:
     bne @nextoptcode
 rts
 
+@str:
+    .asciiz " > DISASSEMBLING memory:"
 
 ;-------------------------------------------------------------------------------
-; PRINTINSTRUCTION routine
+; DISASSEMBLELINE routine
 ;
 ; Completely reset the line and print the instruction
 ;

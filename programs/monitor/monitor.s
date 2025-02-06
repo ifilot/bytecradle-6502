@@ -244,15 +244,20 @@ cmdread:
 ; Quasi-interactive write function
 ;-------------------------------------------------------------------------------
 cmdwrite:
-    ldy #0              ; value counter; increments till 16, then newline    
+    jsr newline
+    lda #>@str
+    ldx #<@str
+    jsr putstr
 @newline:
     jsr newline
+    jsr puttab
     lda STARTADDR+1     ; load high byte
     jsr puthex
     lda STARTADDR       ; load low byte
     jsr puthex
     lda #':'
     jsr putchar
+    ldy #0              ; value counter; increments till 16, then newline
     jmp @nexthex
 @loop:
     jsr getchar
@@ -285,7 +290,7 @@ cmdwrite:
     ldy #0              ; reset counter
     jmp @newline
 @nexthex:
-    phy                 ; put value counter back on stack
+    phy                 ; put value counter on stack
     lda #' '
     jsr putchar
     ldy #0              ; reset chararacter counter
@@ -296,6 +301,9 @@ cmdwrite:
 @error:
     ply                 ; clean stack
     jmp errorhex
+
+@str:
+    .asciiz " > Enabling WRITE MODE. Enter HEX values. Hit RETURN to quit."
 
 ;-------------------------------------------------------------------------------
 ; HEX4 routine
@@ -440,10 +448,16 @@ hexdump:
     rts
 
 .segment "JUMPTABLE"
-    .byte $4C           ; $FFF4
+    .byte $4C           ; $FFEB
+    .word puthex
+    .byte $4C           ; $FFEE
+    .word putdec
+    .byte $4C           ; $FFF1
     .word putchar
+    .byte $4C           ; FFFF4
+    .word putstrnl
     .byte $4C           ; $FFF7
-    .word putstr
+    .word putstr        
 
 ;-------------------------------------------------------------------------------
 ; Vectors

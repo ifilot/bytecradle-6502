@@ -12,6 +12,12 @@
 ; ASSEMBLE routine
 ;-------------------------------------------------------------------------------
 assemble:
+    lda #>@str1
+    ldx #<@str1
+    jsr putstrnl
+    lda #>@str2
+    ldx #<@str2
+    jsr putstrnl
 @nextinstruction:
     stz BUF2                ; clear buffer
     stz BUF3
@@ -65,14 +71,14 @@ assemble:
     cmp #0
     beq @exit
     jsr findmnemonic
-    bcs @exit               ; quit on error
+    bcs @tryagain           ; let user try again on error
     
     ; store everything
     ldy #0
     lda BUF7                ; load opt code
     sta (STARTADDR),y       ; store opt code
     lda NRCHARS             ; grab number of chars
-    asl                     ; divide by 2
+    lsr                     ; divide by 2
     sta BUF8
     cmp #0                  ; no operands to save?
     beq @skip               ; if so, skip
@@ -87,8 +93,6 @@ assemble:
 @skip:
     jsr disassembleline
     jsr printhexvals
-    jsr newline
-    jsr clearbuffer
 
     ; increment address pointer
     lda STARTADDR
@@ -99,9 +103,17 @@ assemble:
     adc #0
     sta STARTADDR+1
 
+@tryagain:
+    jsr newline
+    jsr clearbuffer
     jmp @nextinstruction
 @exit:
     rts
+
+@str1:
+    .asciiz " > Enabling INLINE ASSEMBLER. Enter assembly language instructions."
+@str2:
+    .asciiz " > Hit RETURN on an empty line to exit."
 
 ;-------------------------------------------------------------------------------
 ; FINDMNEMONIC routine
@@ -148,11 +160,13 @@ findmnemonic:
     lda (BUF2),y            ; load upper byte address
     sta BUF5                ; store in buffer
 
-    jsr getmode             ; retrieve addressing mode in X
+    jsr getmode             ; mode in BUF6, optcode in BUF7
     bcs @error
     jsr grabaddress         ; grab address
     bcs @error
-
+    jmp @exit
+@exit:
+    clc
     rts
 @prepnext:                  ; nothing found, increment search pointer by 6
     clc
@@ -172,73 +186,10 @@ findmnemonic:
     lda #>@errorstr         ; load lower byte
     ldx #<@errorstr         ; load upper byte
     jsr putstr
-    jsr newline
     sec
     rts
 @errorstr:
     .asciiz "    Invalid entry, please try again."
-
-;-------------------------------------------------------------------------------
-; GRABADDRESS routine
-;
-; Try to grab the address or value from the command buffer, store the result
-; in BUF2: lower byte, BUF3: upper byte
-;-------------------------------------------------------------------------------
-grabaddress:
-    ldy #0
-    stz BUF2
-    stz BUF3
-    stz NRCHARS
-@findspace:              ; search till first space is found
-    iny
-    lda CMDBUF,y
-    cmp #' '
-    bne @findspace
-    iny
-@next:                   ; consume all hexvalues
-    lda CMDBUF,y
-    cmp #0
-    beq @parse
-    jsr ishex
-    bcs @skip
-    ldx NRCHARS
-    sta CHAR1,x
-    inx
-    stx NRCHARS
-    cpx #4
-    beq @parse
-@skip:
-    iny
-    jmp @next
-@parse:
-    ldy #0
-    lda NRCHARS
-    cmp #4
-    beq @parse4
-    cmp #2
-    beq @parse2
-    jmp @error
-@parse4:
-    lda CHAR1,y
-    iny
-    ldx CHAR1,y
-    iny
-    jsr char2num
-    sta BUF3
-@parse2:
-    lda CHAR1,y
-    iny
-    ldx CHAR1,y
-    iny
-    jsr char2num
-    sta BUF2
-    jmp @exit
-@error:
-    sec
-    rts
-@exit:
-    clc
-    rts
 
 ;-------------------------------------------------------------------------------
 ; GETMODE routine
@@ -247,7 +198,12 @@ grabaddress:
 ; IMPORTANT: - a return value of $00 needs also be checked for with $04
 ;            - a return vlaue of $FF means no addressing mode could be
 ;              established
+; This function automatically continues to getoptcode to retrieve the optcode.
+; At the end of this function, the following ZP addresses are set:
+; BUF6: address mode
+; BUF7: opt code 
 ;
+; List of modes (first stored in X, then in BUF6)
 ; $00: implicit
 ; $01: absolute
 ; $02: absolutex
@@ -266,6 +222,9 @@ grabaddress:
 ; $0F: zeropagerelative
 ;-------------------------------------------------------------------------------
 getmode:
+    lda CMDLENGTH           ; check buffer length
+    cmp #5                  ; check if 5 or more
+    bcc @setimplied         ; if no more than 4 characters, assume implied
     ldy #3                  ; set offset
 @next:                      ; first consume all spaces
     iny
@@ -385,12 +344,84 @@ getmode:
     rts
 
 ;-------------------------------------------------------------------------------
+; GRABADDRESS routine
+;
+; Try to grab the address or value from the command buffer, store the result
+; in BUF2: lower byte, BUF3: upper byte
+;-------------------------------------------------------------------------------
+grabaddress:
+    ldy #0
+    stz BUF2
+    stz BUF3
+    stz NRCHARS
+
+    ; check if mode is 0 or 4; if so, early exit
+    lda BUF6
+    cmp #00                 ; check implied
+    beq @exit               ; if so, early exit
+    cmp #04                 ; check accumulator
+    beq @exit               ; if so, early exit
+    ; if not, try to grab characters
+@findspace:                 ; search till first space is found
+    iny
+    lda CMDBUF,y
+    cmp #' '
+    bne @findspace
+    iny
+@next:                      ; consume all hexvalues
+    lda CMDBUF,y
+    cmp #0
+    beq @parse
+    jsr ishex
+    bcs @skip
+    ldx NRCHARS
+    sta CHAR1,x
+    inx
+    stx NRCHARS
+    cpx #4
+    beq @parse
+@skip:
+    iny
+    jmp @next
+@parse:
+    ldy #0
+    lda NRCHARS
+    cmp #4
+    beq @parse4
+    cmp #2
+    beq @parse2
+    jmp @error
+@parse4:
+    lda CHAR1,y
+    iny
+    ldx CHAR1,y
+    iny
+    jsr char2num
+    sta BUF3
+@parse2:
+    lda CHAR1,y
+    iny
+    ldx CHAR1,y
+    iny
+    jsr char2num
+    sta BUF2
+    jmp @exit
+@error:
+    sec
+    rts
+@exit:
+    clc
+    rts
+
+;-------------------------------------------------------------------------------
 ; GETOPTCODE
 ;
 ; BUF4:5 : pointer to mnemonic dataset
 ; X      : mode (will be stored in BUF6)
 ;
-; Optcode will be stored in BUF7, carry bit is set on error
+; Output:
+; BUF6: mode
+; BUF7: opt code
 ;-------------------------------------------------------------------------------
 getoptcode:
     ldy #0
@@ -444,7 +475,7 @@ getoptcode:
     sec                     ; set carry
     lda #00                 ; reset A
 @exit:
-    sta BUF7                ; store A in BUF7
+    sta BUF7                ; store optcode (A) in BUF7
     rts
 
 ;-------------------------------------------------------------------------------

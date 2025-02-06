@@ -1,10 +1,12 @@
 .export newline
 .export newcmdline
 .export putstr
+.export putstrnl
 .export char2num
 .export char2nibble
 .export chartoupper
 .export puthex
+.export putdec
 .export putds
 .export putspace
 .export puttab
@@ -44,12 +46,9 @@ getchar:
 ; print new line to the screen
 ;-------------------------------------------------------------------------------
 newline:
-    lda #>@newlinestr   ; load lower byte
-    ldx #<@newlinestr   ; load upper byte
-    jsr putstr
+    lda #LF
+    jsr putchar
     rts
-@newlinestr:
-    .byte LF,0
 
 ;-------------------------------------------------------------------------------
 ; PUTSPACE routine
@@ -115,6 +114,20 @@ putstr:
     iny             ; increment y
     jmp @nextchar   ; read next char
 @exit:
+    rts
+
+;-------------------------------------------------------------------------------
+; PUTSTRNL routine
+; Garbles: A,X,Y
+; Input A:X contains HB:LB of string pointer
+;
+; Same as PUTSTR function, but puts a newline character at the end of the 
+; string.
+;-------------------------------------------------------------------------------
+putstrnl:
+    jsr putstr
+    lda #LF
+    jsr putchar
     rts
 
 ;-------------------------------------------------------------------------------
@@ -201,6 +214,51 @@ puthex:
     rts
 
 ;-------------------------------------------------------------------------------
+; PUTDEC routine
+;
+; print a byte loaded in A to the screen in decimal formatting.
+; Conserves A
+; Garbles X
+;-------------------------------------------------------------------------------
+putdec:
+    sta BUF1
+    ldx #0          ; clear hundreds digit counter
+@div100:
+    ldx #0
+@loop100:
+    sbc #100        ; subtract 100
+    inx             ; count how many times 100 was removed
+    bcs @loop100    ; if not negative, do again
+    adc #100        ; undo last subtraction
+    dex
+    cpx #0
+    beq @skip100
+    sta BUF1
+    txa             ; move hundred to A
+    ora #$30        ; convert to ascii
+    jsr putchar
+    lda BUF1
+@skip100:
+    ldx #0          ; clear tens digit counter
+@loop10:
+    sbc #10
+    inx
+    bcs @loop10
+    adc #10
+    dex
+    cpx #0
+    beq @skip10
+    sta BUF1
+    txa
+    ora #$30
+    jsr putchar
+    lda BUF1
+@skip10:
+    adc #$30        ; print remaining value
+    jsr putchar
+    rts
+
+;-------------------------------------------------------------------------------
 ; PRINTNIBBLE routine
 ;
 ; print the four LSB of the value in A to the screen; assumess that the four MSB
@@ -220,7 +278,8 @@ printnibble:
 
 ;-------------------------------------------------------------------------------
 ; putchar routine
-; Garbles: A
+;
+; Converves A
 ;
 ; Prints a character to the ACIA; note that software delay is needed to prevent
 ; transmitting data to the ACIA while it is still transmitting. 
