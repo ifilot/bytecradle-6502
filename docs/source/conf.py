@@ -16,9 +16,7 @@ release = '1.0.0'
 
 extensions = [
     'sphinx.ext.mathjax',
-    'sphinx_rtd_theme',
     'sphinx.ext.autodoc',
-    'sphinx_design'
 ]
 
 templates_path = ['_templates']
@@ -37,8 +35,8 @@ html_theme_options = {
     "navbar_persistent": ["search-button"],
     "logo": {
         "text": "ByteCradle 6502",
-        "image_light": "_static/img/logo-32px.png",
-        "image_dark": "_static/img/logo-32px.png",
+        "image_light": "_static/img/logo-128px.png",
+        "image_dark": "_static/img/logo-128px.png",
     }
 }
 
