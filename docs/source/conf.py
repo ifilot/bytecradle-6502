@@ -18,9 +18,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx_rtd_theme',
     'sphinx.ext.autodoc',
-    'sphinx_design',
-    'sphinx_subfigure',
-    'myst_parser'
+    'sphinx_design'
 ]
 
 templates_path = ['_templates']
@@ -39,8 +37,8 @@ html_theme_options = {
     "navbar_persistent": ["search-button"],
     "logo": {
         "text": "ByteCradle 6502",
-        "image_light": "_static/img/sap-smd-32px.png",
-        "image_dark": "_static/img/sap-smd-32px.png",
+        "image_light": "_static/img/logo-32px.png",
+        "image_dark": "_static/img/logo-32px.png",
     }
 }
 
@@ -49,7 +47,7 @@ html_theme_options = {
 # so a file named "default.css" will overwrite the builtin "default.css".
 master_doc = 'index'
 html_static_path = ['_static']
-html_logo = "_static/img/sap-smd-32px.png"
+html_logo = "_static/img/logo-32px.png"
 html_favicon = "_static/img/favicon.ico"
 html_css_files = [
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css",
