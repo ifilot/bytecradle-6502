@@ -1,5 +1,5 @@
 Memory map
-==========
+----------
 
 The following table describes the memory layout of the ByteCradle 6502 SBC:
 

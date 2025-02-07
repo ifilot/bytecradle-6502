@@ -13,9 +13,26 @@ language programming and a custom 6502-based operating systems, this SBC is an
 excellent choice for those looking to explore classic computing principles in a
 modern(-ish) environment.
 
+Hardware
+========
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-   memory_map
-   monitor
+   hardware/index
+
+System
+======
+
+.. toctree::
+   :maxdepth: 2
+
+   system/index
+
+Software
+========
+
+.. toctree::
+   :maxdepth: 2
+
+   software/index
