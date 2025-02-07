@@ -1,7 +1,6 @@
 ByteCradle 6502
 ===============
 
-
 The **ByteCradle 6502** is a compact and efficient **Single-Board Computer
 (SBC)** powered by the **Western Design Center (WDC) 65C02** microprocessor.
 Designed for retro-computing enthusiasts, hobbyists, and embedded system
