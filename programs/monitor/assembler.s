@@ -85,8 +85,9 @@ assemble:
     iny
     lda BUF2                ; else store BUF2
     sta (STARTADDR),y
+    lda BUF8                ; load number of operands to save
     cmp #1                  ; was this all?
-    beq @skip               ; if so, kip
+    beq @skip               ; if so, skip
     iny
     lda BUF3                ; else store BUF3
     sta (STARTADDR),y

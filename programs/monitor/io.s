@@ -41,13 +41,15 @@ getchar:
 ;-------------------------------------------------------------------------------
 ; NEWLINE routine
 ;
-; GARBLES: A,X,Y
+; Conserves: A
 ;
 ; print new line to the screen
 ;-------------------------------------------------------------------------------
 newline:
+    sta BUF1
     lda #LF
     jsr putchar
+    lda BUF1
     rts
 
 ;-------------------------------------------------------------------------------
@@ -198,8 +200,10 @@ chartoupper:
 ;-------------------------------------------------------------------------------
 ; PUTHEX routine
 ;
-; print a byte loaded in A to the screen in hexadecimal formatting
-; Uses: BUF1
+; Print a byte loaded in A to the screen in hexadecimal formatting
+;
+; Conserves:    A
+; Uses:         BUF1
 ;-------------------------------------------------------------------------------
 puthex:
     sta BUF1
@@ -211,19 +215,21 @@ puthex:
     lda BUF1
     and #$0F
     jsr printnibble
+    lda BUF1
     rts
 
 ;-------------------------------------------------------------------------------
 ; PUTDEC routine
 ;
-; print a byte loaded in A to the screen in decimal formatting.
-; Conserves A
-; Garbles X
+; Print a byte loaded in A to the screen in decimal formatting.
+;
+; Conserves:    A
+; Garbles:      X
+; Uses:         BUF1
 ;-------------------------------------------------------------------------------
 putdec:
-    sta BUF1
-    ldx #0          ; clear hundreds digit counter
-@div100:
+    pha
+    sta BUF1        ; store original value in BUF1
     ldx #0
 @loop100:
     sbc #100        ; subtract 100
@@ -233,36 +239,39 @@ putdec:
     dex
     cpx #0
     beq @skip100
-    sta BUF1
-    txa             ; move hundred to A
+    sta BUF1        ; store remainder in BUF1
+    txa             ; move hundreds to A
     ora #$30        ; convert to ascii
     jsr putchar
-    lda BUF1
+    lda BUF1        ; retrieve BUF1
 @skip100:
     ldx #0          ; clear tens digit counter
 @loop10:
     sbc #10
     inx
-    bcs @loop10
-    adc #10
+    bcs @loop10     ; if not negative, try once more
+    adc #10         ; undo last subtraction
     dex
     cpx #0
     beq @skip10
     sta BUF1
-    txa
-    ora #$30
+    txa             ; move tenths to A
+    ora #$30        ; conver to ascii
     jsr putchar
     lda BUF1
 @skip10:
     adc #$30        ; print remaining value
     jsr putchar
+    pla
     rts
 
 ;-------------------------------------------------------------------------------
 ; PRINTNIBBLE routine
 ;
-; print the four LSB of the value in A to the screen; assumess that the four MSB
+; Print the four LSB of the value in A to the screen; assumess that the four MSB
 ; of A are already reset
+;
+; Garbles: A
 ;-------------------------------------------------------------------------------
 printnibble:
     cmp #10
