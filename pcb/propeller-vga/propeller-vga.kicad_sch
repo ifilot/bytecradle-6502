@@ -4,6 +4,11 @@
 	(generator_version "8.0")
 	(uuid "68d9e336-094e-4def-a139-3412ac01f132")
 	(paper "A4")
+	(title_block
+		(title "Propeller VGA board for ByteCradle 6502 / Prototype")
+		(date "2025-02-08")
+		(rev "0")
+	)
 	(lib_symbols
 		(symbol "Connector:Conn_01x04_Pin"
 			(pin_names
@@ -5216,6 +5221,17 @@
 			(type default)
 		)
 		(uuid "ff509046-6f3c-4be2-9feb-252d6c73e61a")
+	)
+	(text "Schematic was based on design from:\nhttps://github.com/maccasoft/propeller-vt100-terminal"
+		(exclude_from_sim no)
+		(at 178.054 163.322 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "40bc1da8-3f0b-4ec7-892f-f621d2368f33")
 	)
 	(text "Simple voltage divider"
 		(exclude_from_sim no)
