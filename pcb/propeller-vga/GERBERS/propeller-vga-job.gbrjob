@@ -5,13 +5,13 @@
       "Application": "Pcbnew",
       "Version": "8.0.2"
     },
-    "CreationDate": "2025-02-07T22:28:49+01:00"
+    "CreationDate": "2025-02-08T14:09:10+01:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
       "Name": "propeller-vga",
       "GUID": "70726f70-656c-46c6-9572-2d7667612e6b",
-      "Revision": "rev?"
+      "Revision": "0"
     },
     "Size": {
       "X": 125.78,
@@ -90,24 +90,29 @@
     },
     {
       "Type": "SolderMask",
+      "Thickness": 0.01,
       "Name": "Top Solder Mask"
     },
     {
       "Type": "Copper",
+      "Thickness": 0.035,
       "Name": "F.Cu"
     },
     {
       "Type": "Dielectric",
+      "Thickness": 1.51,
       "Material": "FR4",
       "Name": "F.Cu/B.Cu",
       "Notes": "Type: dielectric layer 1 (from F.Cu to B.Cu)"
     },
     {
       "Type": "Copper",
+      "Thickness": 0.035,
       "Name": "B.Cu"
     },
     {
       "Type": "SolderMask",
+      "Thickness": 0.01,
       "Name": "Bottom Solder Mask"
     },
     {
