@@ -36,6 +36,7 @@ sdcmd00:
     sta BUF2
     lda #>cmd00
     sta BUF3
+    jsr send_command
     jsr receive_r1
     jsr close_command
     jsr newline
@@ -82,14 +83,23 @@ cmd08:
 
 ; response R1
 receive_r1:
+    ldx #00
+@tryagain:
+    lda #$FF            ; load all ones
+    sta SERIAL          ; put in shift register
+    sta CLKSTART        ; send to SD-card
+    inx
+    cpx #128
+    beq @fail           ; upon 128 attempts, exit
+    lda SERIAL          ; retrieve result from shift register
+    cmp #$FF            ; check if $FF
+    beq @tryagain       ; if so, try again
+    jsr puthex          ; if not, output result
+    rts
+@fail:
     lda #$FF
-    sta SERIAL
-    sta CLKSTART
-    jsr wait
-    sta CLKSTART
-    jsr wait
-    lda SERIAL
     jsr puthex
+    sec
     rts
 
 ; response R7
