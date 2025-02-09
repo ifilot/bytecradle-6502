@@ -291,17 +291,19 @@ printnibble:
 ; Converves A
 ;
 ; Prints a character to the ACIA; note that software delay is needed to prevent
-; transmitting data to the ACIA while it is still transmitting. 
-; At 12 MhZ, we need to wait 1.2E7 * 10 / 115200 / 5 = 208 clock cycles, where
-; the 5 corresponds to the combination of "DEC" and "BNE" taking 5 clock cyles.
+; transmitting data to the ACIA while it is still transmitting.
+; At 12 MhZ, we need to wait 1.4318E7 * 10 / 115200 / 5 = 208 clock cycles,
+; where the 5 corresponds to the combination of "DEC" and "BNE" taking 5 clock
+; cyles.
 ;
-; 10 MHz : 174
-; 12 MHz : 208
+; 10 MHz    : 174
+; 12 MHz    : 208
+; 14.31 MHz : 249 -> does not work
 ;-------------------------------------------------------------------------------
 putchar:
     pha             ; preserve A
     sta ACIA_DATA   ; write the character to the ACIA data register
-    lda #174        ; initialize inner loop
+    lda #208        ; initialize inner loop
 @inner:
     dec             ; decrement A; 2 cycles
     bne @inner      ; check if zero; 3 cycles
