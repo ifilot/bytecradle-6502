@@ -6097,7 +6097,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC688"
+		(property "Value" "CD74HC688"
 			(at 3.81 25.19 -90)
 			(layer "F.SilkS")
 			(uuid "6a55ea10-d93b-496f-b438-9dd068227be8")
@@ -7425,7 +7425,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC688"
+		(property "Value" "CD74HC688"
 			(at 3.81 25.19 0)
 			(layer "F.SilkS")
 			(uuid "90cb9557-9070-4839-9ea3-173a1990bb0e")
@@ -11258,7 +11258,7 @@
 		)
 		(property "Value" "100nF"
 			(at 2.5 2.54 90)
-			(layer "F.SilkS")
+			(layer "Dwgs.User")
 			(uuid "2f7d0d07-860b-45b1-804b-ab090c289e04")
 			(effects
 				(font
@@ -12009,7 +12009,7 @@
 				)
 			)
 		)
-		(property "Value" "CY62256"
+		(property "Value" "62256-55"
 			(at 7.62 35.35 -90)
 			(layer "F.SilkS")
 			(uuid "cbd4144c-bb43-4ba9-a027-c887db4fb271")
@@ -13183,9 +13183,9 @@
 				)
 			)
 		)
-		(property "Value" "74HC688"
+		(property "Value" "CD74HC688"
 			(at 3.81 25.19 90)
-			(layer "F.Fab")
+			(layer "F.SilkS")
 			(uuid "b41c4ffa-f1b5-4f96-9d06-7fe2eb0455b9")
 			(effects
 				(font
@@ -14428,7 +14428,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC688"
+		(property "Value" "CD74HC688"
 			(at 3.81 25.19 -90)
 			(layer "F.SilkS")
 			(uuid "6de4fde1-5a8f-4015-b1b1-0cc062d78b2b")
@@ -14971,7 +14971,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC04"
+		(property "Value" "74AC04"
 			(at 3.81 17.57 -90)
 			(layer "F.SilkS")
 			(uuid "b4afa7ff-a914-461f-9215-ad9d962c2e8f")
@@ -15019,7 +15019,7 @@
 			)
 		)
 		(property ki_fp_filters "DIP*W7.62mm* SSOP?14* TSSOP?14*")
-		(path "/827db9dd-783f-4cba-8659-0d2990fc93f7/ac4c6b43-b0f5-479c-9a57-a9679d60f7df")
+		(path "/827db9dd-783f-4cba-8659-0d2990fc93f7/a7ae30b6-c637-4518-b7c0-b996108bc3c5")
 		(sheetname "romram")
 		(sheetfile "romram.kicad_sch")
 		(attr through_hole)
@@ -15996,7 +15996,7 @@
 				)
 			)
 		)
-		(property "Value" "AS6C4008"
+		(property "Value" "AS6C4008-55"
 			(at 7.62 40.43 90)
 			(layer "F.SilkS")
 			(uuid "85f9dcfa-c83c-4ddf-9601-ed4d8922c11d")
@@ -17195,7 +17195,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC10"
+		(property "Value" "74AC10"
 			(at 3.81 17.57 90)
 			(layer "F.SilkS")
 			(uuid "a6377875-9cad-4ee3-90a3-ef699d7388d3")
@@ -21863,7 +21863,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC08"
+		(property "Value" "74AC08"
 			(at 3.81 17.57 -90)
 			(layer "F.SilkS")
 			(uuid "f3c3c5e5-2f1c-485c-bf8b-70c3ad94a2e4")
@@ -21911,7 +21911,7 @@
 			)
 		)
 		(property ki_fp_filters "DIP*W7.62mm*")
-		(path "/f56accd2-dfb1-4025-b34b-6f79f8c85358")
+		(path "/646c5b37-682b-4251-b6fd-d7e316cbe25e")
 		(sheetname "Root")
 		(sheetfile "bytecradle-6502-single-board.kicad_sch")
 		(attr through_hole)
@@ -27144,7 +27144,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC688"
+		(property "Value" "CD74HC688"
 			(at 3.81 25.19 0)
 			(layer "F.SilkS")
 			(uuid "9befe13f-1de5-4423-9208-34a6792c8dde")
@@ -28498,7 +28498,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC10"
+		(property "Value" "74AC10"
 			(at 3.81 17.57 -90)
 			(layer "F.SilkS")
 			(uuid "4f3aea89-27ec-48bb-9754-e6db5bfb10d1")
@@ -28963,7 +28963,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC14"
+		(property "Value" "74AC14"
 			(at 3.81 17.57 -90)
 			(layer "F.SilkS")
 			(uuid "6d23e7d3-8a02-40ba-b114-9f900388d151")
@@ -31837,7 +31837,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC00"
+		(property "Value" "74AC00"
 			(at 3.81 17.57 -90)
 			(layer "F.SilkS")
 			(uuid "05eb3bc8-62bf-4ae9-b2ab-4c8f23bb117f")
@@ -32877,7 +32877,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC688"
+		(property "Value" "CD74HC688"
 			(at 3.81 25.19 90)
 			(layer "F.SilkS")
 			(uuid "c4e63bb8-2268-4f43-ad68-43f4f896da08")
