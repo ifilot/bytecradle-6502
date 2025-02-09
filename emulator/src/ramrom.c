@@ -81,7 +81,7 @@ uint8_t memread(uint16_t addr, bool isDbg) {
     if (addr < 0xC000) {
         return ram[addr];
     }
-    
+
     return rom[addr - 0xC000];
 }
 

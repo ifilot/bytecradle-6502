@@ -6,6 +6,7 @@
 .include "functions.inc"
 .include "disassemble.inc"
 .include "assemble.inc"
+.include "sdcard.inc"
 
 .export boot
 
@@ -22,7 +23,7 @@ boot:                   ; reset vector points here
     txs                 ; transfer x to stack pointer (sp)
 
     cli                 ; enable interrupts and fall to main
-        
+
 ;-------------------------------------------------------------------------------
 ; MAIN routine
 ;
@@ -94,6 +95,8 @@ parsecmd:
     beq cmddisfar       ; disassemble memory?
     cmp #'A'
     beq cmdasmfar       ; disassemble memory?
+    cmp #'S'
+    beq cmdtestsdcard   ; test SD-card
     rts
 
 ;-------------------------------------------------------------------------------
@@ -147,9 +150,21 @@ cmdasmfar:
 ; change ram bank
 cmdchrambank:
     rts
-
 @str:
     .asciiz "Changing RAM bank to: "
+
+cmdtestsdcard:
+    jsr newline
+    lda #>@str
+    ldx #<@str
+    jsr putstr
+    jsr newline
+    jsr init_sd
+    jsr sdcmd00
+    jsr sdcmd08
+    rts
+@str:
+    .asciiz "Testing SDCARD routines."
 
 exit_invalid:
     rts
