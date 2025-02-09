@@ -5,10 +5,13 @@
 
 .PSC02
 
-.define ACIA_DATA       $9F04
-.define ACIA_STAT       $9F05
-.define ACIA_CMD        $9F06
-.define ACIA_CTRL       $9F07
+.define ACIA_DATA       $7F04
+.define ACIA_STAT       $7F05
+.define ACIA_CMD        $7F06
+.define ACIA_CTRL       $7F07
+
+.define STRLB           $10
+.define STRHB           $11
 
 .define ESC		$1B		; VT100 escape character
 
@@ -37,14 +40,14 @@ clear_zp:
 ; Initialize I/O
 ;-------------------------------------------------------------------------------
 init:
-    lda #$1F	        ; use 8N1 with a 19200 baud
-    sta ACIA_CTRL 	; Write to ACIA control register
+    lda #$10            ; use 8N1 with a 115200 BAUD rate
+    sta ACIA_CTRL 	    ; Write to ACIA control register
     lda #%00001001      ; No parity, no echo, no interrupts.
     sta ACIA_CMD
-    lda #<termbootstr   ; load lower byte
-    sta $10
-    lda #>termbootstr   ; load upper byte
-    sta $11
+    lda #<termbootstr
+    sta STRLB
+    lda #>termbootstr
+    sta STRHB
     jsr stringout
     jsr nlout
     rts
@@ -69,9 +72,9 @@ main:
 ;-------------------------------------------------------------------------------
 nlout:
     lda #<newlinestr	; load lower byte
-    sta $10
+    sta STRLB
     lda #>newlinestr	; load upper byte
-    sta $11
+    sta STRHB
     jsr stringout
     rts
 
@@ -86,35 +89,37 @@ nlout:
 stringout:
     ldy #0
 @nextchar:
-    lda ($10),y		; load character from string
+    lda (STRLB),y   ; load character from string
     beq @exit		; if terminating character is read, exit
-    jsr charout		; else, print char
-    iny			; increment y
+    jsr putchar     ; else, print char
+    iny			    ; increment y
     jmp @nextchar	; read next char
 @exit:
     rts
 
 ;-------------------------------------------------------------------------------
-; CHAROUT routine
-; Garbles: A
+; putchar routine
+;
+; Converves A
 ;
 ; Prints a character to the ACIA; note that software delay is needed to prevent
-; transmitting data to the ACIA while it is still transmitting. At 10 MhZ, we
-; need to wait 1E7 * 10 / 19200 = 5208 clock cycles. The inner loop consumes
-; 256 * 5 = 1280 cycles. Thus, we take 5 outer loops and have some margin.
+; transmitting data to the ACIA while it is still transmitting. 
+; At 12 MhZ, we need to wait 1.4318E7 * 10 / 115200 / 5 = 208 clock cycles, 
+; where the 5 corresponds to the combination of "DEC" and "BNE" taking 5 clock 
+; cyles.
+;
+; 10 MHz    : 174
+; 12 MHz    : 208
+; 14.31 MHz : 249 -> does not work
 ;-------------------------------------------------------------------------------
-charout:
-    phx			; preserve X
-    sta ACIA_DATA    	; write the character to the ACIA data register
-    ldx #5              ; number of outer loops, see description above 
-delay_outer:
-    lda #$FF        	; initialize inner loop
-delay_inner:        
-    dec                 ; decrement A; 2 cycles
-    bne delay_inner     ; check if zero; 3 cycles
-    dex                 ; decrement X
-    bne delay_outer
-    plx
+putchar:
+    pha             ; preserve A
+    sta ACIA_DATA   ; write the character to the ACIA data register
+    lda #208        ; initialize inner loop
+@inner:
+    dec             ; decrement A; 2 cycles
+    bne @inner      ; check if zero; 3 cycles
+    pla
     rts
 
 ;-------------------------------------------------------------------------------
@@ -127,18 +132,18 @@ loop:
 ; interrupt service routine
 ;-------------------------------------------------------------------------------
 isr:
-    pha			; put A on stack
-    lda ACIA_STAT	; check status
-    and #$08		; check for bit 3
-    beq isr_exit	; if not set, exit isr
-    lda ACIA_DATA	; else transmit the byte back
-    cmp #$0D		; check for CR
+    pha			        ; put A on stack
+    lda ACIA_STAT	    ; check status
+    and #$08		    ; check for bit 3
+    beq isr_exit	    ; if not set, exit isr
+    lda ACIA_DATA	    ; else transmit the byte back
+    cmp #$0D		    ; check for CR
     beq newline         ; print newline
     cmp #$7F            ; check for delete
-    beq backspace	; run backspace routine
-    jsr charout 	; else do normal print of character
+    beq backspace	    ; run backspace routine
+    jsr putchar         ; else do normal print of character
 isr_exit:
-    pla			; recover A
+    pla			        ; recover A
     rti
 
 newline:
@@ -147,12 +152,12 @@ newline:
    
 backspace:
     lda #$08
-    jsr charout
+    jsr putchar 
     lda #' '
-    jsr charout
+    jsr putchar
     lda #$08
-    jsr charout
-    jmp isr_exit	; exit interrupt
+    jsr putchar
+    jmp isr_exit	    ; exit interrupt
 
 bsstr:
     .byte ESC,"[D ",ESC,"[D",0

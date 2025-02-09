@@ -34,7 +34,7 @@
 ;-------------------------------------------------------------------------------
 ; Start sequence
 ;-------------------------------------------------------------------------------
-start:                  ; reset vector points here
+start:              ; reset vector points here
     lda #<hwstr		; load lower byte
     sta STRLB
     lda #>hwstr		; load upper byte
@@ -59,7 +59,7 @@ stringout:
     lda (STRLB),y	; load character from string
     beq @exit		; if terminating character is read, exit
     jsr charout		; else, print char
-    iny			; increment y
+    iny			    ; increment y
     jmp @nextchar	; read next char
 @exit:
     rts
@@ -74,11 +74,11 @@ stringout:
 ; and "BNE" both take 3 clock cyles, so we need about 173 iterations of these.
 ;-------------------------------------------------------------------------------
 charout:
-    pha			; preserve A
-    sta ACIA_DATA    	; write the character to the ACIA data register
+    pha			    ; preserve A
+    sta ACIA_DATA   ; write the character to the ACIA data register
     lda #173		; initialize inner loop
 @inner:
-    dec                 ; decrement A; 2 cycles
+    dec             ; decrement A; 2 cycles
     bne @inner		; check if zero; 3 cycles
     pla
     rts
@@ -87,18 +87,18 @@ charout:
 ; interrupt service routine
 ;-------------------------------------------------------------------------------
 isr:
-    pha			; put A on stack
+    pha			    ; put A on stack
     lda ACIA_STAT	; check status
     and #$08		; check for bit 3
     beq isr_exit	; if not set, exit isr
     lda ACIA_DATA	; load byte
     phx
     ldx TBPR		; load pointer index
-    sta TB,x            ; store character
+    sta TB,x        ; store character
     inc TBPR
-    plx			; recover X
+    plx			    ; recover X
 isr_exit:
-    pla			; recover A
+    pla			    ; recover A
     rti
 
 ;-------------------------------------------------------------------------------

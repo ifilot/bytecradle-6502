@@ -50,7 +50,7 @@ init_screen:
 init_acia:
     lda #$10		; use 8N1 with a 115200 baud
     sta ACIA_CTRL	; write to ACIA control register
-    lda #%00001001      ; No parity, no echo, no interrupts.
+    lda #%00001001  ; No parity, no echo, no interrupts.
     sta ACIA_CMD	; write to ACIA command register
     rts
 
