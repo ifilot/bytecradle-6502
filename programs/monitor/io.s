@@ -202,7 +202,7 @@ chartoupper:
 ;
 ; Print a byte loaded in A to the screen in hexadecimal formatting
 ;
-; Conserves:    A
+; Conserves:    A,X,Y
 ; Uses:         BUF1
 ;-------------------------------------------------------------------------------
 puthex:

@@ -1,6 +1,10 @@
 .export init_sd
+.export close_sd
 .export sdcmd00
 .export sdcmd08
+.export sdacmd41
+.export sdcmd58
+.export sdcmd17
 
 .include "constants.inc"
 .include "functions.inc"
@@ -19,6 +23,12 @@
 init_sd:
     lda DESELECT
     sta DESELECT
+    jsr sdpulse
+    rts
+
+close_sd:
+    lda SELECT
+    sta SELECT
     jsr sdpulse
     rts
 
@@ -52,9 +62,16 @@ sdcmd00:
     lda #>cmd00
     sta BUF3
     jsr send_command
-    jsr receive_r1
-    jsr close_command
-    jsr newline
+    jsr receive_r1          ; receive response
+    jsr close_command       ; conserves A
+    jsr newline             ; conserves A
+    cmp #01                 ; check if 01
+    bne @fail               ; if not, fail
+    clc                     ; else clear carry and exit
+    jmp @exit
+@fail:
+    sec                     ; if failed, set carry
+@exit:
     rts
 @str:
     .asciiz "Sending CMD00. Response: "
@@ -80,6 +97,191 @@ sdcmd08:
     rts
 @str:
     .asciiz "Sending CMD08. Response: "
+
+;-------------------------------------------------------------------------------
+; SDACMD41 routine
+;
+; Send CMD55 command followed by ACMD41 to the SD-card and retrieve the result
+;-------------------------------------------------------------------------------
+sdacmd41:
+    ldx #0              ; set attempt counter
+@loop:
+    phx                 ; put counter on stack
+    lda #>@str
+    ldx #<@str
+    jsr putstr
+    plx                 ; retrieve counter
+    txa                 ; transfer to ACC
+    pha                 ; put counter back on stack
+    inc                 ; increment counter for print
+    jsr putdec          ; print counter
+    lda #>@str2         ; print response string
+    ldx #<@str2
+    jsr putstr          ; print string, garble all registers
+    jsr open_command
+    lda #<cmd55         ; load CMD55
+    sta BUF2
+    lda #>cmd55
+    sta BUF3
+    jsr send_command    ; send command
+    jsr receive_r1      ; receive response, prints response byte to screen
+    jsr close_command   ; close
+    jsr open_command    ; open again, now for ACMD41
+    lda #<acmd41
+    sta BUF2
+    lda #>acmd41
+    sta BUF3
+    jsr send_command    ; send ACMD41 command
+    jsr receive_r1      ; receive response
+    jsr close_command
+    jsr newline
+    cmp #0              ; check response byte
+    beq @exit           ; if SUCCESS ($00), exit routine
+    plx                 ; retrieve attempt counter from stack
+    inx                 ; increment
+    cpx #20             ; check if 20
+    beq @fail           ; if so, fail
+    jmp @loop           ; if not, restart loop
+@fail:
+    sec                 ; set carry on fail
+    rts
+@exit:
+    plx                 ; clean stack
+    clc                 ; clear carry on success
+    rts
+@str:
+    .asciiz "Sending ACMD41. Attempt: "
+@str2:
+    .asciiz ". Response: "
+
+;-------------------------------------------------------------------------------
+; SDCMD58 routine
+;
+; Send CMD58 command to the SD-card and retrieve the result
+;-------------------------------------------------------------------------------
+sdcmd58:
+    lda #>@str
+    ldx #<@str
+    jsr putstr
+    jsr open_command
+    lda #<cmd58
+    sta BUF2
+    lda #>cmd58
+    sta BUF3
+    jsr send_command
+    jsr receive_r3
+    jsr close_command
+    jsr newline
+    rts
+@str:
+    .asciiz "Sending SDCMD58. Response: "
+
+;-------------------------------------------------------------------------------
+; SDCMD14 routine
+;
+; Send CMD14 command to the SD-card and retrieve the result
+;-------------------------------------------------------------------------------
+sdcmd17:
+    lda #>@str
+    ldx #<@str
+    jsr putstr
+    jsr open_command
+    lda #<@cmd
+    sta BUF2
+    lda #>@cmd
+    sta BUF3
+    jsr send_command
+    jsr receive_r1      ; receive response
+    jsr newline
+    lda #$FF            ; flush with ones
+    sta SERIAL
+    ldx #0              ; set inner poll counter
+    ldy #0              ; set outer poll counter
+@tryagain:
+    sta CLKSTART        ; send pulses
+    jsr wait            ; small delay
+    lda SERIAL          ; read result
+    cmp #$FE            ; check if 0xFE
+    beq @continue       ; if so, done polling and continue
+    inx                 ; if not, increment poll counter
+    beq @inccounter
+    jsr wait            ; add small delay
+    jmp @tryagain       ; if not, try again
+@inccounter:
+    ldx #0              ; reset inner poll counter
+    iny
+    jmp @tryagain
+@continue:
+    phx                 ; put inner counter on stack
+    phy                 ; put outer counter on stack
+    lda #>@str2
+    ldx #<@str2
+    jsr putstr
+    pla                 ; retrieve outer counter from stack in ACC
+    jsr putdec          ; print value
+    lda #'.'
+    jsr putchar
+    pla                 ; retrieve inner counter from stack in ACC
+    jsr putdec
+    jsr newline
+    lda #>@str3
+    ldx #<@str3
+    jsr putstr
+    jsr readblock
+    jsr newline
+    jsr close_command
+    lda #>@str4
+    ldx #<@str4
+    jsr putstrnl
+    rts
+@fail:
+    sec
+    rts
+@str:
+    .asciiz "Sending CMD17. Response: "
+@str2:
+    .asciiz "Number of cycles waited: "
+@str3:
+    .asciiz "Reading boot sector. Checksum: "
+@str4:
+    .asciiz "Done."
+@cmd:
+    .byte 17|$40,$00,$00,$00,$00,$00|$01
+
+
+;-------------------------------------------------------------------------------
+; READBLOCK routine
+;
+; Read a 512 byte block, including the checksum, from the SD-card
+;-------------------------------------------------------------------------------
+readblock:
+    lda #$00
+    sta BUF2
+    lda #$80
+    sta BUF3
+    ldx #2              ; set counter for 256 bytes
+@outer:
+    ldy #0              ; set byte counter for inner loop
+@inner:
+    sta CLKSTART        ; pulse clock, does not care about value of ACC
+    jsr wait            ; wait a bit
+    lda SERIAL          ; read byte from SD-card
+    sta (BUF2),y        ; store in upper RAM
+    iny                 ; increment byte counter
+    bne @inner          ; read 256 bytes? if so, continue
+    lda #$81            ; increment address
+    sta BUF3
+    dex
+    bne @outer          ; if not zero, go for another 256 bytes
+    ldx #2              ; checksum if two bytes
+@checksum:
+    sta CLKSTART        ; pulse clock for checksum, lower byte
+    jsr wait
+    lda SERIAL
+    jsr puthex
+    dex
+    bne @checksum
+    rts
 
 ;-------------------------------------------------------------------------------
 ; SEND_COMMAND routine
@@ -129,12 +331,13 @@ receive_r1:
     rts
 
 ;-------------------------------------------------------------------------------
-; RECEIVE_R7 routine
+; RECEIVE_R3 or RECEIVE R7 routine
 ;
 ; Receives a R7 type of response. Keeps on polling the SD-card until a non-$FF
 ; byte is received. If more than 128 attempts are required, the function errors
 ; by setting the carry bit high.
 ;-------------------------------------------------------------------------------
+receive_r3:
 receive_r7:
     jsr poll_card
     bcs @exit
@@ -170,7 +373,7 @@ poll_card:
     cmp #$FF            ; equal to $FF?
     bne @done           ; not equal to $FF, then done
     inx                 ; else, increment counter
-    cpx #128            ; threshodl reached?
+    cpx #128            ; threshold reached?
     beq @fail           ; upon 128 attempts, fail
     jmp @tryagain
 @done:

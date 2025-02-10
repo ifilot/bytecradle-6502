@@ -96,7 +96,7 @@ parsecmd:
     cmp #'A'
     beq cmdasmfar       ; disassemble memory?
     cmp #'S'
-    beq cmdtestsdcard   ; test SD-card
+    beq cmdsdfar        ; test SD-card
     rts
 
 ;-------------------------------------------------------------------------------
@@ -153,6 +153,12 @@ cmdchrambank:
 @str:
     .asciiz "Changing RAM bank to: "
 
+cmdsdfar:
+    jmp cmdtestsdcard
+
+exit_invalid:
+    rts
+
 cmdtestsdcard:
     jsr newline
     lda #>@str
@@ -161,13 +167,20 @@ cmdtestsdcard:
     jsr newline
     jsr init_sd
     jsr sdcmd00
+    bcs @exit
     jsr sdcmd08
+    bcs @exit
+    jsr sdacmd41
+    bcs @exit
+    jsr sdcmd58
+    bcs @exit
+    jsr sdcmd17
+@exit:
+    jsr close_sd
     rts
 @str:
     .asciiz "Testing SDCARD routines."
 
-exit_invalid:
-    rts
 
 ;-------------------------------------------------------------------------------
 ; HEX4TOSTART routine
