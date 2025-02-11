@@ -307,5 +307,5 @@ putchar:
 @inner:
     dec             ; decrement A; 2 cycles
     bne @inner      ; check if zero; 3 cycles
-    pla
+    pla             ; retrieve A from stack
     rts

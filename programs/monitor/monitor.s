@@ -165,22 +165,43 @@ cmdtestsdcard:
     ldx #<@str
     jsr putstr
     jsr newline
-    jsr init_sd
+    ldx #0              ; attempt counter
+@tryagain:
+    phx                 ; push attempt counter onto stack
+    jsr init_sd         ; open SD-card
     jsr sdcmd00
-    bcs @exit
+    bcs @fail
     jsr sdcmd08
-    bcs @exit
+    bcs @fail
     jsr sdacmd41
-    bcs @exit
+    bcs @fail
     jsr sdcmd58
-    bcs @exit
+    bcs @fail
     jsr sdcmd17
-@exit:
+    jsr close_sd
+    lda #>@attemptstr
+    ldx #<@attemptstr
+    jsr putstr
+    pla                 ; retrieve attempt counter
+    inc
+    jsr puthex
+    rts
+@fail:
+    plx                 ; retrieve counter
+    inx                 ; increment attempt counter
+    cpx #5              ; make 5 attempts to open SD-card
+    bne @tryagain       ; if not 5, try again
+    lda #>@errorstr
+    ldx #<@errorstr
+    jsr putstr          ; print error string
     jsr close_sd
     rts
 @str:
     .asciiz "Testing SDCARD routines."
-
+@errorstr:
+    .asciiz "Failed to open SDCARD."
+@attemptstr:
+    .asciiz "Attempts required: "
 
 ;-------------------------------------------------------------------------------
 ; HEX4TOSTART routine
@@ -410,9 +431,9 @@ hexdump:
 @nextline:
     jsr newline         ; start with a new line (first segment: addr)
     lda MAHB            ; load high byte of memory address
-    jsr puthex        ; print it
+    jsr puthex          ; print it
     lda MALB            ; load low byte of memory address
-    jsr puthex        ; print it
+    jsr puthex          ; print it
     lda #' '            ; load space
     jsr putchar         ; print it twice
     jsr putchar
@@ -420,7 +441,7 @@ hexdump:
 @nextbyte:
     phy                 ; put y on stack as puthex garbles it
     lda (MALB),y        ; load byte
-    jsr puthex        ; print byte in hex format, garbles y
+    jsr puthex          ; print byte in hex format, garbles y
     lda #' '            ; add space
     jsr putchar
     ply                 ; restore y from stack
@@ -433,8 +454,8 @@ hexdump:
 @skip:
     cpy #16             ; check if 16 bytes are printed
     bne @nextbyte       ; if not, next byte
-    lda #' '            ; else space
-    jsr putchar
+    ;lda #' '            ; else space
+    ;jsr putchar
     lda #'|'            ; add nice delimeter
     jsr putchar
     ldy #0              ; number of bytes to print (third segment)

@@ -26,6 +26,11 @@ init_sd:
     jsr sdpulse
     rts
 
+;-------------------------------------------------------------------------------
+; CLOSE_SD ROUTINE
+;
+; Close the connectionn to the SD-card
+;-------------------------------------------------------------------------------
 close_sd:
     lda SELECT
     sta SELECT
@@ -222,14 +227,14 @@ sdcmd17:
     lda #'.'
     jsr putchar
     pla                 ; retrieve inner counter from stack in ACC
-    jsr putdec
+    jsr putdec          ; print value
     jsr newline
     lda #>@str3
     ldx #<@str3
-    jsr putstr
-    jsr readblock
-    jsr newline
-    jsr close_command
+    jsr putstr          ; print pre-checksum string
+    jsr readblock       ; read block, which will also output checksum
+    jsr newline         ; new line
+    jsr close_command   ; close interface
     lda #>@str4
     ldx #<@str4
     jsr putstrnl
@@ -383,6 +388,11 @@ poll_card:
     sec                 ; set carry on fail
     rts
 
+;-------------------------------------------------------------------------------
+; OPEN_COMMAND routine
+;
+; Flush buffers before every command
+;-------------------------------------------------------------------------------
 open_command:
     lda #$FF
     sta SERIAL
@@ -393,6 +403,11 @@ open_command:
     jsr wait
     rts
 
+;-------------------------------------------------------------------------------
+; CLOSE_COMMAND routine
+;
+; Flush buffers after every command
+;-------------------------------------------------------------------------------
 close_command:
     ldx #$FF
     stx SERIAL
