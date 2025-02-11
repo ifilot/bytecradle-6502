@@ -35,11 +35,11 @@ close_sd:
 ;-------------------------------------------------------------------------------
 ; SDPULSE
 ;
-; Send 96 pulses to the SD-card to reset it
+; Send 24x8 pulses to the SD-card to reset it
 ;-------------------------------------------------------------------------------
 sdpulse:
     lda #$FF
-    ldx #12
+    ldx #24
 @nextpulse:
     sta CLKSTART
     jsr wait
