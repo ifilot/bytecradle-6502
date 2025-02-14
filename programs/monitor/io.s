@@ -13,6 +13,7 @@
 .export printnibble
 .export putchar
 .export getchar
+.export getpos
 
 .PSC02
 
@@ -23,7 +24,8 @@
 ;-------------------------------------------------------------------------------
 ; GETCHAR routine
 ;
-; retrieve a char from the key buffer
+; retrieve a char from the key buffer in the accumulator
+; Garbles: A,X
 ;-------------------------------------------------------------------------------
 getchar:
     lda TBPL            ; load textbuffer left pointer
@@ -225,44 +227,49 @@ puthex:
 ;
 ; Conserves:    A
 ; Garbles:      X
-; Uses:         BUF1
+; Uses:         BUF1,BUF2
 ;-------------------------------------------------------------------------------
 putdec:
-    pha
+    pha             ; put A on stack
     sta BUF1        ; store original value in BUF1
     ldx #0
 @loop100:
-    sbc #100        ; subtract 100
+    sbc #100        ; subtract 100, if result becomes negative, carry will be set
     inx             ; count how many times 100 was removed
     bcs @loop100    ; if not negative, do again
     adc #100        ; undo last subtraction
-    dex
-    cpx #0
-    beq @skip100
+    dex             ; decrement subtraction counter
+    stx BUF2        ; store 100's place in BUF2
+    cpx #0          ; check if equal to zero
+    beq @skip100    ; if so, do not print a character
     sta BUF1        ; store remainder in BUF1
-    txa             ; move hundreds to A
-    ora #$30        ; convert to ascii
-    jsr putchar
+    jsr @print
     lda BUF1        ; retrieve BUF1
 @skip100:
     ldx #0          ; clear tens digit counter
 @loop10:
-    sbc #10
-    inx
+    sbc #10         ; subtract 10, if result becomes negative, carry will be set
+    inx             ; increment subtraction counter
     bcs @loop10     ; if not negative, try once more
     adc #10         ; undo last subtraction
-    dex
-    cpx #0
-    beq @skip10
-    sta BUF1
-    txa             ; move tenths to A
-    ora #$30        ; conver to ascii
-    jsr putchar
-    lda BUF1
+    dex             ; decrement tenths counter
+    sta BUF1        ; store remainder in BUF1
+    txa             ; transfer counter to A
+    ora BUF2        ; compare with previous counter
+    cmp #0          ; check if BOTH are zero
+    beq @skip10     ; if so, skip printing
+    tax             ; put acc in x for print routine
+    jsr @print      ; and print
 @skip10:
-    adc #$30        ; print remaining value
+    ldx BUF1        ; retrieve remainder from buffer
+    jsr @print
+    pla             ; retrieve original value
+    rts
+@print:
+    txa
+    clc
+    adc #'0'
     jsr putchar
-    pla
     rts
 
 ;-------------------------------------------------------------------------------
@@ -284,6 +291,31 @@ printnibble:
 @exit:
     jsr putchar
     rts
+
+;-------------------------------------------------------------------------------
+; CURPOS routine
+;
+; Get current cursor position from VT100-style terminal
+;-------------------------------------------------------------------------------
+getpos:
+    lda #>@str
+    lda #<@str
+    jsr putstr              ; send command string to terminal
+
+    ldy #0
+@nextchar:
+    jsr getchar
+    cmp #0
+    beq @nextchar
+    cmp #'R'
+    beq @exit
+    sta $1000,y
+    iny
+    jmp @nextchar
+@exit:
+    rts
+@str:
+    .byte ESC,"[6n]",$00
 
 ;-------------------------------------------------------------------------------
 ; putchar routine

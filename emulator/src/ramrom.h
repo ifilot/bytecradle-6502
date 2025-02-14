@@ -32,8 +32,8 @@
 
 #include "vrEmu6502/vrEmu6502.h"
 
-#define ACIA_DATA 0x9F04
-#define ACIA_STAT 0x9F05
+#define ACIA_DATA 0x7F04
+#define ACIA_STAT 0x7F05
 
 extern vrEmu6502Interrupt *irq;
 extern char keybuffer[0x10];

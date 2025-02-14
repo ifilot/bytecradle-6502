@@ -19,3 +19,4 @@
 .import printnibble
 .import putchar
 .import getchar
+.import getpos

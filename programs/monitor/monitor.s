@@ -97,6 +97,8 @@ parsecmd:
     beq cmdasmfar       ; disassemble memory?
     cmp #'S'
     beq cmdsdfar        ; test SD-card
+    cmp #'P'
+    beq cmdprintnumfar  ; test printing numbers
     rts
 
 ;-------------------------------------------------------------------------------
@@ -156,6 +158,10 @@ cmdchrambank:
 cmdsdfar:
     jmp cmdtestsdcard
 
+cmdprintnumfar:
+    jsr printnumtest
+    rts
+
 exit_invalid:
     rts
 
@@ -202,6 +208,10 @@ cmdtestsdcard:
     .asciiz "Failed to open SDCARD."
 @attemptstr:
     .asciiz "Attempts required: "
+
+cmdgetpos:
+    jsr getpos
+    rts
 
 ;-------------------------------------------------------------------------------
 ; HEX4TOSTART routine
@@ -389,6 +399,32 @@ hex42:
     rts
 
 ;-------------------------------------------------------------------------------
+; PRINTNUMTEST routine
+;
+; Simple test to check whether numbers are correctly printed
+;-------------------------------------------------------------------------------
+printnumtest:
+    lda #0
+@next:
+    jsr putdec          ; a is conserved
+    jsr newline
+    inc                 ; increment acc
+    cmp #26             ; only print until (and including) 25
+    bne @next
+    lda #30             ; load 30
+    jsr putdec
+    jsr newline
+    lda #40
+@next2:
+    jsr putdec          ; start printing from 30 with increments of 10
+    jsr newline
+    clc
+    adc #10
+    cmp #120
+    bne @next2
+    rts
+
+;-------------------------------------------------------------------------------
 ; HEXDUMP routine
 ;-------------------------------------------------------------------------------
 hexdump:
@@ -398,8 +434,19 @@ hexdump:
     lda STARTADDR+1
     sta MAHB
 
+    ; check if 6th command character is ":", if so, only print 16 lines
+    lda CMDBUF+5
+    cmp #':'
+    bne @skiplinecalc
+
+    ; check if command length is exactly 10, if not, only print 16 lines
+    ; starting from the STARTADDR
+    lda CMDLENGTH
+    cmp #10
+    bne @skiplinecalc
+
     ; calculate the number of lines to be printed
-    sec                 ; clear carry flag before starting subtraction
+    sec                 ; set carry flag before starting subtraction
     lda ENDADDR         ; load low byte of end address
     sbc STARTADDR       ; subtract low byte of end address
     sta NRLINES
@@ -428,6 +475,11 @@ hexdump:
     lsr
     lsr
     sta NRLINES+1       ; store
+    jmp @nextline
+@skiplinecalc:
+    stz NRLINES+1       ; high byte
+    lda #32
+    sta NRLINES         ; store number of lines low byte
 @nextline:
     jsr newline         ; start with a new line (first segment: addr)
     lda MAHB            ; load high byte of memory address
@@ -454,15 +506,15 @@ hexdump:
 @skip:
     cpy #16             ; check if 16 bytes are printed
     bne @nextbyte       ; if not, next byte
-    ;lda #' '            ; else space
-    ;jsr putchar
+    lda #' '            ; else space
+    jsr putchar
     lda #'|'            ; add nice delimeter
     jsr putchar
     ldy #0              ; number of bytes to print (third segment)
 @nextchar:
     phy                 ; y will be garbed in putchar routine
     lda (MALB),y        ; load byte again
-    cmp #$1F            ; check if value is less than $20
+    cmp #$20            ; check if value is less than $20
     bcc @printdot       ; if so, print a dot
     cmp #$7F            ; check if value is greater than or equal to $7F
     bcs @printdot       ; if so, print a dot

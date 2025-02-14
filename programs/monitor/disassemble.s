@@ -208,7 +208,7 @@ disassembleline:
 @zpy:                       ; print zeropage,x ($0C)
     jsr @putiny
     rts
-@zpind:                     ; print zeropage indirect ($0D)        
+@zpind:                     ; print zeropage indirect ($0D)
     lda #'('
     jsr putchar
     jsr @putop2
@@ -308,11 +308,8 @@ disassembleline:
 ; BUF8 - number of operands (bytes)
 ;-------------------------------------------------------------------------------
 printhexvals:
-    lda #>@abposstr
-    ldx #<@abposstr
-    jsr putstr
+    jsr puttab
 
-    ; print opt code
     lda BUF7
     jsr puthex
 
@@ -332,6 +329,3 @@ printhexvals:
     jsr puthex
 @exit:
     rts
-
-@abposstr:
-    .byte ESC, "[25G", $00
