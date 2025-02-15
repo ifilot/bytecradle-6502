@@ -1,3 +1,4 @@
+
 /**************************************************************************
  *                                                                        *
  *   Author: Ivo Filot <ivo@ivofilot.nl>                                  *
@@ -18,71 +19,15 @@
  *                                                                        *
  **************************************************************************/
 
-#pragma once
+#ifndef _CRC16_H
+#define _CRC16_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdbool.h>
 #include <stddef.h>
-#include <stdio.h>
-#include <termios.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <string.h>
-
-#include "vrEmu6502/vrEmu6502.h"
-#include "crc16.h"
-
-#define ACIA_DATA 0x7F04
-#define ACIA_STAT 0x7F05
-#define SERIAL    0x7F20
-#define CLKSTART  0x7F21
-
-extern vrEmu6502Interrupt *irq;
-extern char keybuffer[0x10];
-extern char* keybuffer_ptr;
+#include <stdint.h>
 
 /**
- * @brief Initialize ROM from file
- * 
- * @param filename file URL
+ * Calculate CRC16 checksum using XMODEM polynomial
  */
-void initrom(const char *filename);
+uint16_t crc16_xmodem(const uint8_t *data, size_t length);
 
-/**
- * @brief Open file pointer to SD card image
- *
- * @param filename file URL
- */
-void init_sd(const char *filename);
-
-/**
- * Close SD-card pointer
- */
-void close_sd();
-
-/**
- * @brief Read memory function
- * 
- * This function also needs to handle any memory mapped I/O devices
- * 
- * @param addr memory address
- * @param isDbg 
- * @return uint8_t value at memory address
- */
-uint8_t memread(uint16_t addr, bool isDbg);
-
-/**
- * @brief Write to memory function
- * 
- * @param addr memory address
- * @param val value to write
- */
-void memwrite(uint16_t addr, uint8_t val);
-
-/*
- * Check buffer to see if a valid SD command has been sent,
- * if so, appropriately populate the miso buffer
- */
-void digest_sd();
+#endif

@@ -10,10 +10,23 @@
 ; Initialize the system
 ;-------------------------------------------------------------------------------
 init_system:
+    jsr clear_zp
     jsr init_acia
     jsr init_screen
     jsr printtitle
     cli                 ; enable interrupts
+    rts
+
+;-------------------------------------------------------------------------------
+; Clear the lower part of the zero page which is used by the BIOS
+;-------------------------------------------------------------------------------
+clear_zp:
+    ldx #0
+@next:
+    stz $00,x
+    inx
+    cpx #$20
+    bne @next
     rts
 
 ;-------------------------------------------------------------------------------

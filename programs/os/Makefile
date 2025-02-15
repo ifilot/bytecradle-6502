@@ -25,10 +25,10 @@ main.o: main.s
 	$(AS) main.s -o main.o
 
 flash: os.bin
-	picoflash -i os.bin -w -b 2
+	picoflash -i os.bin -w -b 0
 
 run: os.bin
-	../../emulator/build/bc6502emu os.bin
+	../../emulator/build/bc6502emu os.bin ../../emulator/script/sdcard.img
 
 clean:
 	rm -v main.s *.o *.bin

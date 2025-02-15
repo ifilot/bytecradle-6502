@@ -41,13 +41,14 @@ VrEmu6502 *cpu65c02;
  */
 int main(int argc, char *argv[]) {
     // check command-line arguments
-    if(argc != 2) {
+    if(argc != 3) {
         fprintf(stderr, "Incorrect number of parameters!\n");
         exit(EXIT_FAILURE);
     }
 
     // load the ROM memory using external file
     initrom(argv[1]);
+    init_sd(argv[2]);
 
     // modify terminal settings, but store original settings
     struct termios original;
@@ -96,6 +97,9 @@ int main(int argc, char *argv[]) {
         vrEmu6502Destroy(cpu65c02);
         cpu65c02 = NULL;
     }
+
+    // close pointer to SD-card
+    close_sd();
 
     // restore original terminal settings
     term_restore_default(&original);

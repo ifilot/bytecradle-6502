@@ -8,7 +8,7 @@
 .export   __STARTUP__ : absolute = 1        ; Mark as startup
 .import   __RAM_START__, __RAM_SIZE__       ; Linker generated
 
-.import    copydata, zerobss, initlib, donelib, init_system
+.import    copydata, zerobss, initlib, donelib, init_system, boot_sd
 
 .include  "zeropage.inc"
 
@@ -40,6 +40,7 @@ _init:
 ; Call main()
 
           jsr init_system
+          jsr boot_sd
           JSR     _main
 
 ; ---------------------------------------------------------------------------
