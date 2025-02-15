@@ -9,6 +9,7 @@
 .include "sdcard.inc"
 
 .export boot
+.export clearcmdbuf
 
 .segment "BOOT"
 
@@ -55,9 +56,7 @@ exitloop:
 ; user has pressed RETURN: try to interpret command execute it
 exec:
     jsr parsecmd        ; parse the command
-    stz TBPL            ; reset text buffer
-    stz TBPR
-    stz CMDLENGTH       ; reset command length
+    jsr clearcmdbuf     ; clean the command line buffer
     jsr newcmdline      ; provide new command line
     jmp loop
 
@@ -212,6 +211,37 @@ cmdtestsdcard:
 cmdgetpos:
     jsr getpos
     rts
+
+;-------------------------------------------------------------------------------
+; CLEANCMDBUF routine
+;
+; Clean the command buffer
+;-------------------------------------------------------------------------------
+clearcmdbuf:
+    ldx #0
+@next:
+    stz CMDBUF,x
+    inx
+    cpx #10
+    bne @next
+    stz CMDLENGTH
+    stz TBPL            ; reset text buffer
+    stz TBPR
+    rts
+
+;-------------------------------------------------------------------------------
+; HELLOWORLD routine
+;
+; Prints helloworld to the screen
+;-------------------------------------------------------------------------------
+helloworldtest:
+    jsr newline
+    lda #>@str
+    ldx #<@str
+    jsr putstrnl
+    rts
+@str:
+    .asciiz "Hello World!"
 
 ;-------------------------------------------------------------------------------
 ; HEX4TOSTART routine
@@ -478,7 +508,7 @@ hexdump:
     jmp @nextline
 @skiplinecalc:
     stz NRLINES+1       ; high byte
-    lda #32
+    lda #31
     sta NRLINES         ; store number of lines low byte
 @nextline:
     jsr newline         ; start with a new line (first segment: addr)
@@ -544,7 +574,7 @@ hexdump:
     sbc #1              ; subtract 1 from low byte of NRLINES
     sta NRLINES         ; store
     bcs @nextlinefar    ; if carry set, no borrow and continue
-    dec NRLINES+1
+    dec NRLINES+1       ; else, also decrement high byte
 @nextlinefar:
     jmp @nextline
 @exit:

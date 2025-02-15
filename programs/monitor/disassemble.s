@@ -47,6 +47,9 @@ rts
 ;
 ; Completely reset the line and print the instruction
 ;
+; MEMORY:
+; BUF1 - is used by a number of I/O routines, so do not touch
+;
 ; BUF2 - low byte or value
 ; BUF3 - upper byte or value
 ; BUF6 - address mode
@@ -115,9 +118,10 @@ disassembleline:
     lda (STARTADDR),y
     sta BUF3
 
-@continue:
-    ; print mnemonic
+@continue:                  ; print mnemononic
     ldy #0
+    lda #4
+    sta BUF9                ; store number of characters printed, used for padding
 @next:
     lda (BUF4),y
     jsr putchar
@@ -128,51 +132,50 @@ disassembleline:
     beq @printoperands
     lda #' '                ; if not, print a space
     jsr putchar
-
-    ; now print operands
-@printoperands:
+    inc BUF9
+@printoperands:             ; print operands
     ldy #4
     lda (BUF4),y            ; grab number of operands
     sta BUF8                ; store in BUF8
     cmp #1                  ; only one byte?
     beq @nothing
 
+; note: the code below can be optimized using a look-up table
     ldy #5
-    lda (BUF4),y             ; load address mode
-    cmp #$01                 ; absolute address mode?
+    lda (BUF4),y            ; load address mode
+    cmp #$01                ; absolute address mode?
     beq @abs
-    cmp #$02                 ; absolute, x?
+    cmp #$02                ; absolute, x?
     beq @absx
-    cmp #$03                 ; absolute, y?
+    cmp #$03                ; absolute, y?
     beq @absy
-    cmp #$04                 ; accumulator
+    cmp #$04                ; accumulator
     beq @nothing
-    cmp #$05                 ; immediate?
+    cmp #$05                ; immediate?
     beq @im
-    cmp #$06                 ; indirect x
+    cmp #$06                ; indirect x
     beq @indx
-    cmp #$07                 ; indirect y
+    cmp #$07                ; indirect y
     beq @indy
-    cmp #$08                 ; indirect (only for jump)
+    cmp #$08                ; indirect (only for jump)
     beq @ind
-    cmp #$09                 ; relative?
+    cmp #$09                ; relative?
     beq @relzp
-    cmp #$0A                 ; zero page?
+    cmp #$0A                ; zero page?
     beq @relzp
-    cmp #$0B                 ; zero page,x
+    cmp #$0B                ; zero page,x
     beq @zpx
-    cmp #$0C                 ; zero page,y
+    cmp #$0C                ; zero page,y
     beq @zpy
-    cmp #$0D                 ; zero page indirect
+    cmp #$0D                ; zero page indirect
     beq @zpind
-    cmp #$0E                 ; absoluteindexedindirect
+    cmp #$0E                ; absoluteindexedindirect
     beq @absind
-    cmp #$0F                 ; zeropagerelative
+    cmp #$0F                ; zeropagerelative
     beq @zprel
-    jmp @nothing
+    rts                     ; print nothing, just return
 
-@nothing:                   ; print nothing ($00, $04)
-    jsr puttab
+@nothing:                   ; print nothing
     rts
 @abs:                       ; print absolute ($01)
     jsr @putop4
@@ -189,6 +192,7 @@ disassembleline:
     lda #'#'
     jsr putchar
     jsr @putop2
+    inc BUF9                ; increment buffer for '#'
     rts
 @indx:                      ; print indirect x ($06)
     jsr @putinx
@@ -214,6 +218,8 @@ disassembleline:
     jsr @putop2
     lda #')'
     jsr putchar
+    lda #2
+    jsr @addbuf
     rts
 @absind:                    ; print absolute indexed indirect ($0E)
     lda #'('
@@ -221,6 +227,9 @@ disassembleline:
     jsr @putcommax
     lda #')'
     jsr putchar
+    lda #2
+    jsr @addbuf
+    rts
 @zprel:
     lda BUF3
     jsr puthex
@@ -228,12 +237,16 @@ disassembleline:
     jsr putchar
     lda BUF2
     jsr puthex
+    lda #5
+    jsr @addbuf
     rts
 
 ; print address low byte
 @putop2:
     lda BUF2
     jsr puthex
+    lda #2
+    jsr @addbuf
     rts
 
 ; print address
@@ -242,6 +255,8 @@ disassembleline:
     jsr puthex
     lda BUF2
     jsr puthex
+    lda #4
+    jsr @addbuf
     rts
 
 ; print address between round parentheses
@@ -251,6 +266,8 @@ disassembleline:
     jsr @putop4
     lda #')'
     jsr putchar
+    lda #6
+    jsr @addbuf
     rts
 
 ; print address between round parentheses
@@ -261,6 +278,8 @@ disassembleline:
     jsr @putcommax
     lda #')'
     jsr putchar
+    lda #6
+    jsr @addbuf
     rts
 
 ; print address between round parentheses
@@ -271,6 +290,8 @@ disassembleline:
     lda #')'
     jsr putchar
     jsr @putcommay
+    lda #6
+    jsr @addbuf
     rts
 
 ; print ",X"
@@ -279,6 +300,8 @@ disassembleline:
     jsr putchar
     lda #'X'
     jsr putchar
+    lda #2
+    jsr @addbuf
     rts
 
 ; print ",Y"
@@ -287,6 +310,15 @@ disassembleline:
     jsr putchar
     lda #'Y'
     jsr putchar
+    lda #2
+    jsr @addbuf
+    rts
+
+; auxiliary routine to increment number of chars printed
+@addbuf:
+    clc
+    adc BUF9
+    sta BUF9
     rts
 
 @clearline:
@@ -306,13 +338,20 @@ disassembleline:
 ; BUF6 - address mode
 ; BUF7 - optcode
 ; BUF8 - number of operands (bytes)
+; BUF9 - number of characters printed
 ;-------------------------------------------------------------------------------
 printhexvals:
-    jsr puttab
-
+    lda #25
+    sec
+    sbc BUF9
+    tax
+    lda #' '
+@nextspace:
+    jsr putchar
+    dex
+    bne @nextspace
     lda BUF7
     jsr puthex
-
     lda BUF8
     cmp #1
     beq @exit

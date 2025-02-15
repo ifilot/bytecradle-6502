@@ -333,7 +333,7 @@ getpos:
 putchar:
     pha             ; preserve A
     sta ACIA_DATA   ; write the character to the ACIA data register
-    lda #174        ; initialize inner loop
+    lda #175        ; initialize inner loop
 @inner:
     dec             ; decrement A; 2 cycles
     bne @inner      ; check if zero; 3 cycles

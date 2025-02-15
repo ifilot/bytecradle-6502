@@ -8,7 +8,7 @@ CC      = cc65
 SRCS	:= $(wildcard *.s)
 OBJS	:= $(SRCS:.s=.o)
 
-%.o: %.s
+%.o: %.s *.inc
 	$(AS) $< -o $@
 
 monitor.bin: $(OBJS) rom.cfg

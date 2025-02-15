@@ -15,16 +15,16 @@
 ; key buffer to be parsed later.
 ;-------------------------------------------------------------------------------
 isr:
-    pha			    ; put A on stack
-    lda ACIA_STAT	; check status
-    and #$08		; check for bit 3
-    beq isr_exit	; if not set, exit isr
-    lda ACIA_DATA	; load byte
+    pha             ; put A on stack
+    lda ACIA_STAT   ; check status
+    and #$08        ; check for bit 3
+    beq isr_exit    ; if not set, exit isr
+    lda ACIA_DATA   ; load byte
     phx
-    ldx TBPR		; load pointer index
+    ldx TBPR        ; load pointer index
     sta TB,x        ; store character
     inc TBPR
-    plx			    ; recover X
+    plx             ; recover X
 isr_exit:
-    pla			    ; recover A
+    pla             ; recover A
     rti

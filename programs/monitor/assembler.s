@@ -5,6 +5,7 @@
 .import mnemonics
 .import disassembleline
 .import printhexvals
+.import clearcmdbuf
 
 .export assemble
 
@@ -22,7 +23,7 @@ assemble:
     stz BUF2                ; clear buffer
     stz BUF3
     stz BUF4
-    jsr clearbuffer
+    jsr clearcmdbuf
 
     ; print address
     jsr puttab
@@ -39,6 +40,7 @@ assemble:
     ; fill the command buffer
 @retr:
     jsr getchar
+    cmp #0
     beq @retr
     cmp #$0D                ; check for enter
     beq @exec
@@ -72,7 +74,7 @@ assemble:
     beq @exit
     jsr findmnemonic
     bcs @tryagain           ; let user try again on error
-    
+
     ; store everything
     ldy #0
     lda BUF7                ; load opt code
@@ -92,8 +94,19 @@ assemble:
     lda BUF3                ; else store BUF3
     sta (STARTADDR),y
 @skip:
-    jsr disassembleline
-    jsr printhexvals
+    jsr puttab
+    ldy #0
+@nb:
+    lda (STARTADDR),y
+    jsr puthex
+    lda #' '
+    jsr putchar
+    iny
+    cpy #3
+    bne @nb
+    
+    ;jsr disassembleline
+    ;jsr printhexvals
 
     ; increment address pointer
     lda STARTADDR
@@ -106,7 +119,17 @@ assemble:
 
 @tryagain:
     jsr newline
-    jsr clearbuffer
+    ldx #0
+@nextbyte:
+    lda CMDBUF,x
+    jsr puthex
+    lda #' '
+    jsr putchar
+    inx
+    cpx #$10
+    bne @nextbyte
+    jsr newline
+    jsr clearcmdbuf
     jmp @nextinstruction
 @exit:
     rts
@@ -480,34 +503,18 @@ getoptcode:
     rts
 
 ;-------------------------------------------------------------------------------
-; CLEARBUFFER routine
-;
-; Clear the command buffer
-;-------------------------------------------------------------------------------
-clearbuffer:
-    stz CMDLENGTH           ; zero the buffer length
-    ldy #0                  ; set counter
-    lda #0                  ; set value
-@next:
-    sta CMDBUF,y            ; write to command buffer
-    iny                     ; increment
-    cpy #$10                ; check whether all cells are written
-    bne @next               ; if not, go to next byte
-    rts
-
-;-------------------------------------------------------------------------------
 ; ISHEX routine
 ;
 ; Checks whether value in register A is hex
 ;-------------------------------------------------------------------------------
 ishex:
-    cmp #$30      
+    cmp #$30
     bcc @not_hex_digit
-    cmp #$3A      
+    cmp #$3A
     bcc @is_hex_digit
-    cmp #$41      
+    cmp #$41
     bcc @not_hex_digit
-    cmp #$47      
+    cmp #$47
     bcc @is_hex_digit
 @not_hex_digit:
     sec
