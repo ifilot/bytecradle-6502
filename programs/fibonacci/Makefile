@@ -28,3 +28,6 @@ vectors.o: vectors.s
 
 flash: fibonacci.bin
 	picoflash -i fibonacci.bin -w -b 2
+
+run: fibonacci.bin
+	../../emulator/build/bc6502emu fibonacci.bin

@@ -34,16 +34,17 @@ L0017:
 	jsr     pusha0
 	jsr     pusha0
 	jsr     push0
-	jsr     decsp5
+	ldy     #$0A
+	jsr     subysp
 	lda     #$00
 	jsr     pusha
-L0020:	sta     (sp)
+L0025:	sta     (sp)
 	cmp     #$14
-	bcs     L001F
-	ldy     #$09
+L0024:	bcs     L0024
+	ldy     #$0E
 	jsr     ldaxysp
 	clc
-	ldy     #$0A
+	ldy     #$0F
 	adc     (sp),y
 	pha
 	txa
@@ -51,15 +52,15 @@ L0020:	sta     (sp)
 	adc     (sp),y
 	tax
 	pla
-	ldy     #$06
+	ldy     #$0B
 	jsr     staxysp
-	ldy     #$09
+	ldy     #$0E
 	jsr     ldaxysp
-	ldy     #$0A
+	ldy     #$0F
 	jsr     staxysp
-	ldy     #$07
+	ldy     #$0C
 	jsr     ldaxysp
-	ldy     #$08
+	ldy     #$0D
 	jsr     staxysp
 	lda     #$01
 	jsr     leaa0sp
@@ -67,20 +68,16 @@ L0020:	sta     (sp)
 	lda     #<(L0017)
 	ldx     #>(L0017)
 	jsr     pushax
-	ldy     #$11
+	ldy     #$16
 	jsr     pushwysp
 	ldy     #$06
 	jsr     _sprintf
 	lda     #$01
 	jsr     leaa0sp
 	jsr     _stringout
-	ldx     #$00
 	lda     (sp)
 	ina
-	bra     L0020
-L001F:	lda     #$00
-	ldy     #$0C
-	jmp     addysp
+	bra     L0025
 
 .endproc
 

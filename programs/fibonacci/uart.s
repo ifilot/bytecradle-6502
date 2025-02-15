@@ -4,10 +4,10 @@
 
 .PSC02
 
-.define ACIA_DATA       $9F04
-.define ACIA_STAT       $9F05
-.define ACIA_CMD        $9F06
-.define ACIA_CTRL       $9F07
+.define ACIA_DATA       $7F04
+.define ACIA_STAT       $7F05
+.define ACIA_CMD        $7F06
+.define ACIA_CTRL       $7F07
 
 .define STRLB		$10
 .define STRHB		$11
