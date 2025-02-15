@@ -223,54 +223,52 @@ puthex:
 ;-------------------------------------------------------------------------------
 ; PUTDEC routine
 ;
-; Print a byte loaded in A to the screen in decimal formatting.
+; Print a byte loaded in A to the screen in decimal formatting. Do not prepend
+; the number with any spaces nor with any zeros.
 ;
 ; Conserves:    A
-; Garbles:      X
+; Garbles:      X,Y
 ; Uses:         BUF1,BUF2
 ;-------------------------------------------------------------------------------
 putdec:
-    pha             ; put A on stack
-    sta BUF1        ; store original value in BUF1
-    ldx #0
-@loop100:
-    sbc #100        ; subtract 100, if result becomes negative, carry will be set
-    inx             ; count how many times 100 was removed
-    bcs @loop100    ; if not negative, do again
-    adc #100        ; undo last subtraction
-    dex             ; decrement subtraction counter
-    stx BUF2        ; store 100's place in BUF2
-    cpx #0          ; check if equal to zero
-    beq @skip100    ; if so, do not print a character
-    sta BUF1        ; store remainder in BUF1
-    jsr @print
-    lda BUF1        ; retrieve BUF1
-@skip100:
-    ldx #0          ; clear tens digit counter
-@loop10:
-    sbc #10         ; subtract 10, if result becomes negative, carry will be set
-    inx             ; increment subtraction counter
-    bcs @loop10     ; if not negative, try once more
-    adc #10         ; undo last subtraction
-    dex             ; decrement tenths counter
-    sta BUF1        ; store remainder in BUF1
-    txa             ; transfer counter to A
-    ora BUF2        ; compare with previous counter
-    cmp #0          ; check if BOTH are zero
-    beq @skip10     ; if so, skip printing
-    tax             ; put acc in x for print routine
-    jsr @print      ; and print
-@skip10:
-    ldx BUF1        ; retrieve remainder from buffer
-    jsr @print
-    pla             ; retrieve original value
-    rts
-@print:
-    txa
-    clc
-    adc #'0'
+    pha                 ; put A on the stack
+    ldx #1
+    stx BUF2
+    inx
+    ldy #$40
+@l1:
+    sty BUF1
+    lsr
+@l2:
+    rol
+    bcs @l3
+    cmp @vals,x
+    bcc @l4
+@l3:
+    sbc @vals,x
+    sec
+@l4:
+    rol BUF1
+    bcc @l2
+    tay
+    cpx BUF2
+    lda BUF1
+    bcc @l5
+    beq @l6
+    stx BUF2
+@l5:
+    eor #$30
     jsr putchar
+@l6:
+    tya
+    ldy #$10
+    dex
+    bpl @l1
+    pla                 ; retrieves A from the stack
     rts
+
+@vals:
+    .byte 128,160,200
 
 ;-------------------------------------------------------------------------------
 ; PRINTNIBBLE routine
