@@ -137,7 +137,7 @@ putstrnl:
 ;-------------------------------------------------------------------------------
 ; CHAR2NUM routine
 ;
-; convert characters stored in a,x to a single number stored in A;
+; convert characters stored in A,X to a single number stored in A;
 ; sets C on an error, assume A contains high nibble and X contains low nibble
 ;-------------------------------------------------------------------------------
 char2num:
@@ -326,15 +326,16 @@ getpos:
 ; where the 5 corresponds to the combination of "DEC" and "BNE" taking 5 clock
 ; cyles.
 ;
-;  4 MHz    :  69
-; 10 MHz    : 174
-; 12 MHz    : 208 -> does not work
-; 14.31 MHz : 249 -> does not work
+;  4.000 MHz    :  69
+;  5.120 MHz    :  89
+; 10.000 MHz    : 174
+; 12.000 MHz    : 208 -> does not work
+; 14.310 MHz    : 249 -> does not work
 ;-------------------------------------------------------------------------------
 putchar:
     pha             ; preserve A
     sta ACIA_DATA   ; write the character to the ACIA data register
-    lda #69         ; initialize inner loop
+    lda #89         ; initialize inner loop
 @inner:
     dec             ; decrement A; 2 cycles
     bne @inner      ; check if zero; 3 cycles

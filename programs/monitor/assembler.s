@@ -108,16 +108,6 @@ assemble:
 
 @tryagain:
     jsr newline
-    ldx #0
-@nextbyte:
-    lda CMDBUF,x
-    jsr puthex
-    lda #' '
-    jsr putchar
-    inx
-    cpx #$10
-    bne @nextbyte
-    jsr newline
     jsr clearcmdbuf
     jmp @nextinstruction
 @exit:

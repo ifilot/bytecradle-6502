@@ -434,6 +434,11 @@ hex42:
 ; Simple test to check whether numbers are correctly printed
 ;-------------------------------------------------------------------------------
 printnumtest:
+    lda #$46
+    ldx #$46
+    jsr char2num
+    jsr puthex
+    jsr newline
     lda #0
 @next:
     jsr putdec          ; a is conserved
