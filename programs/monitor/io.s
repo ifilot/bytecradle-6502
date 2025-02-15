@@ -326,6 +326,7 @@ getpos:
 ; where the 5 corresponds to the combination of "DEC" and "BNE" taking 5 clock
 ; cyles.
 ;
+;  4 MHz    :  69
 ; 10 MHz    : 174
 ; 12 MHz    : 208 -> does not work
 ; 14.31 MHz : 249 -> does not work
@@ -333,7 +334,7 @@ getpos:
 putchar:
     pha             ; preserve A
     sta ACIA_DATA   ; write the character to the ACIA data register
-    lda #175        ; initialize inner loop
+    lda #69         ; initialize inner loop
 @inner:
     dec             ; decrement A; 2 cycles
     bne @inner      ; check if zero; 3 cycles

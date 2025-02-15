@@ -94,19 +94,8 @@ assemble:
     lda BUF3                ; else store BUF3
     sta (STARTADDR),y
 @skip:
-    jsr puttab
-    ldy #0
-@nb:
-    lda (STARTADDR),y
-    jsr puthex
-    lda #' '
-    jsr putchar
-    iny
-    cpy #3
-    bne @nb
-    
-    ;jsr disassembleline
-    ;jsr printhexvals
+    jsr disassembleline
+    jsr printhexvals
 
     ; increment address pointer
     lda STARTADDR
