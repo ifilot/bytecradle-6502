@@ -16,7 +16,7 @@ sbc.lib:
 
 os.bin: sbc.cfg sbc.lib $(OBJS) main.o
 	$(AR) a sbc.lib crt0.o
-	$(LD) -C sbc.cfg $(OBJS) -o os.bin sbc.lib
+	$(LD) -C sbc.cfg $(OBJS) -o os.bin sbc.lib -m sbc.map
 
 main.s: main.c
 	$(CC) -t none -O --cpu 65c02 main.c
@@ -29,3 +29,6 @@ flash: os.bin
 
 run: os.bin
 	../../emulator/build/bc6502emu os.bin
+
+clean:
+	rm -v main.s *.o *.bin

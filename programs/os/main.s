@@ -11,14 +11,9 @@
 	.importzp	tmp1, tmp2, tmp3, tmp4, ptr1, ptr2, ptr3, ptr4
 	.macpack	longbranch
 	.forceimport	__STARTUP__
-	.import		_putstr
-	.import		_init_sys
+	.import		_putch
+	.import		_getch
 	.export		_main
-
-.segment	"RODATA"
-
-L0009:
-	.byte	$48,$65,$6C,$6C,$6F,$20,$57,$6F,$72,$6C,$64,$21,$00
 
 ; ---------------------------------------------------------------
 ; int __near__ main (void)
@@ -30,18 +25,14 @@ L0009:
 
 .segment	"CODE"
 
-	lda     #$01
-	jsr     pusha0
-	jsr     pusha0
-	jsr     push0
-	jsr     decsp5
 	lda     #$00
 	jsr     pusha
-	jsr     _init_sys
-	lda     #<(L0009)
-	ldx     #>(L0009)
-	jsr     _putstr
-L000F:	bra     L000F
+L0003:	jsr     _getch
+	sta     (sp)
+	lda     (sp)
+	beq     L0003
+	jsr     _putch
+	bra     L0003
 
 .endproc
 

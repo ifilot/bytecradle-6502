@@ -3,19 +3,19 @@
 
 extern void __fastcall__ putch(char c);
 extern void __fastcall__ putstr(char* c);
-extern void __fastcall__ init_sys(void);
+extern char __fastcall__ getch(void);
+extern void __fastcall__ puthex(char c);
 
-int main() {
-    uint16_t a = 1;
-    uint16_t b = 1;
-    uint16_t c = 0;
-    char buf[5];
-    uint8_t i = 0;
-
-    init_sys();
-
-    putstr("Hello World!");
+int main(void) {
+    char c = 0;
 
     // put system in infinite loop
-    while(1){}
+    while(1){
+        c = getch();
+        if(c != 0) {
+            putch(c);
+        }
+    }
+
+    return 0;
 }

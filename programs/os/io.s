@@ -1,11 +1,13 @@
 .export newline
 .export newcmdline
 .export _putstr
+.export _getch
 .export putstr
 .export putstrnl
 .export char2num
 .export char2nibble
 .export chartoupper
+.export _puthex
 .export puthex
 .export putdec
 .export putds
@@ -31,7 +33,9 @@
 ; retrieve a char from the key buffer in the accumulator
 ; Garbles: A,X
 ;-------------------------------------------------------------------------------
+_getch:
 getchar:
+    phx
     lda TBPL            ; load textbuffer left pointer
     cmp TBPR            ; load textbuffer right pointer
     beq @nokey          ; if the same, exit routine
@@ -42,6 +46,7 @@ getchar:
 @nokey:
     lda #0
 @exit:
+    plx
     rts
 
 ;-------------------------------------------------------------------------------
@@ -250,6 +255,7 @@ chartoupper:
 ; Conserves:    A,X,Y
 ; Uses:         BUF1
 ;-------------------------------------------------------------------------------
+_puthex:
 puthex:
     sta BUF1
     lsr a           ; shift right; MSB is always set to 0

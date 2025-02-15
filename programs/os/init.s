@@ -4,31 +4,16 @@
 .import newcmdline
 .import putchar
 
-.export _init_sys
+.export init_system
 
 ;-------------------------------------------------------------------------------
 ; Initialize the system
 ;-------------------------------------------------------------------------------
-_init_sys:
-    jsr init_zp_tb
+init_system:
     jsr init_acia
     jsr init_screen
     jsr printtitle
-    rts
-
-;-------------------------------------------------------------------------------
-; Clear the zero page, text and command buffer
-;-------------------------------------------------------------------------------
-init_zp_tb:
-    ldx #$00            ; prepare to clear the zero page
-@nextbyte:
-    stz $00,x           ; clear zero page by storing 0
-    stz TB,x            ; clear textbuffer by storing 0
-    inx                 ; increment x
-    bne @nextbyte       ; loop until x overflows back to 0
-    stz TBPL            ; reset textbuffer left pointer
-    stz TBPR		    ; reset textbuffer right pointer
-    stz CMDLENGTH       ; clear command length size
+    cli                 ; enable interrupts
     rts
 
 ;-------------------------------------------------------------------------------
