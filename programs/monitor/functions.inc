@@ -20,3 +20,5 @@
 .import putchar
 .import getchar
 .import getpos
+.import ischarvalid
+.import clearline

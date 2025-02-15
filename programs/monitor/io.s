@@ -14,6 +14,8 @@
 .export putchar
 .export getchar
 .export getpos
+.export ischarvalid
+.export clearline
 
 .PSC02
 
@@ -183,6 +185,36 @@ char2nibble:
 @exit:
     clc
     rts
+
+;-------------------------------------------------------------------------------
+; ISCHARVALID routine
+;
+; Assess whether character stored in A is printable, i.e., lies between $20 and 
+; $7E (inclusive). If so, clear carry, else set the carry.
+;
+; Conserves: A, X, Y
+;-------------------------------------------------------------------------------
+ischarvalid:
+    cmp #$20                ; if less than $20, set carry flag and exit
+    bcc @invalid
+    cmp #$7F                ; compare with $7F, comparison yields desired result
+    rts
+@invalid:
+    sec
+    rts
+
+;-------------------------------------------------------------------------------
+; CLEARLINE routine
+;
+; Clears the current line on the terminal
+;-------------------------------------------------------------------------------
+clearline:
+    lda #>@clearline
+    ldx #<@clearline
+    jsr putstr
+    rts
+@clearline:
+    .byte ESC, "[2K", $0D, $00
 
 ;-------------------------------------------------------------------------------
 ; CHARTOUPPER

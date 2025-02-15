@@ -339,19 +339,6 @@ disassembleline:
     rts
 
 ;-------------------------------------------------------------------------------
-; CLEARLINE routine
-;
-; Clears the current line on the terminal
-;-------------------------------------------------------------------------------
-clearline:
-    lda #>@clearline
-    ldx #<@clearline
-    jsr putstr
-    rts
-@clearline:
-    .byte ESC, "[2K", $0D, $00
-
-;-------------------------------------------------------------------------------
 ; PRINTHEXVALS routine
 ;
 ; Print hex values to the screen. This function must be called after

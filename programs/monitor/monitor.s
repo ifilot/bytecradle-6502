@@ -47,6 +47,8 @@ loop:
     ldx CMDLENGTH       ; load command length
     cpx #$10
     beq exitloop        ; refuse to store when maxbuffer
+    jsr ischarvalid     ; check if character is an alphanumerical character
+    bcs loop
     sta CMDBUF,x        ; store in position
     jsr putchar         ; if not, simply print character
     inc CMDLENGTH       ; increment command length
@@ -461,13 +463,16 @@ printnumtest:
 
 ;-------------------------------------------------------------------------------
 ; HEXDUMP routine
+;
+; Uses BUF2, BUF1 is used by PUTHEX routine
 ;-------------------------------------------------------------------------------
 hexdump:
     ; setup variables
-    lda STARTADDR       ; set start address
-    sta MALB
-    lda STARTADDR+1
-    sta MAHB
+    ;lda STARTADDR       ; load low byte start address (ignored)
+    stz MALB            ; ignore low byte
+    lda STARTADDR+1     ; load high byte
+    sta MAHB            ; store high byte
+    stz BUF2
 
     ; check if 6th command character is ":", if so, only print 16 lines
     lda CMDBUF+5
@@ -512,11 +517,17 @@ hexdump:
     sta NRLINES+1       ; store
     jmp @nextline
 @skiplinecalc:
+    lda #1
+    sta BUF2
     stz NRLINES+1       ; high byte
-    lda #31
+    lda #15
     sta NRLINES         ; store number of lines low byte
 @nextline:
-    jsr newline         ; start with a new line (first segment: addr)
+    lda MALB
+    cmp #00
+    bne @skipheader
+    jsr printheader
+@skipheader:
     lda MAHB            ; load high byte of memory address
     jsr puthex          ; print it
     lda MALB            ; load low byte of memory address
@@ -573,7 +584,7 @@ hexdump:
     sta MAHB            ; store back in high byte
     lda NRLINES
     ora NRLINES+1
-    beq @exit           ; if zero, then exit, else decrement
+    beq @endlines       ; if zero, then exit, else decrement
     lda NRLINES
     sec                 ; set carry flag for subtraction
     sbc #1              ; subtract 1 from low byte of NRLINES
@@ -581,6 +592,66 @@ hexdump:
     bcs @nextlinefar    ; if carry set, no borrow and continue
     dec NRLINES+1       ; else, also decrement high byte
 @nextlinefar:
+    jsr newline
     jmp @nextline
-@exit:
+@endlines:
+    ora BUF2
+    bne @askcontinue
     rts
+@askcontinue:
+    jsr newline
+    lda #>@contstr
+    ldx #<@contstr
+    jsr putstr
+@trychar:
+    jsr getchar
+    cmp #00
+    beq @trychar
+    cmp #'Q'
+    beq @clearexit
+    cmp #'q'
+    beq @clearexit
+    lda #15
+    sta NRLINES
+    stz NRLINES+1
+    jsr clearline
+    jmp @nextline
+@clearexit:
+    jsr clearline
+    rts
+
+@contstr:
+    .asciiz " -- Press q to quit or any other key to continue --"
+
+
+;-------------------------------------------------------------------------------
+; PRINTHEADER routine
+;
+; Print header row
+;-------------------------------------------------------------------------------
+printheader:
+    jsr newline
+    ldx #6
+    lda #' '
+@nextspace:
+    jsr putchar
+    dex
+    bne @nextspace
+    ldx #0
+@nextchar:
+    txa
+    jsr puthex
+    lda #' '
+    jsr putchar
+    inx
+    cpx #8
+    beq @addspace
+    cpx #16
+    bne @nextchar
+    jsr newline
+    rts
+@addspace:
+    lda #' '
+    jsr putchar
+    jsr putchar
+    jmp @nextchar
