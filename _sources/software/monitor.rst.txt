@@ -44,22 +44,24 @@ assembly instructions.
 
 .. code:: ca65
 
-    0400: LDA #01       A9 01
-    0402: LDX #01       A2 01
-    0404: LDY #00       A0 00
-    0406: PHX           DA
-    0407: JSR FFEE      20 FF EE
-    040A: JSR FFE8      20 FF E8
-    040D: PLX           FA
-    040E: STX 20        86 20
-    0410: CLC           18
-    0411: PHA           48
-    0412: ADC 20        65 20
-    0414: PLX           FA
-    0415: INY           C8
-    0416: CPY #0A       C0 0A
-    0418: BNE EC        D0 EC
-    041A: RTS           60
+    0400: LDA #01                  A9 01
+    0402: LDX #01                  A2 01
+    0404: LDY #00                  A0 00
+    0406: PHX                      DA
+    0407: PHY                      5A
+    0408: JSR FFEE                 20 FF EE
+    040B: JSR FFE8                 20 FF E8
+    040E: PLY                      7A
+    040F: PLX                      FA
+    0410: STX 20                   86 20
+    0412: CLC                      18
+    0413: PHA                      48
+    0414: ADC 20                   65 20
+    0416: PLX                      FA
+    0417: INY                      C8
+    0418: CPY #0C                  C0 0C
+    041A: BNE EA                   D0 EA
+    041C: RTS                      60
 
 To run the program, type :code:`G0400` which yields the following output
 
