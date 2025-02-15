@@ -37,10 +37,29 @@ disassemble:
     inx
     cpx #16
     bne @nextoptcode
-rts
+
+    ; ask user whether they want to continue
+    lda #>@contstr
+    ldx #<@contstr
+    jsr putstr
+@trychar:
+    jsr getchar
+    cmp #00
+    beq @trychar
+    cmp #'Q'
+    beq @exit
+    cmp #'q'
+    beq @exit
+    ldx #0
+    jmp @nextoptcode
+@exit:
+    jsr clearline
+    rts
 
 @str:
     .asciiz " > DISASSEMBLING memory:"
+@contstr:
+    .asciiz " -- Press q to quit or any other key to continue --"
 
 ;-------------------------------------------------------------------------------
 ; DISASSEMBLELINE routine
@@ -61,9 +80,7 @@ rts
 ; BUF8 - number of operands (bytes)
 ;-------------------------------------------------------------------------------
 disassembleline:
-    lda #>@clearline
-    ldx #<@clearline
-    jsr putstr
+    jsr clearline
     jsr puttab
     lda STARTADDR+1
     jsr puthex
@@ -278,7 +295,7 @@ disassembleline:
     jsr @putcommax
     lda #')'
     jsr putchar
-    lda #6
+    lda #2
     jsr @addbuf
     rts
 
@@ -290,7 +307,7 @@ disassembleline:
     lda #')'
     jsr putchar
     jsr @putcommay
-    lda #6
+    lda #2
     jsr @addbuf
     rts
 
@@ -321,6 +338,16 @@ disassembleline:
     sta BUF9
     rts
 
+;-------------------------------------------------------------------------------
+; CLEARLINE routine
+;
+; Clears the current line on the terminal
+;-------------------------------------------------------------------------------
+clearline:
+    lda #>@clearline
+    ldx #<@clearline
+    jsr putstr
+    rts
 @clearline:
     .byte ESC, "[2K", $0D, $00
 
