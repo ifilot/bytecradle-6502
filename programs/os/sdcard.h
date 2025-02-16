@@ -3,7 +3,10 @@
 
 #include <stdint.h>
 
-extern void __cdecl__ sdcmd17(uint32_t addr);
-extern void __fastcall__ boot_sd(void);
+extern uint8_t __fastcall__ sdcmd00(void);
+extern uint8_t __fastcall__ sdcmd08(uint8_t *resptr);
+extern uint8_t __fastcall__ acmd41(void);
+extern uint8_t __fastcall__ cmd58(uint8_t *resptr);
+extern uint16_t __cdecl__ sdcmd17(uint32_t addr);
 
 #endif

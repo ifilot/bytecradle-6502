@@ -8,23 +8,28 @@ int main(void) {
     uint8_t c = 0;
     uint8_t buf[10];
     uint8_t* sdbuf = (uint8_t*)0x8000;
+    uint16_t checksum = 0x0000;
+    uint8_t res = 0;
+    uint8_t resparr[6];
 
-    boot_sd();
-
-    sprintf(buf, "Before CMD17: %04X\n", (uint16_t)sdbuf);
+    // initialize sd card
+    res = sdcmd00();
+    sprintf(buf, "CMD00: %02X\n", res);
     putstr(buf);
 
-    // retrieve sector
-    sdcmd17(0x12345678);
+    res = sdcmd08(resparr);
+    sprintf(buf, "CMD08: %02X %02X %02X %02X %02X\n", resparr[0], resparr[1], resparr[2], resparr[3], resparr[4]);
+    putstr(buf);
+    return 0;
 
-    sprintf(buf, "After CMD17: %04X\n", (uint16_t)sdbuf);
+    // retrieve sector
+    checksum = sdcmd17(0x00000000);
+
+    sprintf(buf, "Checksum: %04X\n", checksum);
     putstr(buf);
 
     // print bytes
-    sprintf(buf, "Check byte: %02X %02X\n", *(volatile uint8_t*)0x81FE, sdbuf[0x1FF]);
-    putstr(buf);
-
-    sprintf(buf, "%04X\n", (uint16_t)sdbuf);
+    sprintf(buf, "Check byte: %02X %02X\n", sdbuf[0x1FE], sdbuf[0x1FF]);
     putstr(buf);
 
     // put system in infinite loop

@@ -12,8 +12,9 @@
 	.macpack	longbranch
 	.forceimport	__STARTUP__
 	.import		_sprintf
+	.import		_sdcmd00
+	.import		_sdcmd08
 	.import		_sdcmd17
-	.import		_boot_sd
 	.import		_putch
 	.import		_putstr
 	.import		_getch
@@ -21,16 +22,17 @@
 
 .segment	"RODATA"
 
-L0018:
+L0016:
+	.byte	$43,$4D,$44,$30,$38,$3A,$20,$25,$30,$32,$58,$20,$25,$30,$32,$58
+	.byte	$20,$25,$30,$32,$58,$20,$25,$30,$32,$58,$20,$25,$30,$32,$58,$0A
+	.byte	$00
+L0031:
 	.byte	$43,$68,$65,$63,$6B,$20,$62,$79,$74,$65,$3A,$20,$25,$30,$32,$58
 	.byte	$20,$25,$30,$32,$58,$0A,$00
-L0008:
-	.byte	$42,$65,$66,$6F,$72,$65,$20,$43,$4D,$44,$31,$37,$3A,$20,$25,$30
-	.byte	$34,$58,$0A,$00
-L0011:
-	.byte	$41,$66,$74,$65,$72,$20,$43,$4D,$44,$31,$37,$3A,$20,$25,$30,$34
-	.byte	$58,$0A,$00
-L0021	:=	L0008+14
+L002A:
+	.byte	$43,$68,$65,$63,$6B,$73,$75,$6D,$3A,$20,$25,$30,$34,$58,$0A,$00
+L000C:
+	.byte	$43,$4D,$44,$30,$30,$3A,$20,$25,$30,$32,$58,$0A,$00
 
 ; ---------------------------------------------------------------
 ; int __near__ main (void)
@@ -49,85 +51,69 @@ L0021	:=	L0008+14
 	ldx     #$80
 	lda     #$00
 	jsr     pushax
-	jsr     _boot_sd
-	lda     #$02
-	jsr     leaa0sp
-	jsr     pushax
-	lda     #<(L0008)
-	ldx     #>(L0008)
-	jsr     pushax
-	ldy     #$07
-	jsr     pushwysp
+	jsr     push0
+	jsr     pusha
+	jsr     decsp6
+	jsr     _sdcmd00
 	ldy     #$06
-	jsr     _sprintf
-	lda     #$02
-	jsr     leaa0sp
-	jsr     _putstr
-	ldx     #$56
-	lda     #$34
-	sta     sreg
-	lda     #$12
-	sta     sreg+1
-	lda     #$78
-	jsr     pusheax
-	jsr     _sdcmd17
-	lda     #$02
+	sta     (sp),y
+	lda     #$0B
 	jsr     leaa0sp
 	jsr     pushax
-	lda     #<(L0011)
-	ldx     #>(L0011)
+	lda     #<(L000C)
+	ldx     #>(L000C)
 	jsr     pushax
-	ldy     #$07
-	jsr     pushwysp
-	ldy     #$06
-	jsr     _sprintf
-	lda     #$02
-	jsr     leaa0sp
-	jsr     _putstr
-	lda     #$02
-	jsr     leaa0sp
-	jsr     pushax
-	lda     #<(L0018)
-	ldx     #>(L0018)
-	jsr     pushax
-	lda     $81FE
+	ldy     #$0A
+	lda     (sp),y
 	jsr     pusha0
-	lda     #$FF
-	clc
 	ldy     #$06
-	adc     (sp),y
-	sta     ptr1
-	lda     #$01
-	iny
-	adc     (sp),y
-	sta     ptr1+1
-	lda     (ptr1)
+	jsr     _sprintf
+	lda     #$0B
+	jsr     leaa0sp
+	jsr     _putstr
+	lda     sp
+	ldx     sp+1
+	jsr     _sdcmd08
+	ldy     #$06
+	sta     (sp),y
+	lda     #$0B
+	jsr     leaa0sp
+	jsr     pushax
+	lda     #<(L0016)
+	ldx     #>(L0016)
+	jsr     pushax
+	ldy     #$04
+	lda     (sp),y
 	jsr     pusha0
-	ldy     #$08
-	jsr     _sprintf
-	lda     #$02
-	jsr     leaa0sp
-	jsr     _putstr
-	lda     #$02
-	jsr     leaa0sp
-	jsr     pushax
-	lda     #<(L0021)
-	ldx     #>(L0021)
-	jsr     pushax
 	ldy     #$07
-	jsr     pushwysp
-	ldy     #$06
+	lda     (sp),y
+	jsr     pusha0
+	ldy     #$0A
+	lda     (sp),y
+	jsr     pusha0
+	ldy     #$0D
+	lda     (sp),y
+	jsr     pusha0
+	ldy     #$10
+	lda     (sp),y
+	jsr     pusha0
+	ldy     #$0E
 	jsr     _sprintf
-	lda     #$02
+	lda     #$0B
 	jsr     leaa0sp
 	jsr     _putstr
-L0026:	jsr     _getch
-	ldy     #$0C
+	ldx     #$00
+	txa
+	bra     L0001
+L0039:	jsr     _getch
+	ldy     #$15
 	sta     (sp),y
 	lda     (sp),y
-	beq     L0026
+	beq     L0039
 	jsr     _putch
-	bra     L0026
+	bra     L0039
+L0001:	ldy     #$16
+	jmp     addysp
 
 .endproc
 
