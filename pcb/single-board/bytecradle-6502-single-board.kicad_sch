@@ -9303,7 +9303,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC14"
+		(property "Value" "74AC14"
 			(at 44.45 149.86 90)
 			(effects
 				(font
@@ -10073,7 +10073,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC08"
+		(property "Value" "74AC08"
 			(at 157.4717 35.56 0)
 			(effects
 				(font
@@ -10629,7 +10629,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC14"
+		(property "Value" "74AC14"
 			(at 49.53 129.54 0)
 			(effects
 				(font
@@ -11211,7 +11211,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC08"
+		(property "Value" "74AC08"
 			(at 140.9617 43.18 0)
 			(effects
 				(font
@@ -12299,7 +12299,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC08"
+		(property "Value" "74AC08"
 			(at 139.7 73.66 90)
 			(effects
 				(font
@@ -12403,7 +12403,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC688"
+		(property "Value" "CD74HC688"
 			(at 110.49 36.8614 0)
 			(effects
 				(font
@@ -12793,7 +12793,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC14"
+		(property "Value" "74AC14"
 			(at 162.56 168.91 0)
 			(effects
 				(font
@@ -13633,7 +13633,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC08"
+		(property "Value" "74AC08"
 			(at 140.9617 27.94 0)
 			(effects
 				(font
@@ -14806,7 +14806,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC14"
+		(property "Value" "74AC14"
 			(at 134.62 184.15 0)
 			(effects
 				(font
@@ -15114,7 +15114,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC14"
+		(property "Value" "74AC14"
 			(at 162.56 184.15 0)
 			(effects
 				(font
@@ -15691,7 +15691,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC14"
+		(property "Value" "74AC14"
 			(at 64.77 129.54 0)
 			(effects
 				(font
@@ -16260,7 +16260,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC08"
+		(property "Value" "74AC08"
 			(at 134.6117 168.91 0)
 			(effects
 				(font
@@ -16633,7 +16633,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC14"
+		(property "Value" "74AC14"
 			(at 85.09 129.54 0)
 			(effects
 				(font

@@ -4812,7 +4812,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC688"
+		(property "Value" "CD74HC688"
 			(at 56.642 45.212 0)
 			(effects
 				(font

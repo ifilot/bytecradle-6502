@@ -6802,7 +6802,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC688"
+		(property "Value" "CD74HC688"
 			(at 46.99 40.386 0)
 			(effects
 				(font
@@ -7756,7 +7756,7 @@
 				)
 			)
 		)
-		(property "Value" "74HC688"
+		(property "Value" "CD74HC688"
 			(at 180.34 39.116 0)
 			(effects
 				(font
