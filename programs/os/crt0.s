@@ -5,8 +5,8 @@
 .export   _init, _exit
 .import   _main, _putchar
 
-.export   __STARTUP__ : absolute = 1        ; Mark as startup
-.import   __RAM_START__, __RAM_SIZE__       ; Linker generated
+.export   __STARTUP__ : absolute = 1                        ; Mark as startup
+.import   __RAM_START__, __RAM_SIZE__, __STACKSTART__       ; Linker generated
 
 .import    copydata, zerobss, initlib, donelib, init_system, boot_sd
 
@@ -24,10 +24,10 @@ _init:
 ; ---------------------------------------------------------------------------
 ; Set cc65 argument stack pointer
 
-          LDA     #<(__RAM_START__ + __RAM_SIZE__)
-          STA     sp
-          LDA     #>(__RAM_START__ + __RAM_SIZE__)
-          STA     sp+1
+    lda #<__STACKSTART__
+    ldx #>__STACKSTART__
+    sta sp
+    stx sp+1
 
 ; ---------------------------------------------------------------------------
 ; Initialize memory storage

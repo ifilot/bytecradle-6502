@@ -11,9 +11,25 @@
 	.importzp	tmp1, tmp2, tmp3, tmp4, ptr1, ptr2, ptr3, ptr4
 	.macpack	longbranch
 	.forceimport	__STARTUP__
+	.import		_sprintf
 	.import		_putch
+	.import		_putstr
 	.import		_getch
+	.import		_sdcmd17
 	.export		_main
+
+.segment	"RODATA"
+
+L0017:
+	.byte	$43,$68,$65,$63,$6B,$20,$62,$79,$74,$65,$3A,$20,$25,$30,$32,$58
+	.byte	$20,$25,$30,$32,$58,$0A,$00
+L0007:
+	.byte	$42,$65,$66,$6F,$72,$65,$20,$43,$4D,$44,$31,$37,$3A,$20,$25,$30
+	.byte	$34,$58,$0A,$00
+L0010:
+	.byte	$41,$66,$74,$65,$72,$20,$43,$4D,$44,$31,$37,$3A,$20,$25,$30,$34
+	.byte	$58,$0A,$00
+L0020	:=	L0007+14
 
 ; ---------------------------------------------------------------
 ; int __near__ main (void)
@@ -27,12 +43,89 @@
 
 	lda     #$00
 	jsr     pusha
-L0003:	jsr     _getch
-	sta     (sp)
-	lda     (sp)
-	beq     L0003
+	ldy     #$0A
+	jsr     subysp
+	ldx     #$80
+	lda     #$00
+	jsr     pushax
+	lda     #$02
+	jsr     leaa0sp
+	jsr     pushax
+	lda     #<(L0007)
+	ldx     #>(L0007)
+	jsr     pushax
+	ldy     #$07
+	jsr     pushwysp
+	ldy     #$06
+	jsr     _sprintf
+	lda     #$02
+	jsr     leaa0sp
+	jsr     _putstr
+	ldx     #$56
+	lda     #$34
+	sta     sreg
+	lda     #$12
+	sta     sreg+1
+	lda     #$78
+	jsr     pusheax
+	jsr     _sdcmd17
+	lda     #$02
+	jsr     leaa0sp
+	jsr     pushax
+	lda     #<(L0010)
+	ldx     #>(L0010)
+	jsr     pushax
+	ldy     #$07
+	jsr     pushwysp
+	ldy     #$06
+	jsr     _sprintf
+	lda     #$02
+	jsr     leaa0sp
+	jsr     _putstr
+	lda     #$02
+	jsr     leaa0sp
+	jsr     pushax
+	lda     #<(L0017)
+	ldx     #>(L0017)
+	jsr     pushax
+	lda     $81FE
+	jsr     pusha0
+	lda     #$FF
+	clc
+	ldy     #$06
+	adc     (sp),y
+	sta     ptr1
+	lda     #$01
+	iny
+	adc     (sp),y
+	sta     ptr1+1
+	lda     (ptr1)
+	jsr     pusha0
+	ldy     #$08
+	jsr     _sprintf
+	lda     #$02
+	jsr     leaa0sp
+	jsr     _putstr
+	lda     #$02
+	jsr     leaa0sp
+	jsr     pushax
+	lda     #<(L0020)
+	ldx     #>(L0020)
+	jsr     pushax
+	ldy     #$07
+	jsr     pushwysp
+	ldy     #$06
+	jsr     _sprintf
+	lda     #$02
+	jsr     leaa0sp
+	jsr     _putstr
+L0025:	jsr     _getch
+	ldy     #$0C
+	sta     (sp),y
+	lda     (sp),y
+	beq     L0025
 	jsr     _putch
-	bra     L0003
+	bra     L0025
 
 .endproc
 

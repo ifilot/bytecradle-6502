@@ -1,15 +1,8 @@
-.export init_sd
-.export close_sd
-.export sdcmd00
-.export sdcmd08
-.export sdacmd41
-.export sdcmd58
-.export sdcmd17
-
 .include "constants.inc"
 .include "functions.inc"
 
 .export boot_sd
+.export _sdcmd17
 
 ; define base address of SD-card interface
 .define SERIAL      $7F20
@@ -17,16 +10,20 @@
 .define DESELECT    $7F22
 .define SELECT      $7F23
 
+.include "zeropage.inc" ; required for sp
 
+;-------------------------------------------------------------------------------
+; BOOT_SD routine
+;
+; Bring the SD card into a ready state
+;-------------------------------------------------------------------------------
 boot_sd:
     jsr newline
     lda #>@str
     ldx #<@str
     jsr putstr
     jsr newline
-    ldx #0              ; attempt counter
 @tryagain:
-    phx                 ; push attempt counter onto stack
     jsr init_sd         ; open SD-card
     jsr sdcmd00
     bcs @fail
@@ -36,14 +33,6 @@ boot_sd:
     bcs @fail
     jsr sdcmd58
     bcs @fail
-    jsr sdcmd17
-    jsr close_sd
-    lda #>@attemptstr
-    ldx #<@attemptstr
-    jsr putstr
-    pla                 ; retrieve attempt counter
-    inc
-    jsr puthex
     rts
 @fail:
     plx                 ; retrieve counter
@@ -59,8 +48,6 @@ boot_sd:
     .asciiz "Testing SDCARD routines."
 @errorstr:
     .asciiz "Failed to open SDCARD."
-@attemptstr:
-    .asciiz "Attempts required: "
 
 ;-------------------------------------------------------------------------------
 ; INIT_SD ROUTINE
@@ -233,16 +220,40 @@ sdcmd58:
 ;
 ; Send CMD14 command to the SD-card and retrieve the result
 ;-------------------------------------------------------------------------------
+_sdcmd17:
 sdcmd17:
     lda #>@str
     ldx #<@str
     jsr putstr
     jsr open_command
-    lda #<@cmd
+
+    ; load command byte
+    lda #17|$40
+    sta SERIAL
+    sta CLKSTART
+
+    ; set pointer to softstack
+    lda sp
     sta BUF2
-    lda #>@cmd
+    lda sp+1
     sta BUF3
-    jsr send_command
+
+    ; retrieve address and send to SD-card
+    ldy #4
+@next:                  ; loop over bytes
+    dey
+    lda (BUF2),y
+    sta SERIAL
+    sta CLKSTART
+    jsr puthex
+    cpy #0
+    bne @next
+
+    ; closing command byte
+    lda #$01
+    sta SERIAL
+    sta CLKSTART
+
     jsr receive_r1      ; receive response
     jsr newline
     lda #$FF            ; flush with ones
@@ -290,15 +301,13 @@ sdcmd17:
     sec
     rts
 @str:
-    .asciiz "Sending CMD17. Response: "
+    .asciiz "Sending CMD17. Loading address: "
 @str2:
     .asciiz "Number of cycles waited: "
 @str3:
     .asciiz "Reading boot sector. Checksum: "
 @str4:
     .asciiz "Done."
-@cmd:
-    .byte 17|$40,$00,$00,$00,$00,$00|$01
 
 
 ;-------------------------------------------------------------------------------
