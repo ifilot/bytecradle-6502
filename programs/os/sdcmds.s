@@ -105,7 +105,7 @@ _sdcmd08:
 _sdacmd41:
     ldx #0              ; set attempt counter
 @loop:
-    phx
+    phx                 ; push attempt counter to stack
     jsr open_command
     lda #<cmd55         ; load CMD55
     sta BUF2
@@ -113,7 +113,7 @@ _sdacmd41:
     sta BUF3
     jsr send_command    ; send command
     jsr receive_r1      ; receive response, prints response byte to screen
-    jsr close_command   ; close
+    jsr close_command   ; close (garbles x)
     jsr open_command    ; open again, now for ACMD41
     lda #<acmd41
     sta BUF2
@@ -121,7 +121,7 @@ _sdacmd41:
     sta BUF3
     jsr send_command    ; send ACMD41 command
     jsr receive_r1      ; receive response
-    jsr close_command
+    jsr close_command   ; close (garbles x)
     cmp #0              ; check response byte
     beq @exit           ; if SUCCESS ($00), exit routine
     plx                 ; retrieve attempt counter from stack
@@ -131,7 +131,9 @@ _sdacmd41:
     jmp @loop           ; if not, restart loop
 @fail:
     lda $FF
+    rts
 @exit:
+    plx                 ; clear stack
     rts
 
 ;-------------------------------------------------------------------------------
@@ -140,9 +142,8 @@ _sdacmd41:
 ; Send CMD58 command to the SD-card and retrieve the result
 ;-------------------------------------------------------------------------------
 _sdcmd58:
-    lda #>@str
-    ldx #<@str
-    jsr putstr
+    sta BUF4
+    stx BUF5
     jsr open_command
     lda #<cmd58
     sta BUF2
@@ -151,10 +152,7 @@ _sdcmd58:
     jsr send_command
     jsr receive_r3
     jsr close_command
-    jsr newline
     rts
-@str:
-    .asciiz "Sending SDCMD58. Response: "
 
 ;-------------------------------------------------------------------------------
 ; SDCMD17 routine
@@ -195,7 +193,6 @@ _sdcmd17:
     sta CLKSTART
 
     jsr receive_r1      ; receive response
-    jsr newline
     lda #$FF            ; flush with ones
     sta SERIAL
     ldx #0              ; set inner poll counter
@@ -215,14 +212,12 @@ _sdcmd17:
     iny
     jmp @tryagain
 @continue:
-    jsr putdec          ; print value
-    jsr newline
     jsr readblock       ; read block, which will also output checksum
     jsr close_command   ; close interface
 @exit:
-    jsr incsp4		; remove function arguments from the stack
-    lda BUF2
-    ldx BUF3
+    jsr incsp4		    ; remove function arguments from the stack
+    ldx BUF2            ; high byte in X (note SD-card uses big endian)
+    lda BUF3            ; low byte in A (while 6502 is little endian)
     rts
 
 ;-------------------------------------------------------------------------------
@@ -378,7 +373,7 @@ open_command:
 ;-------------------------------------------------------------------------------
 ; CLOSE_COMMAND routine
 ;
-; Flush buffers after every command
+; Flush buffers after every command. Garbles x.
 ;-------------------------------------------------------------------------------
 close_command:
     ldx #$FF

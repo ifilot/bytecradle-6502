@@ -253,7 +253,9 @@ void digest_sd() {
             miso[3] = 0xFE; // pre-block byte
             size_t nrbytes = fread(&miso[4], 1, 512, sdfile);        // data
             //printf("%i ", nrbytes);
-            uint16_t checksum = crc16_xmodem(&miso[3], 0x200);
+            uint16_t checksum = crc16_xmodem(&miso[4], 0x200);
+
+            // store in big endian format
             miso[516] = checksum >> 8;
             miso[517] = checksum & 0xFF;
 
