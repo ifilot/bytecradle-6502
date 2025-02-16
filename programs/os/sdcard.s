@@ -300,10 +300,8 @@ sdcmd17:
     lda #>@str4
     ldx #<@str4
     jsr putstrnl
-    rts
-@fail:
-    sec
-    rts
+@exit:
+    jmp incsp2
 @str:
     .asciiz "Sending CMD17. Loading address: "
 @str2:
