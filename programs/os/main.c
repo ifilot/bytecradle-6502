@@ -1,16 +1,15 @@
 #include <stdint.h>
 #include <stdio.h>
 
-extern void __fastcall__ putch(uint8_t c);
-extern void __fastcall__ putstr(char* c);
-extern char __fastcall__ getch(void);
-extern void __fastcall__ puthex(uint8_t c);
-extern void __cdecl__ sdcmd17(uint32_t addr);
+#include "sdcard.h"
+#include "io.h"
 
 int main(void) {
     uint8_t c = 0;
     uint8_t buf[10];
     uint8_t* sdbuf = (uint8_t*)0x8000;
+
+    boot_sd();
 
     sprintf(buf, "Before CMD17: %04X\n", (uint16_t)sdbuf);
     putstr(buf);

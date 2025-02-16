@@ -7,6 +7,7 @@
 .export isr
 
 .segment "CODE"
+.PSC02
 
 ;-------------------------------------------------------------------------------
 ; Interrupt Service Routine

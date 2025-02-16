@@ -2,15 +2,18 @@
 
 .import putstr
 .import newcmdline
-.import putchar
+.import _putch
 
 .export init_system
+
+.segment "CODE"
+.PSC02
 
 ;-------------------------------------------------------------------------------
 ; Initialize the system
 ;-------------------------------------------------------------------------------
 init_system:
-    jsr clear_zp
+    ;jsr clear_zp
     jsr init_acia
     jsr init_screen
     jsr printtitle
@@ -64,7 +67,7 @@ printtitle:
     lda (STRLB),y
     cmp #0
     beq @exit
-    jsr putchar
+    jsr _putch
     clc
     lda STRLB
     adc #1

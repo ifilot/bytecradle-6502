@@ -5,10 +5,10 @@
 .export   _init, _exit
 .import   _main, _putchar
 
-.export   __STARTUP__ : absolute = 1                        ; Mark as startup
-.import   __RAM_START__, __RAM_SIZE__, __STACKSTART__       ; Linker generated
+.export   __STARTUP__ : absolute = 1                    ; Mark as startup
+.import   __RAM_START__, __RAM_SIZE__ 			; Linker generated
 
-.import    copydata, zerobss, initlib, donelib, init_system, boot_sd
+.import    copydata, zerobss, initlib, donelib, init_system
 
 .include  "zeropage.inc"
 
@@ -21,14 +21,16 @@
 ; A little light 6502 housekeeping
 
 _init:
+	ldx #$FF
+	txs
+	cld
 ; ---------------------------------------------------------------------------
 ; Set cc65 argument stack pointer
 
-    lda #<__STACKSTART__
-    ldx #>__STACKSTART__
-    sta sp
-    stx sp+1
-
+ 	  LDA     #<(__RAM_START__ + __RAM_SIZE__)
+          STA     sp
+          LDA     #>(__RAM_START__ + __RAM_SIZE__)
+          STA     sp+1
 ; ---------------------------------------------------------------------------
 ; Initialize memory storage
 
@@ -40,7 +42,6 @@ _init:
 ; Call main()
 
           jsr init_system
-          jsr boot_sd
           JSR     _main
 
 ; ---------------------------------------------------------------------------

@@ -1,8 +1,11 @@
 .include "constants.inc"
 .include "functions.inc"
 
-.export boot_sd
+.export _boot_sd
 .export _sdcmd17
+
+.segment "CODE"
+.PSC02
 
 ; define base address of SD-card interface
 .define SERIAL      $7F20
@@ -17,7 +20,7 @@
 ;
 ; Bring the SD card into a ready state
 ;-------------------------------------------------------------------------------
-boot_sd:
+.proc _boot_sd: near
     jsr newline
     lda #>@str
     ldx #<@str
@@ -48,6 +51,7 @@ boot_sd:
     .asciiz "Testing SDCARD routines."
 @errorstr:
     .asciiz "Failed to open SDCARD."
+.endproc
 
 ;-------------------------------------------------------------------------------
 ; INIT_SD ROUTINE
@@ -220,7 +224,7 @@ sdcmd58:
 ;
 ; Send CMD14 command to the SD-card and retrieve the result
 ;-------------------------------------------------------------------------------
-_sdcmd17:
+.proc _sdcmd17: near
 sdcmd17:
     lda #>@str
     ldx #<@str
@@ -245,7 +249,7 @@ sdcmd17:
     lda (BUF2),y
     sta SERIAL
     sta CLKSTART
-    jsr puthex
+    jsr _puthex
     cpy #0
     bne @next
 
@@ -283,7 +287,7 @@ sdcmd17:
     pla                 ; retrieve outer counter from stack in ACC
     jsr putdec          ; print value
     lda #'.'
-    jsr putchar
+    jsr _putch
     pla                 ; retrieve inner counter from stack in ACC
     jsr putdec          ; print value
     jsr newline
@@ -308,7 +312,7 @@ sdcmd17:
     .asciiz "Reading boot sector. Checksum: "
 @str4:
     .asciiz "Done."
-
+.endproc
 
 ;-------------------------------------------------------------------------------
 ; READBLOCK routine
@@ -339,7 +343,7 @@ readblock:
     sta CLKSTART        ; pulse clock for checksum, lower byte
     jsr wait
     lda SERIAL
-    jsr puthex
+    jsr _puthex
     dex
     bne @checksum
     rts
@@ -387,7 +391,7 @@ acmd41:
 receive_r1:
     jsr poll_card
     bcs @exit           ; if carry set, then fail
-    jsr puthex          ; if not, print the result
+    jsr _puthex          ; if not, print the result
 @exit:
     rts
 
@@ -402,7 +406,7 @@ receive_r3:
 receive_r7:
     jsr poll_card
     bcs @exit
-    jsr puthex
+    jsr _puthex
     ldx #4              ; retrieve four more bytes
 @next:
     lda #$FF            ; load in ones in shift register
@@ -410,7 +414,7 @@ receive_r7:
     sta CLKSTART        ; start transfer
     jsr wait            ; small delay before reading out result
     lda SERIAL          ; read result
-    jsr puthex          ; print result
+    jsr _puthex          ; print result
     dex                 ; decrement x
     bne @next           ; complete? if not, grab next byte
 @exit:

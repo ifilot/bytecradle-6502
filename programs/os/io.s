@@ -8,15 +8,12 @@
 .export char2nibble
 .export chartoupper
 .export _puthex
-.export puthex
 .export putdec
 .export putds
 .export putspace
 .export puttab
 .export printnibble
 .export _putch
-.export putchar
-.export getchar
 .export getpos
 .export ischarvalid
 .export clearline
@@ -33,8 +30,7 @@
 ; retrieve a char from the key buffer in the accumulator
 ; Garbles: A,X
 ;-------------------------------------------------------------------------------
-_getch:
-getchar:
+.proc _getch: near
     phx
     lda TBPL            ; load textbuffer left pointer
     cmp TBPR            ; load textbuffer right pointer
@@ -48,6 +44,7 @@ getchar:
 @exit:
     plx
     rts
+.endproc
 
 ;-------------------------------------------------------------------------------
 ; NEWLINE routine
@@ -59,7 +56,7 @@ getchar:
 newline:
     sta BUF1
     lda #LF
-    jsr putchar
+    jsr _putch
     lda BUF1
     rts
 
@@ -70,7 +67,7 @@ newline:
 ;-------------------------------------------------------------------------------
 putspace:
     lda #' '
-    jsr putchar
+    jsr _putch
     rts
 
 ;-------------------------------------------------------------------------------
@@ -102,9 +99,9 @@ puttab:
 newcmdline:
     jsr newline
     lda #'@'
-    jsr putchar
+    jsr _putch
     lda #':'
-    jsr putchar
+    jsr _putch
     rts
 
 ;-------------------------------------------------------------------------------
@@ -116,13 +113,14 @@ newcmdline:
 ; is found. Assumes that $10 is used on the zero page to store the address of
 ; the string.
 ;-------------------------------------------------------------------------------
-_putstr:
+.proc _putstr: near
     sta STRLB
     stx STRHB
     ldx STRLB
     lda STRHB
     jsr putstr
     rts
+.endproc
 
 putstr:
     sta STRHB
@@ -132,7 +130,7 @@ putstr:
 @nextchar:
     lda (STRLB),y   ; load character from string
     beq @exit       ; if terminating character is read, exit
-    jsr putchar     ; else, print char
+    jsr _putch      ; else, print char
     iny             ; increment y
     jmp @nextchar   ; read next char
 @exit:
@@ -149,7 +147,7 @@ putstr:
 putstrnl:
     jsr putstr
     lda #LF
-    jsr putchar
+    jsr _putch
     rts
 
 ;-------------------------------------------------------------------------------
@@ -255,7 +253,7 @@ chartoupper:
 ; Conserves:    A,X,Y
 ; Uses:         BUF1
 ;-------------------------------------------------------------------------------
-_puthex:
+.proc _puthex: near
 puthex:
     sta BUF1
     lsr a           ; shift right; MSB is always set to 0
@@ -268,6 +266,7 @@ puthex:
     jsr printnibble
     lda BUF1
     rts
+.endproc
 
 ;-------------------------------------------------------------------------------
 ; PUTDEC routine
@@ -307,7 +306,7 @@ putdec:
     stx BUF2
 @l5:
     eor #$30
-    jsr putchar
+    jsr _putch
 @l6:
     tya
     ldy #$10
@@ -336,7 +335,7 @@ printnibble:
     clc
     adc #'A'-10
 @exit:
-    jsr putchar
+    jsr _putch
     rts
 
 ;-------------------------------------------------------------------------------
@@ -351,7 +350,7 @@ getpos:
 
     ldy #0
 @nextchar:
-    jsr getchar
+    jsr _getch
     cmp #0
     beq @nextchar
     cmp #'R'
@@ -381,8 +380,7 @@ getpos:
 ; 12.000 MHz    : 208 -> does not work
 ; 14.310 MHz    : 249 -> does not work
 ;-------------------------------------------------------------------------------
-_putch:
-putchar:
+.proc _putch: near
     pha             ; preserve A
     sta ACIA_DATA   ; write the character to the ACIA data register
     lda #89         ; initialize inner loop
@@ -391,3 +389,4 @@ putchar:
     bne @inner      ; check if zero; 3 cycles
     pla             ; retrieve A from stack
     rts
+.endproc

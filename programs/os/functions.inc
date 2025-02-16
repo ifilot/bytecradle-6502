@@ -11,14 +11,14 @@
 .import char2num
 .import char2nibble
 .import chartoupper
-.import puthex
+.import _puthex
 .import putdec
 .import putspace
 .import putds
 .import puttab
 .import printnibble
-.import putchar
-.import getchar
+.import _putch
+.import _getch
 .import getpos
 .import ischarvalid
 .import clearline
