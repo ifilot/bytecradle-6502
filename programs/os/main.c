@@ -26,12 +26,20 @@
 #include "io.h"
 
 int main(void) {
-    char c;
+    uint8_t c;
+    uint8_t i;
 
-    putstrnl("Starting system.");
-    if(boot_sd() == 0x00) {
-        putstrnl("SD-card initialized.");
-    } else {
+    putstr("Starting system");
+    for(i=0; i<5; i++) {
+        putch('.');
+        c = boot_sd();
+        if(c == 0x00) {
+            putch('\n');
+            putstrnl("SD-card initialized.");
+            break;
+        }
+    }
+    if(i == 4) {
         putstrnl("Cannot open SD-card, exiting...");
         return -1;
     }
