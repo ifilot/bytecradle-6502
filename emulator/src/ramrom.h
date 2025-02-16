@@ -30,6 +30,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "vrEmu6502/vrEmu6502.h"
 #include "crc16.h"
@@ -86,3 +87,10 @@ void memwrite(uint16_t addr, uint8_t val);
  * if so, appropriately populate the miso buffer
  */
 void digest_sd();
+
+/**
+ * @brief Check whether file exists
+ * 
+ * @param filename file address
+ */
+void check_file_exists(const char* filename);

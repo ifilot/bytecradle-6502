@@ -24,6 +24,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <time.h>
+#include <argp.h>
 
 #include "ramrom.h"
 #include "vrEmu6502/vrEmu6502.h"
@@ -31,27 +32,118 @@
 // forward declarations
 void term_disable_blocking();
 void term_restore_default(struct termios *original);
+void cleanup();
 int kbhit();
 VrEmu6502 *cpu65c02;
+struct termios original;
 
 /**
- * @brief main function
+ * @brief Structure to hold command-line arguments.
  * 
- * @return int 
+ * This structure is used to store the values of the command-line arguments
+ * parsed by the argp library. It contains fields for verbosity and the
+ * output file.
+ */
+struct arguments {
+    int verbose;
+    char *rom;
+    char *sdcard;
+};
+
+/**
+ * @brief Command-line options.
+ * 
+ * This array defines the command-line options that the program accepts.
+ * Each option is described by a struct argp_option, which includes the
+ * long option name, short option character, argument name, flags, and
+ * a documentation string.
+ */
+static struct argp_option options[] = {
+    {"rom", 'r', "FILE", 0, "ROM file"},
+    {"sdcard",  's', "FILE", 0, "SDCARD image"},
+    { 0 }
+};
+
+/**
+ * @brief Parses command-line options.
+ * 
+ * This function is called by the argp library to handle command-line options.
+ * It sets the appropriate fields in the arguments structure based on the
+ * provided key and argument.
+ * 
+ * @param key The key representing the option.
+ * @param arg The argument associated with the option.
+ * @param state The state of the argument parser.
+ * @return error_t Returns 0 on success, ARGP_ERR_UNKNOWN on unknown option.
+ */
+static error_t parse_opt(int key, char *arg, struct argp_state *state) {
+    struct arguments *arguments = state->input;
+
+    switch (key) {
+        case 'v':
+            arguments->verbose = 1;
+            break;
+        case 'r':
+            arguments->rom = arg;
+            break;
+        case 's':
+            arguments->sdcard = arg;
+            break;
+        case ARGP_KEY_ARG:
+            return 0;
+        default:
+            return ARGP_ERR_UNKNOWN;
+    }
+    return 0;
+}
+
+/**
+ * @brief Argument parser configuration.
+ * 
+ * This structure defines the options, parser function, and documentation
+ * for the command-line argument parser used by the argp library.
+ */
+static struct argp argp = { options, 
+                            parse_opt, 
+                            0, 
+                            "BC6502 Emulator" };
+
+/**
+ * @brief Main function for the emulator.
+ * 
+ * This function initializes the emulator, sets up the CPU core, and enters
+ * an infinite loop to handle keyboard input and CPU ticks.
+ * 
+ * @param argc The number of command-line arguments.
+ * @param argv The array of command-line arguments.
+ * @return int Returns 0 on successful execution.
  */
 int main(int argc, char *argv[]) {
-    // check command-line arguments
-    if(argc != 3) {
-        fprintf(stderr, "Incorrect number of parameters!\n");
-        exit(EXIT_FAILURE);
+    // register clean-up function
+    atexit(cleanup);
+
+    // initialize argument structure
+    struct arguments arguments = { 0, NULL };
+
+    // parse command-line arguments
+    argp_parse(&argp, argc, argv, 0, 0, &arguments);
+
+    // enforce mandatory arguments
+    if(arguments.rom == NULL) {
+        fprintf(stderr, "Error: --rom is required!\n");
+        return EXIT_FAILURE;
+    }
+
+    if(arguments.sdcard == NULL) {
+        fprintf(stderr, "Error: --sdcard is required!\n");
+        return EXIT_FAILURE;
     }
 
     // load the ROM memory using external file
-    initrom(argv[1]);
-    init_sd(argv[2]);
+    initrom(arguments.rom);
+    init_sd(arguments.sdcard);
 
     // modify terminal settings, but store original settings
-    struct termios original;
     tcgetattr(STDIN_FILENO, &original);
     term_disable_blocking();
 
@@ -103,7 +195,7 @@ int main(int argc, char *argv[]) {
 
     // restore original terminal settings
     term_restore_default(&original);
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /**
@@ -145,17 +237,39 @@ int kbhit() {
     int bytes_read = read(STDIN_FILENO, &ch, 1);
     
     // detect CTRL+R
-    if(ch == 0x12) {
+    if(ch == ('R' - 0x40)) {
         keybuffer_ptr = keybuffer;
         ch = getchar(); // consume character
+        printf("Reset triggered.\n");
         vrEmu6502Reset(cpu65c02);        
+        return 0;
+    }
+
+    // detect CTRL+Q
+    if(ch == ('X' - 0x40)) {
+        printf("Exiting program.\n");
+        exit(EXIT_SUCCESS);
+        return 0;
+    }
+
+    // detect CTRL+N
+    if(ch == ('N' - 0x40)) {
+        keybuffer_ptr = keybuffer;
+        ch = getchar(); // consume character
+        printf("NMI triggered.\n");
+        vrEmu6502Nmi(cpu65c02);
         return 0;
     }
 
     if (bytes_read > 0) {
         *(keybuffer_ptr++) = ch;
-        return 1;
+        return EXIT_FAILURE;
     }
 
     return 0;
+}
+
+void cleanup() {
+    vrEmu6502Destroy(cpu65c02);
+    term_restore_default(&original);
 }

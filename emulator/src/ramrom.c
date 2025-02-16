@@ -20,16 +20,22 @@
 
 #include "ramrom.h"
 
+/**
+ * @brief Memory and I/O buffers and pointers
+ * 
+ * This section defines the memory and I/O buffers used by the emulator,
+ * as well as pointers and file handles for various operations.
+ */
 uint8_t ram[0x4000*3];  // 48 KiB RAM
 uint8_t rom[0x4000];    // 16 KiB ROM
-vrEmu6502Interrupt *irq;
-char keybuffer[0x10];
-char* keybuffer_ptr;
-uint8_t mosi[1024];
-uint8_t miso[1024];
-unsigned int mosiptr;
-unsigned int misoptr;
-FILE *sdfile;
+vrEmu6502Interrupt *irq; // Pointer to IRQ interrupt
+char keybuffer[0x10];   // Buffer for keyboard input
+char* keybuffer_ptr;    // Pointer to the current position in the key buffer
+uint8_t mosi[1024];     // Buffer for MOSI (Master Out Slave In) data
+uint8_t miso[1024];     // Buffer for MISO (Master In Slave Out) data
+unsigned int mosiptr;   // Pointer to the current position in the MOSI buffer
+unsigned int misoptr;   // Pointer to the current position in the MISO buffer
+FILE *sdfile;           // File handle for the SD card image
 
 /**
  * @brief Initialize ROM from file
@@ -37,16 +43,19 @@ FILE *sdfile;
  * @param filename file address
  */
 void initrom(const char *filename) {
+    // check whether file exists and is readable, else exit
+    check_file_exists(filename);
+
     FILE *file = fopen(filename, "rb");
     if (file == NULL) {
-        perror("Error opening file");
+        fprintf(stderr, "Error opening file\n");
         return;
     }
 
     static const size_t filesize = 0x4000;
     size_t bytes_read = fread(rom, 1, filesize, file);
     if(bytes_read != filesize) {
-        perror("File read error (size mismatch)");
+        fprintf(stderr, "File read error (size mismatch)\n");
     }
     fclose(file);
 
@@ -63,9 +72,12 @@ void initrom(const char *filename) {
  * @param filename file URL
  */
 void init_sd(const char* filename) {
+    // check whether file exists and is readable, else exit
+    check_file_exists(filename);
+
     sdfile = fopen(filename, "rb");
     if (sdfile == NULL) {
-        perror("Error opening file");
+        fprintf(stderr, "Error opening file\n");
         return;
     }
 }
@@ -262,5 +274,24 @@ void digest_sd() {
             //printf("%02X %02X ", miso[514], miso[515]);
             //printf("%04X ", checksum);
         }
+    }
+}
+
+/**
+ * @brief Check whether file exists
+ * 
+ * @param filename file address
+ */
+void check_file_exists(const char* filename) {
+    if (access(filename, F_OK) == 0) {
+        if (access(filename, R_OK) != 0) {
+            fprintf(stderr, "File '%s' is not readable", filename);
+            exit(EXIT_FAILURE);
+            return;
+        }   
+    } else {
+        fprintf(stderr, "File '%s' does NOT exist.\n", filename);
+        exit(EXIT_FAILURE);
+        return;
     }
 }
