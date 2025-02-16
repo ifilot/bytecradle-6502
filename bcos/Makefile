@@ -50,7 +50,7 @@ flash: os.bin
 	picoflash -i $(BINDIR)/os.bin -w -b 0
 
 run: os.bin
-	../emulator/build/bc6502emu $(BINDIR)/os.bin ../emulator/script/sdcard.img
+	../emulator/build/bc6502emu -r $(BINDIR)/os.bin -s ../emulator/script/sdcard.img
 
 clean:
 	rm -rf $(BINDIR) $(OBJDIR) $(ASMDIR)

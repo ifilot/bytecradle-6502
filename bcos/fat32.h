@@ -18,50 +18,57 @@
  *                                                                        *
  **************************************************************************/
 
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 
-#include "fat32.h"
+#include "sdcard.h"
+#include "crc16.h"
 #include "io.h"
 
-#define SDMAX 5
+#ifndef _FAT32_H
+#define _FAT32_H
 
-int main(void) {
-    uint8_t c;
-    uint8_t i;
+struct FAT32Partition {
+    uint16_t bytes_per_sector;
+    uint8_t sectors_per_cluster;
+    uint16_t reserved_sectors;
+    uint8_t number_of_fats;
+    uint32_t sectors_per_fat;
+    uint32_t root_dir_first_cluster;
+    uint32_t fat_begin_lba;
+    uint32_t lba_addr_root_dir;
+    uint32_t sector_begin_lba;
+    char volume_label[11];
+};
 
-    putstr("Starting system");
-    for(i=0; i<SDMAX; i++) {
-        putch('.');
-        c = boot_sd();
-        if(c == 0x00) {
-            putch('\n');
-            putstrnl("SD-card initialized.");
-            break;
-        }
-    }
-    if(i == SDMAX) {
-        putch('\n');
-        putstrnl("Cannot open SD-card, exiting...");
-        return -1;
-    }
+extern struct FAT32Partition fat32_partition;
 
-    if(fat32_read_mbr() == 0x00) {
-        fat32_read_partition();
-    } else {
-        putstrnl("Cannot read MBR, exiting...");
-        return -1;
-    }
-    
+// extern uint32_t fat32_linkedlist[16];
+// extern uint32_t fat32_filesize_current_file = 0;
+// extern uint32_t fat32_current_folder_cluster = 0;
 
-    // put system in infinite loop
-    while(1){
-        c = getch();
-        if(c != 0) {
-            putch(c);
-        }
-    }
+/**
+ * Read the Master Boot Record from the SD card
+ */
+uint8_t fat32_read_mbr(void);
 
-    return 0;
+/**
+ * Read the partition table from the MBR
+ * 
+ * This function assumes that the MBR has already been read and it present
+ * in RAM at location 0x8000
+ */
+void fat32_read_partition(void);
+
+/**
+ * @brief Calculate the sector address from cluster and sector
+ * 
+ * @param cluster which cluster
+ * @param sector which sector on the cluster (0-Nclusters)
+ * @return uint32_t sector address (512 byte address)
+ */
+uint32_t calculate_sector_address(uint32_t cluster, uint8_t sector) {
+    return fat32_partition.sector_begin_lba + (cluster - 2) * fat32_partition.sectors_per_cluster + sector;   
 }
+
+#endif
