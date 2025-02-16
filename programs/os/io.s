@@ -3,17 +3,19 @@
 .export _putstr
 .export _getch
 .export putstr
+.export _putch
 .export putstrnl
+.export _putstrnl
 .export char2num
 .export char2nibble
 .export chartoupper
+.export puthex
 .export _puthex
 .export putdec
 .export putds
 .export putspace
 .export puttab
 .export printnibble
-.export _putch
 .export getpos
 .export ischarvalid
 .export clearline
@@ -113,14 +115,13 @@ newcmdline:
 ; is found. Assumes that $10 is used on the zero page to store the address of
 ; the string.
 ;-------------------------------------------------------------------------------
-.proc _putstr: near
+_putstr:
     sta STRLB
     stx STRHB
     ldx STRLB
     lda STRHB
     jsr putstr
     rts
-.endproc
 
 putstr:
     sta STRHB
@@ -144,6 +145,14 @@ putstr:
 ; Same as PUTSTR function, but puts a newline character at the end of the 
 ; string.
 ;-------------------------------------------------------------------------------
+_putstrnl:
+    sta STRLB
+    stx STRHB
+    ldx STRLB
+    lda STRHB
+    jsr putstrnl
+    rts
+
 putstrnl:
     jsr putstr
     lda #LF

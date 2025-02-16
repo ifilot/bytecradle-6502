@@ -24,73 +24,17 @@
 
 #include "sdcard.h"
 #include "io.h"
-#include "crc16.h"
 
 int main(void) {
-    uint8_t c = 0;
-    uint8_t buf[10];
-    uint8_t* sdbuf = (uint8_t*)0x8000;
-    uint16_t checksum = 0x0000;
-    uint8_t res = 0;
-    uint8_t resparr[6];
-    uint8_t i;
+    char c;
 
-    // initialize SD card
-    init_sd();
-
-    // initialize sd card
-    res = sdcmd00();
-    sprintf(buf, "CMD00: %02X\n", res);
-    putstr(buf);
-    if(res != 0x01) {
-        putstr("Exiting...");
+    putstrnl("Starting system.");
+    if(boot_sd() == 0x00) {
+        putstrnl("SD-card initialized.");
+    } else {
+        putstrnl("Cannot open SD-card, exiting...");
         return -1;
     }
-
-    res = sdcmd08(resparr);
-    sprintf(buf, "CMD08: %02X %02X %02X %02X %02X\n", resparr[0], resparr[1], resparr[2], resparr[3], resparr[4]);
-    putstr(buf);
-    if(res != 0x01) {
-        putstr("Exiting...");
-        return -1;
-    }
-
-    res = 0xFF;
-    for(i=0; i<50; i++) {
-        res = sdacmd41();
-        sprintf(buf, "CMD41: %02X\n", res);
-        putstr(buf);
-        if(res != 0x00) {
-            continue;
-        }
-
-        res = sdcmd58(resparr);
-        res = sdcmd58(resparr);
-        sprintf(buf, "CMD58: %02X %02X %02X %02X %02X\n", resparr[0], resparr[1], resparr[2], resparr[3], resparr[4]);
-
-        if(res == 0x00) {
-            break;
-        }
-    }
-
-    if(res != 0x00) {
-        return -1;
-    }
-
-    // retrieve sector
-    checksum = sdcmd17(0x00000000);
-
-    sprintf(buf, "Checksum SD: %04X\n", checksum);
-    putstr(buf);
-
-    checksum = crc16_xmodem(sdbuf, 0x200);
-
-    sprintf(buf, "Calculated checksum: %04X\n", checksum);
-    putstr(buf);
-
-    // print bytes
-    sprintf(buf, "Check byte: %02X %02X\n", sdbuf[0x1FE], sdbuf[0x1FF]);
-    putstr(buf);
 
     // put system in infinite loop
     while(1){

@@ -73,7 +73,6 @@ _sdcmd00:
     jsr send_command
     jsr receive_r1          ; receive response
     jsr close_command       ; conserves A
-    jsr newline             ; conserves A
     rts
 
 ;-------------------------------------------------------------------------------
