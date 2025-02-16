@@ -47,7 +47,7 @@ os.bin: sbc.cfg $(BINDIR)/sbc.lib $(OBJS) | $(BINDIR)
 	$(LD) -C sbc.cfg $(OBJS) -o $(BINDIR)/os.bin $(BINDIR)/sbc.lib -m $(BINDIR)/sbc.map
 
 flash: os.bin
-	picoflash -i os.bin -w -b 0
+	picoflash -i $(BINDIR)/os.bin -w -b 0
 
 run: os.bin
 	../../emulator/build/bc6502emu $(BINDIR)/os.bin ../../emulator/script/sdcard.img

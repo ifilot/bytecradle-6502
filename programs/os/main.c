@@ -20,6 +20,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "sdcard.h"
 #include "io.h"
@@ -32,7 +33,7 @@ int main(void) {
     uint16_t checksum = 0x0000;
     uint8_t res = 0;
     uint8_t resparr[6];
-    uint16_t i,j;
+    uint8_t i;
 
     // initialize SD card
     init_sd();
@@ -53,17 +54,25 @@ int main(void) {
         putstr("Exiting...");
         return -1;
     }
-    
+
     res = 0xFF;
-    while(res != 0x00) {
+    for(i=0; i<50; i++) {
         res = sdacmd41();
         sprintf(buf, "CMD41: %02X\n", res);
         putstr(buf);
+        if(res != 0x00) {
+            continue;
+        }
+
+        res = sdcmd58(resparr);
+        res = sdcmd58(resparr);
+        sprintf(buf, "CMD58: %02X %02X %02X %02X %02X\n", resparr[0], resparr[1], resparr[2], resparr[3], resparr[4]);
+
+        if(res == 0x00) {
+            break;
+        }
     }
 
-    res = sdcmd58(resparr);
-    sprintf(buf, "CMD58: %02X %02X %02X %02X %02X\n", resparr[0], resparr[1], resparr[2], resparr[3], resparr[4]);
-    putstr(buf);
     if(res != 0x00) {
         return -1;
     }

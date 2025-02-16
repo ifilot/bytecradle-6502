@@ -142,8 +142,9 @@ _sdacmd41:
 ; Send CMD58 command to the SD-card and retrieve the result
 ;-------------------------------------------------------------------------------
 _sdcmd58:
-    sta BUF4
-    stx BUF5
+    sei
+    sta BUF4            ; store storage location for response
+    stx BUF5            ; upper byte storage location
     jsr open_command
     lda #<cmd58
     sta BUF2
@@ -152,6 +153,7 @@ _sdcmd58:
     jsr send_command
     jsr receive_r3
     jsr close_command
+    cli
     rts
 
 ;-------------------------------------------------------------------------------

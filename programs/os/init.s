@@ -13,7 +13,7 @@
 ; Initialize the system
 ;-------------------------------------------------------------------------------
 init_system:
-    ;jsr clear_zp
+    jsr clear_zp
     jsr init_acia
     jsr init_screen
     jsr printtitle
@@ -30,6 +30,8 @@ clear_zp:
     inx
     cpx #$20
     bne @next
+    stz TBPL
+    stz TBPR
     rts
 
 ;-------------------------------------------------------------------------------

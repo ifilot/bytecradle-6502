@@ -253,7 +253,7 @@ chartoupper:
 ; Conserves:    A,X,Y
 ; Uses:         BUF1
 ;-------------------------------------------------------------------------------
-.proc _puthex: near
+_puthex:
 puthex:
     sta BUF1
     lsr a           ; shift right; MSB is always set to 0
@@ -266,7 +266,6 @@ puthex:
     jsr printnibble
     lda BUF1
     rts
-.endproc
 
 ;-------------------------------------------------------------------------------
 ; PUTDEC routine
