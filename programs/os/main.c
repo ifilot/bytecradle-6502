@@ -25,12 +25,14 @@
 #include "sdcard.h"
 #include "io.h"
 
+#define SDMAX 5
+
 int main(void) {
     uint8_t c;
     uint8_t i;
 
     putstr("Starting system");
-    for(i=0; i<5; i++) {
+    for(i=0; i<SDMAX; i++) {
         putch('.');
         c = boot_sd();
         if(c == 0x00) {
@@ -39,7 +41,8 @@ int main(void) {
             break;
         }
     }
-    if(i == 4) {
+    if(i == SDMAX) {
+        putch('\n');
         putstrnl("Cannot open SD-card, exiting...");
         return -1;
     }
