@@ -42,17 +42,5 @@ uint8_t boot_sd() {
         return -1;
     }
 
-    // retrieve sector
-    checksum_sd = sdcmd17(0x00000000);
-    checksum = crc16_xmodem(sdbuf, 0x200);
-
-    if(checksum != checksum_sd) {
-        return -1;
-    }
-
-    if(sdbuf[0x1FE] != 0x55 || sdbuf[0x1FF] != 0xAA) {
-        return -1;
-    }
-
     return 0;
 }
