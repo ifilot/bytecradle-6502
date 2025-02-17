@@ -67,8 +67,6 @@ void fat32_read_partition(void);
  * @param sector which sector on the cluster (0-Nclusters)
  * @return uint32_t sector address (512 byte address)
  */
-uint32_t calculate_sector_address(uint32_t cluster, uint8_t sector) {
-    return fat32_partition.sector_begin_lba + (cluster - 2) * fat32_partition.sectors_per_cluster + sector;   
-}
+uint32_t calculate_sector_address(uint32_t cluster, uint8_t sector);
 
 #endif

@@ -101,7 +101,17 @@ void fat32_read_partition(void) {
 
     // copy volume name
     memcpy(fat32_partition.volume_label, (uint8_t*)(SDBUF), 11);
-    puthex(fat32_partition.volume_label[0]);
-    // sprintf(buf, "Volume name:%.11s\0", (uint8_t*)(SDBUF));
-    // putstrnl(buf);
+    sprintf(buf, "Volume name:%.11s\0", (uint8_t*)(SDBUF));
+    putstrnl(buf);
+}
+
+/**
+ * @brief Calculate the sector address from cluster and sector
+ * 
+ * @param cluster which cluster
+ * @param sector which sector on the cluster (0-Nclusters)
+ * @return uint32_t sector address (512 byte address)
+ */
+uint32_t calculate_sector_address(uint32_t cluster, uint8_t sector) {
+    return fat32_partition.sector_begin_lba + (cluster - 2) * fat32_partition.sectors_per_cluster + sector;   
 }
