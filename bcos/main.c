@@ -49,6 +49,7 @@ int main(void) {
 
     if(fat32_read_mbr() == 0x00) {
         fat32_read_partition();
+        fat32_list_dir();
     } else {
         putstrnl("Cannot read MBR, exiting...");
         return -1;
