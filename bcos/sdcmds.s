@@ -8,6 +8,7 @@
 .export _sdacmd41
 .export _sdcmd58
 .export _sdcmd17
+.export _read_sector
 
 .import incsp4, pushax
 
@@ -164,6 +165,7 @@ _sdcmd58:
 ; the soft stack needs to be cleaned by calling incsp4 as a 4-byte argument
 ; is provided. The return value is stored in AX.
 ;-------------------------------------------------------------------------------
+_read_sector:
 _sdcmd17:
     jsr open_command
 
