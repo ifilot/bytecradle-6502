@@ -10,6 +10,11 @@ All files are obtained from [this source](https://github.com/maccasoft/propeller
 
 ## Compilation
 
+Go to this folder and simply type `make`. The `Makefile` script will
+automatically download `openspin` and perform the compilation.
+
+### Alternative
+
 Download [Openspin](https://www.maccasoft.com/downloads/) from here and compile
 the source code via
 
