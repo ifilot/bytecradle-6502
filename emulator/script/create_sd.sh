@@ -39,6 +39,13 @@ mount "${LOOP_DEVICE}p1" $ROOT_MOUNT
 echo "Populating root partition..."
 mkdir -p $ROOT_MOUNT
 echo "Test" > $ROOT_MOUNT/README.txt
+echo "Hello World!" > $ROOT_MOUNT/HelloWor.txt
+mkdir -p $ROOT_MOUNT/folder1
+mkdir -p $ROOT_MOUNT/folder2
+echo "File 1" > $ROOT_MOUNT/folder1/file1.txt
+echo "File 2" > $ROOT_MOUNT/folder1/file2.txt
+echo "File 1" > $ROOT_MOUNT/folder2/file1.txt
+echo "File 2" > $ROOT_MOUNT/folder2/file2.txt
 
 # Step 8: Cleanup
 echo "Unmounting and cleaning up..."

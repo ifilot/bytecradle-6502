@@ -24,7 +24,8 @@
 struct FAT32Partition fat32_partition;
 uint32_t fat32_linkedlist[F32_LLSZ];
 uint32_t fat32_filesize_current_file = 0;
-uint32_t fat32_current_folder_cluster = 0;
+struct FAT32Folder fat32_current_folder;
+struct FAT32File *fat32_files = (struct FAT32File*)FAT32FILESLOC;
 
 /**
  * Read the Master Boot Record from the SD card, assumes that the SD-card
@@ -56,7 +57,6 @@ uint8_t fat32_read_mbr(void) {
  * in RAM at location 0x8000
  */
 void fat32_read_partition(void) {
-    char buf[32];
     // extract logical block address (LBA) from partition table
     uint32_t lba = *(uint32_t*)(SDBUF + 0x1C6);
 
@@ -76,10 +76,25 @@ void fat32_read_partition(void) {
     fat32_partition.lba_addr_root_dir = fat32_calculate_sector_address(fat32_partition.root_dir_first_cluster, 0);
 
     // set the cluster of the current folder
-    fat32_current_folder_cluster = fat32_partition.root_dir_first_cluster;
+    fat32_current_folder.cluster = fat32_partition.root_dir_first_cluster;
+    fat32_current_folder.nrfiles = 0;
+    memset(fat32_current_folder.name, 0x00, 8);
+    fat32_current_folder.name[0] = '/';
 
-    // print data
-    sprintf(buf, "LBA partition 1: %08lX", lba);
+    // read first sector of first partition to establish volume name
+    read_sector(fat32_partition.lba_addr_root_dir);
+
+    // copy volume name
+    memcpy(fat32_partition.volume_label, (uint8_t*)(SDBUF), 11);
+}
+
+/**
+ * Print partition info
+ */
+void fat32_print_partition_info() {
+    char buf[32];
+    sprintf(buf, "LBA partition 1: %08lX", fat32_partition.fat_begin_lba - 
+                                           fat32_partition.reserved_sectors);
     putstrnl(buf);
 
     sprintf(buf, "Bytes per sector: %i", fat32_partition.bytes_per_sector);
@@ -102,29 +117,26 @@ void fat32_read_partition(void) {
                                              fat32_partition.bytes_per_sector) >> 13);
     putstrnl(buf);
 
-    // read first sector of first partition to establish volume name
-    read_sector(fat32_partition.lba_addr_root_dir);
+    sprintf(buf, "Address ROOT dir: %08lX", fat32_partition.lba_addr_root_dir);
+    putstrnl(buf);
 
-    // copy volume name
-    memcpy(fat32_partition.volume_label, (uint8_t*)(SDBUF), 11);
     sprintf(buf, "Volume name: %.11s\0", (uint8_t*)(SDBUF));
     putstrnl(buf);
 }
 
-void fat32_list_dir() {
+/**
+ * Read the contents of the current directory, store the result starting
+ * at 0x8200.
+ */
+void fat32_read_dir() {
     uint8_t ctr = 0;                // counter over clusters
     uint16_t fctr = 0;              // counter over directory entries (files and folders)
-    uint32_t totalfilesize = 0;     // collect size of files in folder
-    uint16_t loc = 0;               // current entry position
-    uint8_t c = 0;                  // check byte
-    uint8_t i = 0;
-    uint16_t j = 0;
-    uint8_t filename[11];
-    uint32_t fc, filesize;
-    uint8_t buf[80];
+    uint8_t i = 0, j = 0;
+    uint8_t* locptr = NULL;
+    struct FAT32File *file = NULL;
 
     // build linked list
-    fat32_build_linked_list(fat32_current_folder_cluster);
+    fat32_build_linked_list(fat32_current_folder.cluster);
 
     while(fat32_linkedlist[ctr] != 0xFFFFFFFF && ctr < F32_LLSZ) {
         // print cluster number and address
@@ -133,48 +145,66 @@ void fat32_list_dir() {
         // loop over all sectors per cluster
         for(i=0; i<fat32_partition.sectors_per_cluster; i++) {
             read_sector(caddr);            // read sector data
-            loc = SDBUF;
+            locptr = (uint8_t*)(SDBUF);    // set pointer to sector data
             for(j=0; j<16; j++) { // 16 file tables per sector
-                // check first position
-                c = *(uint8_t*)(loc);
-
                 // continue if an unused entry is encountered 0xE5
-                if(c == 0xE5) {
-                    loc += 32;  // next file entry location
+                if(*locptr == 0xE5) {
+                    locptr += 32;  // next file entry location
                     continue;
                 }
 
                 // early exit if a zero is read
-                // if(c == 0x00) {
-                //     stopreading = 1;
-                //     break;
-                // }
-
-                c = *(uint8_t*)(loc + 0x0B);    // attrib byte
+                if(*locptr == 0x00) {
+                    file = &fat32_files[fctr];
+                    fat32_current_folder.nrfiles = fctr;
+                    return;
+                }
 
                 // check if we are reading a file or a folder
-                if((c & 0x0F) == 0x00) {
+                if((*(locptr + 0x0B) & 0x0F) == 0x00) {
 
-                    // capture metadata
+                    file = &fat32_files[fctr];
+                    memcpy(file->basename, locptr, 11);
+                    file->attrib = *(locptr + 0x0B);
+                    file->cluster = fat32_grab_cluster_address_from_fileblock(locptr);
+                    file->filesize = *(uint32_t*)(locptr + 0x1C);
                     fctr++;
-                    fc = fat32_grab_cluster_address_from_fileblock(loc);
-                    filesize = *(uint32_t*)(loc + 0x1C);
-                    totalfilesize += filesize;
 
-                    memcpy(filename, *(uint8_t*)(loc), 11);
-                    if(c & (1 << 4)) { // directory entry
-                        sprintf(buf, "%3u%.8s DIR       %08lX", fctr,  &filename[0x00], fc);
-                        putstrnl(buf);
-                    } else {           // file entry
-                        sprintf(buf, "%3u%.8s.%.3s%6lu%08lX", fctr, &filename[0x00], &filename[0x08], filesize, fc);
-                        putstrnl(buf);
+                    if(fctr > 380) {
+                        putstrnl("Error: cannot index folder with more than 380 entries.");
+                        return;
                     }
                 }
-                loc += 32;  // next file entry location
+                locptr += 32;  // next file entry location
             }
             caddr++;    // next sector
         }
         ctr++;  // next cluster
+    }
+    fat32_current_folder.nrfiles = fctr;
+}
+
+/**
+ * Sort the files in the file list
+ */
+void fat32_sort_files() {
+    qsort(fat32_files, fat32_current_folder.nrfiles, sizeof(struct FAT32File), fat32_file_compare);
+}
+
+/**
+ * List the contents of the current directory
+ */
+void fat32_list_dir() {
+    uint8_t buf[80];
+    struct FAT32File *file = fat32_files;
+    while(file->basename[0] != 0x00) {
+        if(file->attrib & (1 << 4)) {
+            sprintf(buf, "%.8s     %08lX DIR", file->basename, file->cluster);
+        } else {
+            sprintf(buf, "%.8s.%.3s %08lX %lu", file->basename, file->extension, file->cluster, file->filesize);
+        }
+        putstrnl(buf);
+        file++;
     }
 }
 
@@ -212,7 +242,25 @@ uint32_t fat32_calculate_sector_address(uint32_t cluster, uint8_t sector) {
     }
 }
 
-uint32_t fat32_grab_cluster_address_from_fileblock(uint16_t loc) {
-    return *(uint16_t*)(loc + 0x14) << 16 | 
-           *(uint16_t*)(loc + 0x1A);
+/**
+ * @brief Construct sector address from file entry
+ * 
+ * @return uint32_t sector address
+ */
+uint32_t fat32_grab_cluster_address_from_fileblock(uint8_t *loc) {
+    return ((uint32_t)*(uint16_t*)(loc + 0x14)) << 16 | 
+                      *(uint16_t*)(loc + 0x1A);
+}
+
+int fat32_file_compare(const void* item1, const void *item2) {
+    const struct FAT32File *file1 = (const struct FAT32File*)item1;
+    const struct FAT32File *file2 = (const struct FAT32File*)item2;
+
+    if(file1->attrib & (1 << 4) && !(file2->attrib & (1 << 4))) {
+        return -1;
+    } else if(!(file1->attrib & (1 << 4)) && file2->attrib & (1 << 4)) {
+        return 1;
+    } else {
+        return strcmp(file1->basename, file2->basename);
+    }
 }
