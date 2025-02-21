@@ -18,15 +18,16 @@
  *                                                                        *
  **************************************************************************/
 
+#ifndef _FAT32_H
+#define _FAT32_H
+
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "sdcard.h"
 #include "crc16.h"
 #include "io.h"
-
-#ifndef _FAT32_H
-#define _FAT32_H
 
 #define F32_LLSZ 16
 
@@ -43,10 +44,24 @@ struct FAT32Partition {
     char volume_label[11];
 };
 
+struct FAT32Folder {
+    char name[8];
+    uint32_t cluster;
+    uint16_t nrfiles;
+};
+
+struct FAT32File {
+    char basename[8];
+    char extension[3];
+    uint8_t attrib;
+    uint32_t cluster;
+    uint32_t filesize;
+};
+
 extern struct FAT32Partition fat32_partition;
 extern uint32_t fat32_linkedlist[F32_LLSZ];
-extern uint32_t fat32_filesize_current_file;
-extern uint32_t fat32_current_folder_cluster;
+extern struct FAT32Folder fat32_current_folder;
+extern struct FAT32File *fat32_files;
 
 /**
  * Read the Master Boot Record from the SD card
@@ -62,14 +77,26 @@ uint8_t fat32_read_mbr(void);
 void fat32_read_partition(void);
 
 /**
- * @brief Calculate the sector address from cluster and sector
- * 
- * @param cluster which cluster
- * @param sector which sector on the cluster (0-Nclusters)
- * @return uint32_t sector address (512 byte address)
+ * Print partition info
  */
-uint32_t fat32_calculate_sector_address(uint32_t cluster, uint8_t sector);
+void fat32_print_partition_info();
 
+/**
+ * Read the contents of the current directory, store the result starting
+ * at 0x8200.
+ */
+void fat32_read_dir();
+
+/**
+ * Sort the files in the file list
+ */
+void fat32_sort_files();
+
+/**
+ * List the contents of the current directory and print it to the screen. 
+ * Ideally, this function is called *after* `fat32_sort_files()` to produce
+ * a sorted list.
+ */
 void fat32_list_dir();
 
 /**
@@ -78,5 +105,26 @@ void fat32_list_dir();
  * @param nextcluster first cluster in the linked list
  */
 void fat32_build_linked_list(uint32_t nextcluster);
+
+/**
+ * @brief Construct sector address from file entry
+ * 
+ * @return uint32_t sector address
+ */
+uint32_t fat32_grab_cluster_address_from_fileblock(uint8_t *loc);
+
+/**
+ * @brief Calculate the sector address from cluster and sector
+ * 
+ * @param cluster which cluster
+ * @param sector which sector on the cluster (0-Nclusters)
+ * @return uint32_t sector address (512 byte address)
+ */
+uint32_t fat32_calculate_sector_address(uint32_t cluster, uint8_t sector);
+
+/**
+ * Compare function for qsort
+ */
+int fat32_file_compare(const void* item1, const void *item2);
 
 #endif
