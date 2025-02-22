@@ -35,3 +35,45 @@ is free to use the zero page at `$20-$FF`.
 I/O space
 ---------
 
+.. list-table::
+   :header-rows: 1
+   :widths: auto
+
+   * - Address Range
+     - Description
+   * - :code:`$7F00`
+     - ROM bank register
+   * - :code:`$7F01`
+     - RAM bank register
+   * - :code:`$7F04`
+     - ACIA1 DATA register
+   * - :code:`$7F05`
+     - ACIA1 STATUS register
+   * - :code:`$7F06`
+     - ACIA1 COMMAND register
+   * - :code:`$7F07`
+     - ACIA1 CONTROL register
+   * - :code:`$7F08`
+     - ACIA2 DATA register
+   * - :code:`$7F09`
+     - ACIA2 STATUS register
+   * - :code:`$7F0A`
+     - ACIA2 COMMAND register
+   * - :code:`$7F0B`
+     - ACIA2 CONTROL register
+   * - :code:`$7F0C`
+     - GPU DATA register
+   * - :code:`$7F0D`
+     - GPU REC register
+   * - :code:`$7F0E`
+     - GPU STATUS register
+   * - :code:`$7F0F`
+     - GPU BIT register
+   * - :code:`$7F20`
+     - SDCARD SERIAL register
+   * - :code:`$7F21`
+     - SDCARD CLKSTART register
+   * - :code:`$7F22`
+     - SDCARD DESELECT register
+   * - :code:`$7F23`
+     - SDCARD SELECT register
