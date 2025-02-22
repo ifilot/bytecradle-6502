@@ -195,9 +195,10 @@ void fat32_sort_files() {
  * List the contents of the current directory
  */
 void fat32_list_dir() {
+    uint16_t i = 0;
     uint8_t buf[80];
     struct FAT32File *file = fat32_files;
-    while(file->basename[0] != 0x00) {
+    for(i = 0; i<fat32_current_folder.nrfiles; i++) {
         if(file->attrib & (1 << 4)) {
             sprintf(buf, "%.8s     %08lX DIR", file->basename, file->cluster);
         } else {

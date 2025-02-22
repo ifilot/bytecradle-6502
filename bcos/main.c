@@ -56,7 +56,6 @@ int main(void) {
         putstrnl("Cannot read MBR, exiting...");
         return -1;
     }
-    
 
     // put system in infinite loop
     while(1){
