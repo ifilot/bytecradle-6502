@@ -7943,6 +7943,10 @@
 		(uuid "25460b3d-8b22-4a4b-bb00-538e23d698d0")
 	)
 	(no_connect
+		(at 119.38 144.78)
+		(uuid "2f0203e7-1a1d-4afa-9f6c-bbd22264d4d0")
+	)
+	(no_connect
 		(at 116.84 114.3)
 		(uuid "3013bbf8-ad6f-44f7-9297-05b9b3aecb01")
 	)
@@ -7961,6 +7965,10 @@
 	(no_connect
 		(at 132.08 99.06)
 		(uuid "55d39d06-a328-4238-acad-9f594bd421a5")
+	)
+	(no_connect
+		(at 50.8 71.12)
+		(uuid "60609e3a-7f5d-45fc-9a27-e0c351011e8b")
 	)
 	(no_connect
 		(at 119.38 152.4)
@@ -8492,16 +8500,6 @@
 	)
 	(wire
 		(pts
-			(xy 33.02 71.12) (xy 50.8 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "67aaaf63-9892-4df8-9129-432d1219b1d3")
-	)
-	(wire
-		(pts
 			(xy 39.37 60.96) (xy 50.8 60.96)
 		)
 		(stroke
@@ -8992,16 +8990,6 @@
 	)
 	(wire
 		(pts
-			(xy 29.21 81.28) (xy 33.02 81.28)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cfa32f86-0365-4ff8-8dc9-6bd786c40e85")
-	)
-	(wire
-		(pts
 			(xy 38.1 50.8) (xy 38.1 53.34)
 		)
 		(stroke
@@ -9259,16 +9247,6 @@
 			(type default)
 		)
 		(uuid "f573fbd0-1e9b-4657-bd98-13164900ea9d")
-	)
-	(wire
-		(pts
-			(xy 33.02 81.28) (xy 33.02 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f59439ed-cfb5-40f1-94a5-eeafe3545c2d")
 	)
 	(wire
 		(pts
@@ -10517,28 +10495,6 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "~{SETBIT}"
-		(shape input)
-		(at 119.38 144.78 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "6634e76a-dc5e-4166-929e-c3a0189babef")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 128.5337 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
 				(hide yes)
 			)
 		)
@@ -11841,28 +11797,6 @@
 			)
 		)
 	)
-	(global_label "BIT"
-		(shape input)
-		(at 21.59 81.28 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "ef326156-0ee3-48b9-b739-735dcba5ec5e")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 15.7624 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "BF3"
 		(shape input)
 		(at 21.59 50.8 180)
@@ -12445,73 +12379,6 @@
 			(project "propeller-vga-board"
 				(path "/68d9e336-094e-4def-a139-3412ac01f132"
 					(reference "R9")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 25.4 81.28 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "0a5258a3-d03d-4c60-aa3e-e1609dda4971")
-		(property "Reference" "R2"
-			(at 25.4 78.994 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "3.9k"
-			(at 25.4 81.28 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 25.4 83.058 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 25.4 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 25.4 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "ba3d8eda-0e9f-440b-869b-f80b8b583377")
-		)
-		(pin "1"
-			(uuid "9debf4eb-857e-4f76-b2bb-c4e5dc9847f2")
-		)
-		(instances
-			(project "propeller-vga-board"
-				(path "/68d9e336-094e-4def-a139-3412ac01f132"
-					(reference "R2")
 					(unit 1)
 				)
 			)
@@ -17844,46 +17711,46 @@
 			)
 		)
 		(pin "1"
-			(uuid "d438c372-f417-4b9d-9952-2bda29ae23b4")
+			(uuid "d438c372-f417-4b9d-9952-2bda29ae23b5")
 		)
 		(pin "11"
-			(uuid "d679aaef-c010-4452-b38e-73ee74579090")
+			(uuid "d679aaef-c010-4452-b38e-73ee74579091")
 		)
 		(pin "10"
-			(uuid "f026b768-f854-45dd-8f19-e68167342add")
+			(uuid "f026b768-f854-45dd-8f19-e68167342ade")
 		)
 		(pin "4"
-			(uuid "899a9dc7-71f8-4d70-8077-7628df80f0df")
+			(uuid "899a9dc7-71f8-4d70-8077-7628df80f0e0")
 		)
 		(pin "13"
-			(uuid "91c33791-c78d-4d40-887b-e56f4ddee6e2")
+			(uuid "91c33791-c78d-4d40-887b-e56f4ddee6e3")
 		)
 		(pin "9"
-			(uuid "6a575b31-95d4-4ea4-91be-ee21c9d5aeb9")
+			(uuid "6a575b31-95d4-4ea4-91be-ee21c9d5aeba")
 		)
 		(pin "8"
-			(uuid "948b6fca-79bf-4c11-8490-75663b4f5417")
+			(uuid "948b6fca-79bf-4c11-8490-75663b4f5418")
 		)
 		(pin "14"
-			(uuid "b8312e23-6a2e-4a45-9e65-b7bccb03e4dc")
+			(uuid "b8312e23-6a2e-4a45-9e65-b7bccb03e4dd")
 		)
 		(pin "5"
-			(uuid "354f2466-f862-4d6e-9e6d-6f3671fd40f0")
+			(uuid "354f2466-f862-4d6e-9e6d-6f3671fd40f1")
 		)
 		(pin "3"
-			(uuid "bd67f082-653d-43c7-9d80-323cf65f3f1c")
+			(uuid "bd67f082-653d-43c7-9d80-323cf65f3f1d")
 		)
 		(pin "7"
-			(uuid "1808ad64-1afd-42fd-a19d-2713bf6a74bf")
+			(uuid "1808ad64-1afd-42fd-a19d-2713bf6a74c0")
 		)
 		(pin "12"
-			(uuid "39957ff7-0c5e-4578-a5ad-6bbb0f0044e1")
+			(uuid "39957ff7-0c5e-4578-a5ad-6bbb0f0044e2")
 		)
 		(pin "6"
-			(uuid "c8810ec4-0d30-4869-96cd-c0916c84e25f")
+			(uuid "c8810ec4-0d30-4869-96cd-c0916c84e260")
 		)
 		(pin "2"
-			(uuid "edc83fd3-787e-4bcf-828b-d0fd6e6a2439")
+			(uuid "edc83fd3-787e-4bcf-828b-d0fd6e6a243a")
 		)
 		(instances
 			(project "propeller-vga-board"
@@ -19584,46 +19451,46 @@
 			)
 		)
 		(pin "1"
-			(uuid "d438c372-f417-4b9d-9952-2bda29ae23b4")
+			(uuid "d438c372-f417-4b9d-9952-2bda29ae23b6")
 		)
 		(pin "11"
-			(uuid "d679aaef-c010-4452-b38e-73ee74579090")
+			(uuid "d679aaef-c010-4452-b38e-73ee74579092")
 		)
 		(pin "10"
-			(uuid "f026b768-f854-45dd-8f19-e68167342add")
+			(uuid "f026b768-f854-45dd-8f19-e68167342adf")
 		)
 		(pin "4"
-			(uuid "899a9dc7-71f8-4d70-8077-7628df80f0df")
+			(uuid "899a9dc7-71f8-4d70-8077-7628df80f0e1")
 		)
 		(pin "13"
-			(uuid "91c33791-c78d-4d40-887b-e56f4ddee6e2")
+			(uuid "91c33791-c78d-4d40-887b-e56f4ddee6e4")
 		)
 		(pin "9"
-			(uuid "6a575b31-95d4-4ea4-91be-ee21c9d5aeb9")
+			(uuid "6a575b31-95d4-4ea4-91be-ee21c9d5aebb")
 		)
 		(pin "8"
-			(uuid "948b6fca-79bf-4c11-8490-75663b4f5417")
+			(uuid "948b6fca-79bf-4c11-8490-75663b4f5419")
 		)
 		(pin "14"
-			(uuid "b8312e23-6a2e-4a45-9e65-b7bccb03e4dc")
+			(uuid "b8312e23-6a2e-4a45-9e65-b7bccb03e4de")
 		)
 		(pin "5"
-			(uuid "354f2466-f862-4d6e-9e6d-6f3671fd40f0")
+			(uuid "354f2466-f862-4d6e-9e6d-6f3671fd40f2")
 		)
 		(pin "3"
-			(uuid "bd67f082-653d-43c7-9d80-323cf65f3f1c")
+			(uuid "bd67f082-653d-43c7-9d80-323cf65f3f1e")
 		)
 		(pin "7"
-			(uuid "1808ad64-1afd-42fd-a19d-2713bf6a74bf")
+			(uuid "1808ad64-1afd-42fd-a19d-2713bf6a74c1")
 		)
 		(pin "12"
-			(uuid "39957ff7-0c5e-4578-a5ad-6bbb0f0044e1")
+			(uuid "39957ff7-0c5e-4578-a5ad-6bbb0f0044e3")
 		)
 		(pin "6"
-			(uuid "c8810ec4-0d30-4869-96cd-c0916c84e25f")
+			(uuid "c8810ec4-0d30-4869-96cd-c0916c84e261")
 		)
 		(pin "2"
-			(uuid "edc83fd3-787e-4bcf-828b-d0fd6e6a2439")
+			(uuid "edc83fd3-787e-4bcf-828b-d0fd6e6a243b")
 		)
 		(instances
 			(project "propeller-vga-board"
@@ -19688,46 +19555,46 @@
 			)
 		)
 		(pin "1"
-			(uuid "d438c372-f417-4b9d-9952-2bda29ae23b4")
+			(uuid "d438c372-f417-4b9d-9952-2bda29ae23b7")
 		)
 		(pin "11"
-			(uuid "d679aaef-c010-4452-b38e-73ee74579090")
+			(uuid "d679aaef-c010-4452-b38e-73ee74579093")
 		)
 		(pin "10"
-			(uuid "f026b768-f854-45dd-8f19-e68167342add")
+			(uuid "f026b768-f854-45dd-8f19-e68167342ae0")
 		)
 		(pin "4"
-			(uuid "899a9dc7-71f8-4d70-8077-7628df80f0df")
+			(uuid "899a9dc7-71f8-4d70-8077-7628df80f0e2")
 		)
 		(pin "13"
-			(uuid "91c33791-c78d-4d40-887b-e56f4ddee6e2")
+			(uuid "91c33791-c78d-4d40-887b-e56f4ddee6e5")
 		)
 		(pin "9"
-			(uuid "6a575b31-95d4-4ea4-91be-ee21c9d5aeb9")
+			(uuid "6a575b31-95d4-4ea4-91be-ee21c9d5aebc")
 		)
 		(pin "8"
-			(uuid "948b6fca-79bf-4c11-8490-75663b4f5417")
+			(uuid "948b6fca-79bf-4c11-8490-75663b4f541a")
 		)
 		(pin "14"
-			(uuid "b8312e23-6a2e-4a45-9e65-b7bccb03e4dc")
+			(uuid "b8312e23-6a2e-4a45-9e65-b7bccb03e4df")
 		)
 		(pin "5"
-			(uuid "354f2466-f862-4d6e-9e6d-6f3671fd40f0")
+			(uuid "354f2466-f862-4d6e-9e6d-6f3671fd40f3")
 		)
 		(pin "3"
-			(uuid "bd67f082-653d-43c7-9d80-323cf65f3f1c")
+			(uuid "bd67f082-653d-43c7-9d80-323cf65f3f1f")
 		)
 		(pin "7"
-			(uuid "1808ad64-1afd-42fd-a19d-2713bf6a74bf")
+			(uuid "1808ad64-1afd-42fd-a19d-2713bf6a74c2")
 		)
 		(pin "12"
-			(uuid "39957ff7-0c5e-4578-a5ad-6bbb0f0044e1")
+			(uuid "39957ff7-0c5e-4578-a5ad-6bbb0f0044e4")
 		)
 		(pin "6"
-			(uuid "c8810ec4-0d30-4869-96cd-c0916c84e25f")
+			(uuid "c8810ec4-0d30-4869-96cd-c0916c84e262")
 		)
 		(pin "2"
-			(uuid "edc83fd3-787e-4bcf-828b-d0fd6e6a2439")
+			(uuid "edc83fd3-787e-4bcf-828b-d0fd6e6a243c")
 		)
 		(instances
 			(project "propeller-vga-board"
