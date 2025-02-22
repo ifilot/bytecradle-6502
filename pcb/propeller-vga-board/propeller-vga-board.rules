@@ -1,0 +1,89 @@
+
+(rules PCB propeller-vga-board
+  (snap_angle 
+    fortyfive_degree
+  )
+  (autoroute_settings
+    (fanout off)
+    (autoroute on)
+    (postroute on)
+    (vias on)
+    (via_costs 50)
+    (plane_via_costs 5)
+    (start_ripup_costs 100)
+    (start_pass_no 2754)
+    (layer_rule F.Cu
+      (active on)
+      (preferred_direction horizontal)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 2.3)
+    )
+    (layer_rule B.Cu
+      (active on)
+      (preferred_direction vertical)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 1.8)
+    )
+  )
+  (rule
+    (width 200.0)
+    (clear 200.0)
+    (clear 100.0 (type smd_to_turn_gap))
+    (clear 50.0 (type smd_smd))
+  )
+  (padstack "Via[0-1]_600:300_um"
+    (shape
+      (circle F.Cu 600.0 0.0 0.0)
+    )
+    (shape
+      (circle B.Cu 600.0 0.0 0.0)
+    )
+    (attach off)
+  )
+  (via 
+    "Via[0-1]_600:300_um" "Via[0-1]_600:300_um" default
+  )
+  (via 
+    "Via[0-1]_600:300_um-kicad_default" "Via[0-1]_600:300_um" "kicad_default"
+  )
+  (via_rule
+    default "Via[0-1]_600:300_um"
+  )
+  (via_rule
+    "kicad_default" "Via[0-1]_600:300_um-kicad_default"
+  )
+  (class default
+    (clearance_class default)
+    (via_rule default)
+    (rule
+      (width 200.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+  (class "kicad_default"
+    +3V3 GND ~{IRQ} +5V RX ~{RES} TX A7
+    A6 "unconnected-(J1-Pin_16-Pad16)" HSYNC VSYNC R G "unconnected-(J1-Pin_37-Pad37)" "unconnected-(J1-Pin_8-Pad8)"
+    B "unconnected-(J1-Pin_22-Pad22)" "unconnected-(J1-Pin_35-Pad35)" SDA SCL A12 A11 A3
+    A8 A10 "unconnected-(J1-Pin_20-Pad20)" A4 CLK A1 "unconnected-(J2-Pad12)" D5
+    A9 "unconnected-(J2-Pad9)" ~{I{slash}O} ~{NMI} "unconnected-(J2-Pad4)" D1 D6 D3
+    D2 D7 A15 R{slash}~{W} A13 "unconnected-(J2-Pad11)" A14 A0
+    A5 D0 A2 "unconnected-(J2-Pad15)" D4 BF6 BF7 "Net-(RN1B-R2.2)"
+    "Net-(RN1D-R4.2)" "Net-(RN1A-R1.2)" BF5 BF4 "Net-(RN1C-R3.2)" "Net-(RN2B-R2.2)" BF0 BF1
+    "Net-(RN2D-R4.2)" BF2 "Net-(RN2C-R3.2)" "Net-(RN2A-R1.2)" BF3 P12 P11 P26
+    P13 P24 ACK P25 ~{SETBIT} ~{STATUS} ~{SETREC} ~{DATA}
+    "Net-(U2-P15)" "Net-(U2-P14)" "Net-(U2-P16)" "Net-(U2-P17)" "Net-(U2-P18)" "Net-(U2-P19)" "Net-(U2-P20)" "Net-(U2-P21)"
+    "Net-(U2-P22)" "Net-(U2-P23)" "Net-(U2-XO)" "Net-(U2-XI)" "unconnected-(U2-P27-Pad36)" "Net-(U2-P10)" "Net-(U2-P8)" "unconnected-(U4-~{Y5}-Pad10)"
+    "Net-(U3-P=R)" "unconnected-(U4-~{Y6}-Pad9)" "unconnected-(U4-~{Y7}-Pad7)" "unconnected-(U4-~{Y4}-Pad11)" REC BIT "Net-(U9-Cp)" "Net-(U8B-C)"
+    "Net-(U8A-C)" "unconnected-(U8A-~{Q}-Pad6)" "unconnected-(U8B-~{Q}-Pad8)"
+    (clearance_class "kicad_default")
+    (via_rule kicad_default)
+    (rule
+      (width 200.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+)
