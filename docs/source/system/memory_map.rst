@@ -15,9 +15,9 @@ The following table describes the memory layout of the ByteCradle 6502 SBC:
      - Stack
    * - :code:`$0200-$02FF`
      - Keyboard Buffer
-   * - :code:`$0300-$03FF`
+   * - :code:`$0300-$0800`
      - System Variables
-   * - :code:`$0400-$7EFF`
+   * - :code:`$0800-$7EFF`
      - Free User Space
    * - :code:`$7F00-$7FFF`
      - I/O Space

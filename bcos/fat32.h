@@ -53,6 +53,7 @@ struct FAT32Folder {
 struct FAT32File {
     char basename[8];
     char extension[3];
+    uint8_t termbyte;   // always zero
     uint8_t attrib;
     uint32_t cluster;
     uint32_t filesize;
@@ -98,6 +99,11 @@ void fat32_sort_files();
  * a sorted list.
  */
 void fat32_list_dir();
+
+/**
+ * Find a file
+ */
+struct FAT32File* fat32_search_dir(const char* filename);
 
 /**
  * @brief Build a linked list of sector addresses starting from a root address
