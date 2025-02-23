@@ -69,6 +69,8 @@ I/O space
      - GPU STATUS register
    * - :code:`$7F0F`
      - GPU BIT register
+   * - :code: `7F10-71FF`
+     - VIA
    * - :code:`$7F20`
      - SDCARD SERIAL register
    * - :code:`$7F21`
