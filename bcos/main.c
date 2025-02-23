@@ -31,10 +31,12 @@
 int main(void) {
     uint8_t c;
     uint8_t i;
+    struct FAT32File* fileptr;
+    uint8_t buf[20];
 
     putstrnl("Starting system...");
-    putstrnl("Probing memory banks...");
-    ramtest();
+    // putstrnl("Probing memory banks...");
+    // ramtest();
     putstr("Connecting to SD-card");
     for(i=0; i<SDMAX; i++) {
         putch('.');
@@ -56,6 +58,25 @@ int main(void) {
         fat32_read_dir();
         fat32_sort_files();
         fat32_list_dir();
+        
+        // test: try to find this file
+        fileptr = fat32_search_dir("README  TXT");
+        if(fileptr != NULL) {
+            sprintf(buf, "%08lX", fileptr->cluster);
+            putstrnl(buf);
+        } else {
+            putstrnl("File not found.");
+        }
+        
+        // test: this should throw an error
+        fileptr = fat32_search_dir("BLAAT");
+        if(fileptr != NULL) {
+            sprintf(buf, "%08lX", fileptr->cluster);
+            putstrnl(buf);
+        } else {
+            putstrnl("File not found.");
+        }
+
     } else {
         putstrnl("Cannot read MBR, exiting...");
         return -1;
