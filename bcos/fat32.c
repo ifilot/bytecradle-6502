@@ -165,6 +165,7 @@ void fat32_read_dir() {
 
                     file = &fat32_files[fctr];
                     memcpy(file->basename, locptr, 11);
+                    file->termbyte = 0x00;  // by definition
                     file->attrib = *(locptr + 0x0B);
                     file->cluster = fat32_grab_cluster_address_from_fileblock(locptr);
                     file->filesize = *(uint32_t*)(locptr + 0x1C);
@@ -210,6 +211,18 @@ void fat32_list_dir() {
 }
 
 /**
+ * Find a file
+ */
+ struct FAT32File* fat32_search_dir(const char* filename) {
+    struct FAT32File key;
+    memcpy(key.basename, filename, 11);
+    key.termbyte = 0x00;
+    key.attrib = 0x00;
+
+    return (struct FAT32File*)bsearch(&key, fat32_files, fat32_current_folder.nrfiles, sizeof(struct FAT32File), fat32_file_compare);
+ }
+
+/**
  * @brief Calculate the sector address from cluster and sector
  * 
  * @param cluster which cluster
@@ -253,6 +266,12 @@ uint32_t fat32_grab_cluster_address_from_fileblock(uint8_t *loc) {
                       *(uint16_t*)(loc + 0x1A);
 }
 
+/**
+ * @brief Compare two files
+ *
+ * This routine is used for both searching a file/folder as well as for
+ * sorting files.
+ */
 int fat32_file_compare(const void* item1, const void *item2) {
     const struct FAT32File *file1 = (const struct FAT32File*)item1;
     const struct FAT32File *file2 = (const struct FAT32File*)item2;

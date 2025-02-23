@@ -22,7 +22,6 @@
 
 void ramtest() {
     uint8_t j;
-    uint8_t *ptr;
     uint8_t error = 0;
     char buf[20];
 
