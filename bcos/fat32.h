@@ -106,6 +106,11 @@ void fat32_list_dir();
 struct FAT32File* fat32_search_dir(const char* filename);
 
 /**
+ * Load a file to location in RAM
+ */
+void fat32_load_file(const struct FAT32File* fileptr, uint8_t* location);
+
+/**
  * @brief Build a linked list of sector addresses starting from a root address
  * 
  * @param nextcluster first cluster in the linked list

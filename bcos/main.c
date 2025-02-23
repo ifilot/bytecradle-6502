@@ -32,7 +32,7 @@ int main(void) {
     uint8_t c;
     uint8_t i;
     struct FAT32File* fileptr;
-    uint8_t buf[20];
+    uint8_t buf[40];
 
     putstrnl("Starting system...");
     // putstrnl("Probing memory banks...");
@@ -60,22 +60,25 @@ int main(void) {
         fat32_list_dir();
         
         // test: try to find this file
-        fileptr = fat32_search_dir("README  TXT");
+        fileptr = fat32_search_dir("HELLOWORTXT");
         if(fileptr != NULL) {
-            sprintf(buf, "%08lX", fileptr->cluster);
+            sprintf(buf, "Base name: %s", fileptr->basename);
+            putstrnl(buf);
+            sprintf(buf, "Start cluster: %08lX", fileptr->cluster);
+            putstrnl(buf);
+            sprintf(buf, "File size: %lu", fileptr->filesize);
             putstrnl(buf);
         } else {
             putstrnl("File not found.");
         }
-        
-        // test: this should throw an error
-        fileptr = fat32_search_dir("BLAAT");
-        if(fileptr != NULL) {
-            sprintf(buf, "%08lX", fileptr->cluster);
-            putstrnl(buf);
-        } else {
-            putstrnl("File not found.");
+
+        // try to load the file from the SD-card
+        fat32_load_file(fileptr, 0x0800);
+        for(i=0; i<32; i++) {
+            sprintf(buf, "%02X ", *(uint8_t*)(0x0800 + i));
+            putstr(buf);
         }
+        putstrnl("");
 
     } else {
         putstrnl("Cannot read MBR, exiting...");

@@ -234,6 +234,36 @@ uint32_t fat32_calculate_sector_address(uint32_t cluster, uint8_t sector) {
 }
 
 /**
+ * Load a file to location in RAM
+ */
+void fat32_load_file(const struct FAT32File* fileptr, uint8_t* location) {
+    uint32_t* addr = fat32_linkedlist;
+    uint32_t caddr;
+    uint32_t nbytes = 0;
+    uint8_t i=0;
+
+    if(fileptr->filesize < 0x7500) { // 29 KiB
+        fat32_build_linked_list(fileptr->cluster);
+
+        while(*addr != 0x0FFFFFFF && nbytes < fileptr->filesize) {
+            caddr = fat32_calculate_sector_address(*(addr++), 0);
+
+            for(i=0; i<fat32_partition.sectors_per_cluster; i++) {
+                read_sector(caddr);
+                caddr++;
+                memcpy(location, (uint8_t*)SDBUF, 0x200);
+                location += 0x200;
+
+                nbytes += 0x200;
+                if(nbytes >= fileptr->filesize) {
+                    break;
+                }
+            }
+        }
+    }
+}
+
+/**
  * @brief Build a linked list of sector addresses starting from a root address
  * 
  * @param nextcluster first cluster in the linked list
