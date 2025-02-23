@@ -35,10 +35,16 @@
 #include "vrEmu6502/vrEmu6502.h"
 #include "crc16.h"
 
+#define ROMBANK   0x7000
+#define RAMBANK   0x7001
 #define ACIA_DATA 0x7F04
 #define ACIA_STAT 0x7F05
+#define ACIA_CMD  0x7F06
+#define ACIA_CTRL 0x7F07
 #define SERIAL    0x7F20
 #define CLKSTART  0x7F21
+#define DESELECT  0x7F22
+#define SELECT    0x7F23
 
 extern vrEmu6502Interrupt *irq;
 extern char keybuffer[0x10];

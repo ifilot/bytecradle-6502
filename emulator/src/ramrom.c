@@ -26,16 +26,19 @@
  * This section defines the memory and I/O buffers used by the emulator,
  * as well as pointers and file handles for various operations.
  */
-uint8_t ram[0x4000*3];  // 48 KiB RAM
-uint8_t rom[0x4000];    // 16 KiB ROM
-vrEmu6502Interrupt *irq; // Pointer to IRQ interrupt
-char keybuffer[0x10];   // Buffer for keyboard input
-char* keybuffer_ptr;    // Pointer to the current position in the key buffer
-uint8_t mosi[1024];     // Buffer for MOSI (Master Out Slave In) data
-uint8_t miso[1024];     // Buffer for MISO (Master In Slave Out) data
-unsigned int mosiptr;   // Pointer to the current position in the MOSI buffer
-unsigned int misoptr;   // Pointer to the current position in the MISO buffer
-FILE *sdfile;           // File handle for the SD card image
+uint8_t lowram[0x4000*2];       // 32 KiB LOWRAM
+uint8_t highram[32][0x4000];    // 32 x 16 KiB HIGHRAM
+uint8_t rambank = 0;
+
+uint8_t rom[0x4000];            // 16 KiB ROM
+vrEmu6502Interrupt *irq;        // Pointer to IRQ interrupt
+char keybuffer[0x10];           // Buffer for keyboard input
+char* keybuffer_ptr;            // Pointer to the current position in the key buffer
+uint8_t mosi[1024];             // Buffer for MOSI (Master Out Slave In) data
+uint8_t miso[1024];             // Buffer for MISO (Master In Slave Out) data
+unsigned int mosiptr;           // Pointer to the current position in the MOSI buffer
+unsigned int misoptr;           // Pointer to the current position in the MISO buffer
+FILE *sdfile;                   // File handle for the SD card image
 
 /**
  * @brief Initialize ROM from file
@@ -99,45 +102,76 @@ void close_sd() {
  * @return uint8_t value at memory address
  */
 uint8_t memread(uint16_t addr, bool isDbg) {
-    if(addr == ACIA_DATA) {
-        if(keybuffer_ptr > keybuffer) {
-            *irq = IntCleared;
-            char ch = *(--keybuffer_ptr);
+    // ROM chip
+    if(addr >= 0xC000) {
+        return rom[addr - 0xC000];
+    }
 
-            // do some key mapping
-            if(ch == 0x0A) {    // if line feed
-                ch = 0x0D;      // transform to carriage return
+    // lower RAM
+    if (addr < 0x7F00) {
+        return lowram[addr];
+    }
+
+    // upper RAM
+    if(addr >= 0x8000 && addr < 0xC000) {
+        return highram[rambank][addr - 0x8000];
+    }
+
+    // I/O space
+    switch(addr) {
+        case ACIA_DATA:     // read content UART
+            if(keybuffer_ptr > keybuffer) {
+                *irq = IntCleared;
+                char ch = *(--keybuffer_ptr);
+
+                // do some key mapping
+                if(ch == 0x0A) {    // if line feed
+                    ch = 0x0D;      // transform to carriage return
+                }
+
+                return ch;
             }
+        break;
+        case ACIA_STAT:     // read UART status register
+            if(keybuffer_ptr > keybuffer) {
+                return 0x08;
+            } else {
+                return 0x00;
+            }
+        break;
 
-            return ch;
-        }
+        case ACIA_CMD:
+            return lowram[addr];
+        break;
+
+        case ACIA_CTRL:
+            return lowram[addr];
+        break;
+
+        case SERIAL:        // sd-card interface
+            uint8_t val = miso[misoptr++];
+            if(misoptr == 1024) {
+                misoptr = 0;
+            }
+            return val;
+        break;
+
+        case RAMBANK:
+            return rambank;
+        break;
+
+        case SELECT:   // SD-CARD wiring
+            return 0x00; // do nothing
+        break;
+
+        case DESELECT: // SD-CARD wiring
+            return 0x00; // do nothing
+        break;
+
+        default:
+            printf("[ERROR] Invalid read: %04X.\n", addr);
+        break;
     }
-
-    if(addr == ACIA_STAT) {
-        if(keybuffer_ptr > keybuffer) {
-            return 0x08;
-        } else {
-            return 0x00;
-        }
-    }
-
-    // sd-card interface
-    if(addr == SERIAL) {
-        return miso[misoptr++];
-    }
-
-    // prevent buffer underrun
-    if(misoptr == 1024) {
-        misoptr = 0;
-    }
-
-    // internal memory
-    if (addr < 0xC000) {
-        return ram[addr];
-    }
-
-    // rom chip
-    return rom[addr - 0xC000];
 }
 
 /**
@@ -147,22 +181,59 @@ uint8_t memread(uint16_t addr, bool isDbg) {
  * @param val value to write
  */
 void memwrite(uint16_t addr, uint8_t val) {
-    if(addr == ACIA_DATA) {
-        putchar(val);
-        fflush(stdout);
+    // store in lower memory
+    if (addr < 0x7F00) {
+        lowram[addr] = val;
+        return;
     }
 
-    if(addr == CLKSTART) {
-        mosi[mosiptr++] = ram[SERIAL];
-        digest_sd();
+    // store in upper memory
+    if(addr >= 0x8000 && addr < 0xC000) {
+        highram[rambank][addr - 0x8000] = val;
+        return;
     }
 
-    if(mosiptr == 1024) {
-        mosiptr = 0;
-    }
+    // I/O space
+    switch(addr) {
+        case ACIA_DATA: // place data onto serial register
+            putchar(val);
+            fflush(stdout);
+        break;
 
-    if (addr < 0xC000) {
-        ram[addr] = val;
+        case ACIA_CMD:
+            lowram[addr] = val;
+        break;
+
+        case ACIA_CTRL:
+            lowram[addr] = val;
+        break;
+
+        case SERIAL:    // store content for serial register
+            lowram[addr] = val;
+        break;
+
+        case CLKSTART:  // push content of serial register to SD-card
+            mosi[mosiptr++] = lowram[SERIAL];
+            digest_sd();
+
+            if(mosiptr == 1024) {
+                mosiptr = 0;
+            }
+        break;
+
+        case RAMBANK:   // set RAMBANK
+            rambank = val;
+        break;
+
+        case SELECT:   // SD-CARD wiring
+        break;
+
+        case DESELECT: // SD-CARD wiring
+        break;
+
+        default:
+            printf("[ERROR] Invalid write: %04X.\n", addr);
+        break;
     }
 }
 
