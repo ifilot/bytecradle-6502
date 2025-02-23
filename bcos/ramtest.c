@@ -18,56 +18,44 @@
  *                                                                        *
  **************************************************************************/
 
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
-
-#include "fat32.h"
-#include "io.h"
 #include "ramtest.h"
 
-#define SDMAX 5
+void ramtest() {
+    uint8_t j;
+    uint8_t *ptr;
+    uint8_t error = 0;
+    char buf[20];
 
-int main(void) {
-    uint8_t c;
-    uint8_t i;
+    // loop over all rambanks and test them
+    putstr("Probing memory banks: ");
+    for(j=0; j<32; j++) {
+        if(j == 0x10) {
+            putstrnl("");
+            putstr("                      ");
+        }
+        
+        sprintf(buf, "%02X ", j);
+        putstr(buf);
 
-    putstrnl("Starting system...");
-    putstrnl("Probing memory banks...");
-    ramtest();
-    putstr("Connecting to SD-card");
-    for(i=0; i<SDMAX; i++) {
-        putch('.');
-        c = boot_sd();
-        if(c == 0x00) {
-            putch('\n');
-            putstrnl("SD-card initialized.");
+        set_rambank(j);
+        store_ram_upper(0xAA);
+        error = probe_ram_upper(0xAA);
+        if(error == 1) {
+            break;
+        }
+
+        store_ram_upper(0x55);
+        error = probe_ram_upper(0x55);
+        if(error == 1) {
             break;
         }
     }
-    if(i == SDMAX) {
-        putch('\n');
-        putstrnl("Cannot open SD-card, exiting...");
-        return -1;
-    }
+    putstrnl("");
 
-    if(fat32_read_mbr() == 0x00) {
-        fat32_read_partition();
-        fat32_read_dir();
-        fat32_sort_files();
-        fat32_list_dir();
+    set_rambank(0);
+    if(error == 0) {
+        putstrnl("All memory OK!");
     } else {
-        putstrnl("Cannot read MBR, exiting...");
-        return -1;
+        putstrnl("Memory error!");
     }
-
-    // put system in infinite loop
-    while(1){
-        c = getch();
-        if(c != 0) {
-            putch(c);
-        }
-    }
-
-    return 0;
 }

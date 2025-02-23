@@ -18,56 +18,10 @@
  *                                                                        *
  **************************************************************************/
 
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
+#ifndef _RAM_H
+#define _RAM_H
 
-#include "fat32.h"
-#include "io.h"
-#include "ramtest.h"
+extern void __fastcall__ store_ram_upper(uint8_t val);
+extern uint8_t __fastcall__ probe_ram_upper(uint8_t val);
 
-#define SDMAX 5
-
-int main(void) {
-    uint8_t c;
-    uint8_t i;
-
-    putstrnl("Starting system...");
-    putstrnl("Probing memory banks...");
-    ramtest();
-    putstr("Connecting to SD-card");
-    for(i=0; i<SDMAX; i++) {
-        putch('.');
-        c = boot_sd();
-        if(c == 0x00) {
-            putch('\n');
-            putstrnl("SD-card initialized.");
-            break;
-        }
-    }
-    if(i == SDMAX) {
-        putch('\n');
-        putstrnl("Cannot open SD-card, exiting...");
-        return -1;
-    }
-
-    if(fat32_read_mbr() == 0x00) {
-        fat32_read_partition();
-        fat32_read_dir();
-        fat32_sort_files();
-        fat32_list_dir();
-    } else {
-        putstrnl("Cannot read MBR, exiting...");
-        return -1;
-    }
-
-    // put system in infinite loop
-    while(1){
-        c = getch();
-        if(c != 0) {
-            putch(c);
-        }
-    }
-
-    return 0;
-}
+#endif
