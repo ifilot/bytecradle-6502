@@ -18,56 +18,15 @@
  *                                                                        *
  **************************************************************************/
 
+#ifndef _RAMTEST_H
+#define _RAMTEST_H
+
 #include <stdint.h>
 #include <stdio.h>
-#include <string.h>
 
-#include "fat32.h"
 #include "io.h"
-#include "ramtest.h"
+#include "ram.h"
 
-#define SDMAX 5
+void ramtest();
 
-int main(void) {
-    uint8_t c;
-    uint8_t i;
-
-    putstrnl("Starting system...");
-    putstrnl("Probing memory banks...");
-    ramtest();
-    putstr("Connecting to SD-card");
-    for(i=0; i<SDMAX; i++) {
-        putch('.');
-        c = boot_sd();
-        if(c == 0x00) {
-            putch('\n');
-            putstrnl("SD-card initialized.");
-            break;
-        }
-    }
-    if(i == SDMAX) {
-        putch('\n');
-        putstrnl("Cannot open SD-card, exiting...");
-        return -1;
-    }
-
-    if(fat32_read_mbr() == 0x00) {
-        fat32_read_partition();
-        fat32_read_dir();
-        fat32_sort_files();
-        fat32_list_dir();
-    } else {
-        putstrnl("Cannot read MBR, exiting...");
-        return -1;
-    }
-
-    // put system in infinite loop
-    while(1){
-        c = getch();
-        if(c != 0) {
-            putch(c);
-        }
-    }
-
-    return 0;
-}
+#endif

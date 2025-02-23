@@ -1,5 +1,8 @@
 .PSC02
 
+.define ROMBANK         $7000
+.define RAMBANK         $7001
+
 .define ACIA_DATA       $7F04
 .define ACIA_STAT       $7F05
 .define ACIA_CMD        $7F06

@@ -1,8 +1,14 @@
+; rambank routines
+.export set_rambank
+.export _set_rambank
+.export read_rambank
+.export _read_rambank
+
 .export newline
 .export newcmdline
 .export _putstr
-.export _getch
 .export putstr
+.export _getch
 .export _putch
 .export putstrnl
 .export _putstrnl
@@ -27,12 +33,32 @@
 .segment "CODE"
 
 ;-------------------------------------------------------------------------------
+; SET_RAMBANK routine
+;
+; Sets the rambank from A.
+;-------------------------------------------------------------------------------
+set_rambank:
+_set_rambank:
+    sta RAMBANK
+    rts
+
+;-------------------------------------------------------------------------------
+; READ_RAMBANK routine
+;
+; Reads the rambank. Return value in A.
+;-------------------------------------------------------------------------------
+read_rambank:
+_read_rambank:
+    lda RAMBANK
+    rts
+
+;-------------------------------------------------------------------------------
 ; GETCHAR routine
 ;
 ; retrieve a char from the key buffer in the accumulator
 ; Garbles: A,X
 ;-------------------------------------------------------------------------------
-.proc _getch: near
+_getch:
     phx
     lda TBPL            ; load textbuffer left pointer
     cmp TBPR            ; load textbuffer right pointer
@@ -46,7 +72,6 @@
 @exit:
     plx
     rts
-.endproc
 
 ;-------------------------------------------------------------------------------
 ; NEWLINE routine
@@ -388,7 +413,7 @@ getpos:
 ; 12.000 MHz    : 208 -> does not work
 ; 14.310 MHz    : 249 -> does not work
 ;-------------------------------------------------------------------------------
-.proc _putch: near
+_putch:
     pha             ; preserve A
     sta ACIA_DATA   ; write the character to the ACIA data register
     lda #89         ; initialize inner loop
@@ -397,4 +422,3 @@ getpos:
     bne @inner      ; check if zero; 3 cycles
     pla             ; retrieve A from stack
     rts
-.endproc
