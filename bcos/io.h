@@ -26,8 +26,8 @@ extern void __fastcall__ set_rambank(uint8_t c);
 extern uint8_t __fastcall__ get_rambank();
 
 extern void __fastcall__ putch(uint8_t c);
-extern void __fastcall__ putstr(char* c);
-extern void __fastcall__ putstrnl(char* c);
+extern void __fastcall__ putstr(const char* c);
+extern void __fastcall__ putstrnl(const char* c);
 extern char __fastcall__ getch(void);
 extern void __fastcall__ puthex(uint8_t c);
 
