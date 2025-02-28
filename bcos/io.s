@@ -18,6 +18,7 @@
 .export chartoupper
 .export puthex
 .export _puthex
+.export _jump
 .export puthexword
 .export _puthexword
 .export putdec
@@ -54,6 +55,15 @@ read_rambank:
 _read_rambank:
     lda RAMBANK
     rts
+
+;-------------------------------------------------------------------------------
+; Execute function at address stored in A (low byte) and X (high byte)
+; Preserves JSR behavior by fixing the return address manually
+;-------------------------------------------------------------------------------
+_jump:
+    sta BUF2          ; Store low byte of function address
+    stx BUF3          ; Store high byte of function address
+    jmp (BUF2)        ; Indirect jump to function address (BUF1 contains target)
 
 ;-------------------------------------------------------------------------------
 ; GETCHAR routine

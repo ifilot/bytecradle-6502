@@ -77,8 +77,14 @@ void command_exec() {
             break;
         }
     }
+
+    // throw illegal command
     if(i == sizeof(command_table)) {
-        command_illegal();
+        if(command_try_com() == 0) {
+            return;
+        } else {
+            command_illegal();
+        }
     }
 
     command_ptr = command_buffer;
@@ -267,5 +273,37 @@ void command_more() {
             while(getch() != ' ') {}
             linecounter = 0;
         }
+    }
+}
+
+/**
+ * @brief Try to launch a .COM file
+ */
+uint8_t command_try_com() {
+    struct FAT32File* res = NULL;
+    char filename[12] = {0};
+    uint8_t l = strlen(command_argv[0]);
+    uint16_t addr;
+
+    l = l > 8 ? 8 : l;
+    memset(filename, ' ', 8);
+    memcpy(filename, command_argv[0], l);
+    memcpy(&filename[8], "COM", 3);
+    filename[11] = 0;
+
+    fat32_read_dir();
+    fat32_sort_files();
+    res = fat32_search_dir(filename);
+
+    // when nothing can be found
+    if(res == NULL || (res->attrib & (1 << 4)) != 0) {
+        return 0xFF;
+    } else {
+        // store first block at 0x8000; we need the first two bytes
+        sdcmd17(fat32_calculate_sector_address(res->cluster, 0));
+        addr = *(uint16_t*)(0x8000);
+        fat32_load_file(res, (uint8_t*)addr);
+        jump((uint8_t*)(addr+2));
+        return 0;
     }
 }

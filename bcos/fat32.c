@@ -222,7 +222,7 @@ void fat32_list_dir() {
     struct FAT32File key;
     memcpy(key.basename, filename, 11);
     key.termbyte = 0x00;
-    key.attrib = 0x00;
+    key.attrib = (1 << 4);
 
     return (struct FAT32File*)bsearch(&key, fat32_files, fat32_current_folder.nrfiles, sizeof(struct FAT32File), fat32_file_compare);
  }
@@ -312,7 +312,7 @@ int fat32_file_compare(const void* item1, const void *item2) {
     const struct FAT32File *file2 = (const struct FAT32File*)item2;
 
     uint8_t f1 = file1->attrib & (1 << 4);
-    uint8_t f2 = file1->attrib & (1 << 4);
+    uint8_t f2 = file2->attrib & (1 << 4);
 
     if(f1 > f2) {
         return -1;

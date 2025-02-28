@@ -75,4 +75,9 @@ void command_illegal();
  */
 void command_more();
 
+/**
+ * @brief Try to launch a .COM file
+ */
+uint8_t command_try_com();
+
 #endif
