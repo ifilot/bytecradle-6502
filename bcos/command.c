@@ -29,6 +29,7 @@ static const CommandEntry command_table[] = {
     { "LS", command_ls },
     { "DIR", command_ls },  // Alias for LS
     { "CD", command_cd },
+    { "MORE", command_more },
 };
 
 /**
@@ -50,8 +51,10 @@ void command_loop() {
                 }
             break;
             default:
-                *(command_ptr++) = c;
-                putch(c);
+                if(c >= ' ' && c <= '~') {
+                    *(command_ptr++) = c;
+                    putch(c);
+                }
             break;
         }
     }
@@ -123,11 +126,18 @@ void command_cd() {
 
     if(command_argc == 1) {
         fat32_current_folder = fat32_root_folder;
+        fat32_pathdepth = 1;
         return;
     }
 
     if(command_argc != 2) {
         command_illegal();
+        return;
+    }
+
+    if(fat32_pathdepth > 1 && strcmp(command_argv[1], "..") == 0) {
+        fat32_pathdepth--;
+        fat32_current_folder = fat32_fullpath[fat32_pathdepth - 1];
         return;
     }
 
@@ -139,11 +149,11 @@ void command_cd() {
     fat32_read_dir();
     fat32_sort_files();
     res = fat32_search_dir(dirname);
-    if(res != NULL && res->attrib & (1 << 4)) {
+
+    if(res != NULL && (res->attrib & (1 << 4)) != 0) {
         if(res->cluster == 0) {
             fat32_current_folder = fat32_root_folder;
-        } else if(fat32_pathdepth > 1 && strcmp(dirname, "..")) {
-            fat32_current_folder = fat32_fullpath[--fat32_pathdepth];
+            fat32_pathdepth = 1;
         } else {
             memcpy(fat32_current_folder.name, res->basename, 11);
             fat32_current_folder.cluster = res->cluster;
@@ -159,11 +169,21 @@ void command_cd() {
  */
 void command_pwdcmd() {
     char buf[80];
+    char *ptr;
+    char *bufptr = buf;
     uint8_t i = 0;
 
+    *(bufptr++) = ':';
     for(i=0; i<fat32_pathdepth; i++) {
-        
+        ptr = fat32_fullpath[i].name;
+        while(*ptr != 0x00 && *ptr != ' ') {
+            *(bufptr++) = *(ptr++);
+        }
+        *(bufptr++) = '/';
     }
+    *(bufptr++) = '>';
+    *(bufptr++) = ' ';
+    *(bufptr++) = 0x00;
 
     putstr(buf);
 }
@@ -174,4 +194,78 @@ void command_pwdcmd() {
 void command_illegal() {
     putstr("Illegal command: ");
     putstrnl(command_argv[0]);
+}
+
+/**
+ * @brief Outputs file to screen assuming human-readable content
+ */
+void command_more() {
+    struct FAT32File* res = NULL;
+    char base[9] = {0};
+    char ext[4] = {0};
+    char filename[12] = {0};
+    const char *ptr;
+    uint8_t pos;
+    uint8_t linecounter = 0;
+    uint8_t charcounter = 0;
+
+    if(command_argc != 2) {
+        command_illegal();
+        return;
+    }
+
+    memset(base, ' ', 8);
+    memset(ext, ' ', 8);
+
+    ptr = strchr(command_argv[1], '.');
+    if(ptr) {
+        pos = ptr - command_argv[1];
+        memcpy(base, command_argv[1], pos > 8 ? 8 : pos);
+        memcpy(ext, &command_argv[1][pos+1], 3);
+    } else {
+        pos = strlen(command_argv[1]);
+        memcpy(base, command_argv[1], pos > 8 ? 8 : pos);
+    }
+
+    memcpy(filename, base, 8);
+    memcpy(&filename[8], ext, 3);
+    filename[11] = 0;
+
+    fat32_read_dir();
+    fat32_sort_files();
+    res = fat32_search_dir(filename);
+
+    // when nothing can be found
+    if(res == NULL) {
+        putstr("Cannot find file.");
+        return;
+    }
+
+    // check whether directory bit is set, if so, not a file
+    if((res->attrib & (1 << 4)) != 0) {
+        putstrnl("Not a file");
+        return;
+    }
+
+    fat32_load_file(res, (uint8_t*)(0x1000));
+    ptr = (uint8_t*)0x1000;
+    while(*ptr != 0x00) {
+        if(*ptr == '\n') {
+            linecounter++;
+        }
+        putch(*(ptr++));
+
+        charcounter++;
+        if(charcounter == 80) {
+            putch('\n');
+            charcounter = 0;
+            linecounter++;
+        }
+
+        if(linecounter == 20) {
+            putstrnl("--- Press SPACE to continue ---");
+            while(getch() != ' ') {}
+            linecounter = 0;
+        }
+    }
 }

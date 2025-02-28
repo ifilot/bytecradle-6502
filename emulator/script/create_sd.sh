@@ -1,5 +1,13 @@
 #!/bin/bash
 
+loremipsum () {
+  if [ "${1}" = "" ] || [ "${2}" = "" ]; then
+    echo "Usage: loremipsum [paragraphs, sentences] [integer]"
+  else
+    curl -s http://metaphorpsum.com/"${1}"/"${2}" && printf "\n"
+  fi
+}
+
 set -e  # Exit on error
 
 # delete any existing files and folders
@@ -37,15 +45,15 @@ mount "${LOOP_DEVICE}p1" $ROOT_MOUNT
 
 # Step 7: Populate the partitions (customize this part as needed)
 echo "Populating root partition..."
-mkdir -p $ROOT_MOUNT
-echo "Test" > $ROOT_MOUNT/README.txt
+mkdir -p $ROOT_MOUNTls
+loremipsum paragraphs 10 > $ROOT_MOUNT/README.txt
 echo "Hello World!" > $ROOT_MOUNT/HelloWor.txt
-mkdir -p $ROOT_MOUNT/folder1
-mkdir -p $ROOT_MOUNT/folder2
-echo "File 1" > $ROOT_MOUNT/folder1/file1.txt
-echo "File 2" > $ROOT_MOUNT/folder1/file2.txt
-echo "File 1" > $ROOT_MOUNT/folder2/file1.txt
-echo "File 2" > $ROOT_MOUNT/folder2/file2.txt
+mkdir -pv $ROOT_MOUNT/folder1/{sub1,sub2}
+mkdir -pv $ROOT_MOUNT/folder2/{sub1,sub2}
+loremipsum paragraphs 10 > $ROOT_MOUNT/folder1/sub1/file1.txt
+loremipsum paragraphs 10 > $ROOT_MOUNT/folder1/sub2/file2.txt
+loremipsum paragraphs 10 > $ROOT_MOUNT/folder2/sub1/file1.txt
+loremipsum paragraphs 10 > $ROOT_MOUNT/folder2/sub2/file2.txt
 
 # Step 8: Cleanup
 echo "Unmounting and cleaning up..."
