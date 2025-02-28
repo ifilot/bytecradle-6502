@@ -45,7 +45,7 @@ struct FAT32Partition {
 };
 
 struct FAT32Folder {
-    char name[8];
+    char name[11];
     uint32_t cluster;
     uint16_t nrfiles;
 };
@@ -62,7 +62,14 @@ struct FAT32File {
 extern struct FAT32Partition fat32_partition;
 extern uint32_t fat32_linkedlist[F32_LLSZ];
 extern struct FAT32Folder fat32_current_folder;
+extern struct FAT32Folder fat32_root_folder;
 extern struct FAT32File *fat32_files;
+extern struct FAT32Folder *fat32_fullpath;
+extern uint8_t fat32_pathdepth;
+
+#define MAXFILES         256
+#define FAT32FILESLOC   (SDBUF + 0x200)
+#define FAT32FOLDERLOC  (FAT32FILESLOC + sizeof(struct FAT32File) * MAXFILES)
 
 /**
  * Read the Master Boot Record from the SD card

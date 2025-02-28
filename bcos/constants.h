@@ -22,6 +22,5 @@
 #define _CONSTANTS_H
 
 #define SDBUF           0x8000
-#define FAT32FILESLOC   (SDBUF + 0x200)
 
 #endif

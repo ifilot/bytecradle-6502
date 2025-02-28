@@ -10,6 +10,7 @@
 .export putstr
 .export _getch
 .export _putch
+.export _putbackspace
 .export putstrnl
 .export _putstrnl
 .export char2num
@@ -17,6 +18,8 @@
 .export chartoupper
 .export puthex
 .export _puthex
+.export puthexword
+.export _puthexword
 .export putdec
 .export putds
 .export putspace
@@ -185,6 +188,20 @@ putstrnl:
     rts
 
 ;-------------------------------------------------------------------------------
+; PUTBACKSPACE routine
+; 
+; places the cursor one position back and wipes existing character
+;-------------------------------------------------------------------------------
+_putbackspace:
+    lda #$08
+    jsr _putch
+    lda #' '
+    jsr _putch
+    lda #$08
+    jsr _putch
+    rts
+
+;-------------------------------------------------------------------------------
 ; CHAR2NUM routine
 ;
 ; convert characters stored in A,X to a single number stored in A;
@@ -299,6 +316,21 @@ puthex:
     and #$0F
     jsr printnibble
     lda BUF1
+    rts
+
+;-------------------------------------------------------------------------------
+; PUTHEXWORD routine
+;
+; Prints hexword to screen
+;-------------------------------------------------------------------------------
+_puthexword:
+puthexword:
+    sta BUF2    ; low byte
+    stx BUF3    ; high byte
+    lda BUF3
+    jsr puthex
+    lda BUF2
+    jsr puthex
     rts
 
 ;-------------------------------------------------------------------------------

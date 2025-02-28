@@ -20,17 +20,20 @@
 
 #include "command.h"
 
-char command_buffer[40];
-char* command_argv[20];
-uint8_t command_argc;
-char* command_ptr = command_buffer;
+static char command_buffer[40];
+static char* command_argv[20];
+static uint8_t command_argc;
+static char* command_ptr = command_buffer;
 
-static const char* command_list[] = {
-    "LS",
-    "DIR",
-    NULL,
+static const CommandEntry command_table[] = {
+    { "LS", command_ls },
+    { "DIR", command_ls },  // Alias for LS
+    { "CD", command_cd },
 };
 
+/**
+ * @brief Continuously sample keyboard input, retrieve and parse commands
+ */
 void command_loop() {
     uint8_t c;
 
@@ -40,6 +43,12 @@ void command_loop() {
             case 0x0D:
                 command_exec();
             break;
+            case 0x7F:
+                if(command_ptr > command_buffer) {
+                    putbackspace();
+                    command_ptr--;
+                }
+            break;
             default:
                 *(command_ptr++) = c;
                 putch(c);
@@ -48,24 +57,34 @@ void command_loop() {
     }
 }
 
+/**
+ * @brief Try to execute a command when user has pressed enter
+ */
 void command_exec() {
     uint8_t i = 0;
 
-    *command_ptr = 0x00;
-    putstrnl(command_buffer);
-    
-    command_parse();
+    putstrnl("");
+    *command_ptr = 0x00;    // place terminating byte
+    command_parse();        // split string
 
     // try to see if we can find a match
-    for(i=0; i<sizeof(command_list); i++) {
-        if(strcmp(command_list[i], command_argv[0]) == 0) {
-            putstrnl(command_list[i]);
+    for(i=0; i<sizeof(command_table); i++) {
+        if(strcmp(command_table[i].str, command_argv[0]) == 0) {
+            command_table[i].func();
+            break;
         }
+    }
+    if(i == sizeof(command_table)) {
+        command_illegal();
     }
 
     command_ptr = command_buffer;
+    command_pwdcmd();
 }
 
+/**
+ * @brief Parse command buffer, splits using spaces
+ */
 void command_parse() {
     char* ptr = strtok(command_buffer, " ");
     char** argv_ptr = command_argv;
@@ -82,31 +101,77 @@ void command_parse() {
 
     for(i=0; i<command_argc; i++) {
         strupper(command_argv[i]);
-        putstrnl(command_argv[i]);
     }
 }
 
-// fat32_read_dir();
-// fat32_sort_files();
-// fat32_list_dir();
+/**
+ * @brief Execute the "ls" command
+ */
+void command_ls() {
+    fat32_read_dir();
+    fat32_sort_files();
+    fat32_list_dir();
+}
 
-// // test: try to find this file
-// fileptr = fat32_search_dir("HELLOWORTXT");
-// if(fileptr != NULL) {
-//     sprintf(buf, "Base name: %s", fileptr->basename);
-//     putstrnl(buf);
-//     sprintf(buf, "Start cluster: %08lX", fileptr->cluster);
-//     putstrnl(buf);
-//     sprintf(buf, "File size: %lu", fileptr->filesize);
-//     putstrnl(buf);
-// } else {
-//     putstrnl("File not found.");
-// }
+/**
+ * @brief Execute the "cd" command
+ */
+void command_cd() {
+    struct FAT32File* res = NULL;
+    char dirname[12];
+    uint8_t l = strlen(command_argv[1]);
 
-// // try to load the file from the SD-card
-// fat32_load_file(fileptr, 0x0800);
-// for(i=0; i<32; i++) {
-//     sprintf(buf, "%02X ", *(uint8_t*)(0x0800 + i));
-//     putstr(buf);
-// }
-// putstrnl("");
+    if(command_argc == 1) {
+        fat32_current_folder = fat32_root_folder;
+        return;
+    }
+
+    if(command_argc != 2) {
+        command_illegal();
+        return;
+    }
+
+    l = l > 11 ? 11 : l;
+    memcpy(dirname, command_argv[1], l);
+    memset(&dirname[l], ' ', 11-l);
+    dirname[11] = 0x00;
+
+    fat32_read_dir();
+    fat32_sort_files();
+    res = fat32_search_dir(dirname);
+    if(res != NULL && res->attrib & (1 << 4)) {
+        if(res->cluster == 0) {
+            fat32_current_folder = fat32_root_folder;
+        } else if(fat32_pathdepth > 1 && strcmp(dirname, "..")) {
+            fat32_current_folder = fat32_fullpath[--fat32_pathdepth];
+        } else {
+            memcpy(fat32_current_folder.name, res->basename, 11);
+            fat32_current_folder.cluster = res->cluster;
+            fat32_fullpath[fat32_pathdepth++] = fat32_current_folder;
+        }
+    } else {
+        putstrnl("Cannot find folder");
+    }
+}
+
+/**
+ * @brief Places the current working directory on the screen
+ */
+void command_pwdcmd() {
+    char buf[80];
+    uint8_t i = 0;
+
+    for(i=0; i<fat32_pathdepth; i++) {
+        
+    }
+
+    putstr(buf);
+}
+
+/**
+ * @brief Informs the user on an illegal command
+ */
+void command_illegal() {
+    putstr("Illegal command: ");
+    putstrnl(command_argv[0]);
+}
