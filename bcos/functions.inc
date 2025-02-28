@@ -12,6 +12,7 @@
 .import char2nibble
 .import chartoupper
 .import _puthex
+.import puthex
 .import putdec
 .import putspace
 .import putds

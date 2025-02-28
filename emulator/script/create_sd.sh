@@ -45,17 +45,24 @@ mount "${LOOP_DEVICE}p1" $ROOT_MOUNT
 
 # Step 7: Populate the partitions (customize this part as needed)
 echo "Populating root partition..."
-mkdir -p $ROOT_MOUNTls
-loremipsum paragraphs 10 > $ROOT_MOUNT/README.txt
-echo "Hello World!" > $ROOT_MOUNT/HelloWor.txt
-mkdir -pv $ROOT_MOUNT/folder1/{sub1,sub2}
-mkdir -pv $ROOT_MOUNT/folder2/{sub1,sub2}
-loremipsum paragraphs 10 > $ROOT_MOUNT/folder1/sub1/file1.txt
-loremipsum paragraphs 10 > $ROOT_MOUNT/folder1/sub2/file2.txt
-loremipsum paragraphs 10 > $ROOT_MOUNT/folder2/sub1/file1.txt
-loremipsum paragraphs 10 > $ROOT_MOUNT/folder2/sub2/file2.txt
+mkdir -p $ROOT_MOUNT
+loremipsum paragraphs 10 > $ROOT_MOUNT/README.TXT
+echo "Hello World!" > $ROOT_MOUNT/HELLO.TXT
+mkdir -pv $ROOT_MOUNT/FOLDER1/{SUB1,SUB2}
+mkdir -pv $ROOT_MOUNT/FOLDER2/{SUB1,SUB2}
+loremipsum paragraphs 10 > $ROOT_MOUNT/FOLDER1/SUB1/FILE1.txt
+loremipsum paragraphs 10 > $ROOT_MOUNT/FOLDER1/SUB2/FILE2.txt
+loremipsum paragraphs 10 > $ROOT_MOUNT/FOLDER2/SUB1/FILE1.txt
+loremipsum paragraphs 10 > $ROOT_MOUNT/FOLDER2/SUB2/FILE2.txt
 
-# Step 8: Cleanup
+# Step 8: Copy compiled programs
+mkdir $ROOT_MOUNT/PROGRAMS
+pushd ../../programs/helloworld
+make
+cp -v helloworld.bin $ROOT_MOUNT/PROGRAMS/HELLO.COM
+popd
+
+# Step 9: Cleanup
 echo "Unmounting and cleaning up..."
 umount $ROOT_MOUNT
 losetup -d $LOOP_DEVICE
