@@ -82,8 +82,8 @@ void fat32_read_partition(void) {
     fat32_current_folder.cluster = fat32_partition.root_dir_first_cluster;
     fat32_current_folder.nrfiles = 0;
     memset(fat32_current_folder.name, 0x00, 11);
-    fat32_current_folder.name[0] = '/';
     fat32_root_folder = fat32_current_folder;
+    fat32_fullpath[0] = fat32_root_folder;
     fat32_pathdepth = 1;
 
     // read first sector of first partition to establish volume name

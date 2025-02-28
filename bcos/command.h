@@ -70,4 +70,9 @@ void command_pwdcmd();
  */
 void command_illegal();
 
+/**
+ * @brief Outputs file to screen assuming human-readable content
+ */
+void command_more();
+
 #endif
