@@ -25,7 +25,10 @@ struct FAT32Partition fat32_partition;
 uint32_t fat32_linkedlist[F32_LLSZ];
 uint32_t fat32_filesize_current_file = 0;
 struct FAT32Folder fat32_current_folder;
+struct FAT32Folder fat32_root_folder;
 struct FAT32File *fat32_files = (struct FAT32File*)FAT32FILESLOC;
+struct FAT32Folder *fat32_fullpath = (struct FAT32Folder*)FAT32FOLDERLOC;
+uint8_t fat32_pathdepth = 0;
 
 /**
  * Read the Master Boot Record from the SD card, assumes that the SD-card
@@ -78,8 +81,10 @@ void fat32_read_partition(void) {
     // set the cluster of the current folder
     fat32_current_folder.cluster = fat32_partition.root_dir_first_cluster;
     fat32_current_folder.nrfiles = 0;
-    memset(fat32_current_folder.name, 0x00, 8);
+    memset(fat32_current_folder.name, 0x00, 11);
     fat32_current_folder.name[0] = '/';
+    fat32_root_folder = fat32_current_folder;
+    fat32_pathdepth = 1;
 
     // read first sector of first partition to establish volume name
     read_sector(fat32_partition.lba_addr_root_dir);
@@ -171,8 +176,8 @@ void fat32_read_dir() {
                     file->filesize = *(uint32_t*)(locptr + 0x1C);
                     fctr++;
 
-                    if(fctr > 380) {
-                        putstrnl("Error: cannot index folder with more than 380 entries.");
+                    if(fctr > MAXFILES) {
+                        putstrnl("Error: too many entries in folder; cannot parse...");
                         return;
                     }
                 }
@@ -201,7 +206,7 @@ void fat32_list_dir() {
     struct FAT32File *file = fat32_files;
     for(i = 0; i<fat32_current_folder.nrfiles; i++) {
         if(file->attrib & (1 << 4)) {
-            sprintf(buf, "%.8s     %08lX DIR", file->basename, file->cluster);
+            sprintf(buf, "%.8s %.3s %08lX DIR", file->basename, file->extension, file->cluster);
         } else {
             sprintf(buf, "%.8s.%.3s %08lX %lu", file->basename, file->extension, file->cluster, file->filesize);
         }
@@ -306,9 +311,12 @@ int fat32_file_compare(const void* item1, const void *item2) {
     const struct FAT32File *file1 = (const struct FAT32File*)item1;
     const struct FAT32File *file2 = (const struct FAT32File*)item2;
 
-    if(file1->attrib & (1 << 4) && !(file2->attrib & (1 << 4))) {
+    uint8_t f1 = file1->attrib & (1 << 4);
+    uint8_t f2 = file1->attrib & (1 << 4);
+
+    if(f1 > f2) {
         return -1;
-    } else if(!(file1->attrib & (1 << 4)) && file2->attrib & (1 << 4)) {
+    } else if(f2 < f1) {
         return 1;
     } else {
         return strcmp(file1->basename, file2->basename);

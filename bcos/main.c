@@ -60,6 +60,7 @@ int main(void) {
     }
 
     // put system in infinite loop
+    command_pwdcmd();
     while(1){
         command_loop();
     }

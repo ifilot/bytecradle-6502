@@ -25,8 +25,49 @@
 #include "constants.h"
 #include "io.h"
 
+typedef struct {
+    const char *str;
+    void (*func)(void);
+} CommandEntry;
+
+/**
+ * @brief Continuously sample keyboard input, retrieve and parse commands
+ */
 void command_loop();
+
+/**
+ * @brief Try to execute a command when user has pressed enter
+ */
 void command_exec();
+
+/**
+ * @brief Parse command buffer, splits using spaces
+ */
 void command_parse();
+
+/**
+ * @brief Execute the "ls" command
+ */
+void command_ls();
+
+/**
+ * @brief Execute the "cd" command
+ */
+void command_cd();
+
+/**
+ * @brief Performs a backspace operation on the command buffer
+ */
+void command_backspace();
+
+/**
+ * @brief Places the current working directory on the screen
+ */
+void command_pwdcmd();
+
+/**
+ * @brief Informs the user on an illegal command
+ */
+void command_illegal();
 
 #endif
