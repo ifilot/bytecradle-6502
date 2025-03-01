@@ -2,22 +2,20 @@
 
 .PSC02
 
-.define STRLB               $10     ; string low byte
-.define STRHB               $11     ; string high byte
 .define PUTSTRNL            $FFF4   ; print string routine
 
-.segment "CODE"
+.segment "HEADER"
 
-.byte $00,$10       ; location
+.word $1000         ; location
+
+.segment "CODE"
 
 ;-------------------------------------------------------------------------------
 ; Start sequence
 ;-------------------------------------------------------------------------------
 start:              ; reset vector points here
     lda #<hwstr		; load lower byte
-    sta STRLB
-    lda #>hwstr		; load upper byte
-    sta STRHB
+    ldx #>hwstr		; load upper byte
     jsr PUTSTRNL
     rts
 

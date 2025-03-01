@@ -3,7 +3,7 @@ all: helloworld.bin
 helloworld.o: helloworld.asm
 	ca65 helloworld.asm -o helloworld.o
 
-helloworld.bin: helloworld.o
+helloworld.bin: helloworld.o rom.cfg
 	ld65 -o helloworld.bin -C rom.cfg  helloworld.o && \
 	md5sum helloworld.bin
 

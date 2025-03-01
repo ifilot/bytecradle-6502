@@ -26,7 +26,6 @@
 .export putspace
 .export puttab
 .export printnibble
-.export getpos
 .export ischarvalid
 .export clearline
 
@@ -147,23 +146,16 @@ newcmdline:
 ;-------------------------------------------------------------------------------
 ; PUTSTR routine
 ; Garbles: A,X,Y
-; Input A:X contains HB:LB of string pointer
+; Input X:A contains HB:LB of string pointer
 ;
 ; Loops over a string and print its characters until a zero-terminating character 
 ; is found. Assumes that $10 is used on the zero page to store the address of
 ; the string.
 ;-------------------------------------------------------------------------------
 _putstr:
-    sta STRLB
-    stx STRHB
-    ldx STRLB
-    lda STRHB
-    jsr putstr
-    rts
-
 putstr:
-    sta STRHB
-    stx STRLB
+    stx STRHB
+    sta STRLB
 @skip:
     ldy #0
 @nextchar:
@@ -178,19 +170,12 @@ putstr:
 ;-------------------------------------------------------------------------------
 ; PUTSTRNL routine
 ; Garbles: A,X,Y
-; Input A:X contains HB:LB of string pointer
+; Input X:A contains HB:LB of string pointer
 ;
 ; Same as PUTSTR function, but puts a newline character at the end of the 
 ; string.
 ;-------------------------------------------------------------------------------
 _putstrnl:
-    sta STRLB
-    stx STRHB
-    ldx STRLB
-    lda STRHB
-    jsr putstrnl
-    rts
-
 putstrnl:
     jsr putstr
     lda #LF
@@ -284,8 +269,8 @@ ischarvalid:
 ; Clears the current line on the terminal
 ;-------------------------------------------------------------------------------
 clearline:
-    lda #>@clearline
-    ldx #<@clearline
+    ldx #>@clearline
+    lda #<@clearline
     jsr putstr
     rts
 @clearline:
@@ -412,31 +397,6 @@ printnibble:
 @exit:
     jsr _putch
     rts
-
-;-------------------------------------------------------------------------------
-; CURPOS routine
-;
-; Get current cursor position from VT100-style terminal
-;-------------------------------------------------------------------------------
-getpos:
-    lda #>@str
-    lda #<@str
-    jsr putstr              ; send command string to terminal
-
-    ldy #0
-@nextchar:
-    jsr _getch
-    cmp #0
-    beq @nextchar
-    cmp #'R'
-    beq @exit
-    sta $1000,y
-    iny
-    jmp @nextchar
-@exit:
-    rts
-@str:
-    .byte ESC,"[6n]",$00
 
 ;-------------------------------------------------------------------------------
 ; putchar routine
