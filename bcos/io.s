@@ -8,7 +8,9 @@
 .export newcmdline
 .export _putstr
 .export putstr
+.export getch
 .export _getch
+.export putch
 .export _putch
 .export _putbackspace
 .export putstrnl
@@ -70,6 +72,7 @@ _jump:
 ; retrieve a char from the key buffer in the accumulator
 ; Garbles: A,X
 ;-------------------------------------------------------------------------------
+getch:
 _getch:
     phx
     lda TBPL            ; load textbuffer left pointer
@@ -95,7 +98,7 @@ _getch:
 newline:
     sta BUF1
     lda #LF
-    jsr _putch
+    jsr putch
     lda BUF1
     rts
 
@@ -106,7 +109,7 @@ newline:
 ;-------------------------------------------------------------------------------
 putspace:
     lda #' '
-    jsr _putch
+    jsr putch
     rts
 
 ;-------------------------------------------------------------------------------
@@ -138,9 +141,9 @@ puttab:
 newcmdline:
     jsr newline
     lda #'@'
-    jsr _putch
+    jsr putch
     lda #':'
-    jsr _putch
+    jsr putch
     rts
 
 ;-------------------------------------------------------------------------------
@@ -161,7 +164,7 @@ putstr:
 @nextchar:
     lda (STRLB),y   ; load character from string
     beq @exit       ; if terminating character is read, exit
-    jsr _putch      ; else, print char
+    jsr putch      ; else, print char
     iny             ; increment y
     jmp @nextchar   ; read next char
 @exit:
@@ -179,7 +182,7 @@ _putstrnl:
 putstrnl:
     jsr putstr
     lda #LF
-    jsr _putch
+    jsr putch
     rts
 
 ;-------------------------------------------------------------------------------
@@ -189,11 +192,11 @@ putstrnl:
 ;-------------------------------------------------------------------------------
 _putbackspace:
     lda #$08
-    jsr _putch
+    jsr putch
     lda #' '
-    jsr _putch
+    jsr putch
     lda #$08
-    jsr _putch
+    jsr putch
     rts
 
 ;-------------------------------------------------------------------------------
@@ -366,7 +369,7 @@ putdec:
     stx BUF2
 @l5:
     eor #$30
-    jsr _putch
+    jsr putch
 @l6:
     tya
     ldy #$10
@@ -395,7 +398,7 @@ printnibble:
     clc
     adc #'A'-10
 @exit:
-    jsr _putch
+    jsr putch
     rts
 
 ;-------------------------------------------------------------------------------
@@ -415,6 +418,7 @@ printnibble:
 ; 12.000 MHz    : 208 -> does not work
 ; 14.310 MHz    : 249 -> does not work
 ;-------------------------------------------------------------------------------
+putch:
 _putch:
     pha             ; preserve A
     sta ACIA_DATA   ; write the character to the ACIA data register
