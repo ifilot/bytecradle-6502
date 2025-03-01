@@ -15,7 +15,7 @@ rm -rf *.img *.zip software-main
 
 # Configuration
 IMAGE_NAME="sdcard.img"
-PARTITION_SIZE="128MiB"
+PARTITION_SIZE="32MiB"
 FILESYSTEM="fat32"
 LABEL="BYTECRADLE"
 
@@ -57,9 +57,17 @@ loremipsum paragraphs 10 > $ROOT_MOUNT/FOLDER2/SUB2/FILE2.txt
 
 # Step 8: Copy compiled programs
 mkdir $ROOT_MOUNT/PROGRAMS
+
+# Helloworld program
 pushd ../../programs/helloworld
 make
 cp -v helloworld.bin $ROOT_MOUNT/PROGRAMS/HELLO.COM
+popd
+
+# Fibonacci program
+pushd ../../programs/fibonacci
+make
+cp -v fibonacci.bin $ROOT_MOUNT/PROGRAMS/FIBO.COM
 popd
 
 # Step 9: Cleanup

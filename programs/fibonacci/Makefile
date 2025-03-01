@@ -1,9 +1,9 @@
 all: fibonacci.bin
 
-fibonacci.bin: sbc.cfg interrupt.o vectors.o wait.o main.o uart.o sbc.lib
-	cp -v /usr/share/cc65/lib/supervision.lib sbc.lib 
-	ar65 a sbc.lib crt0.o
-	ld65 -C sbc.cfg -m main.map interrupt.o vectors.o wait.o main.o uart.o -o fibonacci.bin sbc.lib
+fibonacci.bin: prog.cfg crt0.o main.o prog.lib
+	cp -v /usr/share/cc65/lib/supervision.lib prog.lib 
+	ar65 a prog.lib crt0.o
+	ld65 -C prog.cfg -m main.map main.o -o fibonacci.bin prog.lib
 
 crt0.o: crt0.s
 	ca65 --cpu 65c02 crt0.s
@@ -13,18 +13,6 @@ main.s: main.c
 
 main.o: main.s
 	ca65 --cpu 65c02 main.s
-
-uart.o: uart.s
-	ca65 --cpu 65c02 uart.s
-
-interrupt.o: interrupt.s
-	ca65 --cpu 65c02 interrupt.s
-
-wait.o: wait.s
-	ca65 --cpu 65c02 wait.s
-
-vectors.o: vectors.s
-	ca65 --cpu 65c02 vectors.s
 
 flash: fibonacci.bin
 	picoflash -i fibonacci.bin -w -b 2

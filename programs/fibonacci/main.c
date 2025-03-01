@@ -1,9 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-extern void wait();
-extern void __fastcall__ charout(char c);
-extern void __fastcall__ stringout(char* c);
+#include "io.h"
 
 int main() {
     uint16_t a = 1;
@@ -16,11 +14,9 @@ int main() {
         c = a+b;
         a = b;
         b = c;
-        sprintf(buf, "%i\n", a);
-        stringout(buf);
+        sprintf(buf, "%i", a);
+        putstrnl(buf);
     }
-
-    while(1){}
 
     return 0;
 }
