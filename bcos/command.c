@@ -80,9 +80,7 @@ void command_exec() {
 
     // throw illegal command
     if(i == sizeof(command_table)) {
-        if(command_try_com() == 0) {
-            return;
-        } else {
+        if(!command_try_com() == 0) {
             command_illegal();
         }
     }
@@ -284,6 +282,7 @@ uint8_t command_try_com() {
     char filename[12] = {0};
     uint8_t l = strlen(command_argv[0]);
     uint16_t addr;
+    void __fastcall__ (*program)(void) = NULL;
 
     l = l > 8 ? 8 : l;
     memset(filename, ' ', 8);
@@ -303,7 +302,8 @@ uint8_t command_try_com() {
         sdcmd17(fat32_calculate_sector_address(res->cluster, 0));
         addr = *(uint16_t*)(0x8000);
         fat32_load_file(res, (uint8_t*)addr);
-        jump((uint8_t*)(addr+2));
+        program = (void(*)(void))(addr+2);
+        program();
         return 0;
     }
 }
