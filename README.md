@@ -1,6 +1,9 @@
 # BYTECRADLE 6502
 
-![Under Construction](https://img.shields.io/badge/status-under--construction-orange?style=for-the-badge&logo=github)
+![Under Construction](https://img.shields.io/badge/status-under--construction-orange?logo=github)
+
+[![Build](https://github.com/ifilot/bytecradle-6502/actions/workflows/build.yml/badge.svg)](https://github.com/ifilot/bytecradle-6502/actions/workflows/build.yml)
+
 [![Documentation](https://github.com/ifilot/bytecradle-6502/actions/workflows/docs.yml/badge.svg)](https://github.com/ifilot/bytecradle-6502/actions/workflows/docs.yml)
 
 The **ByteCradle 6502** is a compact and efficient **Single-Board Computer
