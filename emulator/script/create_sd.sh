@@ -70,6 +70,12 @@ make
 cp -v fibonacci.bin $ROOT_MOUNT/PROGRAMS/FIBO.COM
 popd
 
+# Monitor program
+pushd ../../programs/monitor
+make
+cp -v monitor.bin $ROOT_MOUNT/PROGRAMS/MONITOR.COM
+popd
+
 # Step 9: Cleanup
 echo "Unmounting and cleaning up..."
 umount $ROOT_MOUNT

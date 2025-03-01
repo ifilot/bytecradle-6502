@@ -13,11 +13,11 @@
 ; ASSEMBLE routine
 ;-------------------------------------------------------------------------------
 assemble:
-    lda #>@str1
-    ldx #<@str1
+    lda #<@str1
+    ldx #>@str1
     jsr putstrnl
-    lda #>@str2
-    ldx #<@str2
+    lda #<@str2
+    ldx #>@str2
     jsr putstrnl
 @nextinstruction:
     stz BUF2                ; clear buffer
@@ -32,14 +32,14 @@ assemble:
     lda STARTADDR
     jsr puthex
     lda #':'
-    jsr putchar
+    jsr putch
     lda #' '
-    jsr putchar
+    jsr putch
     ldy #0
 
     ; fill the command buffer
 @retr:
-    jsr getchar
+    jsr getch
     cmp #0
     beq @retr
     cmp #$0D                ; check for enter
@@ -51,18 +51,18 @@ assemble:
     jsr chartoupper
     sta CMDBUF,y            ; store in buffer
     iny
-    jsr putchar
+    jsr putch
     inc CMDLENGTH
     jmp @retr
 @backspace:
     cpy #0
     beq @retr
     lda #$08
-    jsr putchar
+    jsr putch
     lda #' '
-    jsr putchar
+    jsr putch
     lda #$08
-    jsr putchar
+    jsr putch
     dey
     dec CMDLENGTH
     jmp @retr
@@ -186,8 +186,8 @@ findmnemonic:
     rts
 
 @error:
-    lda #>@errorstr         ; load lower byte
-    ldx #<@errorstr         ; load upper byte
+    lda #<@errorstr         ; load lower byte
+    ldx #>@errorstr         ; load upper byte
     jsr putstr
     sec
     rts

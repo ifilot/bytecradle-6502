@@ -6,36 +6,46 @@
 .include "functions.inc"
 .include "disassemble.inc"
 .include "assemble.inc"
-.include "sdcard.inc"
 
-.export boot
+.import __HEADER_LOAD__             ; will be grabbed from the .cfg file
 .export clearcmdbuf
 
-.segment "BOOT"
-
 ;-------------------------------------------------------------------------------
-; Boot sequence
+; PROGRAM HEADER
 ;-------------------------------------------------------------------------------
-boot:                   ; reset vector points here
-    sei                 ; disable interrupts
-    cld                 ; clear decimal mode 
 
-    ldx #$ff            ; initialize stack pointer to top of stack
-    txs                 ; transfer x to stack pointer (sp)
+.segment "HEADER"
 
-    cli                 ; enable interrupts and fall to main
+.word __HEADER_LOAD__               ; program location
 
-;-------------------------------------------------------------------------------
-; MAIN routine
-;
-; Consumes the text buffer and executes commands when a RETURN is entered.
-; Previous text can be removed using BACKSPACE
-;-------------------------------------------------------------------------------
+.segment "STARTUP"
 main:
-    jsr init            ; initialize system and fall to loop
+    lda #<@str3
+    ldx #>@str3
+    jsr putstrnl
+    lda #<@str1
+    ldx #>@str1
+    jsr putstrnl
+    lda #<@str2
+    ldx #>@str2
+    jsr putstrnl
+    lda #<@str3
+    ldx #>@str3
+    jsr putstr          ; print monitor header
+    jsr newcmdline      ; provide new command line
+    jmp loop
+
+@str1:
+    .asciiz "SYSTEM MONITOR"
+@str2:
+    .asciiz "MEMORY ABOVE $2000 is unallocated"
+@str3:
+    .asciiz "---------------------------------"
+
+.segment "CODE"
 
 loop:
-    jsr getchar
+    jsr getch
     cmp #0
     beq loop
     jsr chartoupper     ; always convert character to upper case
@@ -50,7 +60,7 @@ loop:
     jsr ischarvalid     ; check if character is an alphanumerical character
     bcs loop
     sta CMDBUF,x        ; store in position
-    jsr putchar         ; if not, simply print character
+    jsr putch           ; if not, simply print character
     inc CMDLENGTH       ; increment command length
 exitloop:
     jmp loop
@@ -67,11 +77,11 @@ backspace:
     lda CMDLENGTH       ; skip if buffer is empty
     beq exitbp
     lda #$08
-    jsr putchar
+    jsr putch  
     lda #' '
-    jsr putchar
+    jsr putch  
     lda #$08
-    jsr putchar
+    jsr putch  
     dec CMDLENGTH
 exitbp:
     jmp loop
@@ -96,10 +106,6 @@ parsecmd:
     beq cmddisfar       ; disassemble memory?
     cmp #'A'
     beq cmdasmfar       ; disassemble memory?
-    cmp #'S'
-    beq cmdsdfar        ; test SD-card
-    cmp #'P'
-    beq cmdprintnumfar  ; test printing numbers
     rts
 
 ;-------------------------------------------------------------------------------
@@ -109,8 +115,8 @@ parsecmd:
 ;-------------------------------------------------------------------------------
 errorhex:
     jsr newline
-    lda #>@errorstr
-    ldx #<@errorstr
+    lda #<@errorstr
+    ldx #>@errorstr
     jsr putstr
     rts
 
@@ -156,62 +162,7 @@ cmdchrambank:
 @str:
     .asciiz "Changing RAM bank to: "
 
-cmdsdfar:
-    jmp cmdtestsdcard
-
-cmdprintnumfar:
-    jsr printnumtest
-    rts
-
 exit_invalid:
-    rts
-
-cmdtestsdcard:
-    jsr newline
-    lda #>@str
-    ldx #<@str
-    jsr putstr
-    jsr newline
-    ldx #0              ; attempt counter
-@tryagain:
-    phx                 ; push attempt counter onto stack
-    jsr init_sd         ; open SD-card
-    jsr sdcmd00
-    bcs @fail
-    jsr sdcmd08
-    bcs @fail
-    jsr sdacmd41
-    bcs @fail
-    jsr sdcmd58
-    bcs @fail
-    jsr sdcmd17
-    jsr close_sd
-    lda #>@attemptstr
-    ldx #<@attemptstr
-    jsr putstr
-    pla                 ; retrieve attempt counter
-    inc
-    jsr puthex
-    rts
-@fail:
-    plx                 ; retrieve counter
-    inx                 ; increment attempt counter
-    cpx #5              ; make 5 attempts to open SD-card
-    bne @tryagain       ; if not 5, try again
-    lda #>@errorstr
-    ldx #<@errorstr
-    jsr putstr          ; print error string
-    jsr close_sd
-    rts
-@str:
-    .asciiz "Testing SDCARD routines."
-@errorstr:
-    .asciiz "Failed to open SDCARD."
-@attemptstr:
-    .asciiz "Attempts required: "
-
-cmdgetpos:
-    jsr getpos
     rts
 
 ;-------------------------------------------------------------------------------
@@ -230,20 +181,6 @@ clearcmdbuf:
     stz TBPL            ; reset text buffer
     stz TBPR
     rts
-
-;-------------------------------------------------------------------------------
-; HELLOWORLD routine
-;
-; Prints helloworld to the screen
-;-------------------------------------------------------------------------------
-helloworldtest:
-    jsr newline
-    lda #>@str
-    ldx #<@str
-    jsr putstrnl
-    rts
-@str:
-    .asciiz "Hello World!"
 
 ;-------------------------------------------------------------------------------
 ; HEX4TOSTART routine
@@ -268,13 +205,13 @@ hex4tostart:
 ;-------------------------------------------------------------------------------
 cmdshowmenu:
     jsr newline
-    lda #>@str
-    ldx #<@str
+    lda #<@str
+    ldx #>@str
     jsr putstr
     rts
 
 @str:
-    .byte LF,"Commands:",LF,LF
+    .byte LF,"Commands:cd program",LF,LF
     .byte "  R<XXXX>[:<XXXX>]    read memory ",LF
     .byte "  W<XXXX>             write to memory",LF
     .byte "  G<XXXX>             run from address",LF
@@ -338,8 +275,8 @@ cmdread:
 ;-------------------------------------------------------------------------------
 cmdwrite:
     jsr newline
-    lda #>@str
-    ldx #<@str
+    lda #<@str
+    ldx #>@str
     jsr putstr
 @newline:
     jsr newline
@@ -349,17 +286,17 @@ cmdwrite:
     lda STARTADDR       ; load low byte
     jsr puthex
     lda #':'
-    jsr putchar
+    jsr putch  
     ldy #0              ; value counter; increments till 16, then newline
     jmp @nexthex
 @loop:
-    jsr getchar
+    jsr getch
     cmp #0
     beq @loop
     cmp #$0D            ; check for enter
     beq @exit
     jsr chartoupper
-    jsr putchar
+    jsr putch  
     sta BUF2,y
     iny
     cpy #2              ; check if two chars have been read
@@ -385,7 +322,7 @@ cmdwrite:
 @nexthex:
     phy                 ; put value counter on stack
     lda #' '
-    jsr putchar
+    jsr putch  
     ldy #0              ; reset chararacter counter
     jmp @loop
 @exit:
@@ -428,37 +365,6 @@ hex42:
     tya
     jsr char2num
     plx
-    rts
-
-;-------------------------------------------------------------------------------
-; PRINTNUMTEST routine
-;
-; Simple test to check whether numbers are correctly printed
-;-------------------------------------------------------------------------------
-printnumtest:
-    lda #$46
-    ldx #$46
-    jsr char2num
-    jsr puthex
-    jsr newline
-    lda #0
-@next:
-    jsr putdec          ; a is conserved
-    jsr newline
-    inc                 ; increment acc
-    cmp #26             ; only print until (and including) 25
-    bne @next
-    lda #30             ; load 30
-    jsr putdec
-    jsr newline
-    lda #40
-@next2:
-    jsr putdec          ; start printing from 30 with increments of 10
-    jsr newline
-    clc
-    adc #10
-    cmp #120
-    bne @next2
     rts
 
 ;-------------------------------------------------------------------------------
@@ -533,32 +439,32 @@ hexdump:
     lda MALB            ; load low byte of memory address
     jsr puthex          ; print it
     lda #' '            ; load space
-    jsr putchar         ; print it twice
-    jsr putchar
+    jsr putch           ; print it twice
+    jsr putch  
     ldy #0              ; number of bytes to print (second segment)
 @nextbyte:
     phy                 ; put y on stack as puthex garbles it
     lda (MALB),y        ; load byte
     jsr puthex          ; print byte in hex format, garbles y
     lda #' '            ; add space
-    jsr putchar
+    jsr putch  
     ply                 ; restore y from stack
     iny
     cpy #8              ; check if halfway
     bne @skip           ; if not, skip
     lda #' '            ; print two spaces to seperate 8 bit segments
-    jsr putchar
-    jsr putchar
+    jsr putch  
+    jsr putch  
 @skip:
     cpy #16             ; check if 16 bytes are printed
     bne @nextbyte       ; if not, next byte
     lda #' '            ; else space
-    jsr putchar
+    jsr putch  
     lda #'|'            ; add nice delimeter
-    jsr putchar
+    jsr putch  
     ldy #0              ; number of bytes to print (third segment)
 @nextchar:
-    phy                 ; y will be garbed in putchar routine
+    phy                 ; y will be garbed in putch   routine
     lda (MALB),y        ; load byte again
     cmp #$20            ; check if value is less than $20
     bcc @printdot       ; if so, print a dot
@@ -568,13 +474,13 @@ hexdump:
 @printdot:
     lda #'.'            ; load dot character
 @next:
-    jsr putchar         ; print character
+    jsr putch           ; print character
     ply                 ; restore y
     iny
     cpy #16             ; check if 16 characters have been consumed
     bne @nextchar       ; if not, next character
     lda #'|'            ; else print terminating char
-    jsr putchar
+    jsr putch  
     lda MALB            ; load low byte of monitor address
     clc                 ; prepare for add (clear carry)
     adc #16             ; add 16
@@ -600,11 +506,11 @@ hexdump:
     rts
 @askcontinue:
     jsr newline
-    lda #>@contstr
-    ldx #<@contstr
+    lda #<@contstr
+    ldx #>@contstr
     jsr putstr
 @trychar:
-    jsr getchar
+    jsr getch
     cmp #00
     beq @trychar
     cmp #'Q'
@@ -634,7 +540,7 @@ printheader:
     ldx #6
     lda #' '
 @nextspace:
-    jsr putchar
+    jsr putch  
     dex
     bne @nextspace
     ldx #0
@@ -642,7 +548,7 @@ printheader:
     txa
     jsr puthex
     lda #' '
-    jsr putchar
+    jsr putch  
     inx
     cpx #8
     beq @addspace
@@ -652,6 +558,6 @@ printheader:
     rts
 @addspace:
     lda #' '
-    jsr putchar
-    jsr putchar
+    jsr putch  
+    jsr putch  
     jmp @nextchar

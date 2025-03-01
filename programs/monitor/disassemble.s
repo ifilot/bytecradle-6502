@@ -13,8 +13,8 @@
 ; DISASSEMBLE routine
 ;-------------------------------------------------------------------------------
 disassemble:
-    lda #>@str
-    ldx #<@str
+    lda #<@str
+    ldx #>@str
     jsr putstrnl
     ldx #0
 @nextoptcode:
@@ -39,11 +39,11 @@ disassemble:
     bne @nextoptcode
 
     ; ask user whether they want to continue
-    lda #>@contstr
-    ldx #<@contstr
+    lda #<@contstr
+    ldx #>@contstr
     jsr putstr
 @trychar:
-    jsr getchar
+    jsr getch
     cmp #00
     beq @trychar
     cmp #'Q'
@@ -87,9 +87,9 @@ disassembleline:
     lda STARTADDR
     jsr puthex
     lda #':'
-    jsr putchar
+    jsr putch
     lda #' '
-    jsr putchar
+    jsr putch
 
     ; grab mnemonic from optcode table
     ; calculate offset in BUF4:5
@@ -141,14 +141,14 @@ disassembleline:
     sta BUF9                ; store number of characters printed, used for padding
 @next:
     lda (BUF4),y
-    jsr putchar
+    jsr putch
     iny
     cpy #4
     bne @next
     cmp #' '                ; check if last char was space
     beq @printoperands
     lda #' '                ; if not, print a space
-    jsr putchar
+    jsr putch
     inc BUF9
 @printoperands:             ; print operands
     ldy #4
@@ -207,7 +207,7 @@ disassembleline:
     rts
 @im:                        ; immediate ($05)
     lda #'#'
-    jsr putchar
+    jsr putch
     jsr @putop2
     inc BUF9                ; increment buffer for '#'
     rts
@@ -231,10 +231,10 @@ disassembleline:
     rts
 @zpind:                     ; print zeropage indirect ($0D)
     lda #'('
-    jsr putchar
+    jsr putch
     jsr @putop2
     lda #')'
-    jsr putchar
+    jsr putch
     lda #2
     jsr @addbuf
     rts
@@ -243,7 +243,7 @@ disassembleline:
     jsr @putop4
     jsr @putcommax
     lda #')'
-    jsr putchar
+    jsr putch
     lda #2
     jsr @addbuf
     rts
@@ -251,7 +251,7 @@ disassembleline:
     lda BUF3
     jsr puthex
     lda #','
-    jsr putchar
+    jsr putch
     lda BUF2
     jsr puthex
     lda #5
@@ -279,10 +279,10 @@ disassembleline:
 ; print address between round parentheses
 @putin4:
     lda #'('
-    jsr putchar
+    jsr putch
     jsr @putop4
     lda #')'
-    jsr putchar
+    jsr putch
     lda #6
     jsr @addbuf
     rts
@@ -290,11 +290,11 @@ disassembleline:
 ; print address between round parentheses
 @putinx:
     lda #'('
-    jsr putchar
+    jsr putch
     jsr @putop2
     jsr @putcommax
     lda #')'
-    jsr putchar
+    jsr putch
     lda #2
     jsr @addbuf
     rts
@@ -302,10 +302,10 @@ disassembleline:
 ; print address between round parentheses
 @putiny:
     lda #'('
-    jsr putchar
+    jsr putch
     jsr @putop2
     lda #')'
-    jsr putchar
+    jsr putch
     jsr @putcommay
     lda #2
     jsr @addbuf
@@ -314,9 +314,9 @@ disassembleline:
 ; print ",X"
 @putcommax:
     lda #','
-    jsr putchar
+    jsr putch
     lda #'X'
-    jsr putchar
+    jsr putch
     lda #2
     jsr @addbuf
     rts
@@ -324,9 +324,9 @@ disassembleline:
 ; print ",Y"
 @putcommay:
     lda #','
-    jsr putchar
+    jsr putch
     lda #'Y'
-    jsr putchar
+    jsr putch
     lda #2
     jsr @addbuf
     rts
@@ -361,7 +361,7 @@ printhexvals:
     tax
     lda #' '
 @nextspace:
-    jsr putchar
+    jsr putch
     dex
     bne @nextspace
     lda BUF7
@@ -372,12 +372,12 @@ printhexvals:
     cmp #2
     beq @skipupper
     lda #' '
-    jsr putchar
+    jsr putch
     lda BUF3
     jsr puthex
 @skipupper:
     lda #' '
-    jsr putchar
+    jsr putch
     lda BUF2
     jsr puthex
 @exit:

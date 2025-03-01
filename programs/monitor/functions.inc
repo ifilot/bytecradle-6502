@@ -17,8 +17,8 @@
 .import putds
 .import puttab
 .import printnibble
-.import putchar
-.import getchar
+.import putch
+.import getch
 .import getpos
 .import ischarvalid
 .import clearline
