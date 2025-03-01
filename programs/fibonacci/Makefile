@@ -12,7 +12,7 @@ main.s: main.c
 
 prog.lib: crt0.o
 	cp -v /usr/share/cc65/lib/supervision.lib prog.lib 
-	ar65 a prog.lib $(OBJDIR)/crt0.o
+	ar65 a prog.lib crt0.o
 
 main.o: main.s
 	ca65 --cpu 65c02 main.s
