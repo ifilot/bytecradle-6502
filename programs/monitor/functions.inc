@@ -2,8 +2,6 @@
 ; Defines all functions available in all .s files
 ;
 
-.import init
-.import isr
 .import newline
 .import newcmdline
 .import putstr

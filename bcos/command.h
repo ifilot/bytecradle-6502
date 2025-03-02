@@ -80,4 +80,10 @@ void command_more();
  */
 uint8_t command_try_com();
 
+/**
+ * @brief Dumps memory contents to screen
+ * 
+ */
+void command_hexdump();
+
 #endif

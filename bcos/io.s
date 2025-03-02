@@ -26,6 +26,7 @@
 .export putdec
 .export putds
 .export putspace
+.export _putspace
 .export puttab
 .export printnibble
 .export ischarvalid
@@ -108,6 +109,7 @@ newline:
 ; print single space
 ;-------------------------------------------------------------------------------
 putspace:
+_putspace:
     lda #' '
     jsr putch
     rts
