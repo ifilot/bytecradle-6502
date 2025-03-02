@@ -71,6 +71,11 @@ void command_exec() {
     *command_ptr = 0x00;    // place terminating byte
     command_parse();        // split string
 
+    if(command_argc == 0) {
+        command_pwdcmd();
+        return;
+    }
+
     // try to see if we can find a match
     for(i=0; i<sizeof(command_table); i++) {
         if(strcmp(command_table[i].str, command_argv[0]) == 0) {
@@ -87,6 +92,7 @@ void command_exec() {
     }
 
     command_ptr = command_buffer;
+    memset(command_buffer, 0x00, strlen(command_buffer));
     command_pwdcmd();
 }
 
@@ -242,7 +248,7 @@ void command_more() {
 
     // when nothing can be found
     if(res == NULL) {
-        putstr("Cannot find file.");
+        putstrnl("Cannot find file.");
         return;
     }
 
