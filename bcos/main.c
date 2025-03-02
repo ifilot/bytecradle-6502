@@ -27,22 +27,21 @@
 #include "ramtest.h"
 #include "command.h"
 
-#define SDMAX 5
+#define SDMAX 10        // number of attempts to connect to SD-card
 
 int main(void) {
     uint8_t i;
     uint8_t res;
 
-    putstrnl("Starting system...");
-    // putstrnl("Probing memory banks...");
-    // ramtest();
-    putstr("Connecting to SD-card");
+    putstrnl("Starting system.");
+    putstr("Clearing user space...   ");
+    memset((void*)0x0800, 0xFF, 0x7700);
+    putstrnl("[OK]");
+    putstr("Connecting to SD-card... ");
     for(i=0; i<SDMAX; i++) {
-        putch('.');
         res = boot_sd();
         if(res == 0x00) {
-            putch('\n');
-            putstrnl("SD-card initialized.");
+            putstrnl("[OK]");
             break;
         }
     }

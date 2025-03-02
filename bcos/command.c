@@ -27,9 +27,10 @@ static char* command_ptr = command_buffer;
 
 static const CommandEntry command_table[] = {
     { "LS", command_ls },
-    { "DIR", command_ls },  // Alias for LS
+    { "DIR", command_ls },
     { "CD", command_cd },
     { "MORE", command_more },
+    { "HEXDUMP", command_hexdump },
 };
 
 /**
@@ -304,6 +305,43 @@ uint8_t command_try_com() {
         fat32_load_file(res, (uint8_t*)addr);
         program = (void(*)(void))(addr+2);
         program();
+        memset((void*)0x0800, 0xFF, 0x7700);    // clean up user space
         return 0;
+    }
+}
+
+/**
+ * @brief Dumps memory contents to screen
+ * 
+ */
+void command_hexdump() {
+    uint8_t* addr;
+    uint16_t i=0;
+    char* endptr;
+
+    if(command_argc != 2) {
+        command_illegal();
+        return;
+    }
+
+    // convert input to hex
+    addr = strtol(command_argv[1], &endptr, 16);
+
+    if(*endptr != '\0') {
+        putstr("Invalid address: ");
+        putstrnl(command_argv[1]);
+        return;
+    }
+
+    for(i=0; i<256; i++) {
+        if(i % 16 == 0) {
+            puthexword(addr);
+            putstr(": ");
+        }
+        puthex(*(uint8_t*)(addr++));
+        putspace();
+        if(i % 16 == 15) {
+            putstrnl("");
+        }
     }
 }
