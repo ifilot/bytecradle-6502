@@ -59,21 +59,12 @@ loremipsum paragraphs 10 > $ROOT_MOUNT/FOLDER2/SUB2/FILE2.txt
 mkdir $ROOT_MOUNT/PROGRAMS
 
 # Helloworld program
-pushd ../../programs/helloworld
+pushd ../../programs
 make
-cp -v helloworld.bin $ROOT_MOUNT/PROGRAMS/HELLO.COM
-popd
-
-# Fibonacci program
-pushd ../../programs/fibonacci
-make
-cp -v fibonacci.bin $ROOT_MOUNT/PROGRAMS/FIBO.COM
-popd
-
-# Monitor program
-pushd ../../programs/monitor
-make
-cp -v monitor.bin $ROOT_MOUNT/PROGRAMS/MONITOR.COM
+cp -v helloworld/helloworld.bin $ROOT_MOUNT/PROGRAMS/HELLO.COM
+cp -v fibonacci/fibonacci.bin $ROOT_MOUNT/PROGRAMS/FIBO.COM
+cp -v monitor/monitor.bin $ROOT_MOUNT/PROGRAMS/MONITOR.COM
+cp -v mandelbrot/mandelbrot.bin $ROOT_MOUNT/PROGRAMS/MANDEL.COM
 popd
 
 # Step 9: Cleanup

@@ -1,4 +1,6 @@
-all: monitor.bin
+PROGNAME = monitor
+
+all: $(PROGNAME).bin
 
 # Compiler and flags
 AS      = ca65
@@ -11,16 +13,14 @@ OBJS	:= $(SRCS:.s=.o)
 %.o: %.s *.inc
 	$(AS) $< -o $@
 
-monitor.bin: $(OBJS) rom.cfg
-	$(LD) -o monitor.bin $(OBJS) -C rom.cfg
-flash: monitor.bin
-	picoflash -i monitor.bin -w -b 0
+$(PROGNAME).bin: $(OBJS) rom.cfg
+	$(LD) -o $(PROGNAME).bin $(OBJS) -C rom.cfg
 
-run: monitor.bin
+run: $(PROGNAME).bin
 	../../emulator/build/bc6502emu \
 	-r ../../bcos/bin/os.bin \
 	-s ../../emulator/script/sdcard.img \
-	-p monitor.bin
+	-p $(PROGNAME).bin
 
 clean:
 	rm -v *.bin *.o

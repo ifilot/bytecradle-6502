@@ -1,4 +1,4 @@
-PROGNAME = fibonacci
+PROGNAME = mandelbrot
 
 all: $(PROGNAME).bin
 
