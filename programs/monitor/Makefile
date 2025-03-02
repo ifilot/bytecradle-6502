@@ -12,14 +12,15 @@ OBJS	:= $(SRCS:.s=.o)
 	$(AS) $< -o $@
 
 monitor.bin: $(OBJS) rom.cfg
-	$(LD) -o monitor.bin $(OBJS) -C rom.cfg && \
-	md5sum monitor.bin
-
+	$(LD) -o monitor.bin $(OBJS) -C rom.cfg
 flash: monitor.bin
 	picoflash -i monitor.bin -w -b 0
 
 run: monitor.bin
-	../../emulator/build/bc6502emu -r monitor.bin -s ../../emulator/script/sdcard.img
+	../../emulator/build/bc6502emu \
+	-r ../../bcos/bin/os.bin \
+	-s ../../emulator/script/sdcard.img \
+	-p monitor.bin
 
 clean:
 	rm -v *.bin *.o

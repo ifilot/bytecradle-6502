@@ -86,6 +86,60 @@ void init_sd(const char* filename) {
 }
 
 /**
+ * @brief Insert program and run it
+ *
+ * @param filename file URL
+ */
+uint16_t init_program(const char *filename) {
+    check_file_exists(filename);
+
+    FILE *file = fopen(filename, "rb");
+    if (file == NULL) {
+        fprintf(stderr, "Error opening file\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Get file size
+    fseek(file, 0, SEEK_END);
+    size_t filesize = ftell(file);
+    rewind(file);
+
+    if (filesize < 2) {  // Must be at least 2 bytes for address check
+        fprintf(stderr, "File too small\n");
+        fclose(file);
+        exit(EXIT_FAILURE);
+    }
+
+    // Read first two bytes to determine deployment address
+    uint16_t deploy_address;
+    if (fread(&deploy_address, 1, 2, file) != 2) {
+        fprintf(stderr, "Error reading deployment address\n");
+        fclose(file);
+        exit(EXIT_FAILURE);
+    }
+
+    // Check if program will surpass 0x8000
+    if (deploy_address + filesize > 0x8000) {
+        fprintf(stderr, "Program exceeds 0x8000.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Read the file into the appropriate memory location
+    rewind(file);
+    uint8_t *memory = &lowram[deploy_address];
+    size_t bytes_read = fread(memory, 1, filesize, file);  // Subtract first 2 bytes
+    if (bytes_read != filesize) {
+        fprintf(stderr, "File read error (size mismatch)\n");
+        exit(EXIT_FAILURE);
+    }
+
+    fclose(file);
+    printf("Program loaded at 0x%04X\n", deploy_address);
+
+    return deploy_address;
+}
+
+/**
  * Close SD-card pointer
  */
 void close_sd() {
@@ -170,6 +224,7 @@ uint8_t memread(uint16_t addr, bool isDbg) {
 
         default:
             printf("[ERROR] Invalid read: %04X.\n", addr);
+            exit(EXIT_FAILURE);
         break;
     }
 }

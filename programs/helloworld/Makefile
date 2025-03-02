@@ -9,3 +9,9 @@ helloworld.bin: helloworld.o rom.cfg
 
 flash: helloworld.bin
 	picoflash -i helloworld.bin -w -b 1
+
+run: helloworld.bin
+	../../emulator/build/bc6502emu \
+	-r ../../bcos/bin/os.bin \
+	-s ../../emulator/script/sdcard.img \
+	-p helloworld.bin

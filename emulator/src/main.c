@@ -48,6 +48,7 @@ struct arguments {
     int verbose;
     char *rom;
     char *sdcard;
+    char *program;
 };
 
 /**
@@ -61,6 +62,7 @@ struct arguments {
 static struct argp_option options[] = {
     {"rom", 'r', "FILE", 0, "ROM file"},
     {"sdcard",  's', "FILE", 0, "SDCARD image"},
+    {"program",  'p', "FILE", 0, "program file"},
     { 0 }
 };
 
@@ -88,6 +90,9 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
             break;
         case 's':
             arguments->sdcard = arg;
+            break;
+        case 'p':
+            arguments->program = arg;
             break;
         case ARGP_KEY_ARG:
             return 0;
@@ -154,12 +159,38 @@ int main(int argc, char *argv[]) {
     struct timespec start, current;
     clock_gettime(CLOCK_MONOTONIC, &start);
 
+    // When running in direct program mode, this variable is used to terminate
+    // the emulator when the program finishes. The idea is that the stacklimit
+    // is probed right before the program is started and once the stackpointer
+    // is back to its original value, we know that the program has completed.
+    uint8_t stacklimit = 0;
+
     // boot CPU core
     if(cpu65c02) {
         irq = vrEmu6502Int(cpu65c02);   // set IRQ pin
 
         // reset the processor
         vrEmu6502Reset(cpu65c02);
+
+        if(arguments.program != NULL) {
+            while(vrEmu6502GetPC(cpu65c02) != 0xD28C) {
+                vrEmu6502Tick(cpu65c02);
+            }
+
+            uint16_t prgaddr = init_program(arguments.program);
+
+            // print memory contents starting at prgaddr
+            for(int i = 0; i < 0x10; i++) {
+                printf("%02X ", memread(prgaddr+i, false));
+            }
+            printf("\n");
+
+            // storing stack position
+            stacklimit = vrEmu6502GetStackPointer(cpu65c02) + 2;
+
+            printf("Jumping to $%04X.\n", prgaddr+2);
+            vrEmu6502SetPC(cpu65c02, prgaddr+2);
+        }
 
         // set key buffer pointer
         keybuffer_ptr = keybuffer;
@@ -183,6 +214,14 @@ int main(int argc, char *argv[]) {
 
             // perform CPU tick
             vrEmu6502Tick(cpu65c02);
+
+            // check if stack limit is reached
+            if(arguments.program != NULL) {
+                if(vrEmu6502GetStackPointer(cpu65c02) == stacklimit) {
+                    printf("Program finished. Exiting simulator...\n");
+                    break;
+                }
+            }
         }
 
         // clean up the mess

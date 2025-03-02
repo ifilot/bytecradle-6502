@@ -65,6 +65,13 @@ void initrom(const char *filename);
 void init_sd(const char *filename);
 
 /**
+ * @brief Insert program and run it
+ *
+ * @param filename file URL
+ */
+uint16_t init_program(const char *filename);
+
+/**
  * Close SD-card pointer
  */
 void close_sd();

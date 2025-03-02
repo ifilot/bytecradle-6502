@@ -21,4 +21,7 @@ flash: fibonacci.bin
 	picoflash -i fibonacci.bin -w -b 2
 
 run: fibonacci.bin
-	../../emulator/build/bc6502emu fibonacci.bin
+	../../emulator/build/bc6502emu \
+	-r ../../bcos/bin/os.bin \
+	-s ../../emulator/script/sdcard.img \
+	-p fibonacci.bin

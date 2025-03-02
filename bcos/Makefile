@@ -30,7 +30,7 @@ $(OBJDIR) $(ASMDIR) $(BINDIR):
 
 # Compile C files to assembly first
 $(ASMDIR)/%.s: %.c | $(ASMDIR)
-	$(CC) -t none -O --cpu 65c02 $< -o $@
+	$(CC) -t none -O -Os --cpu 65c02 $< -o $@
 
 # Assemble all .s files into object files
 $(OBJDIR)/%.o: $(ASMDIR)/%.s | $(OBJDIR)
