@@ -20,6 +20,8 @@
 
 .segment "STARTUP"
 main:
+    jsr init
+
     lda #<@str3
     ldx #>@str3
     jsr putstrnl
@@ -41,6 +43,10 @@ main:
     .asciiz "MEMORY ABOVE $2000 is unallocated"
 @str3:
     .asciiz "---------------------------------"
+
+init:
+    ldx #0
+    stz
 
 .segment "CODE"
 
@@ -105,7 +111,9 @@ parsecmd:
     cmp #'D'
     beq cmddisfar       ; disassemble memory?
     cmp #'A'
-    beq cmdasmfar       ; disassemble memory?
+    beq cmdasmfar       ; assemble memory?
+    cmp #'Q'
+    beq cmdquit		; quit monitor?
     rts
 
 ;-------------------------------------------------------------------------------
@@ -156,11 +164,13 @@ cmdasmfar:
     jsr newline
     jmp assemble
 
-; change ram bank
-cmdchrambank:
+cmdquit:			; quit the program
+    jsr newline
+    tsx				; grab stack pointer
+    inx
+    inx				; increment by two
+    txs				; update stack pointer`
     rts
-@str:
-    .asciiz "Changing RAM bank to: "
 
 exit_invalid:
     rts
@@ -216,6 +226,7 @@ cmdshowmenu:
     .byte "  W<XXXX>             write to memory",LF
     .byte "  G<XXXX>             run from address",LF
     .byte "  D<XXXX>             disassemble from address",LF
+    .byte "  Q                   quit",LF
     .byte "  M                   show this menu",LF
     .byte 0
 
