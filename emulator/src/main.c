@@ -26,12 +26,11 @@
 #include <time.h>
 #include <argp.h>
 
+#include "screen.h"
 #include "ramrom.h"
 #include "vrEmu6502/vrEmu6502.h"
 
 // forward declarations
-void term_disable_blocking();
-void term_restore_default(struct termios *original);
 void cleanup();
 int kbhit();
 VrEmu6502 *cpu65c02;
@@ -144,20 +143,20 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
+    // initialize screen
+    screen_init();
+
     // load the ROM memory using external file
     initrom(arguments.rom);
     init_sd(arguments.sdcard);
-
-    // modify terminal settings, but store original settings
-    tcgetattr(STDIN_FILENO, &original);
-    term_disable_blocking();
 
     // create CPU core
     cpu65c02 = vrEmu6502New(CPU_W65C02, memread, memwrite);
 
     // keep track of time, this is needed for keyboard polling
-    struct timespec start, current;
-    clock_gettime(CLOCK_MONOTONIC, &start);
+    struct timespec screenclock, kbclock, current;
+    clock_gettime(CLOCK_MONOTONIC, &kbclock);
+    clock_gettime(CLOCK_MONOTONIC, &screenclock);
 
     // When running in direct program mode, this variable is used to terminate
     // the emulator when the program finishes. The idea is that the stacklimit
@@ -199,12 +198,13 @@ int main(int argc, char *argv[]) {
         while (1) {
             // check for keyboard input
             clock_gettime(CLOCK_MONOTONIC, &current);
-            long elapsed_ms = (current.tv_sec - start.tv_sec) * 1000 +
-                              (current.tv_nsec - start.tv_nsec) / 1000000;
+            long elapsed_ms = (current.tv_sec - kbclock.tv_sec) * 1000 +
+                              (current.tv_nsec - kbclock.tv_nsec) / 1000000;
 
             // only 'poll' the keyboard every 10 ms
             if (elapsed_ms >= 10) {
                 kbhit();
+                clock_gettime(CLOCK_MONOTONIC, &kbclock); // reset clock
             }
 
             // keyboard input triggers interrupt
@@ -233,35 +233,8 @@ int main(int argc, char *argv[]) {
     close_sd();
 
     // restore original terminal settings
-    term_restore_default(&original);
+    screen_clean();
     return EXIT_SUCCESS;
-}
-
-/**
- * @brief Disables the blocking call when reading from standard input
- * 
- */
-void term_disable_blocking() {
-    struct termios t;
-    tcgetattr(STDIN_FILENO, &t);
-
-    // Disable line buffering and echo
-    t.c_lflag &= ~(ICANON | ECHO);
-    tcsetattr(STDIN_FILENO, TCSANOW, &t);
-
-    int flags = fcntl(STDIN_FILENO, F_GETFL, 0);
-
-    // Set non-blocking mode
-    fcntl(STDIN_FILENO, F_SETFL, flags | O_NONBLOCK);
-}
-
-/**
- * @brief Restore regular terminal settings for STDIN
- * 
- * @param original 
- */
-void term_restore_default(struct termios *original) {
-    tcsetattr(STDIN_FILENO, TCSANOW, original);
 }
 
 /**
@@ -272,43 +245,45 @@ void term_restore_default(struct termios *original) {
  * @return int whether key has been pushed
  */
 int kbhit() {
-    char ch;
-    int bytes_read = read(STDIN_FILENO, &ch, 1);
-    
+    int ch = getch();    // Get input (returns ERR if no input)
+    screen_border();
+
+    if (ch == 127 || ch == 8 || ch == KEY_BACKSPACE) {
+        ch = 0x08;
+    }
+
+    if (ch == ERR) {
+        return 0;  // No key pressed
+    }
+
     // detect CTRL+R
-    if(ch == ('R' - 0x40)) {
+    if (ch == ('R' - 0x40)) {
         keybuffer_ptr = keybuffer;
-        ch = getchar(); // consume character
-        printf("Reset triggered.\n");
-        vrEmu6502Reset(cpu65c02);        
+        strcpy(statusbar_msg, "Reset triggered.");
+        vrEmu6502Reset(cpu65c02);
         return 0;
     }
 
-    // detect CTRL+Q
-    if(ch == ('X' - 0x40)) {
-        printf("Exiting program.\n");
+    // detect CTRL+X
+    if (ch == ('X' - 0x40)) {
         exit(EXIT_SUCCESS);
         return 0;
     }
 
     // detect CTRL+N
-    if(ch == ('N' - 0x40)) {
+    if (ch == ('N' - 0x40)) {
         keybuffer_ptr = keybuffer;
-        ch = getchar(); // consume character
-        printf("NMI triggered.\n");
+        strcpy(statusbar_msg, "NMI triggered.");
         vrEmu6502Nmi(cpu65c02);
         return 0;
     }
 
-    if (bytes_read > 0) {
-        *(keybuffer_ptr++) = ch;
-        return EXIT_FAILURE;
-    }
-
+    *(keybuffer_ptr++) = ch;
+    wprintw(status_win, "$%02X ", *(keybuffer_ptr-1));
     return 0;
 }
 
 void cleanup() {
     vrEmu6502Destroy(cpu65c02);
-    term_restore_default(&original);
+    screen_clean();
 }

@@ -156,6 +156,10 @@ void close_sd() {
  * @return uint8_t value at memory address
  */
 uint8_t memread(uint16_t addr, bool isDbg) {
+    // wprintw(status_win, "RD %04X\n", addr);
+    // wrefresh(status_win);
+    // napms(1);
+
     // ROM chip
     if(addr >= 0xC000) {
         return rom[addr - 0xC000];
@@ -186,7 +190,7 @@ uint8_t memread(uint16_t addr, bool isDbg) {
                 return ch;
             }
         break;
-        case ACIA_STAT:     // read UART status register
+        case ACIA_STAT:
             if(keybuffer_ptr > keybuffer) {
                 return 0x08;
             } else {
@@ -236,6 +240,10 @@ uint8_t memread(uint16_t addr, bool isDbg) {
  * @param val value to write
  */
 void memwrite(uint16_t addr, uint8_t val) {
+    // wprintw(status_win, "WR %04X:%02X\n", addr, val);
+    // wrefresh(status_win);
+    // napms(1);
+
     // store in lower memory
     if (addr < 0x7F00) {
         lowram[addr] = val;
@@ -251,8 +259,9 @@ void memwrite(uint16_t addr, uint8_t val) {
     // I/O space
     switch(addr) {
         case ACIA_DATA: // place data onto serial register
-            putchar(val);
-            fflush(stdout);
+            parse_character(val);
+            screen_refresh();
+            usleep(100);        // emulate character delay
         break;
 
         case ACIA_CMD:

@@ -34,6 +34,7 @@
 
 #include "vrEmu6502/vrEmu6502.h"
 #include "crc16.h"
+#include "screen.h"
 
 #define ROMBANK   0x7000
 #define RAMBANK   0x7001

@@ -85,11 +85,11 @@ VAR
 
 OBJ
 
-    hc     : "usb-fs-host"
-    ser    : "com.serial"
+    'hc     : "usb-fs-host"
+    'ser    : "com.serial"
     vga    : "waitvid.80x25.nine.driver"
-    kb     : "keyboard"
-    i2c    : "i2c"
+    'kb     : "keyboard"
+    'i2c    : "i2c"
 
 PUB start | retval, ifd, epd
 
