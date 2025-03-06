@@ -35,9 +35,11 @@ void screen_init() {
     noecho();  // Don't echo input characters
     keypad(stdscr, TRUE); // Enable special keys
     nodelay(stdscr, TRUE);
+    raw();
     curs_set(0);
     start_color(); // Enable colors
     init_pair(1, COLOR_BLACK, COLOR_WHITE); // Inverted colors for status bar
+    strcpy(statusbar_msg, "Press CTRL+X to exit.");
 
     // Create two windows
     main_box = newwin(WINHEIGHT, MAINWIDTH, 0, 0);  // 80x24 window at (0,0)

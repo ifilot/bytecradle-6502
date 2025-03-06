@@ -31,6 +31,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
+#include <wchar.h>
 
 #include "vrEmu6502/vrEmu6502.h"
 #include "crc16.h"

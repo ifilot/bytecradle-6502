@@ -25,6 +25,7 @@
 #include <fcntl.h>
 #include <time.h>
 #include <argp.h>
+#include <locale.h>
 
 #include "screen.h"
 #include "ramrom.h"
@@ -123,6 +124,9 @@ static struct argp argp = { options,
  * @return int Returns 0 on successful execution.
  */
 int main(int argc, char *argv[]) {
+    // set specific locale
+    setlocale(LC_ALL, "C");
+
     // register clean-up function
     atexit(cleanup);
 
@@ -201,8 +205,8 @@ int main(int argc, char *argv[]) {
             long elapsed_ms = (current.tv_sec - kbclock.tv_sec) * 1000 +
                               (current.tv_nsec - kbclock.tv_nsec) / 1000000;
 
-            // only 'poll' the keyboard every 10 ms
-            if (elapsed_ms >= 10) {
+            // only 'poll' the keyboard every 100 ms
+            if (elapsed_ms >= 20) {
                 kbhit();
                 clock_gettime(CLOCK_MONOTONIC, &kbclock); // reset clock
             }
@@ -245,14 +249,20 @@ int main(int argc, char *argv[]) {
  * @return int whether key has been pushed
  */
 int kbhit() {
-    int ch = getch();    // Get input (returns ERR if no input)
+    uint16_t ch = getch();    // Get input (returns ERR if no input)
+    flushinp();
+
     screen_border();
 
-    if (ch == 127 || ch == 8 || ch == KEY_BACKSPACE) {
+    if(ch != 0xFFFF) {
+        wprintw(status_win, "$%04X ", ch);
+    }
+    
+    if (ch == 127 || ch == 8 || ch == KEY_BACKSPACE || ch == 0x014A) {
         ch = 0x08;
     }
 
-    if (ch == ERR) {
+    if (ch == 0xFFFF) {
         return 0;  // No key pressed
     }
 
@@ -279,7 +289,6 @@ int kbhit() {
     }
 
     *(keybuffer_ptr++) = ch;
-    wprintw(status_win, "$%02X ", *(keybuffer_ptr-1));
     return 0;
 }
 
