@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "65xx-library")(type "KiCad")(uri "D:/PROGRAMMING/KiCAD/bytecradle-6502/pcb/components/65xx-library.kicad_sym")(options "")(descr ""))
+)
