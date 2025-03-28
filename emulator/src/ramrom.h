@@ -35,7 +35,6 @@
 
 #include "vrEmu6502/vrEmu6502.h"
 #include "crc16.h"
-#include "screen.h"
 
 #define ROMBANK   0x7000
 #define RAMBANK   0x7001
@@ -51,6 +50,7 @@
 extern vrEmu6502Interrupt *irq;
 extern char keybuffer[0x10];
 extern char* keybuffer_ptr;
+extern bool flag_sdcard;
 
 /**
  * @brief Initialize ROM from file

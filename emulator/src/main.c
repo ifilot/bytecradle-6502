@@ -27,13 +27,14 @@
 #include <argp.h>
 #include <locale.h>
 
-#include "screen.h"
 #include "ramrom.h"
 #include "vrEmu6502/vrEmu6502.h"
 
 // forward declarations
 void cleanup();
 int kbhit();
+void term_disable_blocking();
+void term_restore_default(struct termios *original);
 VrEmu6502 *cpu65c02;
 struct termios original;
 
@@ -136,23 +137,22 @@ int main(int argc, char *argv[]) {
     // parse command-line arguments
     argp_parse(&argp, argc, argv, 0, 0, &arguments);
 
-    // enforce mandatory arguments
+    // initialize ROM
     if(arguments.rom == NULL) {
         fprintf(stderr, "Error: --rom is required!\n");
         return EXIT_FAILURE;
+    } else {
+        initrom(arguments.rom);
     }
 
-    if(arguments.sdcard == NULL) {
-        fprintf(stderr, "Error: --sdcard is required!\n");
-        return EXIT_FAILURE;
+    // initialize SD-card if command-line argument is set
+    if(arguments.sdcard != NULL) {
+        init_sd(arguments.sdcard);
     }
 
-    // initialize screen
-    screen_init();
-
-    // load the ROM memory using external file
-    initrom(arguments.rom);
-    init_sd(arguments.sdcard);
+    // modify terminal settings, but store original settings
+    tcgetattr(STDIN_FILENO, &original);
+    term_disable_blocking();
 
     // create CPU core
     cpu65c02 = vrEmu6502New(CPU_W65C02, memread, memwrite);
@@ -234,11 +234,39 @@ int main(int argc, char *argv[]) {
     }
 
     // close pointer to SD-card
-    close_sd();
+    if(flag_sdcard) {
+        close_sd();
+    }
 
     // restore original terminal settings
-    screen_clean();
     return EXIT_SUCCESS;
+}
+
+/**
+ * @brief Disables the blocking call when reading from standard input
+ * 
+ */
+void term_disable_blocking() {
+    struct termios t;
+    tcgetattr(STDIN_FILENO, &t);
+
+    // Disable line buffering and echo
+    t.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &t);
+
+    int flags = fcntl(STDIN_FILENO, F_GETFL, 0);
+
+    // Set non-blocking mode
+    fcntl(STDIN_FILENO, F_SETFL, flags | O_NONBLOCK);
+}
+
+/**
+ * @brief Restore regular terminal settings for STDIN
+ * 
+ * @param original 
+ */
+void term_restore_default(struct termios *original) {
+    tcsetattr(STDIN_FILENO, TCSANOW, original);
 }
 
 /**
@@ -249,50 +277,43 @@ int main(int argc, char *argv[]) {
  * @return int whether key has been pushed
  */
 int kbhit() {
-    uint16_t ch = getch();    // Get input (returns ERR if no input)
-    flushinp();
-
-    screen_border();
-
-    if(ch != 0xFFFF) {
-        wprintw(status_win, "$%04X ", ch);
-    }
+    char ch;
+    int bytes_read = read(STDIN_FILENO, &ch, 1);
     
-    if (ch == 127 || ch == 8 || ch == KEY_BACKSPACE || ch == 0x014A) {
-        ch = 0x08;
-    }
-
-    if (ch == 0xFFFF) {
-        return 0;  // No key pressed
-    }
-
     // detect CTRL+R
-    if (ch == ('R' - 0x40)) {
+    if(ch == ('R' - 0x40)) {
         keybuffer_ptr = keybuffer;
-        strcpy(statusbar_msg, "Reset triggered.");
-        vrEmu6502Reset(cpu65c02);
+        ch = getchar(); // consume character
+        printf("Reset triggered.\n");
+        vrEmu6502Reset(cpu65c02);        
         return 0;
     }
 
-    // detect CTRL+X
-    if (ch == ('X' - 0x40)) {
+    // detect CTRL+Q
+    if(ch == ('X' - 0x40)) {
+        printf("Exiting program.\n");
         exit(EXIT_SUCCESS);
         return 0;
     }
 
     // detect CTRL+N
-    if (ch == ('N' - 0x40)) {
+    if(ch == ('N' - 0x40)) {
         keybuffer_ptr = keybuffer;
-        strcpy(statusbar_msg, "NMI triggered.");
+        ch = getchar(); // consume character
+        printf("NMI triggered.\n");
         vrEmu6502Nmi(cpu65c02);
         return 0;
     }
 
-    *(keybuffer_ptr++) = ch;
+    if (bytes_read > 0) {
+        *(keybuffer_ptr++) = ch;
+        return EXIT_FAILURE;
+    }
+
     return 0;
 }
 
 void cleanup() {
     vrEmu6502Destroy(cpu65c02);
-    screen_clean();
+    term_restore_default(&original);
 }

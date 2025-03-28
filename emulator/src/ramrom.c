@@ -39,6 +39,7 @@ uint8_t miso[1024];             // Buffer for MISO (Master In Slave Out) data
 unsigned int mosiptr;           // Pointer to the current position in the MOSI buffer
 unsigned int misoptr;           // Pointer to the current position in the MISO buffer
 FILE *sdfile;                   // File handle for the SD card image
+bool flag_sdcard = false;       // whether or not the emulator assumes a connected SD card
 
 /**
  * @brief Initialize ROM from file
@@ -83,6 +84,7 @@ void init_sd(const char* filename) {
         fprintf(stderr, "Error opening file\n");
         return;
     }
+    flag_sdcard = true;
 }
 
 /**
@@ -156,10 +158,6 @@ void close_sd() {
  * @return uint8_t value at memory address
  */
 uint8_t memread(uint16_t addr, bool isDbg) {
-    // wprintw(status_win, "RD %04X\n", addr);
-    // wrefresh(status_win);
-    // napms(1);
-
     // ROM chip
     if(addr >= 0xC000) {
         return rom[addr - 0xC000];
@@ -240,10 +238,6 @@ uint8_t memread(uint16_t addr, bool isDbg) {
  * @param val value to write
  */
 void memwrite(uint16_t addr, uint8_t val) {
-    // wprintw(status_win, "WR %04X:%02X\n", addr, val);
-    // wrefresh(status_win);
-    // napms(1);
-
     // store in lower memory
     if (addr < 0x7F00) {
         lowram[addr] = val;
@@ -259,9 +253,8 @@ void memwrite(uint16_t addr, uint8_t val) {
     // I/O space
     switch(addr) {
         case ACIA_DATA: // place data onto serial register
-            parse_character(val);
-            screen_refresh();
-            usleep(100);        // emulate character delay
+            putchar(val);
+            fflush(stdout);
         break;
 
         case ACIA_CMD:
@@ -277,11 +270,13 @@ void memwrite(uint16_t addr, uint8_t val) {
         break;
 
         case CLKSTART:  // push content of serial register to SD-card
-            mosi[mosiptr++] = lowram[SERIAL];
-            digest_sd();
+            if(flag_sdcard) {
+                mosi[mosiptr++] = lowram[SERIAL];
+                digest_sd();
 
-            if(mosiptr == 1024) {
-                mosiptr = 0;
+                if(mosiptr == 1024) {
+                    mosiptr = 0;
+                }
             }
         break;
 
@@ -381,7 +376,7 @@ void digest_sd() {
 
             return;
         }
-        if(mosi[mosiptr-6] == (17|0x40) && mosi[mosiptr-1] == 0x01) {
+        if(mosi[mosiptr-6] == (17|0x40) && mosi[mosiptr-1] == 0x01 && flag_sdcard) {
             uint32_t addr = (mosi[mosiptr-5] << 24) |
                             (mosi[mosiptr-4] << 16) |
                             (mosi[mosiptr-3] << 8)  |
