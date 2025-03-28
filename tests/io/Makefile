@@ -1,10 +1,34 @@
-all: io.bin
+# Variables
+AS = ca65
+LD = ld65
+EMULATOR = ../../emulator/build/bc6502emu
+FLASH = picoflash
+CFG = rom.cfg
+TARGET = iotest.bin
 
-io.o: io.s
-	ca65 io.s -o io.o
+# Automatically collect all .s files and convert to .o
+SRC = $(wildcard *.s)
+OBJ = $(SRC:.s=.o)
 
-io.bin: io.o rom.cfg
-	ld65 -o io.bin -C rom.cfg  io.o
+# Default target
+all: $(TARGET)
 
-flash: io.bin
-	picoflash -i io.bin -w -b 0
+# Assemble each .s to .o
+%.o: %.s
+	$(AS) $< -o $@
+
+# Link all object files into final binary
+$(TARGET): $(OBJ) $(CFG)
+	$(LD) -o $@ -C $(CFG) $(OBJ)
+
+# Flash to device
+flash: $(TARGET)
+	$(FLASH) -i $(TARGET) -w -b 0
+
+# Run in emulator
+run: $(TARGET)
+	$(EMULATOR) -r $(TARGET)
+
+# Clean build artifacts
+clean:
+	rm -f *.o $(TARGET)
