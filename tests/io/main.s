@@ -6,6 +6,8 @@
 .include "functions.inc"
 .export boot
 .import memtest
+.import numbertest
+.import sieve
 
 ;-------------------------------------------------------------------------------
 ; PROGRAM HEADER
@@ -40,13 +42,23 @@ loop:
     cmp #'1'
     beq @runtestpattern
     cmp #'2'
+    beq @runnumbers
+    cmp #'3'
     beq @runmemtest
+    cmp #'4'
+    beq @runsieve
     jmp loop
 @runtestpattern:
     jsr testpattern
     jmp main
+@runnumbers:
+    jsr numbertest
+    jmp main
 @runmemtest:
     jsr memtest
+    jmp main
+@runsieve:
+    jsr sieve
     jmp main
 
 ;-------------------------------------------------------------------------------
@@ -80,9 +92,9 @@ printheader:
 
 ; pointer table (low/high interleaved)
 @lines_lsb:
-    .byte <@str2, <@str1, <@str2, <@str3, <@str4, <@str5, <@str2, 0
+    .byte <@str2, <@str1, <@str2, <@str3, <@str4, <@str5, <@str6, <@str7, <@str2, 0
 @lines_msb:
-    .byte >@str2, >@str1, >@str2, >@str3, >@str4, >@str5, >@str2, 0
+    .byte >@str2, >@str1, >@str2, >@str3, >@str4, >@str5, >@str6, >@str7, >@str2, 0
 
 @str1:
     .asciiz "      BYTECRADLE TEST ROM"
@@ -93,7 +105,11 @@ printheader:
 @str4:
     .asciiz " (1) Show test pattern"
 @str5:
-    .asciiz " (2) Memory test $0300-$7EFF"
+    .asciiz " (2) Perform number display test"
+@str6:
+    .asciiz " (3) Memory test $0300-$7EFF"
+@str7:
+    .asciiz " (4) Sieve of Eratosthenes"
 
 ;-------------------------------------------------------------------------------
 ; Print a test pattern on the screen
