@@ -18,6 +18,8 @@
 .define ADDRHB       $8B
 .define LINECTRLB    $8C
 .define LINECTRHB    $8D
+.define PREVADDRLB   $8E
+.define PREVADDRHB   $8F
 
 .include "constants.inc"
 .include "functions.inc"
@@ -32,6 +34,10 @@ sieve:
     ldx #0
     stz LINECTRLB
     stz LINECTRHB
+    lda #<SIEVESTART
+    sta PREVADDRLB
+    lda #>SIEVESTART
+    sta PREVADDRHB
 @next:
     cpx #0
     phx
@@ -58,10 +64,8 @@ sieve:
     jsr newline
     ldx #0
     inc LINECTRLB
-    bne @skiphb
+    bne @skip
     inc LINECTRHB
-@skiphb:
-
 @skip:
     jsr maskprimemultiples
     jmp @next
@@ -85,9 +89,9 @@ printcurprime:
 ; Find next prime number in sieve
 ;-------------------------------------------------------------------------------
 findnextprime:
-    lda #<SIEVESTART
+    lda PREVADDRLB
     sta ZPBUF1              ; lower byte
-    lda #>SIEVESTART
+    lda PREVADDRHB
     sta ZPBUF2              ; upper byte
 @next:
     lda (ZPBUF1)            ; load from pointer
@@ -106,6 +110,10 @@ findnextprime:
     stz CPRHB
     rts
 @done:
+    lda ZPBUF1
+    sta PREVADDRLB
+    lda ZPBUF2
+    sta PREVADDRHB
     jsr addr2val
     rts
 
@@ -211,7 +219,7 @@ val2addr:
 ;-------------------------------------------------------------------------------
 clearmem:
     lda #>SIEVESTART
-    sta ZPBUF2              ; store lower byte
+    sta ZPBUF2              ; store upper byte
     stz ZPBUF1              ; set upper byte to zero
 @nextpage:
     ldy #0
@@ -220,8 +228,8 @@ clearmem:
     sta (ZPBUF1),y
     iny
     bne @next
-    inc ZPBUF1
-    lda ZPBUF1
+    inc ZPBUF2
+    lda ZPBUF2
     cmp #>SIEVESTOP
     bne @nextpage
     rts
