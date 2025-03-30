@@ -13,6 +13,7 @@
 .import putch
 .import puthex
 .import putdec
+.import putdecword
 .import putspace
 .import putds
 .import puttab

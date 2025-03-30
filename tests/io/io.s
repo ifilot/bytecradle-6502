@@ -9,6 +9,7 @@
 .export puthex
 .export puthexword
 .export putdec
+.export putdecword
 .export putds
 .export putspace
 .export puttab
@@ -319,6 +320,79 @@ putdec:
 
 @vals:
     .byte 128,160,200
+
+;-------------------------------------------------------------------------------
+; PUTDECWORD routine
+;
+; Print a word loaded in A,X to the screen in decimal formatting. Do not prepend
+; the number with any spaces nor with any zeros. A should contain lower byte,
+; X contains upper byte
+;
+; Conserves:    A
+; Garbles:      X,Y
+; Uses:         BUF1,BUF2,BUF3,BUF4,BUF5,BUF6,BUF7
+;-------------------------------------------------------------------------------
+putdecword:
+    sta BUF2
+    stx BUF3
+    ora BUF3
+    beq @printzero      ; early exit if value is zero
+    sed                 ; enable decimal mode
+    stz BUF4
+    stz BUF5
+    stz BUF6
+    ldx #16
+@loop:
+    asl BUF2
+    rol BUF3
+    lda BUF4
+    adc BUF4
+    sta BUF4
+    lda BUF5
+    adc BUF5
+    sta BUF5
+    lda BUF6
+    adc BUF6
+    sta BUF6
+    dex
+    bne @loop
+    cld                     ; revert back to hexadecimal mode
+    stz BUF2                ; re-purpose BUF2 for clear prepend-0 flag
+    lda BUF6
+    jsr @printdecbyte
+    lda BUF5
+    jsr @printdecbyte
+    lda BUF4
+    jsr @printdecbyte
+    rts
+
+@printzero:
+    lda #'0'
+    jsr putch
+    rts
+
+@printdecbyte:
+    pha                     ; store digit
+    lsr a
+    lsr a
+    lsr a
+    lsr a
+    jsr @printdecnibble     ; print upper nibble if not prepending zero
+    pla
+    and #$0F
+    jsr @printdecnibble     ; print lower nibble if not prepending zero
+    rts
+
+@printdecnibble:
+    tax
+    ora BUF2
+    beq @exit
+    txa
+    jsr printnibble
+    lda #1
+    sta BUF2
+@exit:
+    rts
 
 ;-------------------------------------------------------------------------------
 ; PRINTNIBBLE routine
