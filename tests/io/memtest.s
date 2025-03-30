@@ -6,14 +6,15 @@ memtest:
         lda #<$0300
         sta BUF2
         lda #>$0300
-        sta BUF2+1
+        sta BUF3
+        stz BUF4
 
 test_loop:
         lda BUF2
         and #$3F
         bne skipaddr
 
-        lda BUF2+1
+        lda BUF3
         jsr puthex
         lda BUF2
         jsr puthex
@@ -58,12 +59,12 @@ skip_newline:
         ; Increment pointer
         inc BUF2
         bne no_carry
-        inc BUF2+1
+        inc BUF3
 no_carry:
         lda BUF2
         cmp #<$7F00
         bne test_loop
-        lda BUF2+1
+        lda BUF3
         cmp #>$7F00
         bne test_loop
 
