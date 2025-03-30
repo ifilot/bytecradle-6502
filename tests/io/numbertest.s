@@ -9,8 +9,7 @@ numbertest:
 @next:
     tya
     jsr puthex
-    lda #' '
-    jsr putch
+    jsr printspace
     tya
     iny
     cpy #$10
@@ -20,41 +19,54 @@ numbertest:
 numbertestdec:
     lda #10
     jsr putdec
-    lda #' '
-    jsr putch
+    jsr printspace
     lda #11
     jsr putdec
-    lda #' '
-    jsr putch
+    jsr printspace
     lda #12
     jsr putdec
-    lda #' '
-    jsr putch
+    jsr printspace
     lda #101
     jsr putdec
-    lda #' '
-    jsr putch
+    jsr printspace
     lda #111
     jsr putdec
-    lda #' '
-    jsr putch
+    jsr printspace
     lda #131
     jsr putdec
-    lda #' '
-    jsr putch
+    jsr printspace
     lda #201
     jsr putdec
-    lda #' '
-    jsr putch
+    jsr printspace
     lda #211
     jsr putdec
-    lda #' '
-    jsr putch
+    jsr printspace
     lda #255
     jsr putdec
-    lda #' '
-    jsr putch
+    jsr printspace
 
     jsr newline
 numbertestdecword:
+    lda #<12345
+    ldx #>12345
+    jsr putdecword
+    jsr printspace
+    lda #<42
+    ldx #>42
+    jsr putdecword
+    jsr printspace
+    lda #<$FFFF
+    ldx #>$FFFF
+    jsr putdecword
+    jsr printspace
+    lda #0
+    ldx #0
+    jsr putdecword
+    jsr printspace
+    jsr newline
+    rts
+
+printspace:
+    lda #' '
+    jsr putch
     rts
