@@ -8,6 +8,7 @@
 .import memtest
 .import numbertest
 .import sieve
+.import sdtest
 
 ;-------------------------------------------------------------------------------
 ; PROGRAM HEADER
@@ -47,6 +48,8 @@ loop:
     beq @runmemtest
     cmp #'4'
     beq @runsieve
+    cmp #'5'
+    beq @runsdcard
     jmp loop
 @runtestpattern:
     jsr testpattern
@@ -59,6 +62,9 @@ loop:
     jmp main
 @runsieve:
     jsr sieve
+    jmp main
+@runsdcard:
+    jsr sdtest
     jmp main
 
 ;-------------------------------------------------------------------------------
@@ -92,9 +98,9 @@ printheader:
 
 ; pointer table (low/high interleaved)
 @lines_lsb:
-    .byte <@str2, <@str1, <@str2, <@str3, <@str4, <@str5, <@str6, <@str7, <@str2, 0
+    .byte <@str2, <@str1, <@str2, <@str3, <@str4, <@str5, <@str6, <@str7, <@str8, <@str2, 0
 @lines_msb:
-    .byte >@str2, >@str1, >@str2, >@str3, >@str4, >@str5, >@str6, >@str7, >@str2, 0
+    .byte >@str2, >@str1, >@str2, >@str3, >@str4, >@str5, >@str6, >@str7, >@str8, >@str2, 0
 
 @str1:
     .asciiz "      BYTECRADLE TEST ROM"
@@ -110,6 +116,8 @@ printheader:
     .asciiz " (3) Memory test $0300-$7EFF"
 @str7:
     .asciiz " (4) Sieve of Eratosthenes"
+@str8:
+    .asciiz " (5) Connecting to SD-card"
 
 ;-------------------------------------------------------------------------------
 ; Print a test pattern on the screen
