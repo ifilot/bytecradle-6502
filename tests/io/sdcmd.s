@@ -6,374 +6,206 @@
 .segment "CODE"
 .PSC02
 
-; define base address of SD-card interface
-.define SERIAL      $7F20
-.define CLKSTART    $7F21
-.define DESELECT    $7F22
-.define SELECT      $7F23
+; bit masks
+.define SD_MISO   #%00000001  ; PB0 input
+.define SD_MOSI   #%00000010  ; PB1
+.define SD_CLK    #%00000100  ; PB2
+.define SD_CS     #%00001000  ; PB3
 
-.define LONGBUF     $0300
+; Bitwise NOT masks (for AND operations)
+.define NOT_SD_MISO    #%11111110  ; clears PB0
+.define NOT_SD_MOSI    #%11111101  ; clears PB1
+.define NOT_SD_CLK     #%11111011  ; clears PB2
+.define NOT_SD_CS      #%11110111  ; clears PB3
+
+.define CMD8_RESP       $80  ; zero page address to store results
 
 ;-------------------------------------------------------------------------------
 ; Test interfacing with the SD-card
 ;-------------------------------------------------------------------------------
 sdtest:
-@retry:
-    ; wake up SD card
-    jsr close_sd
-    jsr init_sd
-
-    ; cmd00
-    lda #<@str00
-    ldx #>@str00
-    jsr putstr
-    jsr sdcmd00
-    jsr puthex
-    jsr newline
-    cmp #$01
-    bne @retry
-
-    ; cmd08
-    lda #<@str08
-    ldx #>@str08
-    jsr putstr
-    lda #<LONGBUF           ; set storage address
-    ldx #>LONGBUF
-    jsr sdcmd08             ; result is stored in A
-    jsr puthex
-    jsr newline
-    cmp #$01
-    bne @retry
-
-    ; show response
-    ldy #0
-@next08:
-    phy
-    lda LONGBUF,y
-    jsr puthex
-    lda #' '
-    jsr putch
-    ply
-    iny
-    cpy #5
-    bne @next08
-    jsr newline
-
-    ; sdcmd58
-@try:
-    lda #<@str41
-    ldx #>@str41
-    jsr putstr
-    jsr sdacmd41
-    jsr puthex
-    jsr newline
-    cmp #0
-    bne @try                ; if response is not 0, try again
-    lda #<@str58
-    ldx #>@str58
-    jsr putstr
-    lda #<LONGBUF           ; set storage address
-    ldx #>LONGBUF
-    jsr sdcmd58
-    jsr puthex
-    jsr newline
-    cmp #0
-    bne @try
-
-    ; show response
-    ldy #0
-@next58:
-    phy
-    lda LONGBUF,y
-    jsr puthex
-    lda #' '
-    jsr putch
-    ply
-    iny
-    cpy #5
-    bne @next58
-    jsr newline
-
-    jsr close_sd
-
-    rts
-
-@str00:
-    .asciiz "CMD00: "
-@str08:
-    .asciiz "CMD08: "
-@str41:
-    .asciiz "ACMD41: "
-@str58:
-    .asciiz "CMD58: "
-
-;-------------------------------------------------------------------------------
-; INIT_SD ROUTINE
-;
-; Initialize the SD-card
-;-------------------------------------------------------------------------------
-init_sd:
-    lda SELECT
-    sta SELECT
-    jsr sdpulse
-    rts
-
-;-------------------------------------------------------------------------------
-; CLOSE_SD ROUTINE
-;
-; Close the connectionn to the SD-card
-;-------------------------------------------------------------------------------
-close_sd:
-    lda SELECT
-    sta SELECT
-    jsr sdpulse
-    rts
-
-;-------------------------------------------------------------------------------
-; SDPULSE
-;
-; Send 24x8 pulses to the SD-card to reset it
-;-------------------------------------------------------------------------------
-sdpulse:
-    lda #$FF
-    ldx #24
-@nextpulse:
-    sta CLKSTART
-    jsr wait
-    dex
-    bne @nextpulse
-    rts
-
-;-------------------------------------------------------------------------------
-; SDCMD00 routine
-;
-; Send CMD00 command to the SD-card and retrieve the result
-;-------------------------------------------------------------------------------
-sdcmd00:
-    jsr open_command
-    lda #<cmd00
-    sta BUF2
-    lda #>cmd00
-    sta BUF3
-    jsr send_command
-    jsr receive_r1          ; receive response
-    jsr close_command       ; conserves A
-    rts
-
-;-------------------------------------------------------------------------------
-; SDCMD08 routine
-;
-; Send CMD08 command to the SD-card and retrieve the result. The place to store
-; the R7 response is provided via a pointer stored in AX upon function entry.
-; This pointer is stored in BUF4:5.
-;-------------------------------------------------------------------------------
-sdcmd08:
-    sta BUF4
-    stx BUF5
-    jsr open_command
-    lda #<cmd08
-    sta BUF2
-    lda #>cmd08
-    sta BUF3
-    jsr send_command
-    jsr receive_r7
-    jsr close_command
-    lda (BUF4)			; ensure return byte is present in A
-    rts
-
-;-------------------------------------------------------------------------------
-; SDACMD41 routine
-;
-; Send CMD55 command followed by ACMD41 to the SD-card and retrieve the result
-;-------------------------------------------------------------------------------
-sdacmd41:
-    ldx #0              ; set attempt counter
-@loop:
-    phx                 ; push attempt counter to stack
-    jsr open_command
-    lda #<cmd55         ; load CMD55
-    sta BUF2
-    lda #>cmd55
-    sta BUF3
-    jsr send_command    ; send command
-    jsr receive_r1      ; receive response, prints response byte to screen
-    jsr close_command   ; close (garbles x)
-    jsr open_command    ; open again, now for ACMD41
-    lda #<acmd41
-    sta BUF2
-    lda #>acmd41
-    sta BUF3
-    jsr send_command    ; send ACMD41 command
-    jsr receive_r1      ; receive response
-    jsr close_command   ; close (garbles x)
-    cmp #0              ; check response byte
-    beq @exit           ; if SUCCESS ($00), exit routine
-    plx                 ; retrieve attempt counter from stack
-    inx                 ; increment
-    cpx #20             ; check if 20
-    beq @fail           ; if so, fail
-    jmp @loop           ; if not, restart loop
-@fail:
-    lda $FF
-    rts
-@exit:
-    plx                 ; clear stack
-    rts
-
-;-------------------------------------------------------------------------------
-; SDCMD58 routine
-;
-; Send CMD58 command to the SD-card and retrieve the result
-;-------------------------------------------------------------------------------
-sdcmd58:
     sei
-    sta BUF4            ; store storage location for response
-    stx BUF5            ; upper byte storage location
-    jsr open_command
-    lda #<cmd58
-    sta BUF2
-    lda #>cmd58
-    sta BUF3
-    jsr send_command
-    jsr receive_r3
-    jsr close_command
+    lda #<@str
+    ldx #>@str
+    jsr putstr
+    jsr newline
+
+    lda NOT_SD_MISO        ; set pb1–pb3 as output, pb0 (miso) as input
+    sta VIA_DDRB
+
+    ; set cs high, sck low, mosi low
+    lda SD_CS
+    sta VIA_PORTB
+
+    jsr send_idle_clocks
+    jsr send_cmd0
+    jsr read_response
+    jsr puthex
+    jsr newline
+
+    jsr send_cmd8
+    ldx #0
+@next:
+    lda CMD8_RESP,x
+    jsr puthex
+    inx
+    cpx #5
+    bne @next
+    jsr newline
+
     cli
     rts
 
+@str:
+    .asciiz "Start SD-CARD test..."
+
 ;-------------------------------------------------------------------------------
-; SEND_COMMAND routine
-;
-; Helper routine that shifts out a command to the SD-card. Pointer to command
-; should be loaded in BUF2:BUF3. Assumes that command is always 5 bytes in
-; length. This function does not require additional wait routines when using
-; a 16 MHz clock for the SD-card interface.
+; Send idle clocks
 ;-------------------------------------------------------------------------------
-send_command:
-    ldy #00
-@next:
-    lda (BUF2),y
-    sta SERIAL
-    sta CLKSTART
-    iny
-    cpy #06
-    bne @next
+send_idle_clocks:
+    ldx #10              ; 10 bytes = 80 clocks
+idle_loop:
+    lda #$ff
+    phx
+    jsr spi_send
+    plx
+    dex
+    bne idle_loop
     rts
 
 ;-------------------------------------------------------------------------------
-; Command instructions
+; Send CMD00
 ;-------------------------------------------------------------------------------
-cmd00:
-    .byte 00|$40,$00,$00,$00,$00,$94|$01
-cmd08:
-    .byte 08|$40,$00,$00,$01,$AA,$86|$01
-cmd55:
-    .byte 55|$40,$00,$00,$00,$00,$00|$01
-cmd58:
-    .byte 58|$40,$00,$00,$00,$00,$00|$01
-acmd41:
-    .byte 41|$40,$40,$00,$00,$00,$00|$01
-
-;-------------------------------------------------------------------------------
-; RECEIVE_R1 routine
-;
-; Receives a R1 type of response. Keeps on polling the SD-card until a non-$FF
-; byte is received. If more than 128 attempts are required, the function puts
-; $FF in BUF2, else the return value is placed in BUF2.
-;-------------------------------------------------------------------------------
-receive_r1:
-    jsr poll_card
-    sta BUF2
-@exit:
+; send CMD0: 0x40 00 00 00 00 95
+send_cmd0:
+    lda VIA_PORTB
+    and NOT_SD_CS        ; clear bit 3 (CS)
+    sta VIA_PORTB        ; cs low
+    lda #$40
+    jsr spi_send
+    lda #0
+    jsr spi_send
+    jsr spi_send
+    jsr spi_send
+    jsr spi_send
+    lda #$95             ; valid CRC for CMD0
+    jsr spi_send
     rts
 
-;-------------------------------------------------------------------------------
-; RECEIVE_R3 or RECEIVE R7 routine
-;
-; Receives a R7 type of response. Keeps on polling the SD-card until a non-$FF
-; byte is received. If more than 128 attempts are required, the function errors
-; by setting the carry bit high.
-;-------------------------------------------------------------------------------
-receive_r3:
-receive_r7:
-    jsr poll_card
-    ldy #0              ; retrieve four more bytes
-    sta (BUF4),y
-    iny
-@next:
-    lda #$FF            ; load in ones in shift register
-    sta SERIAL          ; latch onto shift register
-    sta CLKSTART        ; start transfer
-    jsr wait            ; small delay before reading out result
-    lda SERIAL          ; read result
-    sta (BUF4),y
-    iny
-    cpy #5
-    bne @next
-@exit:
-    rts
-
-;-------------------------------------------------------------------------------
-; POLL_CARD routine
-;
-; Keep on polling SD-card until a non-$FF is received. Keep track on the number
-; of attempts. If this exceeds 128, throw an error by setting the carry bit
-; high.
-;-------------------------------------------------------------------------------
-poll_card:
-    ldx #00             ; attempt counter
-@tryagain:
-    lda #$FF            ; load all ones
-    sta SERIAL          ; put in shift register
-    sta CLKSTART        ; send to SD-card
-    jsr wait            ; wait is strictly necessary for 16 MHz clock
-    lda SERIAL          ; read result
-    cmp #$FF            ; equal to $FF?
-    bne @done           ; not equal to $FF, then done
-    inx                 ; else, increment counter
-    cpx #128            ; threshold reached?
-    beq @fail           ; upon 128 attempts, fail
-    jmp @tryagain
-@fail:
+;-----------------------------------------------------------------------------
+; Send CMD08
+; Send CMD8 packet: 0x48 00 00 01 AA 87
+;-----------------------------------------------------------------------------
+send_cmd8:
+    lda VIA_PORTB
+    and NOT_SD_CS
+    sta VIA_PORTB
+    lda #$48            ; CMD8
+    jsr spi_send
+    lda #$00            ; arg byte 3
+    jsr spi_send
+    lda #$00            ; arg byte 2
+    jsr spi_send
+    lda #$01            ; arg byte 1 (VHS)
+    jsr spi_send
+    lda #$AA            ; arg byte 0 (check pattern)
+    jsr spi_send
+    lda #$87            ; CRC (required for CMD8)
+    jsr spi_send
+    ; Wait for first non-0xFF response (R1)
+    ldx #8
+@wait_r1:
+    jsr spi_recv
+    cmp #$FF
+    bne @got_r1
+    dex
+    bne @wait_r1
     lda #$FF
-@done:
+@got_r1:
+    sta CMD8_RESP      ; store R1 response
+    ldx #4
+@read_rest:
+    jsr spi_recv
+    sta CMD8_RESP+1,x
+    dex
+    bpl @read_rest
+    lda VIA_PORTB
+    ora SD_CS
+    sta VIA_PORTB
     rts
 
 ;-------------------------------------------------------------------------------
-; OPEN_COMMAND routine
+; Read response (up to 8 retries)
 ;
-; Flush buffers before every command
+; Garbles: X
+; Result: A
 ;-------------------------------------------------------------------------------
-open_command:
-    lda #$FF
-    sta SERIAL
-    sta CLKSTART
-    jsr wait
-    sta SELECT
-    sta CLKSTART
-    jsr wait
+read_response:
+    ldx #8
+wait_resp:
+    jsr spi_recv
+    cmp #$ff
+    beq skip             ; still idle (keep waiting)
+    rts                  ; got response!
+skip:
+    dex
+    bne wait_resp
+    rts                  ; timeout
+
+;-------------------------------------------------------------------------------
+; SPI send: Send byte stored in A
+;
+; Garbles: X,Y
+; Conserves: A
+;-------------------------------------------------------------------------------
+spi_send:
+    pha
+    ldx #8
+bit_loop:
+    asl                             ; shift bit into carry
+    lda VIA_PORTB
+    and #%11111001                 ; clear mosi & sck
+    bcc no_mosi
+    ora SD_MOSI
+no_mosi:
+    sta VIA_PORTB       ; set mosi
+    ora SD_CLK
+    sta VIA_PORTB       ; clock high
+    and NOT_SD_CLK
+    sta VIA_PORTB       ; clock low
+    pla
+    rol
+    pha
+    dex
+    bne bit_loop
+    pla
     rts
 
 ;-------------------------------------------------------------------------------
-; CLOSE_COMMAND routine
+; SPI receive
 ;
-; Flush buffers after every command. Garbles x.
+; Garbles: X,Y
+; Result: A
 ;-------------------------------------------------------------------------------
-close_command:
-    ldx #$FF
-    stx SERIAL
-    stx CLKSTART
-    jsr wait
-    stx DESELECT
-    stx CLKSTART
-    jsr wait
-    rts
-
-;-------------------------------------------------------------------------------
-; WAIT routine
-;
-; Used to add a small delay for shifting out bits when interfacing with the
-; SD-card. Basically calling this routine and returning from it already provides
-; a sufficient amount of delay that the shift register is emptied.
-;-------------------------------------------------------------------------------
-wait:
+spi_recv:
+    ldy #8
+    stz BUF1            ; use ZP buffer to store result
+recv_loop:
+    asl BUF1            ; create vacancy for bit
+    lda VIA_PORTB
+    ora SD_CLK
+    sta VIA_PORTB       ; clock high
+    lda VIA_PORTB
+    and SD_MISO         ; extract MISO
+    beq no_bit          ; acc has zero
+    lda #1              ; set bit 1
+no_bit:
+    ora BUF1            ; merge result with BUF1
+    sta BUF1            ; store in BUF1
+    lda VIA_PORTB
+    and NOT_SD_CLK
+    sta VIA_PORTB       ; clock low
+    dey
+    bne recv_loop
+    lda BUF1
     rts

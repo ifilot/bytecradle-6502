@@ -9,6 +9,7 @@
 .import numbertest
 .import sieve
 .import sdtest
+.import testvia
 
 ;-------------------------------------------------------------------------------
 ; PROGRAM HEADER
@@ -49,6 +50,8 @@ loop:
     cmp #'4'
     beq @runsieve
     cmp #'5'
+    beq @runviatest
+    cmp #'6'
     beq @runsdcard
     jmp loop
 @runtestpattern:
@@ -62,6 +65,9 @@ loop:
     jmp main
 @runsieve:
     jsr sieve
+    jmp main
+@runviatest:
+    jsr testvia
     jmp main
 @runsdcard:
     jsr sdtest
@@ -98,9 +104,11 @@ printheader:
 
 ; pointer table (low/high interleaved)
 @lines_lsb:
-    .byte <@str2, <@str1, <@str2, <@str3, <@str4, <@str5, <@str6, <@str7, <@str8, <@str2, 0
+    .byte <@str2, <@str1, <@str2, <@str3, <@str4, <@str5
+    .byte <@str6, <@str7, <@str8, <@str9, <@str2, 0
 @lines_msb:
-    .byte >@str2, >@str1, >@str2, >@str3, >@str4, >@str5, >@str6, >@str7, >@str8, >@str2, 0
+    .byte >@str2, >@str1, >@str2, >@str3, >@str4, >@str5
+    .byte >@str6, >@str7, >@str8, >@str9, >@str2, 0
 
 @str1:
     .asciiz "      BYTECRADLE TEST ROM"
@@ -117,7 +125,9 @@ printheader:
 @str7:
     .asciiz " (4) Sieve of Eratosthenes"
 @str8:
-    .asciiz " (5) Connecting to SD-card"
+    .asciiz " (5) Test 65C22 VIA"
+@str9:
+    .asciiz " (6) Test SD-CARD"
 
 ;-------------------------------------------------------------------------------
 ; Print a test pattern on the screen
