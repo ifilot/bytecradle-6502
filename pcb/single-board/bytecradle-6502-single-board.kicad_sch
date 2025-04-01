@@ -7765,15 +7765,15 @@
 		(fields_autoplaced yes)
 		(uuid "39d423fd-1735-4ce5-af3a-9d7649928875")
 		(property "Reference" "X1"
-			(at 38.1 129.5714 0)
+			(at 36.83 129.4698 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "14 MHz"
-			(at 38.1 132.1114 0)
+		(property "Value" "CLK"
+			(at 36.83 132.0098 0)
 			(effects
 				(font
 					(size 1.27 1.27)
