@@ -2,4 +2,5 @@
   (version 7)
   (lib (name "edgeconn")(type "KiCad")(uri "D:/PROGRAMMING/KiCAD/bytecradle-6502/pcb/components/edgeconn.pretty")(options "")(descr ""))
   (lib (name "components")(type "KiCad")(uri "D:/PROGRAMMING/KiCAD/bytecradle-6502/pcb/components")(options "")(descr ""))
+  (lib (name "sdcard-holder")(type "KiCad")(uri "D:/PROGRAMMING/KiCAD/bytecradle-6502/pcb/components/sdcard-holder.pretty")(options "")(descr ""))
 )

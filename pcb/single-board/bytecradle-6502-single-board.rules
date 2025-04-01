@@ -11,7 +11,7 @@
     (via_costs 50)
     (plane_via_costs 5)
     (start_ripup_costs 100)
-    (start_pass_no 20477)
+    (start_pass_no 806)
     (layer_rule F.Cu
       (active on)
       (preferred_direction horizontal)
@@ -69,15 +69,14 @@
     A14 D3 A7 D5 A6 A10 A3 R{slash}~{W}
     D4 A9 ~{I{slash}O} CA1 PB4 CA2 PB0 PA4
     PA5 PB6 CB2 PA7 PA6 CB1 PA2 PB5
-    PB7 PB3 PB1 PA0 PA3 PA1 PB2 "unconnected-(X1-EN-Pad1)"
-    ~{CLK} ~{IRQC22} "~{IRQC51_1}" "~{IRQC51_2}" "Net-(U15-CE)" "Net-(X1-OUT)" "Net-(U20-P=R)" "Net-(U21-XTAL1)"
+    PB7 PB3 PB1 MOSI PA3 MISO PB2 "unconnected-(X1-EN-Pad1)"
+    ~{CLK} ~{IRQC22} "~{IRQC51_1}" "unconnected-(U4-Pad11)" "Net-(U15-CE)" "Net-(X1-OUT)" "Net-(U20-P=R)" "Net-(U21-XTAL1)"
     "Net-(J1-Shield)" "unconnected-(J1-D--Pad2)" VIN "unconnected-(J1-D+-Pad3)" "Net-(U2-RDY)" "Net-(U21-XTAL2)" "Net-(U1-Pad2)" "unconnected-(U1-Pad12)"
     "unconnected-(U1-Pad10)" "unconnected-(U1-Pad8)" "unconnected-(U2-ϕ2-Pad39)" "unconnected-(U2-~{SO}-Pad38)" "unconnected-(U2-~{VP}-Pad1)" "unconnected-(U2-SYNC-Pad7)" "unconnected-(U2-~{ML}-Pad5)" "unconnected-(U2-nc-Pad35)"
-    "unconnected-(U2-ϕ1-Pad3)" "Net-(U4-Pad10)" "unconnected-(U4-Pad6)" "Net-(U4-Pad3)" "Net-(U5-P=R)" "Net-(U6-P=R)" "Net-(U16-OE#)" "Net-(U11-Cp)"
+    "unconnected-(U2-ϕ1-Pad3)" "unconnected-(U4-Pad8)" "unconnected-(U4-Pad6)" "unconnected-(U21-~{RTS}-Pad8)" "Net-(U5-P=R)" "Net-(U6-P=R)" "Net-(U16-OE#)" "Net-(U11-Cp)"
     "Net-(U13-CE)" "Net-(U16-CE#)" "Net-(U17-~{CS})" "Net-(U11-Q5)" "Net-(U11-Q3)" "Net-(U11-Q6)" "Net-(U11-Q1)" "Net-(U11-Q4)"
     "Net-(U11-Q2)" "Net-(U11-Q7)" "Net-(U11-Q0)" "Net-(U18-P=R)" "unconnected-(U21-~{DCD}-Pad16)" "unconnected-(U21-~{DSR}-Pad17)" "unconnected-(U21-RxC-Pad5)" "unconnected-(U21-~{DTR}-Pad11)"
-    "unconnected-(SW1-C-Pad3)" "unconnected-(J4-Pin_32-Pad32)" "unconnected-(J4-Pin_20-Pad20)" "unconnected-(J4-Pin_26-Pad26)" "unconnected-(J4-Pin_28-Pad28)" "unconnected-(J4-Pin_30-Pad30)" "unconnected-(J4-Pin_24-Pad24)" "unconnected-(J4-Pin_22-Pad22)"
-    "unconnected-(J4-Pin_34-Pad34)" ~{R}{slash}W ~{A15} "Net-(U7-Pad6)" ~{A14} "unconnected-(U7-Pad12)" "Net-(U7-Pad8)" "Net-(U10-Cp)"
+    "unconnected-(SW1-C-Pad3)" ~{R}{slash}W ~{A15} "Net-(U7-Pad6)" ~{A14} "unconnected-(U7-Pad12)" "Net-(U7-Pad8)" "Net-(U10-Cp)"
     "unconnected-(U9-Pad11)" "Net-(U12-CE)" "unconnected-(U9-Pad8)" "Net-(U10-Q7)" "Net-(U10-Q0)" "Net-(U10-Q1)" "Net-(U10-Q3)" "Net-(U10-Q4)"
     "Net-(U10-Q6)" "Net-(U10-Q2)" "Net-(U10-Q5)" "Net-(U22-C1-)" "Net-(U22-C1+)" "Net-(U22-C2-)" "Net-(U22-C2+)" "Net-(U22-VS+)"
     "Net-(U22-VS-)" "Net-(U22-R1IN)" "unconnected-(U22-R2IN-Pad8)" "unconnected-(U22-R2OUT-Pad9)" "unconnected-(U22-T2IN-Pad10)" "unconnected-(U22-T2OUT-Pad7)" "Net-(U22-T1OUT)" "unconnected-(J8-Pad1)"
