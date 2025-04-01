@@ -38,9 +38,19 @@ sdtest:
     sta VIA_PORTB
 
     jsr send_idle_clocks
+
+    lda #<@strcmd00
+    ldx #>@strcmd00
+    jsr putstr
+    jsr newline
+
     jsr send_cmd0
-    jsr read_response
     jsr puthex
+    jsr newline
+
+    lda #<@strcmd08
+    ldx #>@strcmd08
+    jsr putstr
     jsr newline
 
     jsr send_cmd8
@@ -58,6 +68,10 @@ sdtest:
 
 @str:
     .asciiz "Start SD-CARD test..."
+@strcmd00:
+    .asciiz "CMD00:"
+@strcmd08:
+    .asciiz "CMD08:"
 
 ;-------------------------------------------------------------------------------
 ; Send idle clocks
@@ -75,63 +89,62 @@ idle_loop:
 
 ;-------------------------------------------------------------------------------
 ; Send CMD00
+;
+; Note that spi_send garbes X, so for the counter, we have to use Y
 ;-------------------------------------------------------------------------------
-; send CMD0: 0x40 00 00 00 00 95
 send_cmd0:
-    lda VIA_PORTB
-    and NOT_SD_CS        ; clear bit 3 (CS)
-    sta VIA_PORTB        ; cs low
-    lda #$40
-    jsr spi_send
-    lda #0
-    jsr spi_send
-    jsr spi_send
-    jsr spi_send
-    jsr spi_send
-    lda #$95             ; valid CRC for CMD0
-    jsr spi_send
+    lda #<@cmd00
+    sta BUF2
+    lda #>@cmd00
+    sta BUF3
+    jsr send_command
+    jsr read_response
+    sta BUF1
+    jsr sdclose
+    lda BUF1
     rts
+
+@cmd00:
+    .byte $40, $00, $00, $00, $00, $95
 
 ;-----------------------------------------------------------------------------
 ; Send CMD08
 ; Send CMD8 packet: 0x48 00 00 01 AA 87
 ;-----------------------------------------------------------------------------
 send_cmd8:
-    lda VIA_PORTB
-    and NOT_SD_CS
-    sta VIA_PORTB
-    lda #$48            ; CMD8
-    jsr spi_send
-    lda #$00            ; arg byte 3
-    jsr spi_send
-    lda #$00            ; arg byte 2
-    jsr spi_send
-    lda #$01            ; arg byte 1 (VHS)
-    jsr spi_send
-    lda #$AA            ; arg byte 0 (check pattern)
-    jsr spi_send
-    lda #$87            ; CRC (required for CMD8)
-    jsr spi_send
-    ; Wait for first non-0xFF response (R1)
-    ldx #8
-@wait_r1:
-    jsr spi_recv
-    cmp #$FF
-    bne @got_r1
-    dex
-    bne @wait_r1
-    lda #$FF
-@got_r1:
-    sta CMD8_RESP      ; store R1 response
-    ldx #4
+    lda #<@cmd08
+    sta BUF2
+    lda #>@cmd08
+    sta BUF3
+    jsr send_command
+    jsr read_response
+    sta CMD8_RESP       ; store R1 response
+    ldx #0
 @read_rest:
     jsr spi_recv
     sta CMD8_RESP+1,x
-    dex
-    bpl @read_rest
-    lda VIA_PORTB
-    ora SD_CS
-    sta VIA_PORTB
+    inx
+    cpx #4
+    bne @read_rest
+    jsr sdclose
+    lda CMD8_RESP
+    rts
+
+@cmd08:
+    .byte $48, $00, $00, $01, $AA, $87
+
+;-------------------------------------------------------------------------------
+; Send an 6-byte command to the SD card, command is stored in BUF2:BUF3
+;-------------------------------------------------------------------------------
+send_command:
+    jsr sdopen          ; open SD-card for sending command
+    ldy #0
+@next:
+    lda (BUF2),y
+    jsr spi_send
+    iny
+    cpy #6
+    bne @next
     rts
 
 ;-------------------------------------------------------------------------------
@@ -155,7 +168,7 @@ skip:
 ;-------------------------------------------------------------------------------
 ; SPI send: Send byte stored in A
 ;
-; Garbles: X,Y
+; Garbles: X
 ; Conserves: A
 ;-------------------------------------------------------------------------------
 spi_send:
@@ -208,4 +221,26 @@ no_bit:
     dey
     bne recv_loop
     lda BUF1
+    rts
+
+;-------------------------------------------------------------------------------
+; Open SD-CARD before command
+;-------------------------------------------------------------------------------
+sdopen:
+    lda #$FF
+    jsr spi_send
+    lda VIA_PORTB
+    and NOT_SD_CS            ; put CS high
+    sta VIA_PORTB
+    rts
+
+;-------------------------------------------------------------------------------
+; Close SD-CARD after command
+;-------------------------------------------------------------------------------
+sdclose:
+    lda #$ff
+    jsr spi_send
+    lda VIA_PORTB
+    ora SD_CS            ; put CS high
+    sta VIA_PORTB
     rts
