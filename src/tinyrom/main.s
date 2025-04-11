@@ -52,8 +52,6 @@ loop:
     beq @runsieve
     cmp #'5'
     beq @runchess
-    cmp #'6'
-    beq @runsdcard
     jmp loop
 @runtestpattern:
     jsr testpattern
@@ -108,30 +106,42 @@ printheader:
 
 ; pointer table (low/high interleaved)
 @lines_lsb:
-    .byte <@str2, <@str1, <@str2, <@str3, <@str4, <@str5
-    .byte <@str6, <@str7, <@str8, <@str9, <@str2, 0
+    .byte <@str2, <@str1, <@str2
+    .byte <@strram, <@strrom, <@strio, <@stracia, <@str2
+    .byte <@str3, <@str4, <@str5
+    .byte <@str6, <@str7, <@str8, <@str2, 0
 @lines_msb:
-    .byte >@str2, >@str1, >@str2, >@str3, >@str4, >@str5
-    .byte >@str6, >@str7, >@str8, >@str9, >@str2, 0
+    .byte >@str2, >@str1, >@str2
+    .byte >@strram, >@strrom, >@strio, >@stracia, >@str2
+    .byte >@str3, >@str4, >@str5
+    .byte >@str6, >@str7, >@str8, >@str2, 0
 
 @str1:
-    .asciiz "      BYTECRADLE TEST ROM"
+    .asciiz "|        BYTECRADLE TINY ROM        |"
 @str2:
-    .asciiz "-------------------------------"
+    .asciiz "+-----------------------------------+"
+@strram:
+    .asciiz "| RAM  : 0x0000 - 0xFEFF            |"
+@strrom:
+    .asciiz "| RAM  : 0xC000 - 0xFFFF            |"
+@strio:
+    .asciiz "| IO   : 0x7F00 - 0x7FFF            |"
+@stracia:
+    .asciiz "| ACIA : 0x7F04 - 0x7F0F            |"
 @str3:
-    .asciiz "Menu options:"
+    .asciiz "| Menu options:                     |"
 @str4:
-    .asciiz " (1) Show test pattern"
+    .asciiz "| (1) Show test pattern             |"
 @str5:
-    .asciiz " (2) Perform number display test"
+    .asciiz "| (2) Perform number display test   |"
 @str6:
-    .asciiz " (3) Memory test $0300-$7EFF"
+    .asciiz "| (3) Memory test $0300-$7EFF       |"
 @str7:
-    .asciiz " (4) Sieve of Eratosthenes"
+    .asciiz "| (4) Sieve of Eratosthenes         |"
 @str8:
-    .asciiz " (5) Microchess"
+    .asciiz "| (5) Microchess                    |"
 @str9:
-    .asciiz " (6) Test SD-CARD"
+    .asciiz "-------------------------------------"
 
 ;-------------------------------------------------------------------------------
 ; Print a test pattern on the screen
