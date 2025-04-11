@@ -4,7 +4,7 @@ LD = ld65
 EMULATOR = ../../emulator/build/bc6502emu
 FLASH = picoflash
 CFG = rom.cfg
-TARGET = iotest.bin
+TARGET = tinyrom.bin
 
 # Automatically collect all .s files and convert to .o
 SRC = $(wildcard *.s)
