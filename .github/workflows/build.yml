@@ -19,7 +19,12 @@ jobs:
 
       - name: Build Operating System
         run: |
-          cd bcos
+          cd src/bcos
+          make
+      
+      - name: Build TINY ROM
+        run: |
+          cd src/tinyrom
           make
 
       - name: Build programs
