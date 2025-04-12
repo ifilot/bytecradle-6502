@@ -8,9 +8,8 @@
 .import memtest
 .import numbertest
 .import sieve
-.import sdtest
-.import testvia
 .import startchess
+.import monitor
 
 ;-------------------------------------------------------------------------------
 ; PROGRAM HEADER
@@ -52,6 +51,8 @@ loop:
     beq @runsieve
     cmp #'5'
     beq @runchess
+    cmp #'6'
+    beq @runmonitor
     jmp loop
 @runtestpattern:
     jsr testpattern
@@ -65,14 +66,11 @@ loop:
 @runsieve:
     jsr sieve
     jmp main
-@runviatest:
-    jsr testvia
-    jmp main
 @runchess:
     jsr startchess
     jmp main
-@runsdcard:
-    jsr sdtest
+@runmonitor:
+    jsr monitor
     jmp main
 
 ;-------------------------------------------------------------------------------
@@ -109,15 +107,15 @@ printheader:
     .byte <@str2, <@str1, <@str2
     .byte <@strram, <@strrom, <@strio, <@stracia, <@str2
     .byte <@str3, <@str4, <@str5
-    .byte <@str6, <@str7, <@str8, <@str2, 0
+    .byte <@str6, <@str7, <@str8, <@str9, <@str2, 0
 @lines_msb:
     .byte >@str2, >@str1, >@str2
     .byte >@strram, >@strrom, >@strio, >@stracia, >@str2
     .byte >@str3, >@str4, >@str5
-    .byte >@str6, >@str7, >@str8, >@str2, 0
+    .byte >@str6, >@str7, >@str8, >@str9, >@str2, 0
 
 @str1:
-    .asciiz "|        BYTECRADLE TINY ROM        |"
+    .asciiz "|      BYTECRADLE /TINY/ ROM        |"
 @str2:
     .asciiz "+-----------------------------------+"
 @strram:
@@ -141,6 +139,8 @@ printheader:
 @str8:
     .asciiz "| (5) Microchess                    |"
 @str9:
+    .asciiz "| (6) Monitor                       |"
+@str10:
     .asciiz "-------------------------------------"
 
 ;-------------------------------------------------------------------------------

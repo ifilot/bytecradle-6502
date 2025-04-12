@@ -4776,7 +4776,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Memory_Flash:SST39SF040"
+		(symbol "Memory_Flash:SST39SF010"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -4788,7 +4788,7 @@
 					)
 				)
 			)
-			(property "Value" "SST39SF040"
+			(property "Value" "SST39SF010"
 				(at 0 -30.48 0)
 				(effects
 					(font
@@ -4814,7 +4814,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Silicon Storage Technology (SSF) 512k x 8 Flash ROM"
+			(property "Description" "Silicon Storage Technology (SSF) 128k x 8 Flash ROM"
 				(at 0 0 0)
 				(effects
 					(font
@@ -4823,7 +4823,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_keywords" "512k flash rom"
+			(property "ki_keywords" "128k flash rom"
 				(at 0 0 0)
 				(effects
 					(font
@@ -4832,7 +4832,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "SST39SF040_0_0"
+			(symbol "SST39SF010_0_0"
 				(pin power_in line
 					(at 0 36.83 270)
 					(length 5.08)
@@ -4870,7 +4870,7 @@
 					)
 				)
 			)
-			(symbol "SST39SF040_0_1"
+			(symbol "SST39SF010_0_1"
 				(rectangle
 					(start -10.16 31.75)
 					(end 10.16 -29.21)
@@ -4883,7 +4883,7 @@
 					)
 				)
 			)
-			(symbol "SST39SF040_1_1"
+			(symbol "SST39SF010_1_1"
 				(pin input line
 					(at -15.24 30.48 0)
 					(length 5.08)
@@ -5193,7 +5193,7 @@
 				(pin input line
 					(at -15.24 -12.7 0)
 					(length 5.08)
-					(name "A17"
+					(name "NC"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -5211,7 +5211,7 @@
 				(pin input line
 					(at -15.24 -15.24 0)
 					(length 5.08)
-					(name "A18"
+					(name "NC"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -11667,7 +11667,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Memory_Flash:SST39SF040")
+		(lib_id "Memory_Flash:SST39SF010")
 		(at 90.17 66.04 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -11677,7 +11677,7 @@
 		(fields_autoplaced yes)
 		(uuid "0a814d56-79a2-431c-9fb7-9d74b13b79d1")
 		(property "Reference" "U5"
-			(at 92.3641 29.21 0)
+			(at 92.3133 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11686,7 +11686,7 @@
 			)
 		)
 		(property "Value" "SST39SF040"
-			(at 92.3641 31.75 0)
+			(at 92.3133 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11712,7 +11712,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Silicon Storage Technology (SSF) 512k x 8 Flash ROM"
+		(property "Description" "Silicon Storage Technology (SSF) 128k x 8 Flash ROM"
 			(at 90.17 66.04 0)
 			(effects
 				(font
