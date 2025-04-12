@@ -15,9 +15,9 @@ assembly instructions.
 
 .. code:: ca65
     
-    0400: LDA #04       A9 04
-    0402: LDX #10       A2 10
-    0404: JSR FFF7      20 FF F7
+    0400: LDA #10       A9 10
+    0402: LDX #04       A2 04
+    0404: JSR FFE8      20 E8 FF
     0407: RTS           60
 
 Next, insert the ascii characters for the string :code:`Hello World!` by
@@ -49,14 +49,14 @@ assembly instructions.
     0404: LDY #00                  A0 00
     0406: PHX                      DA
     0407: PHY                      5A
-    0408: JSR FFEE                 20 FF EE
-    040B: JSR FFE8                 20 FF E8
+    0408: JSR FFF4                 20 F4 FF
+    040B: JSR FFEE                 20 EE FF
     040E: PLY                      7A
     040F: PLX                      FA
-    0410: STX 20                   86 20
+    0410: STX 30                   86 30
     0412: CLC                      18
     0413: PHA                      48
-    0414: ADC 20                   65 20
+    0414: ADC 30                   65 30
     0416: PLX                      FA
     0417: INY                      C8
     0418: CPY #0C                  C0 0C

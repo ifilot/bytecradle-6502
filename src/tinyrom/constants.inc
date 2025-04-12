@@ -24,14 +24,10 @@
 .define VIA_IER          $7F1E  ; Register 14: Interrupt Enable Register
 .define VIA_PORTA_NOHS   $7F1F  ; Register 15: Port A w/o Handshake (alias of Reg 1)
 
-; textbuffer variables
+; keyboard buffer variables
 .define TBPR            $00
 .define TBPL            $01
 .define TB              $0200   ; store textbuffer in page 2
-
-.define LF              $0A     ; LF character (line feed)
-.define CR              $0D     ; CR character (carriage return)
-.define ESC             $1B     ; VT100 escape character
 
 ; general buffer addresses (ZP), these can be used by a number of programs
 ; in the monitor
@@ -41,7 +37,31 @@
 .define BUF4            $05
 .define BUF5            $06
 .define BUF6            $07
+.define BUF7            $08
+.define BUF8            $09
+.define BUF9            $0A
+
+; zero-page addresses for the monitor
+.define CHAR1           $10
+.define CHAR2           $11
+.define CHAR3           $12
+.define CHAR4           $13
+.define NRCHARS         $14
+.define STARTADDR       $16
+.define ENDADDR         $18
+.define MALB            $1A     ; monitor address low byte
+.define MAHB            $1B     ; monitor address high byte
+.define NRLINES         $1C     ; number of lines to print by hexdump routine
 
 ; specific ZP addresses for the hexdump routine of the monitor
-.define STRLB           $08     ; string low byte
-.define STRHB           $09     ; string high byte
+.define STRLB           $1D     ; string low byte
+.define STRHB           $1E     ; string high byte
+
+; textbuffer variables
+.define CMDLENGTH       $1F     ; number of bytes in buffer, max 16
+.define CMDBUF          $20     ; position of command buffer
+
+; print characters
+.define LF              $0A     ; LF character (line feed)
+.define CR              $0D     ; CR character (carriage return)
+.define ESC             $1B     ; VT100 escape character
