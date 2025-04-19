@@ -5,13 +5,13 @@
       "Application": "Pcbnew",
       "Version": "9.0.0"
     },
-    "CreationDate": "2025-04-12T09:15:08+02:00"
+    "CreationDate": "2025-04-19T22:25:43+02:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
       "Name": "tiny-board",
       "GUID": "74696e79-2d62-46f6-9172-642e6b696361",
-      "Revision": "rev?"
+      "Revision": "1"
     },
     "Size": {
       "X": 100.38,
