@@ -11,7 +11,7 @@
     (via_costs 50)
     (plane_via_costs 5)
     (start_ripup_costs 100)
-    (start_pass_no 4731)
+    (start_pass_no 2253)
     (layer_rule F.Cu
       (active on)
       (preferred_direction horizontal)
@@ -71,8 +71,8 @@
     "Net-(U9-VS-)" "Net-(U8-XTAL2)" "Net-(J1-Shield)" "unconnected-(J1-D--Pad2)" VIN "unconnected-(J1-D+-Pad3)" "Net-(U2-RDY)" "unconnected-(SW3-C-Pad3)"
     "unconnected-(U2-ϕ2-Pad39)" "unconnected-(U2-~{SO}-Pad38)" "unconnected-(U2-~{VP}-Pad1)" "unconnected-(U2-SYNC-Pad7)" "unconnected-(U2-~{ML}-Pad5)" "unconnected-(U2-nc-Pad35)" "unconnected-(U2-ϕ1-Pad3)" "unconnected-(U8-~{DTR}-Pad11)"
     "unconnected-(U8-RxC-Pad5)" "unconnected-(U9-T2OUT-Pad7)" "unconnected-(U9-T2IN-Pad10)" ~{IRQ} ~{ROMCS} ~{RAMCS} ~{ACIACS} "unconnected-(U8-~{RTS}-Pad8)"
-    "Net-(U9-T1OUT)" "unconnected-(U9-R2IN-Pad8)" "Net-(U9-R1IN)" "unconnected-(U9-R2OUT-Pad9)" ATF22IO22 ATF22IO23 "unconnected-(J6-PAD-Pad0)" "unconnected-(J6-Pad7)"
-    "unconnected-(J6-Pad9)" "unconnected-(J6-PAD-Pad0)_1" "unconnected-(J6-Pad4)" "unconnected-(J6-Pad8)" "unconnected-(J6-Pad6)" "unconnected-(J6-Pad1)" "unconnected-(J2-Pin_18-Pad18)"
+    "Net-(U9-T1OUT)" "unconnected-(U9-R2IN-Pad8)" "Net-(U9-R1IN)" "unconnected-(U9-R2OUT-Pad9)" B1 B2 "unconnected-(J6-PAD-Pad0)" "unconnected-(J6-Pad7)"
+    "unconnected-(J6-Pad9)" "unconnected-(J6-Pad4)" "unconnected-(J6-Pad8)" "unconnected-(J6-Pad6)" "unconnected-(J6-Pad1)" "unconnected-(J2-Pin_18-Pad18)" "unconnected-(J6-PAD-Pad0)_1"
     (clearance_class "kicad_default")
     (via_rule kicad_default)
     (rule
