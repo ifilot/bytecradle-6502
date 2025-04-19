@@ -7357,7 +7357,7 @@
 		)
 		(uuid "2693a14a-c834-4f7f-83a7-f5c57c124ffc")
 	)
-	(text "0xA000-0xFFFF\n(32 KiB)"
+	(text "0x8000-0xFFFF\n(32 KiB)"
 		(exclude_from_sim no)
 		(at 77.978 30.734 0)
 		(effects
@@ -11685,7 +11685,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "SST39SF040"
+		(property "Value" "SST39SF010"
 			(at 92.3133 31.75 0)
 			(effects
 				(font

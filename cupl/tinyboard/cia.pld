@@ -1,12 +1,12 @@
 Name     CIA;
 PartNo   0001;
-Date     04/12/2025;
+Date     04/19/2025;
 Revision 01;
 Designer Ivo Filot;
 Company  N/A;
 Assembly None;
 Location None;
-Device   g22v10;
+Device   p22v10;
 
 /* *************** INPUT PINS *************** */
 PIN 1    = CLK;        /* Clock input */
@@ -34,11 +34,15 @@ PIN 21   = ROMCS_N;
 PIN 22   = NC1;        /* Not connected (Expansion Bus) */
 PIN 23   = NC2;        /* Not connected (Expansion Bus) */
 
-/* ACIA selected for address range 0x7FF0-0x7FF3 */
-ACIAS_CS_N = !(!A15 & A14 & A13 & A12 & A11 & A10 & A9 & A8 & A7 & A6 & A5 & A4 & A3 & A2);
+/* I/O range: 0x7FXX - active low */
+IO_N = !(!A15 & A14 & A13 & A12 & A11 & A10 & A9 & A8);
 
-/* RAM selected when A15 is low AND ACIA is not selected */
-RAMCS_N = !( !A15 & ACIAS_CS_N & CLK );
+/* ACIA selected for address range 0x7F04-0x7F07 */
+/* So on top of the !IO_N; it has a low byte matching 0x04-0x07 = 0b000001XX */
+ACIACS_N = !(!IO_N & !A7 & !A6 & !A5 & !A4 & !A3 & A2);
+
+/* RAM selected when A15 is low, ACIACS_N is low and CLK high */
+RAMCS_N = !(!A15 & ACIACS_N & CLK);
 
 /* ROM selected when A15 is high (0x8000-0xFFFF) */
 ROMCS_N = !A15;
