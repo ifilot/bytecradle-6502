@@ -8,4 +8,4 @@
 .segment "VECTORS"
     .word boot         ; reset / $FFFA
     .word boot         ; nmi / $FFFC
-    .word isr           ; irq/brk / $FFFE
+    .word isr          ; irq/brk / $FFFE
