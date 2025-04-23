@@ -19,9 +19,10 @@ device interfacing, and file system handling**.
 This project offers two tiers of single board computers (SBCs), each tailored to
 different levels of complexity and expandability:
 
-- **Tiny SBC**: A simple, compact design ideal for learning or small embedded projects.
-- **Mini SBC**: A more capable version with bank switching and SD card storage,
-  perfect for more ambitious retro computing tasks.
+- **Tiny SBC** (left): A simple, compact design ideal for learning or small
+  embedded projects.
+- **Mini SBC** (right): A more capable version with bank switching and SD card
+  storage, perfect for more ambitious retro computing tasks.
 
 <p align="center">
   <img src="img/bytecradle-tiny.PNG" alt="ByteCradle Tiny SBC" width="45%" style="margin-right:10px;"/>
@@ -45,7 +46,7 @@ capability.
 |----------------------|-----------------------------------|--------------------------------------|
 | **RAM**              | 32 KiB                            | 512 KiB (bank switched)              |
 | **ROM**              | 32 KiB                            | 512 KiB (bank switched)              |
-| **Bank Switching**   | ❌                               | ✅                                   |
+| **Bank Switching**   | ❌                               | ✅ (64 x 8 Kib banks)                |
 | **SD Card Support**  | ❌                               | ✅ (via WDC 65C22 VIA)               |
 | **I/O Interface**    | WDC 65C51 ACIA                    | WDC 65C51 ACIA                       |
 | **Expansion Options**| Exposes system bus                | Exposes system bus and VIA bus       |
