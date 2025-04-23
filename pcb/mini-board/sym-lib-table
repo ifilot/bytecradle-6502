@@ -1,6 +1,4 @@
 (sym_lib_table
   (version 7)
   (lib (name "65xx-library")(type "KiCad")(uri "D:/PROGRAMMING/KiCAD/bytecradle-6502/pcb/components/65xx-library.kicad_sym")(options "")(descr ""))
-  (lib (name "atf1504as-plcc44")(type "KiCad")(uri "D:/PROGRAMMING/KiCAD/bytecradle-6502/pcb/components/atf1504as-plcc44.kicad_sym")(options "")(descr ""))
-  (lib (name "atmel-jtag-10")(type "KiCad")(uri "D:/PROGRAMMING/KiCAD/bytecradle-6502/pcb/components/atmel-jtag-10.kicad_sym")(options "")(descr ""))
 )
