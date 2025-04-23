@@ -4,10 +4,6 @@
 [![Build](https://github.com/ifilot/bytecradle-6502/actions/workflows/build.yml/badge.svg)](https://github.com/ifilot/bytecradle-6502/actions/workflows/build.yml)
 [![Documentation](https://github.com/ifilot/bytecradle-6502/actions/workflows/docs.yml/badge.svg)](https://github.com/ifilot/bytecradle-6502/actions/workflows/docs.yml)
 
-> [!tip]
-> Detailed documentation on the ByteCradle 6502 can be found 
-> [here](https://ifilot.github.io/bytecradle-6502/).
-
 The **ByteCradle 6502** is a **single-board computer (SBC)** platform designed
 for understanding and experimenting with **simple operating systems** on **8-bit
 hardware**. Built around the **WDC 65C02** microprocessor, it provides a
