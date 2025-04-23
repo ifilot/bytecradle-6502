@@ -8,29 +8,76 @@
 > Detailed documentation on the ByteCradle 6502 can be found 
 > [here](https://ifilot.github.io/bytecradle-6502/).
 
-The **ByteCradle 6502** is a **single-board computer (SBC)** designed for
-understanding and experimenting with **simple operating systems** on **8-bit
+The **ByteCradle 6502** is a **single-board computer (SBC)** platform designed
+for understanding and experimenting with **simple operating systems** on **8-bit
 hardware**. Built around the **WDC 65C02** microprocessor, it provides a
 hands-on platform for studying **system initialization, memory management,
 device interfacing, and file system handling**.  
 
-The system includes **544 KiB of RAM, bank-switched ROM, serial communication
-via a 65C51 UART, and SD card support with a FAT32 file system**, allowing users
-to work with a **hierarchical file structure** similar to classic microcomputer
-environments. This makes it ideal for learning how **basic OS components
-interact with hardware**, such as **drivers, file systems, and boot processes**.  
+## Tier-system
 
-## Specifications  
+This project offers two tiers of single board computers (SBCs), each tailored to
+different levels of complexity and expandability:
 
-- **CPU:** WDC 65C02  
-- **Clock Speed:** 10 MHz
-- **RAM:** 544 KiB (32 KiB base + 512 KiB banked)  
-- **ROM:** 512 KiB (32 × 16 KiB banks)  
-- **Storage:** SD card with FAT32 support  
-- **Serial Communication:** 65C51 UART, 115200 BAUD  
-- **Expansion:** Interfaces for peripherals and additional hardware  
+- **Tiny SBC**: A simple, compact design ideal for learning or small embedded projects.
+- **Mini SBC**: A more capable version with bank switching and SD card storage,
+  perfect for more ambitious retro computing tasks.
 
-The ByteCradle 6502 serves as a **practical tool for developing and testing
-8-bit operating system features**, including **bootloaders, basic file
-management, and low-level hardware access**, providing insight into the
-foundations of classic computing.
+<p align="center">
+  <img src="img/bytecradle-tiny.PNG" alt="ByteCradle Tiny SBC" width="45%" style="margin-right:10px;"/>
+  <img src="img/bytecradle-mini.PNG" alt="ByteCradle Mini SBC" width="45%"/>
+</p>
+
+## Overview
+
+Both SBCs share a common design philosophy — to provide a straightforward and
+accessible 65C02 system, while exploring different levels of hardware
+capability.
+
+### Shared Components
+
+- **CPU**: WDC 65C02
+- **I/O**: WDC 65C51 Asynchronous Communications Interface Adapter (ACIA)
+
+## Tier Comparison
+
+| Feature              | Tiny SBC                          | Mini SBC                             |
+|----------------------|-----------------------------------|--------------------------------------|
+| **RAM**              | 32 KiB                            | 512 KiB (bank switched)              |
+| **ROM**              | 32 KiB                            | 512 KiB (bank switched)              |
+| **Bank Switching**   | ❌                               | ✅                                   |
+| **SD Card Support**  | ❌                               | ✅ (via WDC 65C22 VIA)               |
+| **I/O Interface**    | WDC 65C51 ACIA                    | WDC 65C51 ACIA                       |
+| **Expansion Options**| Exposes system bus                | Exposes system bus and VIA bus       |
+
+## About the Mini SBC
+
+The Mini SBC expands significantly on the Tiny version by incorporating a large
+memory map through bank switching and adding persistent storage with an SD card
+interface. It uses the versatile 65C22 VIA for managing SD card communication
+and possibly other peripherals in future expansions.
+
+## License
+
+### Software
+All software (including ROM code, tools, and firmware) in this repository is
+licensed under the [GNU General Public License v3.0](LICENSE-GPL).
+
+This means:
+- You are free to use, modify, and share the software.
+- If you distribute modified versions, you must also release them under the GPLv3.
+
+### Hardware
+All hardware design files (schematics, PCB layouts, bills of materials, etc.)
+are licensed under the [CERN Open Hardware License v2 - Weakly Reciprocal
+(CERN-OHL-W)](LICENSE-HARDWARE).
+
+This means:
+- You may study, modify, manufacture, and distribute the hardware freely.
+- If you distribute a modified version, you must share your changes under the
+  same license.
+
+## Contributing
+
+Contributions, ideas, and improvements are always welcome. Open an issue or
+submit a pull request to get involved!

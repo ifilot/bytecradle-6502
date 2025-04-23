@@ -632,12 +632,8 @@
       "Root"
     ],
     [
-      "827db9dd-783f-4cba-8659-0d2990fc93f7",
-      "romram"
-    ],
-    [
-      "3d872660-efc1-47d1-8462-3fe65fa54b72",
-      "uart"
+      "5c333674-eefb-4707-94ed-6c6ed8cb8074",
+      "peripherals"
     ]
   ],
   "text_variables": {}
