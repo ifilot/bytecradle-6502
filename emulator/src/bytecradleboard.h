@@ -20,6 +20,8 @@ public:
         vrEmu6502Reset(this->cpu);
     }
 
+    void keypress(char ch);
+
 protected:
     char keybuffer[0x10];           // Buffer for keyboard input
     char* keybuffer_ptr;            // Pointer to the current position in the key buffer

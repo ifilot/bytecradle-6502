@@ -4,6 +4,7 @@
 
 ByteCradleBoard::ByteCradleBoard()
     : cpu(nullptr) {
+    this->keybuffer_ptr = this->keybuffer;
 }
 
 ByteCradleBoard::~ByteCradleBoard() {
@@ -11,6 +12,13 @@ ByteCradleBoard::~ByteCradleBoard() {
         vrEmu6502Destroy(cpu);
         cpu = nullptr;
     }
+}
+
+void ByteCradleBoard::keypress(char ch) {
+    if (this->keybuffer_ptr < this->keybuffer + sizeof(this->keybuffer) - 1) {
+        *this->keybuffer_ptr++ = ch;
+    }
+    *irq = IntRequested;
 }
 
 bool ByteCradleBoard::load_file_into_memory(const char* filename, uint8_t* memory, size_t sz) {

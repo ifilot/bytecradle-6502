@@ -40,6 +40,10 @@ main:
     .asciiz "Hello World!"
 
 loop:
+    jsr getch
+    cmp #0
+    beq loop
+    jsr putch
     jmp loop
 
 ;-------------------------------------------------------------------------------

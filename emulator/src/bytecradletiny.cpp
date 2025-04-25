@@ -41,6 +41,7 @@ uint8_t ByteCradleTiny::memread(VrEmu6502 *cpu, uint16_t addr, bool isDbg) {
 
     // I/O space
     switch(addr) {
+        
         case ACIA_DATA:     // read content UART
             if(keybuffer_ptr > keybuffer) {
                 *irq = IntCleared;
@@ -54,6 +55,7 @@ uint8_t ByteCradleTiny::memread(VrEmu6502 *cpu, uint16_t addr, bool isDbg) {
                 return ch;
             }
         break;
+
         case ACIA_STAT:
             if(keybuffer_ptr > keybuffer) {
                 return 0x08;
