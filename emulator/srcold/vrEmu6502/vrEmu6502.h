@@ -123,12 +123,10 @@ typedef enum
  * PUBLIC INTERFACE
  */
 
- VR_EMU_6502_DLLEXPORT void* vrEmu6502GetUserData(VrEmu6502* cpu);
-
  /*
   * memory write function pointer
   */
- typedef void (*vrEmu6502MemWrite)(VrEmu6502* cpu, uint16_t addr, uint8_t val);
+typedef void(*vrEmu6502MemWrite)(uint16_t addr, uint8_t val);
 
 /*
   * memory read function pointer
@@ -141,8 +139,7 @@ typedef enum
   *        when isDbg is true.
   *        
   */
- typedef uint8_t (*vrEmu6502MemRead)(VrEmu6502* cpu, uint16_t addr, bool isDbg);
-
+typedef uint8_t(*vrEmu6502MemRead)(uint16_t addr, bool isDbg);
 
 
 /*
@@ -151,8 +148,7 @@ typedef enum
 VR_EMU_6502_DLLEXPORT VrEmu6502* vrEmu6502New(
                                     vrEmu6502Model model,
                                     vrEmu6502MemRead readFn,
-                                    vrEmu6502MemWrite writeFn,
-                                    void* userData);
+                                    vrEmu6502MemWrite writeFn);
 
 /* ------------------------------------------------------------------
  *
