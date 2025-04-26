@@ -35,6 +35,6 @@ jobs:
       - name: Build Emulator
         run: |
           cd emulator
-          mkdir build
+          mkdir build && cd build
           cmake ../src
           make -j
