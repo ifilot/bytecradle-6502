@@ -121,7 +121,7 @@ printheader:
     .byte >@str6, >@str7, >@str8, >@str9, >@str10, >@str2, 0
 
 @str1:
-    .asciiz "|      BYTECRADLE /TINY/ ROM        |"
+    .asciiz "|      BYTECRADLE /MINI/ ROM        |"
 @str2:
     .asciiz "+-----------------------------------+"
 @strram:

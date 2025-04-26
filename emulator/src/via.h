@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <iostream>
 
 #include "sdcardbasic.h"
 #include "vrEmu6502/vrEmu6502.h"

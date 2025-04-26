@@ -67,14 +67,16 @@ void VIA::tick() {
 }
 
 void VIA::update_outputs() {
-    if (sdcard) {
+    if (this->sdcard) {
         bool cs = (ora & (1 << 3)) != 0;   // PA3 = CS
         bool clk = (ora & (1 << 2)) != 0;  // PA2 = CLK
         bool mosi = (ora & (1 << 1)) != 0; // PA1 = MOSI
 
-        sdcard->set_cs(cs);
-        sdcard->set_clk(clk);
-        sdcard->set_mosi(mosi);
+        this->sdcard->set_cs(cs);
+        this->sdcard->set_clk(clk);
+        this->sdcard->set_mosi(mosi);
+
+        //std::cout << "VIA: CS=" << cs << ", CLK=" << clk << ", MOSI=" << mosi << std::endl;
     }
 }
 
