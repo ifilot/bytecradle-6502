@@ -2,13 +2,13 @@
  *                                                                        *
  *   Author: Ivo Filot <ivo@ivofilot.nl>                                  *
  *                                                                        *
- *   BC6502EMU is free software:                                          *
+ *   ByteCradle 6502 EMULATOR is free software:                           *
  *   you can redistribute it and/or modify it under the terms of the      *
  *   GNU General Public License as published by the Free Software         *
  *   Foundation, either version 3 of the License, or (at your option)     *
  *   any later version.                                                   *
  *                                                                        *
- *   BC6502EMU is distributed in the hope that it will be useful,         *
+ *   This program is distributed in the hope that it will be useful,      *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty          *
  *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.              *
  *   See the GNU General Public License for more details.                 *
@@ -18,26 +18,20 @@
  *                                                                        *
  **************************************************************************/
 
-#include "crc16.h"
+#pragma once
+
+#include <cstdint>
 
 /**
- * Calculate CRC16 checksum using XMODEM polynomial
+ * @brief Abstract base class for an SD card device.
+ *        Defines the standard SPI interface methods.
  */
-uint16_t crc16_xmodem(const uint8_t *data, size_t length) {
-    uint16_t crc = 0x0000;
-    uint16_t polynomial = 0x1021;
+class SdCardDevice {
+public:
+    virtual void set_cs(bool active) = 0;   // Chip Select (CS) signal
+    virtual void set_clk(bool high) = 0;     // Clock (CLK) signal
+    virtual void set_mosi(bool high) = 0;    // Master Out Slave In (MOSI) signal
+    virtual bool get_miso() const = 0;       // Master In Slave Out (MISO) signal
 
-    for (size_t i = 0; i < length; i++) {
-        crc ^= (data[i] << 8);  // XOR the byte into the high byte of CRC
-
-        for (int j = 0; j < 8; j++) {
-            if (crc & 0x8000) {
-                crc = (crc << 1) ^ polynomial;
-            } else {
-                crc <<= 1;
-            }
-        }
-    }
-
-   return crc;
-}
+    virtual ~SdCardDevice() = default;       // Virtual destructor for safe polymorphic use
+};
