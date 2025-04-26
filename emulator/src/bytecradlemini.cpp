@@ -1,4 +1,4 @@
-#include "ByteCradleMini.h"
+#include "bytecradlemini.h"
 
 /**
  * @brief Construct a new ByteCradleMini object
