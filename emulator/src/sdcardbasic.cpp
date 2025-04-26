@@ -36,6 +36,7 @@ SdCardBasic::SdCardBasic(const std::string& image_filename)
     sdfile.open(image_filename, std::ios::binary);
     if (!sdfile) {
         std::cerr << "Failed to open SD card image: " << image_filename << std::endl;
+        exit(-1);
     }
 }
 

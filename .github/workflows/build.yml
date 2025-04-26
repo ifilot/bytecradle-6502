@@ -27,6 +27,11 @@ jobs:
           cd src/tinyrom
           make
 
+      - name: Build MINI ROM
+        run: |
+          cd src/minirom
+          make
+
       - name: Build programs
         run: |
           cd programs
