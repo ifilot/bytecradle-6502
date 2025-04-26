@@ -1,12 +1,12 @@
-#include "ByteCradleTiny.h"
+#include "ByteCradleMini.h"
 
 /**
- * @brief Construct a new ByteCradleTiny object
+ * @brief Construct a new ByteCradleMini object
  * 
  * @param romfile path to the ROM file
+ * @param sdcardfile path to the SD card file
  */
-ByteCradleTiny::ByteCradleTiny(const std::string& romfile) {
-    // initialize CPU
+ByteCradleMini::ByteCradleMini(const std::string& romfile, const std::string& sdcardfile) {
     cpu = vrEmu6502New(CPU_W65C02, memread, memwrite, this);
     irq = vrEmu6502Int(cpu);
 
@@ -22,7 +22,7 @@ ByteCradleTiny::ByteCradleTiny(const std::string& romfile) {
  * @brief Destroy the Byte Cradle Tiny object
  * 
  */
-ByteCradleTiny::~ByteCradleTiny() {
+ByteCradleMini::~ByteCradleMini() {
     // Destructor will call base class destructor and clean cpu
 }
 
@@ -35,8 +35,8 @@ ByteCradleTiny::~ByteCradleTiny() {
  * @param isDbg 
  * @return uint8_t value at memory address
  */
-uint8_t ByteCradleTiny::memread(VrEmu6502 *cpu, uint16_t addr, bool isDbg) {
-    auto obj = static_cast<ByteCradleTiny*>(vrEmu6502GetUserData(cpu));
+uint8_t ByteCradleMini::memread(VrEmu6502 *cpu, uint16_t addr, bool isDbg) {
+    auto obj = static_cast<ByteCradleMini*>(vrEmu6502GetUserData(cpu));
     auto &ram = obj->get_ram();
     auto &rom = obj->get_rom();
     auto& keybuffer = obj->get_keybuffer();
@@ -67,8 +67,8 @@ uint8_t ByteCradleTiny::memread(VrEmu6502 *cpu, uint16_t addr, bool isDbg) {
  * @param addr memory address
  * @param val value to write
  */
-void ByteCradleTiny::memwrite(VrEmu6502 *cpu, uint16_t addr, uint8_t val) {
-    auto obj = static_cast<ByteCradleTiny*>(vrEmu6502GetUserData(cpu));
+void ByteCradleMini::memwrite(VrEmu6502 *cpu, uint16_t addr, uint8_t val) {
+    auto obj = static_cast<ByteCradleMini*>(vrEmu6502GetUserData(cpu));
     auto &ram = obj->get_ram();
     auto &rom = obj->get_rom();
     
@@ -84,4 +84,5 @@ void ByteCradleTiny::memwrite(VrEmu6502 *cpu, uint16_t addr, uint8_t val) {
     }
 
     printf("[ERROR] Invalid write: %04X.\n", addr);
+
 }

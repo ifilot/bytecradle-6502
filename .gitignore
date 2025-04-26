@@ -11,3 +11,4 @@ archive/
 fp-info-cache
 *.swp
 *.wrl
+.vscode

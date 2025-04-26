@@ -1,9 +1,13 @@
 #include "terminal.h"
 
-#include <unistd.h>    // for read()
-#include <fcntl.h>     // for fcntl()
-#include <termios.h>   // for termios
+#include <unistd.h>
+#include <fcntl.h>
+#include <termios.h>
 
+/**
+ * @brief Construct a new Terminal Raw Mode object
+ * 
+ */
 TerminalRawMode::TerminalRawMode() {
     // Save original terminal settings
     tcgetattr(STDIN_FILENO, &origTerm_);
@@ -16,6 +20,10 @@ TerminalRawMode::TerminalRawMode() {
     fcntl(STDIN_FILENO, F_SETFL, flags | O_NONBLOCK);
 }
 
+/**
+ * @brief Destroy the Terminal Raw Mode object
+ * 
+ */
 TerminalRawMode::~TerminalRawMode() {
     // Restore original terminal settings
     tcsetattr(STDIN_FILENO, TCSANOW, &origTerm_);
@@ -26,6 +34,11 @@ TerminalRawMode::~TerminalRawMode() {
     fcntl(STDIN_FILENO, F_SETFL, flags);
 }
 
+/**
+ * @brief Poll for a key press
+ * 
+ * @return std::optional<char> character if a key was pressed, std::nullopt otherwise
+ */
 std::optional<char> TerminalRawMode::poll_key() {
     char ch;
     ssize_t nread = read(STDIN_FILENO, &ch, 1);

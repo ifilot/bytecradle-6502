@@ -27,7 +27,7 @@ flash: $(TARGET)
 
 # Run in emulator
 run: $(TARGET)
-	$(EMULATOR) -r $(TARGET)
+	$(EMULATOR) -r $(TARGET) -b tiny
 
 # Clean build artifacts
 clean:

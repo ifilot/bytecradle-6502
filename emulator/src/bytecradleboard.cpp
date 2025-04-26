@@ -1,12 +1,17 @@
-// ByteCradleBoard.cpp
+#include "bytecradleboard.h"
 
-#include "ByteCradleBoard.h"
-
+/**
+ * @brief Construct a new Byte Cradle Board object
+ * 
+ */
 ByteCradleBoard::ByteCradleBoard()
     : cpu(nullptr) {
-    this->keybuffer_ptr = this->keybuffer;
 }
 
+/**
+ * @brief Destroy the Byte Cradle Board object
+ * 
+ */
 ByteCradleBoard::~ByteCradleBoard() {
     if (cpu) {
         vrEmu6502Destroy(cpu);
@@ -14,13 +19,14 @@ ByteCradleBoard::~ByteCradleBoard() {
     }
 }
 
-void ByteCradleBoard::keypress(char ch) {
-    if (this->keybuffer_ptr < this->keybuffer + sizeof(this->keybuffer) - 1) {
-        *this->keybuffer_ptr++ = ch;
-    }
-    *irq = IntRequested;
-}
-
+/**
+ * @brief Load a file into memory (typically ROM)
+ * 
+ * @param filename path to the file
+ * @param memory pointer to the memory buffer
+ * @param sz size of the memory buffer
+ * @return true if successful, false otherwise
+ */
 bool ByteCradleBoard::load_file_into_memory(const char* filename, uint8_t* memory, size_t sz) {
     std::ifstream file(filename, std::ios::binary | std::ios::ate);
     if (!file)

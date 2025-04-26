@@ -6,27 +6,36 @@
 #define ACIA_MASK       0x7F00
 #define ACIA_MASK_SIZE  12
 
+// memory mapped 65C22 VIA
+#define SERIAL    0x7F20
+#define CLKSTART  0x7F21
+#define DESELECT  0x7F22
+#define SELECT    0x7F23
+
 /**
  * @brief ByteCradle 6502 Tiny Board Emulator
  * 
  */
-class ByteCradleTiny : public ByteCradleBoard {
+class ByteCradleMini : public ByteCradleBoard {
 private:
-    uint8_t ram[0x8000];
-    uint8_t rom[0x8000];
+    uint8_t ram[1024 * 512];    // 512KB RAM
+    uint8_t rom[1024 * 512];    // 512KB ROM
+    uint8_t rombank;
+    uint8_t rambank;
 public:
     /**
-     * @brief Construct a new ByteCradleTiny object
+     * @brief Construct a new ByteCradleMini object
      * 
      * @param romfile path to the ROM file
+     * @param sdcardfile path to the SD card file
      */
-    ByteCradleTiny(const std::string& romfile);
+    ByteCradleMini(const std::string& romfile, const std::string& sdcardfile);
 
     /**
      * @brief Destroy the Byte Cradle Tiny object
      * 
      */
-    ~ByteCradleTiny() override;
+    ~ByteCradleMini() override;
 
     /**
      * @brief Get reference to the RAM array
