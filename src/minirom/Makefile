@@ -2,9 +2,8 @@
 AS = ca65
 LD = ld65
 EMULATOR = ../../emulator/build/bc6502emu
-FLASH = picoflash
 CFG = rom.cfg
-TARGET = sbctestrom.bin
+TARGET = minirom.bin
 
 # Automatically collect all .s files and convert to .o
 SRC = $(wildcard *.s)
@@ -21,13 +20,9 @@ all: $(TARGET)
 $(TARGET): $(OBJ) $(CFG)
 	$(LD) -o $@ -C $(CFG) $(OBJ)
 
-# Flash to device
-flash: $(TARGET)
-	$(FLASH) -i $(TARGET) -w -b 0
-
 # Run in emulator
 run: $(TARGET)
-	$(EMULATOR) -r $(TARGET)
+	$(EMULATOR) -r $(TARGET) -b mini -s ../../emulator/script/sdcard.img
 
 # Clean build artifacts
 clean:

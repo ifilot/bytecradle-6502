@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "algorithm": "c",
-        "stdint.h": "c",
-        "sdcard.h": "c"
-    }
-}
