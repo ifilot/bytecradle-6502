@@ -35,16 +35,19 @@ bool ByteCradleBoard::load_file_into_memory(const char* filename, uint8_t* memor
         return false;
     }
 
-    std::streamsize fileSize = file.tellg();
+    std::streamsize file_size = file.tellg();
     file.seekg(0, std::ios::beg);
 
-    if (fileSize > static_cast<std::streamsize>(sz))
+    if (file_size > static_cast<std::streamsize>(sz))
     {
         std::cerr << "File too large to fit into memory buffer: " << filename << std::endl;
         return false;
     }
 
-    if (!file.read(reinterpret_cast<char*>(memory), fileSize))
+    // Clear entire buffer first
+    std::memset(memory, 0, sz);
+
+    if (!file.read(reinterpret_cast<char*>(memory), file_size))
     {
         std::cerr << "Failed to read file: " << filename << std::endl;
         return false;

@@ -16,6 +16,7 @@ ByteCradleMini::ByteCradleMini(const std::string& romfile, const std::string& sd
 
     // set interface chips
     this->acia = std::make_unique<ACIA>(ACIA_MASK, ACIA_MASK_SIZE, irq);
+    this->via = std::make_unique<VIA>(VIA_MASK, VIA_MASK_SIZE, irq);
 }
 
 /**
@@ -43,8 +44,8 @@ uint8_t ByteCradleMini::memread(VrEmu6502 *cpu, uint16_t addr, bool isDbg) {
     auto& irq = obj->irq;
 
     // ROM chip
-    if(addr >= 0x8000) {
-        return rom[addr - 0x8000];
+    if(addr >= 0xC000) {
+        return rom[addr - 0xC000];
     }
 
     // lower RAM
@@ -52,8 +53,14 @@ uint8_t ByteCradleMini::memread(VrEmu6502 *cpu, uint16_t addr, bool isDbg) {
         return ram[addr];
     }
 
+    // ACIA chip
     if(obj->get_acia()->responds(addr)) {
         return obj->get_acia()->read(addr);
+    }
+    
+    // VIA chip
+    if(obj->get_via()->responds(addr)) {
+        return obj->get_via()->read(addr);
     }
 
     printf("[ERROR] Invalid write: %04X.\n", addr);
@@ -78,8 +85,15 @@ void ByteCradleMini::memwrite(VrEmu6502 *cpu, uint16_t addr, uint8_t val) {
         return;
     }
 
+    // ACIA chip
     if(obj->get_acia()->responds(addr)) {
         obj->get_acia()->write(addr, val);
+        return;
+    }
+
+    // VIA chip
+    if(obj->get_via()->responds(addr)) {
+        obj->get_via()->write(addr, val);
         return;
     }
 

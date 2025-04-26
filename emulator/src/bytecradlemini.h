@@ -1,16 +1,15 @@
 #pragma once
 
 #include "bytecradleboard.h"
+#include "via.h"
 
 // memory mapped 65C51 ACIA
 #define ACIA_MASK       0x7F00
 #define ACIA_MASK_SIZE  12
 
 // memory mapped 65C22 VIA
-#define SERIAL    0x7F20
-#define CLKSTART  0x7F21
-#define DESELECT  0x7F22
-#define SELECT    0x7F23
+#define VIA_MASK        0x7F10
+#define VIA_MASK_SIZE   12
 
 /**
  * @brief ByteCradle 6502 Tiny Board Emulator
@@ -22,6 +21,8 @@ private:
     uint8_t rom[1024 * 512];    // 512KB ROM
     uint8_t rombank;
     uint8_t rambank;
+
+    std::unique_ptr<VIA> via;     // Pointer to the VIA object
 public:
     /**
      * @brief Construct a new ByteCradleMini object
@@ -40,16 +41,23 @@ public:
     /**
      * @brief Get reference to the RAM array
      * 
-     * @return auto& 
+     * @return reference to RAM array
      */
     inline auto& get_ram() { return ram; }
 
     /**
      * @brief Get reference to the ROM array
      * 
-     * @return auto& 
+     * @return reference to ROM array
      */
     inline auto& get_rom() { return rom; }
+
+    /**
+     * @brief Get reference to the RAM array
+     * 
+     * @return reference to VIA chip
+     */
+    inline auto& get_via() { return this->via; }
 
 private:
     /**
