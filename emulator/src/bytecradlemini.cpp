@@ -17,6 +17,7 @@ ByteCradleMini::ByteCradleMini(const std::string& romfile, const std::string& sd
     // set interface chips
     this->acia = std::make_unique<ACIA>(ACIA_MASK, ACIA_MASK_SIZE, irq);
     this->via = std::make_unique<VIA>(VIA_MASK, VIA_MASK_SIZE, irq);
+    this->via->create_sdcard_and_attach(sdcardfile);
 }
 
 /**

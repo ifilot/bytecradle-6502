@@ -30,6 +30,14 @@ uint8_t VIA::read(uint16_t addr) {
     return result;
 }
 
+void VIA::create_sdcard_and_attach(const std::string& image_filename) {
+    this->sdcard = std::make_unique<SdCardBasic>(image_filename);
+    if (this->sdcard) {
+        sdcard->set_cs(true); // Set CS high initially
+        update_outputs();
+    }
+}
+
 void VIA::write(uint16_t addr, uint8_t data) {
     switch (addr & 0x0F) {
         case VIA_REG_ORB:
@@ -38,7 +46,7 @@ void VIA::write(uint16_t addr, uint8_t data) {
             break;
         case VIA_REG_ORA:
             ora = data;
-            // (no outputs hooked up on ORA yet)
+            update_outputs();
             break;
         case VIA_REG_DDRB:
             ddrb = data;
@@ -46,6 +54,7 @@ void VIA::write(uint16_t addr, uint8_t data) {
             break;
         case VIA_REG_DDRA:
             ddra = data;
+            update_outputs();
             break;
         default:
             // Ignore writes to unimplemented registers
@@ -58,11 +67,27 @@ void VIA::tick() {
 }
 
 void VIA::update_outputs() {
+    if (sdcard) {
+        bool cs = (ora & (1 << 3)) != 0;   // PA3 = CS
+        bool clk = (ora & (1 << 2)) != 0;  // PA2 = CLK
+        bool mosi = (ora & (1 << 1)) != 0; // PA1 = MOSI
 
+        sdcard->set_cs(cs);
+        sdcard->set_clk(clk);
+        sdcard->set_mosi(mosi);
+    }
 }
 
 uint8_t VIA::compute_porta_input() const {
-    return 0x00; // Nothing connected to ORA for now
+    uint8_t input = 0x00;
+
+    if (sdcard) {
+        if (sdcard->get_miso()) {
+            input |= (1 << 0); // PA0 = MISO from SD card
+        }
+    }
+
+    return input;
 }
 
 uint8_t VIA::compute_portb_input() const {

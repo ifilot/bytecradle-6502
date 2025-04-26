@@ -1,7 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
 
+#include "sdcardbasic.h"
 #include "vrEmu6502/vrEmu6502.h"
 
 #define VIA_REG_ORB   0x00
@@ -24,12 +26,16 @@ private:
     uint16_t basemask;
     uint16_t mask;
 
+    std::unique_ptr<SdCardDevice> sdcard; // Pointer to the SD card object
+
 public:
     VIA(uint16_t _basemask, uint8_t bitmasksize, vrEmu6502Interrupt *_irq);
 
     uint8_t read(uint16_t addr);
 
     void write(uint16_t addr, uint8_t data);
+
+    void create_sdcard_and_attach(const std::string& image_filename);
 
     /**
      * @brief Whether the ACIA responds to the given address
