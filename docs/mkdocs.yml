@@ -37,6 +37,8 @@ theme:
     - navigation.tracking
     - content.tabs.link
     - content.code.annotate
+    - content.admonitions
+    - content.admonitions.semantic
   palette:
     - scheme: default  # Light mode
       primary: amber
@@ -52,9 +54,6 @@ theme:
         name: Switch to light mode
   toggle:
     default: dark
-  font:
-    text: IBM Plex Sans
-    code: IBM Plex Mono
   icon:
     repo: fontawesome/brands/github  # Optional - adds a nice GitHub icon
 
@@ -77,3 +76,5 @@ markdown_extensions:
   - pymdownx.tabbed
   - attr_list
   - md_in_html
+  - admonition
+  - pymdownx.details
