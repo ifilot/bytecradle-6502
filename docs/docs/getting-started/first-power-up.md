@@ -1,6 +1,23 @@
-# First Power-Up
+# First Power-Up and Testing
 
-## Interfacing with the Board
+## Hooking up the Power Supply
+
+The ByteCradle board requires a **5V power supply** capable of delivering at
+least **500 mA** of current. Power is supplied through a **USB-B connector**.
+The ByteCradle **does not** have any on-board power regulation. It is critical
+to use a **reliable and regulated 5V power source** to avoid damaging the board.
+Recommended options include:
+    
+- A direct connection to a **computer USB port**
+- A **certified USB wall adapter** rated for 5V output
+
+!!! warning "Power Supply Safety"    
+    Avoid using low-quality or unregulated power adapters, as unstable voltages can cause erratic behavior or permanent damage to the board.
+
+!!! note "Power-Up Sequence"
+    Before powering up the board, make sure the **serial communication cable** (see next section) is connected and a **serial port** has been opened on your computer. This ensures you will see the header information that the board outputs upon boot. If you power on the board before setting up the serial connection, you can still communicate with it, but you will miss the initial startup messages. In that case, simply press the **reset button** on the board to perform a cold boot and re-trigger the startup sequence.
+
+## Setting Up Serial Communication
 
 Communication with the ByteCradle platform is handled via a **standard RS232
 serial interface**, implemented using the onboard **65C51 ACIA** (Asynchronous
