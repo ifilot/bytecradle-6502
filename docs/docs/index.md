@@ -6,20 +6,33 @@ experimenting with **simple operating systems** on **8-bit hardware**. Whether
 you are new to 8-bit computers or an experienced hardware tinkerer, ByteCradle
 offers an accessible and expandable environment to explore these topics.
 
-## Tier System
+## 🚀 Quick Start
 
-ByteCradle offers two tiers of SBCs, catering to different project scopes:
+<div class="grid cards">
 
-- **Tiny SBC**: A minimalistic, compact system ideal for education and small embedded applications.
-- **Mini SBC**: A feature-rich version with bank switching, SD card storage, and an expansion bus through the 65C22 VIA.
+  <div class="card">
+    <h3><a href="getting-started/assembling-the-board/">🚀 Getting Started</a></h3>
+    <p>Learn how to assemble the board, power up safely, and run your first program.</p>
+  </div>
 
-## Feature Comparison
+  <div class="card">
+    <h3><a href="hardware/board-overview/">🖥️ Hardware Overview</a></h3>
+    <p>Dive deep into the hardware design, schematics, and engineering decisions behind ByteCradle.</p>
+  </div>
 
-| Feature               | Tiny SBC                         | Mini SBC                             |
-|------------------------|----------------------------------|--------------------------------------|
-| **RAM**                | 32 KiB                           | 512 KiB (bank switched)              |
-| **ROM**                | 32 KiB                           | 512 KiB (bank switched)              |
-| **Bank Switching**     | ❌                               | ✅ (64 × 8 KiB banks)                |
-| **SD Card Support**    | ❌                               | ✅ (via 65C22 VIA)                   |
-| **I/O Interface**      | 65C51 ACIA                       | 65C51 ACIA                           |
-| **Expansion Options**  | Exposes system bus               | Exposes system bus and VIA bus       |
+  <div class="card">
+    <h3><a href="software/emulator-overview/">🖱️ Software Emulator</a></h3>
+    <p>Install and use the emulator to prototype, test, and debug your 65C02 programs.</p>
+  </div>
+
+  <div class="card">
+    <h3><a href="tutorials/hello-world/">💡 Tutorials</a></h3>
+    <p>Start coding! Follow step-by-step guides for writing assembly, peripherals control, and debugging.</p>
+  </div>
+
+  <div class="card">
+    <h3><a href="advanced-topics/expanding-the-system/">⚙️ Advanced Topics</a></h3>
+    <p>Explore system expansion, hardware mods, and building more sophisticated applications.</p>
+  </div>
+
+</div>
