@@ -30,3 +30,50 @@ nav:
       - Credits and Acknowledgments: references/credits.md
 theme:
   name: material
+  features:
+    - navigation.instant
+    - header.autohide
+    - navigation.sections
+    - navigation.tracking
+    - content.tabs.link
+    - content.code.annotate
+  palette:
+    - scheme: default  # Light mode
+      primary: amber
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate     # Dark mode
+      primary: amber
+      accent: amber
+      toggle:
+        icon: material/white-balance-sunny
+        name: Switch to light mode
+  toggle:
+    default: dark
+  font:
+    text: IBM Plex Sans
+    code: IBM Plex Mono
+  icon:
+    repo: fontawesome/brands/github  # Optional - adds a nice GitHub icon
+
+extra:
+  font:
+    text: https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap
+    code: https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap
+
+repo_url: https://github.com/ifilot/bytecradle-6502
+repo_name: bytecradle-6502
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - footnotes
+  - meta
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - attr_list
+  - md_in_html
