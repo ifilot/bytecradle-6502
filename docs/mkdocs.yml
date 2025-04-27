@@ -1,1 +1,32 @@
-site_name: My Docs
+site_name: ByteCradle 6502
+nav:
+  - Home: index.md
+  - Introduction:
+      - What is the Platform?: introduction/what-is-platform.md
+      - Why 65C02?: introduction/why-65c02.md
+  - Getting Started:
+      - Assembling the Board: getting-started/assembling-the-board.md
+      - First Power Up and Testing: getting-started/first-power-up.md
+      - Required Tools and Setup: getting-started/required-tools.md
+  - Hardware:
+      - Board Overview: hardware/board-overview.md
+      - Schematics and PCB Layout: hardware/schematics-layout.md
+      - Design Principles: hardware/design-principles.md
+  - Software:
+      - Emulator Overview: software/emulator-overview.md
+      - Installing the Emulator: software/installing-emulator.md
+      - Emulator Usage Basics: software/usage-basics.md
+  - Tutorials:
+      - Hello World: tutorials/hello-world.md
+      - Inline Assembler Tutorial: tutorials/inline-assembler.md
+      - Working with Peripherals: tutorials/peripherals.md
+      - Debugging and Troubleshooting: tutorials/debugging.md
+  - Advanced Topics:
+      - Expanding the System: advanced-topics/expanding-the-system.md
+      - Hardware Customizations: advanced-topics/hardware-customizations.md
+  - References:
+      - Datasheets: references/datasheets.md
+      - External Links: references/external-links.md
+      - Credits and Acknowledgments: references/credits.md
+theme:
+  name: material
