@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   build:
-    name: Documentation
+    name: Build and Deploy MkDocs Documentation
     runs-on: ubuntu-latest
 
     steps:
@@ -23,24 +23,19 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.13.1
+        python-version: "3.13.1"
 
     - name: Install Dependencies
       run: |
-        python -m pip install --upgrade pip 
-        pip install sphinx-rtd-theme \
-              sphinxcontrib-tikz \
-              pydata-sphinx-theme \
-              sphinx_design \
-              sphinx_subfigure \
-              myst_parser
+        python -m pip install --upgrade pip
+        pip install mkdocs mkdocs-material mkdocs-material[extras]
+
     - name: Build Documentation
       run: |
-        cd docs
-        make html
+        mkdocs build --config-file docs/mkdocs.yml
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: docs/build/html
+        publish_dir: site

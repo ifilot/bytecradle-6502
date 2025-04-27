@@ -12,3 +12,4 @@ fp-info-cache
 *.swp
 *.wrl
 .vscode
+.venv
