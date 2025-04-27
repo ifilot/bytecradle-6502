@@ -17,8 +17,9 @@ different levels of complexity and expandability:
 
 - **Tiny SBC** (left): A simple, compact design ideal for learning or small
   embedded projects.
-- **Mini SBC** (right): A more capable version with bank switching and SD card
-  storage, perfect for more ambitious retro computing tasks.
+- **Mini SBC** (right): A more capable version with bank switching, SD card
+  storage, and an expansion bus using the 65C22 Versatile Interface Adapter
+  (VIA).
 
 <p align="center">
   <img src="img/bytecradle-tiny.PNG" alt="ByteCradle Tiny SBC" width="45%" style="margin-right:10px;"/>
