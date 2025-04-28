@@ -71,6 +71,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#monitor" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -410,6 +415,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../getting-started/required-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Required Tools and Setup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../getting-started/assembling-the-board/" class="md-nav__link">
         
   
@@ -439,29 +467,6 @@
   
   <span class="md-ellipsis">
     First Power Up and Testing
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/required-tools/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Required Tools and Setup
     
   </span>
   
@@ -798,6 +803,21 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Inline Assembler Tutorial
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -810,6 +830,67 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#monitor-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitor Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sample-programs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sample programs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sample programs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hello-world" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hello World
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fibonacci-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fibonacci series
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1101,6 +1182,58 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#monitor-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitor Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sample-programs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sample programs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sample programs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hello-world" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hello World
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fibonacci-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fibonacci series
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1119,9 +1252,115 @@
   
 
 
-  <h1>Inline Assembler Tutorial</h1>
-
-
+<h1 id="monitor">Monitor<a class="headerlink" href="#monitor" title="Permanent link">&para;</a></h1>
+<p>The <strong>MONITOR</strong> is a simple program that provides direct control over the
+system’s memory and CPU execution. It allows you to read and write memory, run
+code from specific addresses, assemble instructions manually, and disassemble
+machine code for inspection.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The description provided here pertains to the <code>/TINY/</code> board, but the
+instructions are transferable to the <code>/MINI/</code> board. The major difference
+is that the <code>/MINI/</code> board supports bank switching and has its ROM
+starting at <code>0xC000</code> where as the <code>/TINY/</code> has ROM starting at <code>0x8000</code>.</p>
+</div>
+<p>Upon booting the <code>/TINY/</code> board, you will be greeted with a selection menu
+which allows you to select the <code>MONITOR</code> option. </p>
+<div class="highlight"><pre><span></span><code>+----------------------------------------------+
+|             BYTECRADLE MONITOR               |
++----------------------------------------------+
+| FREE ZERO PAGE :     0x30 - 0xFF             |
+| FREE RAM       : 0x0400 - 0xFF00             |
+| ROM            : 0x8000 - 0xFFFF             |
++----------------------------------------------+
+| COMMANDS                                     |
+| R&lt;XXXX&gt;[:&lt;XXXX&gt;] read memory                 |
+| W&lt;XXXX&gt;          write to memory             |
+| G&lt;XXXX&gt;          run from address            |
+| A&lt;XXXX&gt;          assemble from address       |
+| D&lt;XXXX&gt;          disassemble from address    |
+| M                show this menu              |
+| Q                quit                        |
++----------------------------------------------+
+</code></pre></div>
+<h2 id="monitor-functions">Monitor Functions<a class="headerlink" href="#monitor-functions" title="Permanent link">&para;</a></h2>
+<p>The Monitor provides several commands that allow direct interaction with the
+system's memory and CPU. These functions are essential for writing, testing, and
+debugging programs at a low level:</p>
+<ul>
+<li>Reading memory (<code>R&lt;XXXX&gt;[:&lt;XXXX&gt;]</code>) Allows you to examine memory contents at a
+  specific address or within a range of addresses.</li>
+<li>Writing to memory (<code>W&lt;XXXX&gt;</code>) Enables manual modification of memory contents at
+  a given address. Useful for inserting data like ASCII strings or instructions.</li>
+<li>Running code (<code>G&lt;XXXX&gt;</code>) Starts execution of code from a specific memory
+  address, enabling you to run programs you have written or loaded into RAM.</li>
+<li>Inline assembly (<code>A&lt;XXXX&gt;</code>) Opens an assembler interface at the specified
+  address, allowing you to input machine code instructions directly in mnemonic
+  form.</li>
+<li>Disassembling code (<code>D&lt;XXXX&gt;</code>) Reads machine code from memory and converts it
+  back into human-readable assembly instructions.</li>
+<li>Showing the menu (<code>M</code>) Displays the monitor’s command menu and current memory
+  layout for quick reference.</li>
+<li>Quitting (<code>Q</code>) Exits the monitor and returns control to the system selection
+  menu or operating environment.</li>
+</ul>
+<p>These functions work together to provide a lightweight but powerful development
+environment directly on the hardware.</p>
+<h2 id="sample-programs">Sample programs<a class="headerlink" href="#sample-programs" title="Permanent link">&para;</a></h2>
+<p>The following examples demonstrate how to use the Monitor’s inline assembler,
+memory writing, and program execution features. By manually assembling
+instructions and inserting data, you can create simple programs directly in
+memory and run them without needing external tools. These exercises are ideal
+for learning how the system interacts with memory and the CPU at a low level.</p>
+<h3 id="hello-world">Hello World<a class="headerlink" href="#hello-world" title="Permanent link">&para;</a></h3>
+<p>Open the inline-assembler using <code>A0400</code> and insert the following assembly instructions:</p>
+<div class="highlight"><pre><span></span><code><span class="mi">0400</span><span class="p">:</span><span class="w"> </span><span class="k">LDA</span><span class="w"> </span><span class="p">#</span><span class="mi">10</span><span class="w">       </span><span class="n">A9</span><span class="w"> </span><span class="mi">10</span>
+<span class="mi">0402</span><span class="p">:</span><span class="w"> </span><span class="k">LDX</span><span class="w"> </span><span class="p">#</span><span class="mi">04</span><span class="w">       </span><span class="n">A2</span><span class="w"> </span><span class="mi">04</span>
+<span class="mi">0404</span><span class="p">:</span><span class="w"> </span><span class="k">JSR</span><span class="w"> </span><span class="n">FFE8</span><span class="w">      </span><span class="mi">20</span><span class="w"> </span><span class="n">E8</span><span class="w"> </span><span class="n">FF</span>
+<span class="mi">0407</span><span class="p">:</span><span class="w"> </span><span class="k">RTS</span><span class="w">           </span><span class="mi">60</span>
+</code></pre></div>
+<p>Next, insert the ASCII characters for the string <code>Hello World!</code> by first typing <code>W0410</code> and entering the following values:</p>
+<div class="highlight"><pre><span></span><code>0410: 48 65 6C 6C 6F 20 57 6F 72 6C 64 21 00
+</code></pre></div>
+<p>To run the small program, type <code>G0400</code>.</p>
+<p>The expected output is:</p>
+<div class="highlight"><pre><span></span><code>@:G0400
+Hello World!
+</code></pre></div>
+<h3 id="fibonacci-series">Fibonacci series<a class="headerlink" href="#fibonacci-series" title="Permanent link">&para;</a></h3>
+<p>Open the inline-assembler using <code>A0400</code> and insert the following assembly instructions:</p>
+<div class="highlight"><pre><span></span><code><span class="mi">0400</span><span class="p">:</span><span class="w"> </span><span class="k">LDA</span><span class="w"> </span><span class="p">#</span><span class="mi">01</span><span class="w">                  </span><span class="n">A9</span><span class="w"> </span><span class="mi">01</span>
+<span class="mi">0402</span><span class="p">:</span><span class="w"> </span><span class="k">LDX</span><span class="w"> </span><span class="p">#</span><span class="mi">01</span><span class="w">                  </span><span class="n">A2</span><span class="w"> </span><span class="mi">01</span>
+<span class="mi">0404</span><span class="p">:</span><span class="w"> </span><span class="k">LDY</span><span class="w"> </span><span class="p">#</span><span class="mi">00</span><span class="w">                  </span><span class="n">A0</span><span class="w"> </span><span class="mi">00</span>
+<span class="mi">0406</span><span class="p">:</span><span class="w"> </span><span class="n">PHX</span><span class="w">                      </span><span class="n">DA</span>
+<span class="mi">0407</span><span class="p">:</span><span class="w"> </span><span class="n">PHY</span><span class="w">                      </span><span class="mi">5</span><span class="n">A</span>
+<span class="mi">0408</span><span class="p">:</span><span class="w"> </span><span class="k">JSR</span><span class="w"> </span><span class="n">FFF4</span><span class="w">                 </span><span class="mi">20</span><span class="w"> </span><span class="n">F4</span><span class="w"> </span><span class="n">FF</span>
+<span class="mi">040</span><span class="nl">B:</span><span class="w"> </span><span class="k">JSR</span><span class="w"> </span><span class="n">FFEE</span><span class="w">                 </span><span class="mi">20</span><span class="w"> </span><span class="n">EE</span><span class="w"> </span><span class="n">FF</span>
+<span class="mi">040</span><span class="nl">E:</span><span class="w"> </span><span class="n">PLY</span><span class="w">                      </span><span class="mi">7</span><span class="n">A</span>
+<span class="mi">040</span><span class="nl">F:</span><span class="w"> </span><span class="n">PLX</span><span class="w">                      </span><span class="n">FA</span>
+<span class="mi">0410</span><span class="p">:</span><span class="w"> </span><span class="k">STX</span><span class="w"> </span><span class="mi">30</span><span class="w">                   </span><span class="mi">86</span><span class="w"> </span><span class="mi">30</span>
+<span class="mi">0412</span><span class="p">:</span><span class="w"> </span><span class="k">CLC</span><span class="w">                      </span><span class="mi">18</span>
+<span class="mi">0413</span><span class="p">:</span><span class="w"> </span><span class="k">PHA</span><span class="w">                      </span><span class="mi">48</span>
+<span class="mi">0414</span><span class="p">:</span><span class="w"> </span><span class="k">ADC</span><span class="w"> </span><span class="mi">30</span><span class="w">                   </span><span class="mi">65</span><span class="w"> </span><span class="mi">30</span>
+<span class="mi">0416</span><span class="p">:</span><span class="w"> </span><span class="n">PLX</span><span class="w">                      </span><span class="n">FA</span>
+<span class="mi">0417</span><span class="p">:</span><span class="w"> </span><span class="k">INY</span><span class="w">                      </span><span class="n">C8</span>
+<span class="mi">0418</span><span class="p">:</span><span class="w"> </span><span class="k">CPY</span><span class="w"> </span><span class="p">#</span><span class="mi">0</span><span class="n">C</span><span class="w">                  </span><span class="n">C0</span><span class="w"> </span><span class="mi">0</span><span class="n">C</span>
+<span class="mi">041</span><span class="nl">A:</span><span class="w"> </span><span class="k">BNE</span><span class="w"> </span><span class="n">EA</span><span class="w">                   </span><span class="n">D0</span><span class="w"> </span><span class="n">EA</span>
+<span class="mi">041</span><span class="nl">C:</span><span class="w"> </span><span class="k">RTS</span><span class="w">                      </span><span class="mi">60</span>
+</code></pre></div>
+<p>To run the program, type <code>G0400</code>, which yields the following output:</p>
+<div class="highlight"><pre><span></span><code>@:G0400
+1
+2
+3
+5
+8
+13
+21
+34
+55
+89
+</code></pre></div>
 
 
 
