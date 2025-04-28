@@ -10,6 +10,7 @@
 .import sieve
 .import startchess
 .import monitor
+.import git_commit_id
 
 ;-------------------------------------------------------------------------------
 ; PROGRAM HEADER
@@ -104,12 +105,12 @@ printheader:
 
 ; pointer table (low/high interleaved)
 @lines_lsb:
-    .byte <@str2, <@str1, <@str2
+    .byte <@str2, <@str1, <@str2, <git_commit_id, <@str2
     .byte <@strram, <@strrom, <@strio, <@stracia, <@str2
     .byte <@str3, <@str4, <@str5
     .byte <@str6, <@str7, <@str8, <@str9, <@str2, 0
 @lines_msb:
-    .byte >@str2, >@str1, >@str2
+    .byte >@str2, >@str1, >@str2, >git_commit_id, >@str2
     .byte >@strram, >@strrom, >@strio, >@stracia, >@str2
     .byte >@str3, >@str4, >@str5
     .byte >@str6, >@str7, >@str8, >@str9, >@str2, 0
