@@ -7,37 +7,38 @@ CFG = rom.cfg
 TARGET = tinyrom.bin
 
 # Force gitid.s to regenerate always
-.PHONY: gitid clean
+.PHONY: clean
 
 # Automatically collect all .s files and convert to .o
-SRC = $(filter-out gitid.s, $(wildcard *.s)) gitid.s
+SRC = $(filter-out gitid.s, $(wildcard *.s))
 OBJ = $(SRC:.s=.o)
 
 # Default target
-all: gitid $(TARGET)
+all: $(TARGET)
 
 # Assemble each .s to .o
 %.o: %.s
 	$(AS) $< -o $@
 
 # Link all object files into final binary
-$(TARGET): $(OBJ) $(CFG)
-	$(LD) -o $@ -C $(CFG) $(OBJ)
+$(TARGET): $(OBJ) $(CFG) gitid.o
+	$(LD) -o $@ -C $(CFG) $(OBJ) gitid.o
 
 # Flash to device
 flash: $(TARGET)
 	$(FLASH) -i $(TARGET) -w -b 0
 
 # Run in emulator
-run: $(TARGET)
+run: gitid $(TARGET)
 	$(EMULATOR) -r $(TARGET) -b tiny
 
 # Generate gitid.s from current Git commit hash
-gitid:
-	echo ".export git_commit_id" > gitid.s
-	echo ".segment \"DATA\"" >> gitid.s
+gitid.o:
+	echo '.export git_commit_id' > gitid.s
+	echo '.segment "DATA"' >> gitid.s
 	echo "git_commit_id:" >> gitid.s
-	echo "    .asciiz \"| GIT COMMIT ID: $(shell git rev-parse --short HEAD)            |\"" >> gitid.s
+	echo '    .asciiz "| GIT COMMIT ID: $(shell git rev-parse --short HEAD)            |"' >> gitid.s
+	$(AS) gitid.s -o gitid.o
 
 # Clean build artifacts
 clean:
