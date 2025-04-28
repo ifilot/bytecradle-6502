@@ -74,7 +74,7 @@ printinfo:
 @strram:
     .asciiz "| FREE RAM       : 0x0400 - 0xFF00             |"
 @strrom:
-    .asciiz "| ROM            : 0xC000 - 0xFFFF             |"
+    .asciiz "| ROM            : 0x8000 - 0xFFFF             |"
 
 ; menu help strings
 @strmenu0:

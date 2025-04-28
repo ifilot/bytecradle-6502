@@ -5,9 +5,9 @@ nav:
       - What is the Platform?: introduction/what-is-platform.md
       - Why 65C02?: introduction/why-65c02.md
   - Getting Started:
+      - Required Tools and Setup: getting-started/required-tools.md
       - Assembling the Board: getting-started/assembling-the-board.md
       - First Power Up and Testing: getting-started/first-power-up.md
-      - Required Tools and Setup: getting-started/required-tools.md
   - Hardware:
       - Board Overview: hardware/board-overview.md
       - Schematics and PCB Layout: hardware/schematics-layout.md

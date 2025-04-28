@@ -119,9 +119,9 @@ printheader:
 @str2:
     .asciiz "+-----------------------------------+"
 @strram:
-    .asciiz "| RAM  : 0x0000 - 0xFEFF            |"
+    .asciiz "| RAM  : 0x0000 - 0x7EFF            |"
 @strrom:
-    .asciiz "| RAM  : 0xC000 - 0xFFFF            |"
+    .asciiz "| ROM  : 0x8000 - 0xFFFF            |"
 @strio:
     .asciiz "| IO   : 0x7F00 - 0x7FFF            |"
 @stracia:
