@@ -7,10 +7,10 @@ CFG = rom.cfg
 TARGET = tinyrom.bin
 
 # Force gitid.s to regenerate always
-.PHONY: gitid
+.PHONY: gitid clean
 
 # Automatically collect all .s files and convert to .o
-SRC = $(wildcard *.s)
+SRC = $(filter-out gitid.s, $(wildcard *.s)) gitid.s
 OBJ = $(SRC:.s=.o)
 
 # Default target
@@ -29,16 +29,16 @@ flash: $(TARGET)
 	$(FLASH) -i $(TARGET) -w -b 0
 
 # Run in emulator
-run: gitid $(TARGET)
+run: $(TARGET)
 	$(EMULATOR) -r $(TARGET) -b tiny
 
 # Generate gitid.s from current Git commit hash
 gitid:
-	echo '.export git_commit_id' > gitid.s
-	echo '.segment "DATA"' >> gitid.s
+	echo ".export git_commit_id" > gitid.s
+	echo ".segment \"DATA\"" >> gitid.s
 	echo "git_commit_id:" >> gitid.s
-	echo '    .asciiz "| GIT COMMIT ID: $(shell git rev-parse --short HEAD)            |"' >> gitid.s
+	echo "    .asciiz \"| GIT COMMIT ID: $(shell git rev-parse --short HEAD)            |\"" >> gitid.s
 
 # Clean build artifacts
 clean:
-	rm -f *.o $(TARGET)
+	rm -f *.o $(TARGET) gitid.s
