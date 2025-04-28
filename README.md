@@ -10,6 +10,20 @@ hardware**. Built around the **WDC 65C02** microprocessor, it provides a
 hands-on platform for studying **system initialization, memory management,
 device interfacing, and file system handling**.  
 
+## Table of Contents
+
+- [BYTECRADLE 6502](#bytecradle-6502)
+- [Tier-system](#tier-system)
+- [Overview](#overview)
+  - [Shared Components](#shared-components)
+- [Tier Comparison](#tier-comparison)
+- [About the Mini SBC](#about-the-mini-sbc)
+- [Download ROMs](#download-roms)
+- [License](#license)
+  - [Software](#software)
+  - [Hardware](#hardware)
+- [Contributing](#contributing)
+
 ## Tier-system
 
 This project offers two tiers of single board computers (SBCs), each tailored to
@@ -54,6 +68,10 @@ The Mini SBC expands significantly on the Tiny version by incorporating a large
 memory map through bank switching and adding persistent storage with an SD card
 interface. It uses the versatile 65C22 VIA for managing SD card communication
 and possibly other peripherals in future expansions.
+
+## Download ROMs
+
+* [TinyROM](https://github.com/ifilot/bytecradle-6502/releases/download/tinyrom-latest/tinyrom.bin)
 
 ## License
 
