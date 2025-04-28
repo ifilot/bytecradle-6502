@@ -48,10 +48,10 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: tinyrom-latest
+          name: Latest TinyROM Build
           files: |
             src/tinyrom/tinyrom.bin
-          tag_name: tinyrom-latest
-          release_name: Latest TinyROM Build
-          overwrite: true
+          make_latest: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
