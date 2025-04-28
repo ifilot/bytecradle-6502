@@ -10,7 +10,7 @@ hardware**. Built around the **WDC 65C02** microprocessor, it provides a
 hands-on platform for studying **system initialization, memory management,
 device interfacing, and file system handling**.  
 
-## Table of Contents
+## 📋 Table of Contents
 
 - [BYTECRADLE 6502](#bytecradle-6502)
 - [Tier-system](#tier-system)
