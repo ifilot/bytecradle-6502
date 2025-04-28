@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  build-emulator:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,33 +17,32 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential gcc make cc65 libtclap-dev git
 
-      - name: Build Operating System
-        run: |
-          cd src/bcos
-          make
-      
-      - name: Build TINY ROM
-        run: |
-          cd src/tinyrom
-          make
-
-      - name: Build MINI ROM
-        run: |
-          cd src/minirom
-          make
-
-      - name: Build programs
-        run: |
-          cd programs
-          make
-
       - name: Build Emulator
         run: |
           cd emulator
           mkdir build && cd build
           cmake ../src
           make -j
-      
+
+  build-tinyrom:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential make cc65 git
+
+      - name: Build TINY ROM
+        run: |
+          cd src/tinyrom
+          make
+
       - name: Update tinyrom release
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: softprops/action-gh-release@v2
