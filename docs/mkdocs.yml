@@ -10,6 +10,7 @@ nav:
       - First Power Up and Testing: getting-started/first-power-up.md
   - Hardware:
       - Board Overview: hardware/board-overview.md
+      - Memory Maps: hardware/memory-maps.md
       - Schematics and PCB Layout: hardware/schematics-layout.md
       - Design Principles: hardware/design-principles.md
   - Software:
@@ -17,7 +18,6 @@ nav:
       - Installing the Emulator: software/installing-emulator.md
       - Emulator Usage Basics: software/usage-basics.md
   - Tutorials:
-      - Hello World: tutorials/hello-world.md
       - Inline Assembler Tutorial: tutorials/inline-assembler.md
       - Working with Peripherals: tutorials/peripherals.md
       - Debugging and Troubleshooting: tutorials/debugging.md
