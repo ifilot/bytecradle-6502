@@ -70,9 +70,9 @@ printinfo:
 @str2:
     .asciiz "+----------------------------------------------+"
 @strzp:
-    .asciiz "| FREE ZERO PAGE :     0x30 - 0xFF             |"
+    .asciiz "| FREE ZERO PAGE :     0x40 - 0xFF             |"
 @strram:
-    .asciiz "| FREE RAM       : 0x0400 - 0xFF00             |"
+    .asciiz "| FREE RAM       : 0x0400 - 0x7F00             |"
 @strrom:
     .asciiz "| ROM            : 0x8000 - 0xFFFF             |"
 
@@ -189,7 +189,8 @@ cmdrunfar:
     jmp cmdrun
 
 cmdmenufar:
-    jmp printheader
+    jsr newline
+    jmp printinfo
 
 cmdreadfar:
     inx
@@ -412,11 +413,10 @@ hex42:
 ;-------------------------------------------------------------------------------
 ; HEXDUMP routine
 ;
-; Uses BUF2, BUF1 is used by PUTHEX routine
+; Uses BUF2 for long-term storage, BUF1 is used by PUTHEX routine
 ;-------------------------------------------------------------------------------
 hexdump:
     ; setup variables
-    ;lda STARTADDR       ; load low byte start address (ignored)
     stz MALB            ; ignore low byte
     lda STARTADDR+1     ; load high byte
     sta MAHB            ; store high byte
@@ -462,7 +462,7 @@ hexdump:
     lsr
     lsr
     lsr
-    sta NRLINES+1       ; store
+    sta NRLINES+1       ; store upper byte
     jmp @nextline
 @skiplinecalc:
     lda #1
@@ -485,12 +485,10 @@ hexdump:
     jsr putch  
     ldy #0              ; number of bytes to print (second segment)
 @nextbyte:
-    phy                 ; put y on stack as puthex garbles it
     lda (MALB),y        ; load byte
     jsr puthex          ; print byte in hex format, garbles y
     lda #' '            ; add space
     jsr putch  
-    ply                 ; restore y from stack
     iny
     cpy #8              ; check if halfway
     bne @skip           ; if not, skip
@@ -506,7 +504,6 @@ hexdump:
     jsr putch  
     ldy #0              ; number of bytes to print (third segment)
 @nextchar:
-    phy                 ; y will be garbed in putch   routine
     lda (MALB),y        ; load byte again
     cmp #$20            ; check if value is less than $20
     bcc @printdot       ; if so, print a dot
@@ -517,7 +514,6 @@ hexdump:
     lda #'.'            ; load dot character
 @next:
     jsr putch           ; print character
-    ply                 ; restore y
     iny
     cpy #16             ; check if 16 characters have been consumed
     bne @nextchar       ; if not, next character
@@ -559,9 +555,9 @@ hexdump:
     beq @clearexit
     cmp #'q'
     beq @clearexit
-    lda #15
-    sta NRLINES
-    stz NRLINES+1
+    lda #15             ; reset line counter to 15
+    sta NRLINES         ; store lower byte
+    stz NRLINES+1       ; reset upper byte
     jsr clearline
     jmp @nextline
 @clearexit:
@@ -570,7 +566,6 @@ hexdump:
 
 @contstr:
     .asciiz " -- Press q to quit or any other key to continue --"
-
 
 ;-------------------------------------------------------------------------------
 ; PRINTHEADER routine

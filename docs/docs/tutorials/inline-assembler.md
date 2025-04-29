@@ -18,8 +18,8 @@ which allows you to select the `MONITOR` option.
 +----------------------------------------------+
 |             BYTECRADLE MONITOR               |
 +----------------------------------------------+
-| FREE ZERO PAGE :     0x30 - 0xFF             |
-| FREE RAM       : 0x0400 - 0xFF00             |
+| FREE ZERO PAGE :     0x40 - 0xFF             |
+| FREE RAM       : 0x0400 - 0x7F00             |
 | ROM            : 0x8000 - 0xFFFF             |
 +----------------------------------------------+
 | COMMANDS                                     |
@@ -106,16 +106,21 @@ Open the inline-assembler using `A0400` and insert the following assembly instru
 040B: JSR FFEE                 20 EE FF
 040E: PLY                      7A
 040F: PLX                      FA
-0410: STX 30                   86 30
+0410: STX 40                   86 40
 0412: CLC                      18
 0413: PHA                      48
-0414: ADC 30                   65 30
+0414: ADC 40                   65 40
 0416: PLX                      FA
 0417: INY                      C8
 0418: CPY #0C                  C0 0C
 041A: BNE EA                   D0 EA
 041C: RTS                      60
 ```
+
+!!!note
+    The value of `$40` used for `STX 40` and `ADC 40` refer to zero page address
+    `$40`. Note that we are only allowed to use zero page addresses starting from
+    `$40` as everything below is used by the system (including the monitor).
 
 To run the program, type `G0400`, which yields the following output:
 

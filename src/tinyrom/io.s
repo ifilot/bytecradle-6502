@@ -96,7 +96,7 @@ puttab:
 ; Input X:A contains HB:LB of string pointer
 ;
 ; Loops over a string and print its characters until a zero-terminating character 
-; is found. Assumes that $10 is used on the zero page to store the address of
+; is found. Assumes that STRLB is used on the zero page to store the address of
 ; the string.
 ;-------------------------------------------------------------------------------
 putstr:
@@ -107,7 +107,7 @@ putstr:
 @nextchar:
     lda (STRLB),y   ; load character from string
     beq @exit       ; if terminating character is read, exit
-    jsr putch      ; else, print char
+    jsr putch       ; else, print char
     iny             ; increment y
     jmp @nextchar   ; read next char
 @exit:
@@ -212,14 +212,16 @@ ischarvalid:
 ; CLEARLINE routine
 ;
 ; Clears the current line on the terminal
+;
+; Garbles: A, X, Y
 ;-------------------------------------------------------------------------------
 clearline:
-    ldx #>@clearline
     lda #<@clearline
+    ldx #>@clearline
     jsr putstr
     rts
 @clearline:
-    .byte ESC, "[2K", $0D, $00
+    .byte ESC, "[2K", $0D, $00      ; ANSI code for clear line
 
 ;-------------------------------------------------------------------------------
 ; CHARTOUPPER
