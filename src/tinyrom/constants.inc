@@ -33,15 +33,15 @@
 .define ENDADDR         $18
 .define MALB            $1A     ; monitor address low byte
 .define MAHB            $1B     ; monitor address high byte
-.define NRLINES         $1C     ; number of lines to print by hexdump routine
+.define NRLINES         $1C     ; number of lines (word) to print by hexdump routine
 
 ; specific ZP addresses for the hexdump routine of the monitor
-.define STRLB           $1D     ; string low byte
-.define STRHB           $1E     ; string high byte
+.define STRLB           $1E     ; string low byte
+.define STRHB           $1F     ; string high byte
 
 ; textbuffer variables
-.define CMDLENGTH       $1F     ; number of bytes in buffer, max 16
-.define CMDBUF          $20     ; position of command buffer
+.define CMDLENGTH       $20     ; number of bytes in buffer, max 16
+.define CMDBUF          $30     ; position of command buffer
 
 ; print characters
 .define LF              $0A     ; LF character (line feed)
