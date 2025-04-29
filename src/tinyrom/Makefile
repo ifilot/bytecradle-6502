@@ -22,14 +22,14 @@ all: $(TARGET)
 
 # Link all object files into final binary
 $(TARGET): $(OBJ) $(CFG) gitid.o
-	$(LD) -o $@ -C $(CFG) $(OBJ) gitid.o
+	$(LD) -o $(TARGET) -C $(CFG) $(OBJ) gitid.o
 
 # Flash to device
 flash: $(TARGET)
 	$(FLASH) -i $(TARGET) -w -b 0
 
 # Run in emulator
-run: gitid $(TARGET)
+run: $(TARGET)
 	$(EMULATOR) -r $(TARGET) -b tiny
 
 # Generate gitid.s from current Git commit hash
