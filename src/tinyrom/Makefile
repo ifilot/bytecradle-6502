@@ -24,10 +24,6 @@ all: $(TARGET)
 $(TARGET): $(OBJ) $(CFG) gitid.o
 	$(LD) -o $(TARGET) -C $(CFG) $(OBJ) gitid.o
 
-# Flash to device
-flash: $(TARGET)
-	$(FLASH) -i $(TARGET) -w -b 0
-
 # Run in emulator
 run: $(TARGET)
 	$(EMULATOR) -r $(TARGET) -b tiny
