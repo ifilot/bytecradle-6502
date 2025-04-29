@@ -16,6 +16,8 @@
 .export printnibble
 .export ischarvalid
 .export clearline
+.export strlen
+.export putrepch
 
 .PSC02
 
@@ -111,6 +113,42 @@ putstr:
     iny             ; increment y
     jmp @nextchar   ; read next char
 @exit:
+    rts
+
+;-------------------------------------------------------------------------------
+; STRLEN routine
+; Garbles: A,X,Y
+; Input X:A contains HB:LB of string pointer
+;
+; Assumes that the string is smaller than 256 bytes
+;
+; Counts the number of bytes in a string and stores this in A
+; Use BUF1 and BUF2 as temporary variables
+;-------------------------------------------------------------------------------
+strlen:
+    sta BUF1                ; store low byte into temp pointer
+    stx BUF2                ; store high byte into temp pointer
+    ldy #0                  ; start index at 0
+@count_loop:
+    lda (BUF1),y            ; load (pointer),Y
+    beq @done               ; if zero, end of string
+    iny                     ; next character
+    bne @count_loop         ; loop (max 255 characters)
+@done:
+    tya                     ; move count to A
+    rts
+
+;-------------------------------------------------------------------------------
+; PUTREPCH routine
+; Garbles: X
+; Input: A - character to repeat
+;        X - number of times to repeat character
+;-------------------------------------------------------------------------------
+putrepch:
+    jsr putch
+    dex
+    cpx #0
+    bne putrepch
     rts
 
 ;-------------------------------------------------------------------------------

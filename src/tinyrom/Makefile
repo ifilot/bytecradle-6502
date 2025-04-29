@@ -34,9 +34,9 @@ run: $(TARGET)
 
 # Generate gitid.s from current Git commit hash
 gitid.o:
-	echo '.export git_commit_id' > gitid.s
+	echo '.export gitid' > gitid.s
 	echo '.segment "DATA"' >> gitid.s
-	echo "git_commit_id:" >> gitid.s
+	echo "gitid:" >> gitid.s
 	echo '    .asciiz "| GIT COMMIT ID: $(shell git rev-parse --short HEAD)            |"' >> gitid.s
 	$(AS) gitid.s -o gitid.o
 
