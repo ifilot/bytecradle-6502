@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../../software/usage-basics/">
+        <link rel="prev" href="../board-overview/">
       
       
-        <link rel="next" href="../inline-assembler/">
+        <link rel="next" href="../schematics-layout/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Hello World - ByteCradle 6502</title>
+        <title>Memory Maps - ByteCradle 6502</title>
       
     
     
@@ -71,6 +71,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#memory-maps" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -103,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Hello World
+              Memory Maps
             
           </span>
         </div>
@@ -483,8 +488,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -495,11 +502,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -515,7 +522,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             Hardware
@@ -529,7 +536,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../hardware/board-overview/" class="md-nav__link">
+      <a href="../board-overview/" class="md-nav__link">
         
   
   
@@ -549,10 +556,93 @@
                 
   
   
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Memory Maps
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Memory Maps
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tiny-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tiny Board
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mini-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mini Board
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
   
   
     <li class="md-nav__item">
-      <a href="../../hardware/schematics-layout/" class="md-nav__link">
+      <a href="../schematics-layout/" class="md-nav__link">
         
   
   
@@ -575,7 +665,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../hardware/design-principles/" class="md-nav__link">
+      <a href="../design-principles/" class="md-nav__link">
         
   
   
@@ -721,8 +811,6 @@
       
   
   
-    
-  
   
   
     
@@ -735,11 +823,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
@@ -755,7 +843,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Tutorials
@@ -766,41 +854,10 @@
                 
   
   
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    Hello World
-    
-  </span>
-  
-
-      </a>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
   
   
     <li class="md-nav__item">
-      <a href="../inline-assembler/" class="md-nav__link">
+      <a href="../../tutorials/inline-assembler/" class="md-nav__link">
         
   
   
@@ -823,7 +880,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../peripherals/" class="md-nav__link">
+      <a href="../../tutorials/peripherals/" class="md-nav__link">
         
   
   
@@ -846,7 +903,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../debugging/" class="md-nav__link">
+      <a href="../../tutorials/debugging/" class="md-nav__link">
         
   
   
@@ -1101,6 +1158,34 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tiny-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tiny Board
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mini-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mini Board
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1119,9 +1204,174 @@
   
 
 
-  <h1>Hello World</h1>
-
-
+<h1 id="memory-maps">Memory Maps<a class="headerlink" href="#memory-maps" title="Permanent link">&para;</a></h1>
+<h2 id="tiny-board">Tiny Board<a class="headerlink" href="#tiny-board" title="Permanent link">&para;</a></h2>
+<p>The Tiny Board uses a flat 64 KiB memory map typical of 65C02-based systems. The
+first 256 bytes (<code>$0000–$00FF</code>) are Zero Page RAM, followed by the stack
+at <code>$0100–$01FF</code>. The range <code>$0200–$03FF</code> is reserved for OS use, while
+<code>$0400–$7EFF</code> serves as general-purpose RAM.</p>
+<p>A small I/O region at <code>$7F00–$7FFF</code> includes only <code>$7F04–$7F07</code>, which is
+connected to a 65C51 ACIA UART for serial communication. The remainder of
+the I/O space is currently unused but mapped to RAM, meaning it is technically
+accessible for reads and writes. However, using this area is not
+recommended, as future hardware revisions may repurpose it. Users may also
+reconfigure the address decoding logic by updating the ATF22V10 chip to
+change or expand the I/O mapping as needed.</p>
+<p>The upper 32 KiB (<code>$8000–$FFFF</code>) is mapped to ROM, containing system
+firmware such as a monitor or BASIC interpreter.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Address Range</th>
+<th style="text-align: left;">Size</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>$0000-$00FF</code></td>
+<td style="text-align: left;">256 bytes</td>
+<td style="text-align: left;"><strong>Zero Page RAM</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$0100-$01FF</code></td>
+<td style="text-align: left;">256 bytes</td>
+<td style="text-align: left;"><strong>Stack</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$0200-$03FF</code></td>
+<td style="text-align: left;">512 bytes</td>
+<td style="text-align: left;"><strong>Reserved (OS Use)</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$0400-$7EFF</code></td>
+<td style="text-align: left;">~31 KiB</td>
+<td style="text-align: left;"><strong>General Purpose RAM</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$7F00-$7F03</code></td>
+<td style="text-align: left;">4 bytes</td>
+<td style="text-align: left;"><strong>Unused / Reserved</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$7F04-$7F07</code></td>
+<td style="text-align: left;">4 bytes</td>
+<td style="text-align: left;"><strong>ACIA (UART)</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$7F08-$7FFF</code></td>
+<td style="text-align: left;">248 bytes</td>
+<td style="text-align: left;"><strong>Unused / Reserved</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$8000-$FFFF</code></td>
+<td style="text-align: left;">32 KiB</td>
+<td style="text-align: left;"><strong>ROM</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="mini-board">Mini Board<a class="headerlink" href="#mini-board" title="Permanent link">&para;</a></h2>
+<p>The Mini Board features a flexible 64 KiB memory map designed to support both
+fixed and bank-switched memory regions. The lower memory (<code>$0000–$7EFF</code>) is
+primarily RAM, with the first 256 bytes (<code>$0000–$00FF</code>) allocated as <strong>Zero
+Page</strong>, and the next 256 bytes (<code>$0100–$01FF</code>) serving as the stack.
+Addresses <code>$0200–$03FF</code> are reserved for OS-level functionality, while the
+remainder up to <code>$7EFF</code> is available as general-purpose RAM, implemented
+across fixed banks 0–3.</p>
+<p>The region <code>$7F00–$7FFF</code> is dedicated to memory-mapped I/O, divided into
+four 64-byte blocks using only address lines A6 and A7. The first block
+(<code>$7F00–$7F3F</code>) connects to a 65C51 ACIA for serial communication, while the
+second (<code>$7F40–$7F7F</code>) maps to a 6522 VIA. The remaining two blocks
+(<code>$7F80–$7FBF</code> and <code>$7FC0–$7FFF</code>) are used to write to the ROM and RAM
+bank registers, respectively.</p>
+<p>The upper half of the address space is split between banked and fixed
+ROM/RAM. The ranges <code>$8000–$9FFF</code> and <code>$A000–$BFFF</code> are bank-switched RAM
+and ROM windows, supporting 64 banks each. The final 16 KiB (<code>$C000–$FFFF</code>) is
+mapped to fixed ROM, permanently connected to banks 0 and 1, typically
+containing system firmware.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The bank-switched ROM and RAM regions (<code>$A000–$BFFF</code> and
+<code>$8000–$9FFF</code>) share the same physical memory space as the fixed ROM
+(<code>$C000–$FFFF</code>) and fixed RAM (<code>$0000–$7EFF</code>), respectively. This means that
+selecting ROM banks 0–1 or RAM banks 0–3 will expose the <strong>same
+physical memory</strong> already mapped in the fixed regions. For example, if RAM
+bank 0 is selected, writes may unintentionally modify the stack or zero
+page; selecting ROM bank 0 might interfere with the interrupt vectors or
+firmware routines.  </p>
+<p>While overlapping ROM banks are less problematic—since ROM is typically
+read-only and cannot be written to—it can still cause confusion or redundancy if
+the same code or data appears in both fixed and banked areas. It is strongly
+recommended to begin using <strong>RAM banks from 4 upwards</strong> and <strong>ROM banks from 2
+upwards</strong> to avoid overlapping with fixed memory areas and ensure predictable
+behavior.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Address Range</th>
+<th style="text-align: left;">Size</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>$0000-$00FF</code></td>
+<td style="text-align: left;">256 bytes</td>
+<td style="text-align: left;"><strong>Zero Page RAM</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$0100-$01FF</code></td>
+<td style="text-align: left;">256 bytes</td>
+<td style="text-align: left;"><strong>Stack</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$0200-$03FF</code></td>
+<td style="text-align: left;">512 bytes</td>
+<td style="text-align: left;"><strong>Reserved (OS Use)</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$0400-$7EFF</code></td>
+<td style="text-align: left;">~31 KiB</td>
+<td style="text-align: left;"><strong>General Purpose RAM (Fixed, Banks 0–3)</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$7F00-$7F3F</code></td>
+<td style="text-align: left;">64 bytes</td>
+<td style="text-align: left;"><strong>ACIA (UART)</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$7F40-$7F7F</code></td>
+<td style="text-align: left;">64 bytes</td>
+<td style="text-align: left;"><strong>VIA</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$7F80-$7FBF</code></td>
+<td style="text-align: left;">64 bytes</td>
+<td style="text-align: left;"><strong>ROM Bank Register</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$7FC0-$7FFF</code></td>
+<td style="text-align: left;">64 bytes</td>
+<td style="text-align: left;"><strong>RAM Bank Register</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$8000-$9FFF</code></td>
+<td style="text-align: left;">8 KiB</td>
+<td style="text-align: left;"><strong>Bank-switched RAM Window (Banks 0–63)</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$A000-$BFFF</code></td>
+<td style="text-align: left;">8 KiB</td>
+<td style="text-align: left;"><strong>Bank-switched ROM Window (Banks 0–63)</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$C000-$FFFF</code></td>
+<td style="text-align: left;">16 KiB</td>
+<td style="text-align: left;"><strong>Fixed ROM (Banks 0–1 mapped permanently)</strong></td>
+</tr>
+</tbody>
+</table>
 
 
 
