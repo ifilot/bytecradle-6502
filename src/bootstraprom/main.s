@@ -26,11 +26,22 @@ boot:                              ; reset vector points here
 ; Main routine
 ;-------------------------------------------------------------------------------
 main:
+    ldx #0
+@next:
+    lda @str,x
+    jsr putch
+    inx
+    cpx #3
+    bne @next
+@loop:
     jsr getch
     cmp #0
-    beq main
+    beq @loop
     jsr putch
-    jmp main
+    jmp @loop
+
+@str:
+    .byte '@', ':', ' '
 
 ;-------------------------------------------------------------------------------
 ; Initialize the system
