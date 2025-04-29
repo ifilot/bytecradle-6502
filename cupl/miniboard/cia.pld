@@ -1,0 +1,207 @@
+Name     ATF1502AS;
+PartNo   00;
+Date     03/04/2025;
+Revision 1.0;
+Designer Ivo Filot;
+Company  retrohacks.nl;
+Assembly None;
+Location None;
+Device   f1502ispplcc44;
+
+PROPERTY ATMEL {POWER_RESET = OFF};
+PROPERTY ATMEL {PIN_KEEP = ON};
+PROPERTY ATMEL {PREASSIGN = KEEP};
+
+/*---------------------------------------------------------------------*/
+/* Address Bus                                                         */
+/*---------------------------------------------------------------------*/
+PIN 21 = A6;
+PIN 2  = A7;
+PIN 4  = A8;
+PIN 5  = A9;
+PIN 6  = A10;
+PIN 8  = A11;
+PIN 9  = A12;
+PIN 11 = A13;
+PIN 12 = A14;
+PIN 14 = A15;
+
+/*---------------------------------------------------------------------*/
+/* Data Bus                                                            */
+/*---------------------------------------------------------------------*/
+PIN 41 = D0;
+PIN 40 = D1;
+PIN 39 = D2;
+PIN 37 = D3;
+PIN 36 = D4;
+PIN 34 = D5;
+PIN 33 = D6;
+PIN 31 = D7;
+
+/*---------------------------------------------------------------------*/
+/* Bank pins                                                           */
+/*---------------------------------------------------------------------*/
+PIN 29 = B0;
+PIN 28 = B1;
+PIN 27 = B2;
+PIN 26 = B3;
+PIN 25 = B4;
+PIN 24 = B5;
+
+/*---------------------------------------------------------------------*/
+/* Control pins                                                        */
+/*---------------------------------------------------------------------*/
+PIN 1 = RES_N;
+PIN 44 = RW;
+PIN 43 = CLK;
+
+/*---------------------------------------------------------------------*/
+/* Selection lines                                                     */
+/*---------------------------------------------------------------------*/
+PIN 16 = RAM_CS_N;
+PIN 17 = RAM_OE_N;
+PIN 18 = UART_CS_N;
+PIN 19 = VIA_CS_N;
+PIN 20 = ROM_CS_N;
+
+/*---------------------------------------------------------------------*/
+/* I/O selection                                                       */
+/*---------------------------------------------------------------------*/
+IO_SEL_N = !( !A15 & A14 & A13 & A12 & A11 & A10 & A9 & A8 );
+
+/*---------------------------------------------------------------------*/
+/* Chip select line for ROM chip                                       */
+/*---------------------------------------------------------------------*/
+ROM_CS_N = !(
+    (A15 & A14)             /* $C000-$FFFF Fixed ROM -  16 KiB */
+  # (A15 & !A14 & A13)      /* $A000-$BFFF Banked ROM - 8 KiB  */
+);
+
+/*---------------------------------------------------------------------*/
+/* Chip select line for RAM chip                                       */
+/*---------------------------------------------------------------------*/
+RAM_OE_N = !(
+    ( !A15 & IO_SEL_N )      /* Fixed RAM, excluding I/O */
+  # ( A15 & !A14 & !A13 )    /* Banked RAM */
+);
+RAM_CS_N = !(RAM_OE_N & CLK);
+
+/*---------------------------------------------------------------------*/
+/* Chip select lines for I/O address space ($7F00-$7FFF)               */
+/*---------------------------------------------------------------------*/
+
+/* UART ($7F00-$7F3F): A7=0, A6=0 - ACTIVE LOW */
+UART_CS_N = !( !IO_SEL_N & !A7 & !A6 );
+
+/* VIA ($7F40-$7F7F): A7=0, A6=1 - ACTIVE LOW */
+VIA_CS_N = !( !IO_SEL_N & !A7 & A6 );
+
+/* ROM bank register ($7F80-$7FBF): A7=1, A6=0 - ACTIVE HIGH */
+ROMBANK_CS = ( !IO_SEL_N & A7 & !A6 );
+
+/* RAM bank register ($7FC0-$7FFF): A7=1, A6=1 - ACTIVE HIGH */
+RAMBANK_CS = ( !IO_SEL_N & A7 & A6 );
+
+/*---------------------------------------------------------------------*/
+/* MEMORY REGIONS                                                      */
+/*---------------------------------------------------------------------*/
+FIXED_RAM_REGION = !A15 & IO_SEL_N;      /* $0000-$7EFF, excluding I/O */
+RAM_BANK_REGION  = A15 & !A14 & !A13;    /* $8000-$9FFF */
+ROM_BANK_REGION  = A15 & !A14 & A13;     /* $A000-$BFFF */
+FIXED_ROM_REGION = A15 & A14;            /* $C000-$FFFF */
+
+/*---------------------------------------------------------------------*/
+/* ROM bank control (ROMB0-ROMB5)                                      */
+/* Captures D0-D5 when ROMBANK_CS is high and CLK is low               */
+/*---------------------------------------------------------------------*/
+
+/* Define a field for ROMB bits */
+Pinnode = [ROMB5..ROMB0];
+
+/* Clock flip-flops when !CLK AND ROMBANK_CS are true */
+[ROMB5..ROMB0].CK = !CLK & !RW & ROMBANK_CS;
+
+/* Data input from D0-D5 */
+ROMB5.D = D5;
+ROMB4.D = D4;
+ROMB3.D = D3;
+ROMB2.D = D2;
+ROMB1.D = D1;
+ROMB0.D = D0;
+
+/* Reset line */
+[ROMB5..ROMB0].AR = !RES_N;
+
+/*---------------------------------------------------------------------*/
+/* RAM bank control (RAMB0-RAMB5)                                       */
+/* Captures D0-D5 when RAMBANK_CS is high and CLK is low                */
+/*---------------------------------------------------------------------*/
+
+/* Define a field for RAMB bits */
+Pinnode = [RAMB5..RAMB0];
+
+/* Clock flip-flops when !CLK AND RAMBANK_CS are true */
+[RAMB5..RAMB0].CK = !CLK & !RW & RAMBANK_CS;
+
+/* Data input from D0-D5 */
+RAMB5.D = D5;
+RAMB4.D = D4;
+RAMB3.D = D3;
+RAMB2.D = D2;
+RAMB1.D = D1;
+RAMB0.D = D0;
+
+/* Reset line */
+[RAMB5..RAMB0].AR = !RES_N;
+
+/*---------------------------------------------------------------------*/
+/* ROMB / RAMB Readback onto Data Bus                                  */
+/*---------------------------------------------------------------------*/
+
+/* D0-D5 Data output when reading ROMB or RAMB */
+
+/* Data outputs */
+D0 = (RW & ROMBANK_CS & ROMB0) # (RW & RAMBANK_CS & RAMB0);
+D1 = (RW & ROMBANK_CS & ROMB1) # (RW & RAMBANK_CS & RAMB1);
+D2 = (RW & ROMBANK_CS & ROMB2) # (RW & RAMBANK_CS & RAMB2);
+D3 = (RW & ROMBANK_CS & ROMB3) # (RW & RAMBANK_CS & RAMB3);
+D4 = (RW & ROMBANK_CS & ROMB4) # (RW & RAMBANK_CS & RAMB4);
+D5 = (RW & ROMBANK_CS & ROMB5) # (RW & RAMBANK_CS & RAMB5);
+D6 = 'b'1;
+D7 = 'b'1;
+
+/* Output Enable control for D0-D5 */
+D0.OE = RW & (ROMBANK_CS # RAMBANK_CS);
+D1.OE = RW & (ROMBANK_CS # RAMBANK_CS);
+D2.OE = RW & (ROMBANK_CS # RAMBANK_CS);
+D3.OE = RW & (ROMBANK_CS # RAMBANK_CS);
+D4.OE = RW & (ROMBANK_CS # RAMBANK_CS);
+D5.OE = RW & (ROMBANK_CS # RAMBANK_CS);
+D6.OE = RW & (ROMBANK_CS # RAMBANK_CS);
+D7.OE = RW & (ROMBANK_CS # RAMBANK_CS);
+
+/*---------------------------------------------------------------------*/
+/* Bank Address Output Logic for B0-B5 (single assignment)             */
+/*---------------------------------------------------------------------*/
+
+B0 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB0 )
+   # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB0 )
+   # ( (!ROM_CS_N & FIXED_ROM_REGION) & A13 )
+   # ( (!RAM_CS_N & FIXED_RAM_REGION) & A13 );
+
+B1 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB1 )
+   # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB1 )
+   # ( (!ROM_CS_N & FIXED_ROM_REGION) & 'b'0 )   /* fixed ROM banks 0-1: only A13 matters */
+   # ( (!RAM_CS_N & FIXED_RAM_REGION) & A14 );
+
+B2 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB2 )
+   # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB2 );
+
+B3 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB3 )
+   # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB3 );
+
+B4 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB4 )
+   # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB4 );
+
+B5 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB5 )
+   # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB5 );

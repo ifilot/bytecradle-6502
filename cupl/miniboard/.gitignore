@@ -1,0 +1,41 @@
+# Ignore all WinCUPL output files except .pld source files
+
+# Compiled JEDEC programming files
+*.jed
+
+# Listing and equation outputs
+*.lst
+*.eqn
+*.fit
+*.pin
+*.tt2
+*.err
+
+# Simulation and memory files
+*.sim
+*.mem
+
+# Intermediate build logs or extra files
+*.log
+*.pds
+*.tmp
+*.bak
+
+# Ignore backup or temporary source variants
+*~
+*.pld.bak
+*.pld~
+
+# Just in case any generated files sneak into subdirectories
+**/*.jed
+**/*.lst
+**/*.eqn
+**/*.fit
+**/*.sim
+**/*.mem
+**/*.abs
+**/*.doc
+**/*.io
+**/*.mx
+**/*.pla
+**/*.tt3

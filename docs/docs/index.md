@@ -11,7 +11,7 @@ offers an accessible and expandable environment to explore these topics.
 <div class="grid cards">
 
   <div class="card">
-    <h3><a href="getting-started/assembling-the-board/">🚀 Getting Started</a></h3>
+    <h3><a href="getting-started/required-tools">🚀 Getting Started</a></h3>
     <p>Learn how to assemble the board, power up safely, and run your first program.</p>
   </div>
 
