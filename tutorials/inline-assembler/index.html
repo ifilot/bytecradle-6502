@@ -1269,8 +1269,8 @@ which allows you to select the <code>MONITOR</code> option. </p>
 <div class="highlight"><pre><span></span><code>+----------------------------------------------+
 |             BYTECRADLE MONITOR               |
 +----------------------------------------------+
-| FREE ZERO PAGE :     0x30 - 0xFF             |
-| FREE RAM       : 0x0400 - 0xFF00             |
+| FREE ZERO PAGE :     0x40 - 0xFF             |
+| FREE RAM       : 0x0400 - 0x7F00             |
 | ROM            : 0x8000 - 0xFFFF             |
 +----------------------------------------------+
 | COMMANDS                                     |
@@ -1338,16 +1338,22 @@ Hello World!
 <span class="mi">040</span><span class="nl">B:</span><span class="w"> </span><span class="k">JSR</span><span class="w"> </span><span class="n">FFEE</span><span class="w">                 </span><span class="mi">20</span><span class="w"> </span><span class="n">EE</span><span class="w"> </span><span class="n">FF</span>
 <span class="mi">040</span><span class="nl">E:</span><span class="w"> </span><span class="n">PLY</span><span class="w">                      </span><span class="mi">7</span><span class="n">A</span>
 <span class="mi">040</span><span class="nl">F:</span><span class="w"> </span><span class="n">PLX</span><span class="w">                      </span><span class="n">FA</span>
-<span class="mi">0410</span><span class="p">:</span><span class="w"> </span><span class="k">STX</span><span class="w"> </span><span class="mi">30</span><span class="w">                   </span><span class="mi">86</span><span class="w"> </span><span class="mi">30</span>
+<span class="mi">0410</span><span class="p">:</span><span class="w"> </span><span class="k">STX</span><span class="w"> </span><span class="mi">40</span><span class="w">                   </span><span class="mi">86</span><span class="w"> </span><span class="mi">40</span>
 <span class="mi">0412</span><span class="p">:</span><span class="w"> </span><span class="k">CLC</span><span class="w">                      </span><span class="mi">18</span>
 <span class="mi">0413</span><span class="p">:</span><span class="w"> </span><span class="k">PHA</span><span class="w">                      </span><span class="mi">48</span>
-<span class="mi">0414</span><span class="p">:</span><span class="w"> </span><span class="k">ADC</span><span class="w"> </span><span class="mi">30</span><span class="w">                   </span><span class="mi">65</span><span class="w"> </span><span class="mi">30</span>
+<span class="mi">0414</span><span class="p">:</span><span class="w"> </span><span class="k">ADC</span><span class="w"> </span><span class="mi">40</span><span class="w">                   </span><span class="mi">65</span><span class="w"> </span><span class="mi">40</span>
 <span class="mi">0416</span><span class="p">:</span><span class="w"> </span><span class="n">PLX</span><span class="w">                      </span><span class="n">FA</span>
 <span class="mi">0417</span><span class="p">:</span><span class="w"> </span><span class="k">INY</span><span class="w">                      </span><span class="n">C8</span>
 <span class="mi">0418</span><span class="p">:</span><span class="w"> </span><span class="k">CPY</span><span class="w"> </span><span class="p">#</span><span class="mi">0</span><span class="n">C</span><span class="w">                  </span><span class="n">C0</span><span class="w"> </span><span class="mi">0</span><span class="n">C</span>
 <span class="mi">041</span><span class="nl">A:</span><span class="w"> </span><span class="k">BNE</span><span class="w"> </span><span class="n">EA</span><span class="w">                   </span><span class="n">D0</span><span class="w"> </span><span class="n">EA</span>
 <span class="mi">041</span><span class="nl">C:</span><span class="w"> </span><span class="k">RTS</span><span class="w">                      </span><span class="mi">60</span>
 </code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The value of <code>$40</code> used for <code>STX 40</code> and <code>ADC 40</code> refer to zero page address
+<code>$40</code>. Note that we are only allowed to use zero page addresses starting from
+<code>$40</code> as everything below is used by the system (including the monitor).</p>
+</div>
 <p>To run the program, type <code>G0400</code>, which yields the following output:</p>
 <div class="highlight"><pre><span></span><code>@:G0400
 1
