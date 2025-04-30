@@ -36,7 +36,7 @@ main:
 init_system:
     jsr clear_zp
     jsr init_acia
-    jsr init_screen
+    ;jsr init_screen
     cli                 ; enable interrupts
     rts
 

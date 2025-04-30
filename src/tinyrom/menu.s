@@ -10,7 +10,8 @@
 .import sieve
 .import startchess
 .import monitor
-.import testpattern
+.import asciitest
+.import ansitest
 
 .import gitid
 
@@ -176,7 +177,8 @@ testmenu_table:
     .byte $FF, $FF                      ; dashed line
     .byte <@titlestr,       >@titlestr
     .byte $FF, $FF                      ; dashed line
-    .byte <@strtestpattern, >@strtestpattern
+    .byte <@strasciitest,   >@strasciitest
+    .byte <@strtansitest,   >@strtansitest
     .byte <@strnumbertest,  >@strnumbertest
     .byte <@strmemorytest,  >@strmemorytest
     .byte <@strback,        >@strback
@@ -185,12 +187,14 @@ testmenu_table:
 
 @titlestr:
     .asciiz "CATEGORY: TESTS"
-@strtestpattern:
-    .asciiz "(1) Test pattern"
+@strasciitest:
+    .asciiz "(1) Test ASCII"
+@strtansitest:
+    .asciiz "(2) Test ANSI"
 @strnumbertest:
-    .asciiz "(2) Number test"
+    .asciiz "(3) Number test"
 @strmemorytest:
-    .asciiz "(3) Memory test"
+    .asciiz "(4) Memory test"
 @strback:
     .asciiz "(b) Back"
 
@@ -198,9 +202,10 @@ testmenu_table:
 ; TEST MENU TABLE
 ;-------------------------------------------------------------------------------
 testmenu_entries:
-    .byte '1', <testpattern,    >testpattern
-    .byte '2', <numbertest,     >numbertest
-    .byte '3', <memtest,        >memtest
+    .byte '1', <asciitest,      >asciitest
+    .byte '2', <ansitest,       >ansitest
+    .byte '3', <numbertest,     >numbertest
+    .byte '4', <memtest,        >memtest
     .byte 'b', <mainmenu,       >mainmenu
     .byte 0
 
@@ -238,6 +243,7 @@ gamesmenu_table:
 ;-------------------------------------------------------------------------------
 gamesmenu_entries:
     .byte '1', <startchess,    >startchess
+    .byte 'b', <mainmenu,       >mainmenu
     .byte 0
 
 ;-------------------------------------------------------------------------------
