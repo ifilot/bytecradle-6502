@@ -7,20 +7,20 @@ levels of complexity:
 
 ### Tiny SBC
 
-- **Simplified design** with a small footprint.
-- **Memory**: 32 KiB RAM and 32 KiB ROM.
-- **Programmable logic**: Utilizes small PLDs to minimize discrete components.
-- Ideal for **learning**, **experimentation**, and **small embedded projects**.
+- Simplified design with a small footprint.
+- Memory: 32 KiB RAM and 32 KiB ROM.
+- Programmable logic: Utilizes small PLDs to minimize discrete components.
+- Ideal for learning, experimentation, and small embedded projects.
 
 ### Mini SBC
 
-- **Advanced design** with bank switching for greater memory capabilities.
-- **Memory**: 512 KiB of RAM and 512 KiB of ROM (bank-switched).
-- **Programmable logic**: Built around CPLDs for greater integration.
-- Includes a **65C22 VIA** to interface with an **SD card** for **persistent
-  storage** and potential peripheral expansion.
-- Perfect for exploring **larger applications**, **file systems**, and
-  **system-level programming**.
+- Advanced design with bank switching for greater memory capabilities.
+- Memory: 512 KiB of RAM and 512 KiB of ROM (bank-switched).
+- Programmable logic: Built around CPLDs for greater integration.
+- Includes a 65C22 VIA to interface with an SD card for persistent
+  storage and potential peripheral expansion.
+- Perfect for exploring larger applications, file systems, and
+  system-level programming.
 
 ## Feature Comparison
 

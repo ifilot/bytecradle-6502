@@ -13,10 +13,10 @@ nav:
       - Memory Maps: hardware/memory-maps.md
       - Schematics and PCB Layout: hardware/schematics-layout.md
       - Design Principles: hardware/design-principles.md
-  - Software:
+  - Emulator:
       - Emulator Overview: software/emulator-overview.md
       - Installing the Emulator: software/installing-emulator.md
-      - Emulator Usage Basics: software/usage-basics.md
+      - Running the Emulator: software/running-emulator.md
   - Tutorials:
       - Inline Assembler Tutorial: tutorials/inline-assembler.md
       - Working with Peripherals: tutorials/peripherals.md
@@ -39,6 +39,7 @@ theme:
     - content.code.annotate
     - content.admonitions
     - content.admonitions.semantic
+    - content.code.copy
   palette:
     - scheme: default  # Light mode
       primary: amber
@@ -72,9 +73,8 @@ markdown_extensions:
   - meta
   - toc:
       permalink: true
-  - pymdownx.superfences
-  - pymdownx.tabbed
   - attr_list
   - md_in_html
-  - admonition
   - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed
