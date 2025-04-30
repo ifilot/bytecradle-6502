@@ -21,5 +21,7 @@
 .import getpos
 .import ischarvalid
 .import clearline
+.import clearscreen
+.import putcursor
 .import strlen
 .import putrepch

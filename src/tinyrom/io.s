@@ -16,6 +16,8 @@
 .export printnibble
 .export ischarvalid
 .export clearline
+.export clearscreen
+.export putcursor
 .export strlen
 .export putrepch
 
@@ -254,12 +256,52 @@ ischarvalid:
 ; Garbles: A, X, Y
 ;-------------------------------------------------------------------------------
 clearline:
-    lda #<@clearline
-    ldx #>@clearline
+    lda #<@str
+    ldx #>@str
     jsr putstr
     rts
-@clearline:
+@str:
     .byte ESC, "[2K", $0D, $00      ; ANSI code for clear line
+
+;-------------------------------------------------------------------------------
+; CLEARSCREEN routine
+;
+; Clears the screen
+;
+; Garbles: A, X, Y
+;-------------------------------------------------------------------------------
+clearscreen:
+    lda #<@str
+    ldx #>@str
+    jsr putstr
+    rts
+@str:
+    .byte ESC,"[2J", $1B,"[H", 0
+
+;-------------------------------------------------------------------------------
+; PUTCURSOR routine
+;
+; Sets the cursor at row A and column X
+;
+; BUF3: column
+; BUF4: row
+;-------------------------------------------------------------------------------
+putcursor:
+    sta BUF3
+    stx BUF4
+    lda #ESC
+    jsr putch
+    lda #'['
+    jsr putch
+    lda BUF3
+    jsr putdec
+    lda #';'
+    jsr putch
+    lda BUF4
+    jsr putdec
+    lda #'H'
+    jsr putch
+    rts
 
 ;-------------------------------------------------------------------------------
 ; CHARTOUPPER
