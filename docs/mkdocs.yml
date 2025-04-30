@@ -12,11 +12,12 @@ nav:
       - Board Overview: hardware/board-overview.md
       - Memory Maps: hardware/memory-maps.md
       - Schematics and PCB Layout: hardware/schematics-layout.md
-      - Design Principles: hardware/design-principles.md
+  - Software:
+      - Kernel functions: software/kernel-functions.md
   - Emulator:
-      - Emulator Overview: software/emulator-overview.md
-      - Installing the Emulator: software/installing-emulator.md
-      - Running the Emulator: software/running-emulator.md
+      - Emulator Overview: emulator/emulator-overview.md
+      - Installing the Emulator: emulator/installing-emulator.md
+      - Running the Emulator: emulator/running-emulator.md
   - Tutorials:
       - Inline Assembler Tutorial: tutorials/inline-assembler.md
       - Working with Peripherals: tutorials/peripherals.md
@@ -30,6 +31,8 @@ nav:
       - Credits and Acknowledgments: references/credits.md
 theme:
   name: material
+  logo: assets/img/bytecradle-logo-bw.png
+  favicon: assets/img/favicon.ico
   features:
     - navigation.instant
     - header.autohide
