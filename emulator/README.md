@@ -55,11 +55,11 @@ This will generate an executable called `bytecradle` inside the `build/` directo
 ### Example:
 
 ```bash
-./bytecradle --board tiny --rom myprogram.rom
+./bytecradle --board tiny --rom <romfile>.bin
 ```
 
 or for a mini board with an SD card image:
 
 ```bash
-./bytecradle --board mini --rom myos.rom --sdcard disk.img --clock 8.0
+./bytecradle --board mini --rom <romfile>.bin --sdcard disk.img --clock 8.0
 ```

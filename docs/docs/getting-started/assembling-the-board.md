@@ -2,14 +2,16 @@
 
 ## Flashing the ROM
 
-Before powering up your ByteCradle board for the first time, it's essential to flash the appropriate ROM image onto the onboard memory chip. The required ROM chip and image depend on the variant of the board:
+Before powering up your ByteCradle board for the first time, it is essential to
+flash the appropriate ROM image onto the onboard memory chip. The required ROM
+chip and image depend on the variant of the board:
 
 - **ByteCradle Tiny**: Uses an **SST39SF010** (1 Mbit) chip.
 - **ByteCradle Mini**: Uses an **SST39SF040** (4 Mbit) chip.
 
 Each board requires a specific ROM file that matches its hardware configuration.
 
-## Required Tools
+### Required Tools
 
 To flash the ROM, you'll need a compatible **EPROM/Flash programmer**. Options include:
 
@@ -23,7 +25,7 @@ To flash the ROM, you'll need a compatible **EPROM/Flash programmer**. Options i
 !!! note "Choosing a Flasher"
     Commercial programmers offer ready-to-use software and broad device support. However, open-source solutions like the Pico-SST39SF0x0 Programmer are cost-effective and excellent for DIY enthusiasts.
 
-## Flashing Process Overview
+### Flashing Process Overview
 
 1. **Set Up the Programmer**:
     - For the Pico-SST39SF0x0 Programmer:
