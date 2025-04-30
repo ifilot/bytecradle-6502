@@ -21,7 +21,7 @@ offers an accessible and expandable environment to explore these topics.
   </div>
 
   <div class="card">
-    <h3><a href="software/emulator-overview/">🖱️ Software Emulator</a></h3>
+    <h3><a href="software/emulator-overview/">🧪 Emulator</a></h3>
     <p>Install and use the emulator to prototype, test, and debug your 65C02 programs.</p>
   </div>
 
