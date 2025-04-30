@@ -3,12 +3,12 @@
 .include "constants.inc"
 .include "functions.inc"
 
-.export testpattern
+.export asciitest
 
 ;-------------------------------------------------------------------------------
-; Print a test pattern on the screen
+; Print visible ASCII characters to the screen
 ;-------------------------------------------------------------------------------
-testpattern:
+asciitest:
     jsr newline
     ldx #$20                ; start with ASCII 32 (' ')
     ldy #0                  ; line character counter
