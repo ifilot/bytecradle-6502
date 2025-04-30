@@ -71,6 +71,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#emulator-overview" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -651,7 +656,7 @@
   
   
   <span class="md-ellipsis">
-    Software
+    Emulator
     
   </span>
   
@@ -662,7 +667,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Software
+            Emulator
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -679,6 +684,21 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Emulator Overview
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -691,6 +711,43 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#benefits-of-using-an-emulator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits of Using an Emulator
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introducing-bc6502emu" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introducing bc6502emu
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -727,12 +784,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../usage-basics/" class="md-nav__link">
+      <a href="../running-emulator/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Emulator Usage Basics
+    Running the Emulator
     
   </span>
   
@@ -1101,6 +1158,34 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#benefits-of-using-an-emulator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits of Using an Emulator
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introducing-bc6502emu" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introducing bc6502emu
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1119,9 +1204,43 @@
   
 
 
-  <h1>Emulator Overview</h1>
-
-
+<h1 id="emulator-overview">Emulator Overview<a class="headerlink" href="#emulator-overview" title="Permanent link">&para;</a></h1>
+<p>Developing software for the ByteCradle 6502 platform without an emulator
+involves a tedious and repetitive workflow: you would need to cross-assemble or
+cross-compile your source code, flash it onto a ROM, physically insert that ROM
+into the board, and then run the board to test your code. Each cycle can take
+several minutes and is prone to errors, making rapid development and testing
+difficult.</p>
+<p>The <code>bc6502emu</code> emulator removes these barriers by allowing you to run and test
+your 6502 code directly on a modern computer. It integrates cleanly into your
+development workflow and enables fast iteration without the need for physical
+hardware during the early stages of development.</p>
+<h2 id="benefits-of-using-an-emulator">Benefits of Using an Emulator<a class="headerlink" href="#benefits-of-using-an-emulator" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Rapid testing and iteration</strong>: Instantly test code changes without flashing or hardware interaction, dramatically reducing development time.</li>
+<li><strong>Safe and controlled environment</strong>: Reproducible and isolated, ideal for debugging, testing edge cases, and avoiding hardware wear or damage.</li>
+<li><strong>Simplified debugging</strong>: Observe program behavior, simulate input, and analyze results using standard tools on your development machine.</li>
+<li><strong>Development without hardware</strong>: Start writing and validating software even before hardware is available or finalized.</li>
+<li><strong>Automation and integration</strong>: Easily integrate into build systems and CI pipelines for automated testing and validation.</li>
+</ul>
+<h2 id="introducing-bc6502emu">Introducing <code>bc6502emu</code><a class="headerlink" href="#introducing-bc6502emu" title="Permanent link">&para;</a></h2>
+<p><code>bc6502emu</code> is a lightweight emulator designed specifically for the ByteCradle
+6502 platform. It supports the two board variants:</p>
+<ul>
+<li><strong>tiny</strong> – a minimal configuration without SD card storage.</li>
+<li><strong>mini</strong> – includes SD card image support for simulating file I/O and the 65C22 versatile interface adapter.</li>
+</ul>
+<p>With <code>bc6502emu</code>, you can:</p>
+<ul>
+<li>Run 6502 binaries directly from your development environment.</li>
+<li>Simulate SD card behavior (mini variant).</li>
+<li>Configure the emulated CPU clock speed.</li>
+<li>Provide terminal input for programs that rely on user interaction.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Ready to get started?</p>
+<p>Go to the <a href="../installing-emulator/">Installing Emulator</a> page to compile and run the emulator.</p>
+</div>
 
 
 
@@ -1172,7 +1291,7 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "header.autohide", "navigation.sections", "navigation.tracking", "content.tabs.link", "content.code.annotate", "content.admonitions", "content.admonitions.semantic"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "header.autohide", "navigation.sections", "navigation.tracking", "content.tabs.link", "content.code.annotate", "content.admonitions", "content.admonitions.semantic", "content.code.copy"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>

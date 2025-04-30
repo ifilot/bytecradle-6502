@@ -20,7 +20,7 @@
     
     
       
-        <title>Emulator Usage Basics - ByteCradle 6502</title>
+        <title>Running the Emulator - ByteCradle 6502</title>
       
     
     
@@ -71,6 +71,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#running-the-emulator" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -103,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Emulator Usage Basics
+              Running the Emulator
             
           </span>
         </div>
@@ -651,7 +656,7 @@
   
   
   <span class="md-ellipsis">
-    Software
+    Emulator
     
   </span>
   
@@ -662,7 +667,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Software
+            Emulator
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -725,18 +730,70 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Running the Emulator
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
-    Emulator Usage Basics
+    Running the Emulator
     
   </span>
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#arguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Arguments
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Usage
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1101,6 +1158,34 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#arguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Arguments
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Usage
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1119,9 +1204,66 @@
   
 
 
-  <h1>Emulator Usage Basics</h1>
-
-
+<h1 id="running-the-emulator">Running the Emulator<a class="headerlink" href="#running-the-emulator" title="Permanent link">&para;</a></h1>
+<p>Once compiled, you can run the emulator with the following syntax (adjust
+accordingly for your paths):</p>
+<div class="highlight"><pre><span></span><code>./bc6502emu<span class="w"> </span>--board<span class="w"> </span>&lt;tiny<span class="p">|</span>mini&gt;<span class="w"> </span><span class="se">\</span>
+--rom<span class="w"> </span>&lt;path_to_rom&gt;<span class="w"> </span><span class="se">\</span>
+<span class="o">[</span>--sdcard<span class="w"> </span>&lt;path_to_sdcard&gt;<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+<span class="o">[</span>--clock<span class="w"> </span>&lt;mhz&gt;<span class="o">]</span>
+</code></pre></div>
+<h2 id="arguments">Arguments<a class="headerlink" href="#arguments" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Argument</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>-b, --board</code></td>
+<td style="text-align: left;">Select the board type: <code>tiny</code> or <code>mini</code>.</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-r, --rom</code></td>
+<td style="text-align: left;">Path to the ROM file to load.</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-s, --sdcard</code></td>
+<td style="text-align: left;">Path to the SD card image (only for <code>mini</code>).</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-c, --clock</code></td>
+<td style="text-align: left;">CPU clock speed in MHz (default: 16.0 MHz).</td>
+<td style="text-align: left;">No</td>
+</tr>
+</tbody>
+</table>
+<h2 id="example-usage">Example Usage<a class="headerlink" href="#example-usage" title="Permanent link">&para;</a></h2>
+<p>To run the emulator with the <code>tiny</code> board:</p>
+<div class="highlight"><pre><span></span><code>./bc6502emu<span class="w"> </span>--board<span class="w"> </span>tiny<span class="w"> </span>--rom<span class="w"> </span>../../src/tinyrom/tinyrom.bin
+</code></pre></div>
+<p>To run the emulator with the <code>mini</code> board and an SD card image:</p>
+<div class="highlight"><pre><span></span><code>./bc6502emu<span class="w"> </span>--board<span class="w"> </span>mini<span class="w"> </span>--rom<span class="w"> </span>../../src/minirom.bin<span class="w"> </span>--sdcard<span class="w"> </span>../scripts/sdcard.img<span class="w"> </span>--clock<span class="w"> </span><span class="m">8</span>.0
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>For running the <code>/MINI/</code> board, besides the ROM file, you will also need
+an SD-card image. This SD-card image can be generated using the
+<code>create_sd.sh</code> script found in the <code>emulator/script</code> folder.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For compiling the ROMs, we make use of a <code>Makefile</code>. These <code>Makefile</code>
+files contain the <code>make run</code> instruction which automatically launches the
+ROM in the emulator using the right settings. It does assume that the
+emulator has been compiled in the <code>build</code> folder as explained above.</p>
+</div>
 
 
 
@@ -1172,7 +1314,7 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "header.autohide", "navigation.sections", "navigation.tracking", "content.tabs.link", "content.code.annotate", "content.admonitions", "content.admonitions.semantic"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "header.autohide", "navigation.sections", "navigation.tracking", "content.tabs.link", "content.code.annotate", "content.admonitions", "content.admonitions.semantic", "content.code.copy"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>

@@ -12,7 +12,7 @@
         <link rel="prev" href="../emulator-overview/">
       
       
-        <link rel="next" href="../usage-basics/">
+        <link rel="next" href="../running-emulator/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -70,6 +70,11 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
+      
+        
+        <a href="#installing-and-running-the-emulator" class="md-skip">
+          Skip to content
+        </a>
       
     </div>
     <div data-md-component="announce">
@@ -651,7 +656,7 @@
   
   
   <span class="md-ellipsis">
-    Software
+    Emulator
     
   </span>
   
@@ -662,7 +667,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Software
+            Emulator
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -702,6 +707,21 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Installing the Emulator
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -715,6 +735,43 @@
 
       </a>
       
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#platform-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Platform Requirements
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -727,12 +784,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../usage-basics/" class="md-nav__link">
+      <a href="../running-emulator/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Emulator Usage Basics
+    Running the Emulator
     
   </span>
   
@@ -1101,6 +1158,34 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#platform-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Platform Requirements
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1119,9 +1204,32 @@
   
 
 
-  <h1>Installing the Emulator</h1>
-
-
+<h1 id="installing-and-running-the-emulator">Installing and Running the Emulator<a class="headerlink" href="#installing-and-running-the-emulator" title="Permanent link">&para;</a></h1>
+<p>This guide explains how to compile and run the <code>bc6502emu</code> emulator on a modern
+POSIX-compatible system. The emulator supports both the <code>tiny</code> and <code>mini</code>
+variants of the ByteCradle 6502 board and is designed for fast and simple
+command-line usage.</p>
+<h2 id="platform-requirements">Platform Requirements<a class="headerlink" href="#platform-requirements" title="Permanent link">&para;</a></h2>
+<p>We assume you are working in a <a href="https://en.wikipedia.org/wiki/POSIX">POSIX</a> environment, such as Linux or macOS.<br />
+For Windows users, we warmly recommend installing 
+<a href="https://learn.microsoft.com/en-us/windows/wsl/">Windows Subsystem for Linux (WSL)</a>.
+All development and testing have been done using Ubuntu, and we recommend it as the reference environment.</p>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<p>Before you begin, make sure your system meets the following requirements:</p>
+<ul>
+<li>A C++17-compatible compiler</li>
+<li><a href="https://cmake.org/">CMake</a> for managing the build process</li>
+<li>The <a href="https://tclap.sourceforge.net/">TCLAP</a> library for command-line parsing</li>
+</ul>
+<p>To install all required dependencies on Ubuntu or Debian-based systems, run:</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>build-essential<span class="w"> </span>cmake<span class="w"> </span>libtclap-dev
+</code></pre></div>
+<p>After compilation, the emulator binary will be located in the <code>build</code> directory
+under the name <code>bc6502emu</code>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Ready to start using the emulator?</p>
+<p>Go to the <a href="../running-emulator/">Running the Emulator</a></p>
+</div>
 
 
 
@@ -1172,7 +1280,7 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "header.autohide", "navigation.sections", "navigation.tracking", "content.tabs.link", "content.code.annotate", "content.admonitions", "content.admonitions.semantic"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "header.autohide", "navigation.sections", "navigation.tracking", "content.tabs.link", "content.code.annotate", "content.admonitions", "content.admonitions.semantic", "content.code.copy"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
