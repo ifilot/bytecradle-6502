@@ -1,9 +1,16 @@
-# Monitor
+# Inline Assembler Tutorial
 
-The **MONITOR** is a simple program that provides direct control over the
-system’s memory and CPU execution. It allows you to read and write memory, run
-code from specific addresses, assemble instructions manually, and disassemble
-machine code for inspection.
+This section begins with a brief overview of the **monitor** and its role in the
+system, followed by a tutorial on how to use its **inline assembler** feature to
+build small, custom code snippets.
+
+## Monitor
+
+The **monitor** is a simple interactive program that gives you low-level control
+over the system’s memory and CPU. It supports reading and writing memory,
+executing code at arbitrary addresses, disassembling machine instructions, and
+assembling new instructions directly from the command line using its built-in
+assembler.
 
 !!! note
     The description provided here pertains to the `/TINY/` board, but the
@@ -91,6 +98,11 @@ The expected output is:
 @:G0400
 Hello World!
 ```
+
+!!! note
+    Observe that we used one of the kernel functions, `putch` located at `#FFE8`
+    to output a single character to the ACIA. An overview of all the kernel
+    functions can be found [here](../software/kernel-functions.md).
 
 ### Fibonacci series
 

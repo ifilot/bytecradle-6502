@@ -31,10 +31,10 @@
 ; GETCHAR routine
 ;
 ; retrieve a char from the key buffer in the accumulator
-; Garbles: A,X
+; Garbles: A
 ;-------------------------------------------------------------------------------
 getch:
-    phx
+    phx                 ; put X on stack
     lda TBPL            ; load textbuffer left pointer
     cmp TBPR            ; load textbuffer right pointer
     beq @nokey          ; if the same, exit routine
@@ -45,7 +45,7 @@ getch:
 @nokey:
     lda #0
 @exit:
-    plx
+    plx                 ; restore X
     rts
 
 ;-------------------------------------------------------------------------------
@@ -57,9 +57,9 @@ getch:
 ;-------------------------------------------------------------------------------
 newline:
     sta BUF1
-    lda #LF
-    jsr putch
     lda #CR
+    jsr putch
+    lda #LF
     jsr putch
     lda BUF1
     rts
