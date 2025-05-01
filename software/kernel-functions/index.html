@@ -662,6 +662,19 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Kernel functions
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -673,6 +686,43 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tiny-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tiny Board
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1159,6 +1209,32 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tiny-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tiny Board
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1177,6 +1253,97 @@
 
 
 <h1 id="kernel-functions">Kernel functions<a class="headerlink" href="#kernel-functions" title="Permanent link">&para;</a></h1>
+<p>The system exposes a set of core kernel functions at fixed memory addresses
+located just below the 6502 vector table. This area is referred to as the <strong>jump
+table</strong>.</p>
+<p>Each jump table entry is a 3-byte <code>JMP</code> instruction that redirects to the actual
+implementation of a function. This design allows system programs and user
+applications to call kernel routines via <strong>stable, absolute addresses</strong>,
+regardless of where the underlying code is actually located.</p>
+<h2 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
+<p>The jump table starts at address <code>$FFE5</code>, with each function occupying 3 bytes
+(the size of a <code>JMP</code> absolute instruction). For example:</p>
+<div class="highlight"><pre><span></span><code>jsr $FFE5  ; Call putstr
+</code></pre></div>
+<p>This instruction jumps to the putstr routine, allowing the user to print a
+string without needing to know where putstr is implemented in memory. This makes
+the jump table a forward-compatible interface to the kernel.</p>
+<h2 id="tiny-board">Tiny Board<a class="headerlink" href="#tiny-board" title="Permanent link">&para;</a></h2>
+<p>Below is an overview of currently available jump table entries:</p>
+<table>
+<thead>
+<tr>
+<th>Label</th>
+<th>Address</th>
+<th>Description</th>
+<th>Input Registers</th>
+<th>Garbled Registers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>putstr</code></td>
+<td><code>$FFE5</code></td>
+<td>Prints a null-terminated string.</td>
+<td><code>X:A</code> = High:Low pointer to string</td>
+<td><code>A</code>, <code>X</code>, <code>Y</code></td>
+</tr>
+<tr>
+<td><code>putstrnl</code></td>
+<td><code>$FFE8</code></td>
+<td>Prints a null-terminated string followed by a CRLF.</td>
+<td><code>X:A</code> = High:Low pointer to string</td>
+<td><code>A</code>, <code>X</code>, <code>Y</code></td>
+</tr>
+<tr>
+<td><code>putch</code></td>
+<td><code>$FFEB</code></td>
+<td>Outputs a single character to ACIA.</td>
+<td><code>A</code> = Character</td>
+<td><em>None</em></td>
+</tr>
+<tr>
+<td><code>newline</code></td>
+<td><code>$FFEE</code></td>
+<td>Prints carriage return and line feed.</td>
+<td>-</td>
+<td><em>None</em></td>
+</tr>
+<tr>
+<td><code>puthex</code></td>
+<td><code>$FFF1</code></td>
+<td>Prints a byte in hexadecimal format.</td>
+<td><code>A</code> = Byte to print</td>
+<td><em>None</em></td>
+</tr>
+<tr>
+<td><code>putdec</code></td>
+<td><code>$FFF4</code></td>
+<td>Prints a byte in decimal format.</td>
+<td><code>A</code> = Byte to print</td>
+<td><code>X</code>, <code>Y</code></td>
+</tr>
+<tr>
+<td><code>getch</code></td>
+<td><code>$FFF7</code></td>
+<td>Retrieves a character from input buffer.</td>
+<td>—</td>
+<td><code>A</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><em>Garbled</em> refers to CPU registers whose contents
+are <strong>modified or overwritten</strong> by a routine and are <strong>not restored</strong> before
+returning. This means the calling code <strong>should not rely on the original
+values</strong> of these registers after the routine executes.</p>
+<p>For example, if a function garbles register <code>X</code>, then any value that was in 
+<code>X</code> before the function call may be lost and should not be assumed valid 
+afterward. To preserve important register values across such calls, the 
+caller is responsible for saving and restoring them (e.g., using <code>PHA</code>, 
+<code>PHX</code>, <code>PHY</code> and their corresponding pull instructions).</p>
+</div>
 
 
 

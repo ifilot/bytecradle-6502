@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#monitor" class="md-skip">
+        <a href="#inline-assembler-tutorial" class="md-skip">
           Skip to content
         </a>
       
@@ -895,6 +895,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#monitor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitor
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#monitor-functions" class="md-nav__link">
     <span class="md-ellipsis">
       Monitor Functions
@@ -1240,6 +1249,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#monitor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitor
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#monitor-functions" class="md-nav__link">
     <span class="md-ellipsis">
       Monitor Functions
@@ -1300,11 +1318,16 @@
   
 
 
-<h1 id="monitor">Monitor<a class="headerlink" href="#monitor" title="Permanent link">&para;</a></h1>
-<p>The <strong>MONITOR</strong> is a simple program that provides direct control over the
-system’s memory and CPU execution. It allows you to read and write memory, run
-code from specific addresses, assemble instructions manually, and disassemble
-machine code for inspection.</p>
+<h1 id="inline-assembler-tutorial">Inline Assembler Tutorial<a class="headerlink" href="#inline-assembler-tutorial" title="Permanent link">&para;</a></h1>
+<p>This section begins with a brief overview of the <strong>monitor</strong> and its role in the
+system, followed by a tutorial on how to use its <strong>inline assembler</strong> feature to
+build small, custom code snippets.</p>
+<h2 id="monitor">Monitor<a class="headerlink" href="#monitor" title="Permanent link">&para;</a></h2>
+<p>The <strong>monitor</strong> is a simple interactive program that gives you low-level control
+over the system’s memory and CPU. It supports reading and writing memory,
+executing code at arbitrary addresses, disassembling machine instructions, and
+assembling new instructions directly from the command line using its built-in
+assembler.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The description provided here pertains to the <code>/TINY/</code> board, but the
@@ -1375,6 +1398,12 @@ for learning how the system interacts with memory and the CPU at a low level.</p
 <div class="highlight"><pre><span></span><code>@:G0400
 Hello World!
 </code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Observe that we used one of the kernel functions, <code>putch</code> located at <code>#FFE8</code>
+to output a single character to the ACIA. An overview of all the kernel
+functions can be found <a href="../../software/kernel-functions/">here</a>.</p>
+</div>
 <h3 id="fibonacci-series">Fibonacci series<a class="headerlink" href="#fibonacci-series" title="Permanent link">&para;</a></h3>
 <p>Open the inline-assembler using <code>A0400</code> and insert the following assembly instructions:</p>
 <div class="highlight"><pre><span></span><code><span class="mi">0400</span><span class="p">:</span><span class="w"> </span><span class="k">LDA</span><span class="w"> </span><span class="p">#</span><span class="mi">01</span><span class="w">                  </span><span class="n">A9</span><span class="w"> </span><span class="mi">01</span>
