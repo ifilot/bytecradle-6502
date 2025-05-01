@@ -7,18 +7,17 @@
 .PSC02
 
 ; bit masks
-.define SD_MISO   #%00000001  ; PA0 input
-.define SD_MOSI   #%00000010  ; PA1
-.define SD_CLK    #%00000100  ; PA2
-.define SD_CS     #%00001000  ; PA3
+.define SD_MISO         #%00000001  ; PA0 input
+.define SD_MOSI         #%00000010  ; PA1
+.define SD_CLK          #%00000100  ; PA2
+.define SD_CS           #%00001000  ; PA3
 
-; Bitwise NOT masks (for AND operations)
-.define NOT_SD_MISO    #%11111110  ; clears PB0
-.define NOT_SD_MOSI    #%11111101  ; clears PB1
-.define NOT_SD_CLK     #%11111011  ; clears PB2
-.define NOT_SD_CS      #%11110111  ; clears PB3
+.define NOT_SD_MISO     #%11111110  ; clears PB0
+.define NOT_SD_MOSI     #%11111101  ; clears PB1
+.define NOT_SD_CLK      #%11111011  ; clears PB2
+.define NOT_SD_CS       #%11110111  ; clears PB3
 
-.define RESP5                 $80  ; zero page address to store results
+.define RESP5           $80  ; zero page address to store results
 
 ;-------------------------------------------------------------------------------
 ; Test interfacing with the SD-card
