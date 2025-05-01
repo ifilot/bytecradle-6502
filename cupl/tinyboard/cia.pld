@@ -31,8 +31,8 @@ PIN 18   = A15;
 PIN 19   = RAMCS_N;
 PIN 20   = ACIACS_N;
 PIN 21   = ROMCS_N;
-PIN 22   = NC1;        /* Not connected (Expansion Bus) */
-PIN 23   = NC2;        /* Not connected (Expansion Bus) */
+PIN 22   = B1;
+PIN 23   = B2;
 
 /* I/O range: 0x7FXX - active low */
 IO_N = !(!A15 & A14 & A13 & A12 & A11 & A10 & A9 & A8);
@@ -46,5 +46,11 @@ RAMCS_N = !(!A15 & ACIACS_N & CLK);
 
 /* ROM selected when A15 is high (0x8000-0xFFFF) */
 ROMCS_N = !A15;
+
+/* B1 = active low on address 0x7F00 */
+B1 = !(!IO_N & !A7 & !A6 & !A5 & !A4 & !A3 & !A2 & !A1 & !A0);
+
+/* B2 = active low on address 0x7F01 */
+B2 = !(!IO_N & !A7 & !A6 & !A5 & !A4 & !A3 & !A2 & !A1 &  A0);
 
 /* *************** END *************** */
