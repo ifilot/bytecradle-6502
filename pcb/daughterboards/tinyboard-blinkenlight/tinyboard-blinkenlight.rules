@@ -1,0 +1,83 @@
+
+(rules PCB tinyboard-blinkenlight
+  (snap_angle 
+    fortyfive_degree
+  )
+  (autoroute_settings
+    (fanout off)
+    (autoroute on)
+    (postroute on)
+    (vias on)
+    (via_costs 50)
+    (plane_via_costs 5)
+    (start_ripup_costs 100)
+    (start_pass_no 430)
+    (layer_rule F.Cu
+      (active on)
+      (preferred_direction vertical)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 2.7)
+    )
+    (layer_rule B.Cu
+      (active on)
+      (preferred_direction horizontal)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 1.6)
+    )
+  )
+  (rule
+    (width 200.0)
+    (clear 200.0)
+    (clear 100.0 (type smd_to_turn_gap))
+    (clear 50.0 (type smd_smd))
+  )
+  (padstack "Via[0-1]_600:300_um"
+    (shape
+      (circle F.Cu 600.0 0.0 0.0)
+    )
+    (shape
+      (circle B.Cu 600.0 0.0 0.0)
+    )
+    (attach off)
+  )
+  (via 
+    "Via[0-1]_600:300_um" "Via[0-1]_600:300_um" default
+  )
+  (via 
+    "Via[0-1]_600:300_um-kicad_default" "Via[0-1]_600:300_um" "kicad_default"
+  )
+  (via_rule
+    default "Via[0-1]_600:300_um"
+  )
+  (via_rule
+    "kicad_default" "Via[0-1]_600:300_um-kicad_default"
+  )
+  (class default
+    (clearance_class default)
+    (via_rule default)
+    (rule
+      (width 200.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+  (class "kicad_default"
+    GND VCC "Net-(D1-K)" "Net-(D1-A)" "Net-(D2-A)" "Net-(D2-K)" "Net-(D3-A)" "Net-(D3-K)"
+    "Net-(D4-A)" "Net-(D4-K)" "Net-(D5-A)" "Net-(D5-K)" "Net-(D6-A)" "Net-(D6-K)" "Net-(D7-A)" "Net-(D7-K)"
+    "Net-(D8-K)" "Net-(D8-A)" RxD1 D2 ~{RES} CLK A12 A3
+    D4 D7 R{slash}~{W} ~{RAMCS} A1 D0 ~{IRQ} A9
+    ~{ROMCS} B2 TxD1 A11 A7 A15 A13 B1
+    A0 A14 A6 D6 A5 A8 D1 ~{NMI}
+    A10 D3 ~{ACIACS} D5 A2 A4 "Net-(U1-Cp)" "Net-(U2-Pad1)"
+    "Net-(U2-Pad4)" "unconnected-(U2-Pad13)"
+    (clearance_class "kicad_default")
+    (via_rule kicad_default)
+    (rule
+      (width 200.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+)
