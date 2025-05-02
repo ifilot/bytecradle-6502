@@ -193,7 +193,7 @@ B0 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB0 )
 /* A14 on ROM/RAM chips */
 B1 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB1 )
    # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB1 )
-   # ( (!ROM_CS_N & FIXED_ROM_REGION) & b'0' )  /* A14 is low */
+   # ( (!ROM_CS_N & FIXED_ROM_REGION) & 'b'0 )  /* A14 is low */
    # ( (!RAM_CS_N & FIXED_RAM_REGION) & A14 );  /* A14 should match */
 
 /* A15 on ROM/RAM chips */
