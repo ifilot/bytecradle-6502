@@ -81,10 +81,10 @@ ROM_CS_N = !(
 /* Chip select line for RAM chip                                       */
 /*---------------------------------------------------------------------*/
 RAM_OE_N = !(
-    ( !A15 & IO_SEL_N )      /* Fixed RAM, excluding I/O */
-  # ( A15 & !A14 & !A13 )    /* Banked RAM */
+    ( !A15 & IO_SEL_N )          /* Fixed RAM, excluding I/O */
+  # ( A15 & !A14 & !A13 )        /* $8000-$9FFF Banked RAM - 8 KiB */
 );
-RAM_CS_N = !(RAM_OE_N & CLK);
+RAM_CS_N = !(!RAM_OE_N & CLK);   /* Ensure latching on falling clk edge */
 
 /*---------------------------------------------------------------------*/
 /* Chip select lines for I/O address space ($7F00-$7FFF)               */
@@ -107,8 +107,8 @@ RAMBANK_CS = ( !IO_SEL_N & A7 & A6 );
 /*---------------------------------------------------------------------*/
 FIXED_RAM_REGION = !A15 & IO_SEL_N;      /* $0000-$7EFF, excluding I/O */
 RAM_BANK_REGION  = A15 & !A14 & !A13;    /* $8000-$9FFF */
-ROM_BANK_REGION  = A15 & !A14 & A13;     /* $A000-$BFFF */
 FIXED_ROM_REGION = A15 & A14;            /* $C000-$FFFF */
+ROM_BANK_REGION  = A15 & !A14 & A13;     /* $A000-$BFFF */
 
 /*---------------------------------------------------------------------*/
 /* ROM bank control (ROMB0-ROMB5)                                      */
@@ -118,7 +118,7 @@ FIXED_ROM_REGION = A15 & A14;            /* $C000-$FFFF */
 /* Define a field for ROMB bits */
 Pinnode = [ROMB5..ROMB0];
 
-/* Clock flip-flops when !CLK AND ROMBANK_CS are true */
+/* Latches ROM bank on falling clk when ROMBANK_CS is HIGH */
 [ROMB5..ROMB0].CK = !CLK & !RW & ROMBANK_CS;
 
 /* Data input from D0-D5 */
@@ -129,7 +129,7 @@ ROMB2.D = D2;
 ROMB1.D = D1;
 ROMB0.D = D0;
 
-/* Reset line */
+/* Asynchronous reset such that on boot ROMBANK = 0 */
 [ROMB5..ROMB0].AR = !RES_N;
 
 /*---------------------------------------------------------------------*/
@@ -140,7 +140,7 @@ ROMB0.D = D0;
 /* Define a field for RAMB bits */
 Pinnode = [RAMB5..RAMB0];
 
-/* Clock flip-flops when !CLK AND RAMBANK_CS are true */
+/* Latches RAM bank on falling edge when RAMBANK_CS is HIGH */
 [RAMB5..RAMB0].CK = !CLK & !RW & RAMBANK_CS;
 
 /* Data input from D0-D5 */
@@ -151,7 +151,7 @@ RAMB2.D = D2;
 RAMB1.D = D1;
 RAMB0.D = D0;
 
-/* Reset line */
+/* Asynchronous reset such that on boot RAMBANK = 0 */
 [RAMB5..RAMB0].AR = !RES_N;
 
 /*---------------------------------------------------------------------*/
@@ -167,8 +167,8 @@ D2 = (RW & ROMBANK_CS & ROMB2) # (RW & RAMBANK_CS & RAMB2);
 D3 = (RW & ROMBANK_CS & ROMB3) # (RW & RAMBANK_CS & RAMB3);
 D4 = (RW & ROMBANK_CS & ROMB4) # (RW & RAMBANK_CS & RAMB4);
 D5 = (RW & ROMBANK_CS & ROMB5) # (RW & RAMBANK_CS & RAMB5);
-D6 = 'b'1;
-D7 = 'b'1;
+D6 = 'b'0;
+D7 = 'b'0;
 
 /* Output Enable control for D0-D5 */
 D0.OE = RW & (ROMBANK_CS # RAMBANK_CS);
@@ -184,24 +184,30 @@ D7.OE = RW & (ROMBANK_CS # RAMBANK_CS);
 /* Bank Address Output Logic for B0-B5 (single assignment)             */
 /*---------------------------------------------------------------------*/
 
+/* A13 on ROM/RAM chips */
 B0 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB0 )
    # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB0 )
-   # ( (!ROM_CS_N & FIXED_ROM_REGION) & A13 )
-   # ( (!RAM_CS_N & FIXED_RAM_REGION) & A13 );
+   # ( (!ROM_CS_N & FIXED_ROM_REGION) & A13 )   /* A13 should match */
+   # ( (!RAM_CS_N & FIXED_RAM_REGION) & A13 );  /* A13 should match */
 
+/* A14 on ROM/RAM chips */
 B1 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB1 )
    # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB1 )
-   # ( (!ROM_CS_N & FIXED_ROM_REGION) & 'b'0 )   /* fixed ROM banks 0-1: only A13 matters */
-   # ( (!RAM_CS_N & FIXED_RAM_REGION) & A14 );
+   # ( (!ROM_CS_N & FIXED_ROM_REGION) & b'0' )  /* A14 is low */
+   # ( (!RAM_CS_N & FIXED_RAM_REGION) & A14 );  /* A14 should match */
 
+/* A15 on ROM/RAM chips */
 B2 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB2 )
    # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB2 );
 
+/* A16 on ROM/RAM chips */
 B3 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB3 )
    # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB3 );
 
+/* A17 on ROM/RAM chips */
 B4 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB4 )
    # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB4 );
 
+/* A18 on ROM/RAM chips */
 B5 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB5 )
    # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB5 );
