@@ -7,22 +7,22 @@
 .define ACIA_CTRL       $7F07  ; Control Register - sets baud rate, word length, stop bits, parity
 
 ; 65C22 VIA Register Definitions (Base = $7F10)
-.define VIA_PORTB        $7F10  ; Register 0: I/O Port B
-.define VIA_PORTA        $7F11  ; Register 1: I/O Port A
-.define VIA_DDRB         $7F12  ; Register 2: Data Direction Register B
-.define VIA_DDRA         $7F13  ; Register 3: Data Direction Register A
-.define VIA_T1CL         $7F14  ; Register 4: Timer 1 Counter Low
-.define VIA_T1CH         $7F15  ; Register 5: Timer 1 Counter High
-.define VIA_T1LL         $7F16  ; Register 6: Timer 1 Latch Low
-.define VIA_T1LH         $7F17  ; Register 7: Timer 1 Latch High
-.define VIA_T2CL         $7F18  ; Register 8: Timer 2 Counter Low
-.define VIA_T2CH         $7F19  ; Register 9: Timer 2 Counter High
-.define VIA_SR           $7F1A  ; Register 10: Shift Register
-.define VIA_ACR          $7F1B  ; Register 11: Auxiliary Control Register
-.define VIA_PCR          $7F1C  ; Register 12: Peripheral Control Register
-.define VIA_IFR          $7F1D  ; Register 13: Interrupt Flag Register
-.define VIA_IER          $7F1E  ; Register 14: Interrupt Enable Register
-.define VIA_PORTA_NOHS   $7F1F  ; Register 15: Port A w/o Handshake (alias of Reg 1)
+.define VIA_PORTB        $7F40  ; Register 0: I/O Port B
+.define VIA_PORTA        $7F41  ; Register 1: I/O Port A
+.define VIA_DDRB         $7F42  ; Register 2: Data Direction Register B
+.define VIA_DDRA         $7F43  ; Register 3: Data Direction Register A
+.define VIA_T1CL         $7F44  ; Register 4: Timer 1 Counter Low
+.define VIA_T1CH         $7F45  ; Register 5: Timer 1 Counter High
+.define VIA_T1LL         $7F46  ; Register 6: Timer 1 Latch Low
+.define VIA_T1LH         $7F47  ; Register 7: Timer 1 Latch High
+.define VIA_T2CL         $7F48  ; Register 8: Timer 2 Counter Low
+.define VIA_T2CH         $7F49  ; Register 9: Timer 2 Counter High
+.define VIA_SR           $7F4A  ; Register 10: Shift Register
+.define VIA_ACR          $7F4B  ; Register 11: Auxiliary Control Register
+.define VIA_PCR          $7F4C  ; Register 12: Peripheral Control Register
+.define VIA_IFR          $7F4D  ; Register 13: Interrupt Flag Register
+.define VIA_IER          $7F4E  ; Register 14: Interrupt Enable Register
+.define VIA_PORTA_NOHS   $7F4F  ; Register 15: Port A w/o Handshake (alias of Reg 1)
 
 ; keyboard buffer variables
 .define TBPR            $00
