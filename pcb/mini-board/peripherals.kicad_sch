@@ -5,8 +5,8 @@
 	(uuid "c9560f0a-6b0b-4af7-ac07-862a46fa0ca9")
 	(paper "A4")
 	(title_block
-		(title "ByteCradle 6502 - RAM/ROM")
-		(date "2025-01-25")
+		(title "ByteCradle 6502 MINI BOARD")
+		(date "2025-05-03")
 		(rev "1")
 	)
 	(lib_symbols
