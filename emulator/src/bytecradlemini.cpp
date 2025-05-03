@@ -135,7 +135,8 @@ void ByteCradleMini::memwrite(VrEmu6502 *cpu, uint16_t addr, uint8_t val) {
     // RAM banked region: $8000–$9FFF
     if (addr >= 0x8000 && addr <= 0x9FFF) {
         uint8_t rambank = obj->get_rambank();
-        ram[(addr - 0x8000) | rambank << 14] = val;
+        ram[(addr - 0x8000) | rambank << 13] = val;
+        return;
     }
 
     // retrieve current rombank

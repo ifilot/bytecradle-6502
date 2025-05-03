@@ -6,10 +6,41 @@
 .export banktest
 
 banktest:
+    lda #<strrombank
+    ldx #>strrombank
+    jsr putstrnl
     jsr rombankswap
+    jsr newline
+
+    lda #<strrambank
+    ldx #>strrambank
+    jsr putstrnl
     jsr rambankswap
+    jsr newline
+
+    lda #<strrombankread
+    ldx #>strrombankread
+    jsr putstrnl
     jsr romcheck
+    jsr newline
+
+    lda #<strrambankrw
+    ldx #>strrambankrw
+    jsr putstrnl
+    jsr rambankwrite
+    jsr rambankread
+    jsr newline
+
     rts
+
+strrombank:
+    .asciiz "Testing reading/writing ROM bank register."
+strrambank:
+    .asciiz "Testing reading/writing RAM bank register."
+strrombankread:
+    .asciiz "Testing ROM bank swapping and reading."
+strrambankrw:
+    .asciiz "Testing RAM bank swapping and reading/writing."
 
 rombankswap:
     ldx #0
@@ -81,4 +112,34 @@ romcheck:
     cpx #5
     bne @next4
     jsr newline
+    rts
+
+rambankwrite:
+    ldx #2
+@next:
+    stx RAMBANKREGISTER
+    stx $8000
+    inx
+    cpx #64
+    bne @next
+    rts
+
+rambankread:
+    ldx #2
+@next:
+    stx RAMBANKREGISTER
+    lda $8000
+    jsr puthex
+    jsr putspace
+    inx
+    cpx #32
+    beq @newline
+    cpx #64
+    bne @next
+    jsr newline
+    jmp @done
+@newline:
+    jsr newline
+    jmp @next
+@done:
     rts
