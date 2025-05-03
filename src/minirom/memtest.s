@@ -3,9 +3,9 @@
 .export memtest
 
 memtest:
-        lda #<$0300
+        lda #<$0400
         sta BUF2
-        lda #>$0300
+        lda #>$0400
         sta BUF3
         stz BUF4
 
