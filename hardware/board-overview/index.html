@@ -625,6 +625,39 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#programmable-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Programmable logic
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Programmable logic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tiny-board-atf22v10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tiny Board - ATF22V10
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mini-board-atf1502" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mini Board - ATF1502
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1281,6 +1314,39 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#programmable-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Programmable logic
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Programmable logic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tiny-board-atf22v10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tiny Board - ATF22V10
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mini-board-atf1502" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mini Board - ATF1502
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1302,8 +1368,14 @@
 
 <h1 id="board-overview">Board Overview<a class="headerlink" href="#board-overview" title="Permanent link">&para;</a></h1>
 <h2 id="tier-system-overview">Tier System Overview<a class="headerlink" href="#tier-system-overview" title="Permanent link">&para;</a></h2>
-<p>The platform currently consists of two distinct tiers, each targeting different
-levels of complexity:</p>
+<p>ByteCradle’s hardware platform is designed with flexibility and accessibility in
+mind, offering a scalable ecosystem for retro computing enthusiasts, embedded
+developers, and educational environments. It features a tiered architecture to
+accommodate both minimalistic setups and more capable systems, ensuring a smooth
+learning curve while supporting increasingly complex applications. Each tier is
+carefully engineered to balance performance, expandability, and simplicity,
+making it easy to dive into 65xx-based system design, from first experiments to
+advanced custom builds.</p>
 <h3 id="tiny-sbc">Tiny SBC<a class="headerlink" href="#tiny-sbc" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Simplified design with a small footprint.</li>
@@ -1332,6 +1404,11 @@ levels of complexity:</p>
 </thead>
 <tbody>
 <tr>
+<td><strong>Frequency</strong></td>
+<td>16 MHz</td>
+<td>12 MHz</td>
+</tr>
+<tr>
 <td><strong>RAM</strong></td>
 <td>32 KiB</td>
 <td>512 KiB (bank switched)</td>
@@ -1352,9 +1429,14 @@ levels of complexity:</p>
 <td>✅ (via 65C22 VIA)</td>
 </tr>
 <tr>
-<td><strong>I/O Interface</strong></td>
+<td><strong>Serial Interface</strong></td>
 <td>65C51 ACIA</td>
 <td>65C51 ACIA</td>
+</tr>
+<tr>
+<td><strong>I/O mapping</strong></td>
+<td>ATF22V10</td>
+<td>ATF1502</td>
 </tr>
 <tr>
 <td><strong>Expansion Options</strong></td>
@@ -1363,6 +1445,24 @@ levels of complexity:</p>
 </tr>
 </tbody>
 </table>
+<h2 id="programmable-logic">Programmable logic<a class="headerlink" href="#programmable-logic" title="Permanent link">&para;</a></h2>
+<p>Both ByteCradle boards use programmable logic devices, a ATF22V10 PLD in the
+<code>TINY</code> board and a ATF1502 CPLD <code>MINI</code> board. These chips handle essential
+control logic like address decoding, chip selects, and bank switching. These
+devices replace traditional discrete logic chips (such as 74-series TTL),
+resulting in faster, more compact, and more reliable designs.</p>
+<h3 id="tiny-board-atf22v10">Tiny Board - ATF22V10<a class="headerlink" href="#tiny-board-atf22v10" title="Permanent link">&para;</a></h3>
+<p>The <code>TINY</code> Board uses an ATF22V10 PLD to implement address decoding and I/O mapping
+for RAM, ROM, and the ACIA serial interface. This chip allows tight integration
+of logic without chaining multiple discrete components, which reduces
+propagation delays. Its internal logic can respond in under 10 ns, enabling the
+system to run stably at 16 MHz—much faster than typical retro systems.</p>
+<h3 id="mini-board-atf1502">Mini Board - ATF1502<a class="headerlink" href="#mini-board-atf1502" title="Permanent link">&para;</a></h3>
+<p>The <code>MINI</code> Board uses an ATF1502 CPLD, which offers significantly more logic
+resources. It handles complex tasks like dynamic RAM and ROM bank switching,
+peripheral selection, and reading/writing to the bank registers. Updates can be
+made through JTAG without changing hardware. The CPLD's deterministic timing is
+critical for maintaining stability at 12 MHz.</p>
 
 
 
