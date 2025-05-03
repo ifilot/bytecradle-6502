@@ -30,7 +30,7 @@ To run the emulator with the `tiny` board:
 To run the emulator with the `mini` board and an SD card image:
 
 ```bash
-./bc6502emu --board mini --rom ../../src/minirom.bin --sdcard ../scripts/sdcard.img --clock 8.0
+./bc6502emu --board mini --rom ../../src/minirom.bin --sdcard ../scripts/sdcard.img --clock 12.0
 ```
 
 !!! info 

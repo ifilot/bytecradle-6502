@@ -1,5 +1,7 @@
 # Assembling the Board
 
+## Soldering components
+
 ## Flashing the ROM
 
 Before powering up your ByteCradle board for the first time, it is essential to

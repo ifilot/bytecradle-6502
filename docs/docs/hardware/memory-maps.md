@@ -51,8 +51,8 @@ bank registers, respectively.
 The upper half of the address space is split between banked and fixed
 ROM/RAM. The ranges `$8000–$9FFF` and `$A000–$BFFF` are bank-switched RAM
 and ROM windows, supporting 64 banks each. The final 16 KiB (`$C000–$FFFF`) is
-mapped to fixed ROM, permanently connected to banks 0 and 1, typically
-containing system firmware.
+mapped to fixed ROM, permanently connected to banks 0 and 1, containing 
+critical system firmware.
 
 !!! warning 
     The bank-switched ROM and RAM regions (`$A000–$BFFF` and
@@ -70,9 +70,6 @@ containing system firmware.
     recommended to begin using **RAM banks from 4 upwards** and **ROM banks from 2
     upwards** to avoid overlapping with fixed memory areas and ensure predictable
     behavior.
-
-
-
 
 | Address Range | Size       | Description                                                |
 |:--------------|:-----------|:-----------------------------------------------------------|
