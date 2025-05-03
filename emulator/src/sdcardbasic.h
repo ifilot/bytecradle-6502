@@ -37,7 +37,7 @@ public:
      * 
      * @param path path to image file 
      */
-    SdCardBasic(const std::string& image_filename);
+    SdCardBasic(const std::string& image_filename, bool _verbose = false);
 
     /**
      * @brief Receive /CS line signal
@@ -89,6 +89,8 @@ private:
     uint8_t miso_bit_count;             // number of bits remaining in the current byte
 
     std::ifstream sdfile;               // file stream for the SD card image
+
+    bool verbose = false;               // verbose mode
 
     /**
      * @brief digest SD-card commands

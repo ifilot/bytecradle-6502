@@ -23,8 +23,8 @@
 
 #include <stdint.h>
 
-extern void __fastcall__ init_sd(void);
-extern void __fastcall__ close_sd(void);
+extern void __fastcall__ sdinit(void);
+extern void __fastcall__ sdpulse(void);
 extern uint8_t __fastcall__ sdcmd00(void);
 extern uint8_t __fastcall__ sdcmd08(uint8_t *resptr);
 extern uint8_t __fastcall__ sdacmd41(void);

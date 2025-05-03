@@ -29,9 +29,11 @@
  * 
  * @param path to image file 
  */
-SdCardBasic::SdCardBasic(const std::string& image_filename)
+SdCardBasic::SdCardBasic(const std::string& image_filename,
+                        bool _verbose)
     : cs(false), clk(false), mosi_bit(false), miso_bit(false),
-      mosi_shift_reg(0), miso_shift_reg(0), mosi_bit_count(0), miso_bit_count(0)
+      mosi_shift_reg(0), miso_shift_reg(0), mosi_bit_count(0), miso_bit_count(0),
+      verbose(_verbose)
 {
     sdfile.open(image_filename, std::ios::binary);
     if (!sdfile) {
@@ -83,8 +85,8 @@ void SdCardBasic::set_clk(bool _clk) {
 void SdCardBasic::digest_sd() {
     static const std::array<uint8_t,6> cmd00 = {0x40,0x00,0x00,0x00,0x00,0x95};
     static const std::array<uint8_t,6> cmd08 = {0x48,0x00,0x00,0x01,0xAA,0x87};
-    static const std::array<uint8_t,6> cmd55 = {0x77,0x00,0x00,0x00,0x00,0x01};
-    static const std::array<uint8_t,6> acmd41 = {0x69,0x40,0x00,0x00,0x00,0x01};
+    static const std::array<uint8_t,6> cmd55 = {0x77,0x00,0x00,0x00,0x00,0x65};
+    static const std::array<uint8_t,6> acmd41 = {0x69,0x40,0x00,0x00,0x00,0x77};
     static const std::array<uint8_t,6> cmd58 = {0x7A,0x00,0x00,0x00,0x00,0x01};
 
     static const std::vector<uint8_t> respcmd00 = {0xFF, 0x01};
@@ -107,31 +109,49 @@ void SdCardBasic::digest_sd() {
         }
 
         if(cmd == cmd00) {
+            if(this->verbose) {
+                std::cout << "[DEBUG] CMD00 received" << std::endl;
+            }
             load_response(respcmd00);
             return;
         }
 
         if(cmd == cmd08) {
+            if(this->verbose) {
+                std::cout << "[DEBUG] CMD08 received" << std::endl;
+            }
             load_response(respcmd08);
             return;
         }
 
         if(cmd == cmd55) {
+            if(this->verbose) {
+                std::cout << "[DEBUG] CMD55 received" << std::endl;
+            }
             load_response(respcmd55);
             return;
         }
 
         if(cmd == acmd41) {
+            if(this->verbose) {
+                std::cout << "[DEBUG] ACMD41 received" << std::endl;
+            }
             load_response(respacmd41);
             return;
         }
 
         if(cmd == cmd58) {
+            if(this->verbose) {
+                std::cout << "[DEBUG] CMD58 received" << std::endl;
+            }
             load_response(respcmd58);
             return;
         }
 
         if(cmd[0] == (17 | 0x40) && cmd[5] == 0x01) {
+            if(this->verbose) {
+                std::cout << "[DEBUG] CMD17 received" << std::endl;
+            }
             uint32_t addr =
                 (cmd[1] << 24) |
                 (cmd[2] << 16) |

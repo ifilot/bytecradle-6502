@@ -40,11 +40,12 @@ uint8_t fat32_read_mbr(void) {
     uint8_t* sdbuf = (uint8_t*)(SDBUF);
 
     checksum_sd = read_sector(0x00000000);
-    checksum = crc16_xmodem(sdbuf, 0x200);
+    // checksum = crc16_xmodem(sdbuf, 0x200);
 
-    if(checksum != checksum_sd) {
-        return -1;
-    }
+    // if(checksum != checksum_sd) {
+    //     putstrnl("Checksum error");
+    //     return -1;
+    // }
 
     if(sdbuf[0x1FE] != 0x55 || sdbuf[0x1FF] != 0xAA) {
         return -1;
