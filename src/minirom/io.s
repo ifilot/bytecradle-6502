@@ -428,14 +428,14 @@ printnibble:
 ;  4.000 MHz    :  50
 ;  5.120 MHz    :  64
 ; 10.000 MHz    : 124
-; 12.000 MHz    : 149 (works on Tiny)
-; 14.310 MHz    : 177 (works on Tiny)
-; 16.000 MHz    : 198 (works on Tiny)
+; 12.000 MHz    : 149 (works on Tiny; works on Mini)
+; 14.310 MHz    : 177 (works on Tiny; does *not* work on Mini)
+; 16.000 MHz    : 198 (works on Tiny; does *not* work on Mini)
 ;-------------------------------------------------------------------------------
 putch:
     pha             ; preserve A
     sta ACIA_DATA   ; write the character to the ACIA data register
-    lda #198        ; initialize inner loop
+    lda #149        ; initialize inner loop
 @inner:
     nop             ; NOP; 2 cycles
     dec             ; decrement A; 2 cycles

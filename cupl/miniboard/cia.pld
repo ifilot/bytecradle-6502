@@ -171,14 +171,14 @@ D6 = 'b'0;
 D7 = 'b'0;
 
 /* Output Enable control for D0-D5 */
-D0.OE = RW & (ROMBANK_CS # RAMBANK_CS);
-D1.OE = RW & (ROMBANK_CS # RAMBANK_CS);
-D2.OE = RW & (ROMBANK_CS # RAMBANK_CS);
-D3.OE = RW & (ROMBANK_CS # RAMBANK_CS);
-D4.OE = RW & (ROMBANK_CS # RAMBANK_CS);
-D5.OE = RW & (ROMBANK_CS # RAMBANK_CS);
-D6.OE = RW & (ROMBANK_CS # RAMBANK_CS);
-D7.OE = RW & (ROMBANK_CS # RAMBANK_CS);
+D0.OE = (RW & ROMBANK_CS) # (RW & RAMBANK_CS);
+D1.OE = (RW & ROMBANK_CS) # (RW & RAMBANK_CS);
+D2.OE = (RW & ROMBANK_CS) # (RW & RAMBANK_CS);
+D3.OE = (RW & ROMBANK_CS) # (RW & RAMBANK_CS);
+D4.OE = (RW & ROMBANK_CS) # (RW & RAMBANK_CS);
+D5.OE = (RW & ROMBANK_CS) # (RW & RAMBANK_CS);
+D6.OE = (RW & ROMBANK_CS) # (RW & RAMBANK_CS);
+D7.OE = (RW & ROMBANK_CS) # (RW & RAMBANK_CS);
 
 /*---------------------------------------------------------------------*/
 /* Bank Address Output Logic for B0-B5 (single assignment)             */
@@ -186,28 +186,28 @@ D7.OE = RW & (ROMBANK_CS # RAMBANK_CS);
 
 /* A13 on ROM/RAM chips */
 B0 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB0 )
-   # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB0 )
+   # ( (!RAM_OE_N & RAM_BANK_REGION)  & RAMB0 )
    # ( (!ROM_CS_N & FIXED_ROM_REGION) & A13 )   /* A13 should match */
-   # ( (!RAM_CS_N & FIXED_RAM_REGION) & A13 );  /* A13 should match */
+   # ( (!RAM_OE_N & FIXED_RAM_REGION) & A13 );  /* A13 should match */
 
 /* A14 on ROM/RAM chips */
 B1 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB1 )
-   # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB1 )
+   # ( (!RAM_OE_N & RAM_BANK_REGION)  & RAMB1 )
    # ( (!ROM_CS_N & FIXED_ROM_REGION) & 'b'0 )  /* A14 is low */
-   # ( (!RAM_CS_N & FIXED_RAM_REGION) & A14 );  /* A14 should match */
+   # ( (!RAM_OE_N & FIXED_RAM_REGION) & A14 );  /* A14 should match */
 
 /* A15 on ROM/RAM chips */
 B2 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB2 )
-   # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB2 );
+   # ( (!RAM_OE_N & RAM_BANK_REGION)  & RAMB2 );
 
 /* A16 on ROM/RAM chips */
 B3 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB3 )
-   # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB3 );
+   # ( (!RAM_OE_N & RAM_BANK_REGION)  & RAMB3 );
 
 /* A17 on ROM/RAM chips */
 B4 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB4 )
-   # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB4 );
+   # ( (!RAM_OE_N & RAM_BANK_REGION)  & RAMB4 );
 
 /* A18 on ROM/RAM chips */
 B5 = ( (!ROM_CS_N & ROM_BANK_REGION)  & ROMB5 )
-   # ( (!RAM_CS_N & RAM_BANK_REGION)  & RAMB5 );
+   # ( (!RAM_OE_N & RAM_BANK_REGION)  & RAMB5 );
