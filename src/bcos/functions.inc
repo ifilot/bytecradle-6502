@@ -18,6 +18,7 @@
 .import puttab
 .import printnibble
 .import _putch
+.import putch
 .import _getch
 .import getpos
 .import ischarvalid

@@ -31,6 +31,7 @@
 .export printnibble
 .export ischarvalid
 .export clearline
+.export _putcrlf
 
 .PSC02
 
@@ -45,7 +46,7 @@
 ;-------------------------------------------------------------------------------
 set_rambank:
 _set_rambank:
-    sta RAMBANK
+    sta RAMBANKREGISTER
     rts
 
 ;-------------------------------------------------------------------------------
@@ -55,7 +56,7 @@ _set_rambank:
 ;-------------------------------------------------------------------------------
 read_rambank:
 _read_rambank:
-    lda RAMBANK
+    lda RAMBANKREGISTER
     rts
 
 ;-------------------------------------------------------------------------------
@@ -96,8 +97,11 @@ _getch:
 ;
 ; print new line to the screen
 ;-------------------------------------------------------------------------------
+_putcrlf:
 newline:
     sta BUF1
+    lda #CR
+    jsr putch
     lda #LF
     jsr putch
     lda BUF1
@@ -183,6 +187,8 @@ putstr:
 _putstrnl:
 putstrnl:
     jsr putstr
+    lda #CR
+    jsr putch
     lda #LF
     jsr putch
     rts

@@ -34,5 +34,6 @@ extern char __fastcall__ getch(void);
 extern void __fastcall__ puthex(uint8_t c);
 extern void __fastcall__ puthexword(uint16_t c);
 extern void __fastcall__ putspace();
+extern void __fastcall__ putcrlf();
 
 #endif

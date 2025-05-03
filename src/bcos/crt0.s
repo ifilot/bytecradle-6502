@@ -11,6 +11,7 @@
 .import    copydata, zerobss, initlib, donelib, init_system
 
 .include  "zeropage.inc"
+.include  "constants.inc"
 
 .segment  "STARTUP"
 
@@ -21,6 +22,13 @@ _init:
 	ldx #$FF
 	txs
 	cld
+
+;-------------------------------------------------------------------------------
+; Ensure RAM bank is at 4
+;-------------------------------------------------------------------------------
+    lda #4
+    sta RAMBANKREGISTER
+
 ;-------------------------------------------------------------------------------
 ; Initialize softstack pointer
 ;-------------------------------------------------------------------------------

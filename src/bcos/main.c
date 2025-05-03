@@ -30,26 +30,82 @@
 #define SDMAX 10        // number of attempts to connect to SD-card
 
 int main(void) {
-    uint8_t i;
+    uint8_t i,j;
     uint8_t res;
+    uint8_t resparr[6];
+    uint16_t sdaddr;
 
     putstrnl("Starting system.");
     putstr("Clearing user space...   ");
     memset((void*)0x0800, 0xFF, 0x7700);
     putstrnl("[OK]");
-    putstr("Connecting to SD-card... ");
-    for(i=0; i<SDMAX; i++) {
-        res = boot_sd();
-        if(res == 0x00) {
-            putstrnl("[OK]");
-            break;
+
+    // start SD card
+    sdinit();
+    sdpulse();
+    res = sdcmd00();
+    puthex(0x00);
+    puthex(res);
+    puthex(0x08);
+    res = sdcmd08(resparr);
+    puthex(res);
+    for(i=0; i<5; i++) {
+        puthex(resparr[i]);
+    }
+    puthex(0x41);
+    res = sdacmd41();
+    puthex(res);
+
+    puthex(0x58);
+    res = sdcmd58(resparr);
+    puthex(res);
+    for(i=0; i<5; i++) {
+        puthex(resparr[i]);
+    }
+
+    putcrlf();
+    puthex(0x17);
+    sdaddr = sdcmd17(0x00000000);
+    puthex(sdaddr >> 8);
+    puthex(sdaddr & 0xFF);
+    putcrlf();
+
+    for(j=0; j<32; j++) {
+        for(i=0; i<16; i++) {
+            puthex(((uint8_t*)0x8000)[j*16+i]);
+            putch(' ');
         }
+        putcrlf();
     }
-    if(i == SDMAX) {
-        putch('\n');
-        putstrnl("Cannot open SD-card, exiting...");
-        return -1;
+
+    putcrlf();
+    puthex(0x17);
+    sdaddr = sdcmd17(0xC00);
+    puthex(sdaddr >> 8);
+    puthex(sdaddr & 0xFF);
+    putcrlf();
+
+    for(j=0; j<32; j++) {
+        for(i=0; i<16; i++) {
+            puthex(((uint8_t*)0x8000)[j*16+i]);
+            putch(' ');
+        }
+        putcrlf();
     }
+
+    // putstr("Connecting to SD-card... ");
+    // for(i=0; i<SDMAX; i++) {
+    //     res = boot_sd();
+    //     if(res == 0x00) {
+    //         putstrnl("[OK]");
+    //         break;
+    //     }
+    // }
+    // if(i == SDMAX) {
+    //     putch('\n');
+    //     putstrnl("Cannot open SD-card, exiting...");
+    //     return -1;
+    // }
 
     if(fat32_read_mbr() == 0x00) {
         fat32_read_partition();
