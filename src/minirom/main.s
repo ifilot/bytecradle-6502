@@ -11,6 +11,7 @@
 .import startchess
 .import monitor
 .import sdtest
+.import banktest
 
 ;-------------------------------------------------------------------------------
 ; PROGRAM HEADER
@@ -56,6 +57,8 @@ loop:
     beq @runmonitor
     cmp #'7'
     beq @runsdtest
+    cmp #'8'
+    beq @runbanktest
     jmp loop
 @runtestpattern:
     jsr testpattern
@@ -77,6 +80,9 @@ loop:
     jmp main
 @runsdtest:
     jsr sdtest
+    jmp main
+@runbanktest:
+    jsr banktest
     jmp main
 
 ;-------------------------------------------------------------------------------
@@ -113,12 +119,12 @@ printheader:
     .byte <@str2, <@str1, <@str2
     .byte <@strram, <@strrom, <@strio, <@stracia, <@str2
     .byte <@str3, <@str4, <@str5
-    .byte <@str6, <@str7, <@str8, <@str9, <@str10, <@str2, 0
+    .byte <@str6, <@str7, <@str8, <@str9, <@str10, <@str11, <@str2, 0
 @lines_msb:
     .byte >@str2, >@str1, >@str2
     .byte >@strram, >@strrom, >@strio, >@stracia, >@str2
     .byte >@str3, >@str4, >@str5
-    .byte >@str6, >@str7, >@str8, >@str9, >@str10, >@str2, 0
+    .byte >@str6, >@str7, >@str8, >@str9, >@str10, >@str11, >@str2, 0
 
 @str1:
     .asciiz "|      BYTECRADLE /MINI/ ROM        |"
@@ -149,6 +155,8 @@ printheader:
 @str10:
     .asciiz "| (7) SD-card test                  |"
 @str11:
+    .asciiz "| (8) Banking test                  |"
+@str12:
     .asciiz "-------------------------------------"
 
 ;-------------------------------------------------------------------------------
