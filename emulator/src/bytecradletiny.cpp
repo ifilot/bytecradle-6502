@@ -35,7 +35,9 @@ ByteCradleTiny::ByteCradleTiny(const std::string& romfile) {
     this->load_file_into_memory(romfile.c_str(), this->rom, sizeof(this->rom));
 
     // set interface chips
-    this->acia = std::make_unique<ACIA>(ACIA_MASK, ACIA_MASK_SIZE, irq);
+    this->acia = std::make_unique<ACIA>(ByteCradleTiny::ACIA_MASK, 
+                                        ByteCradleTiny::ACIA_MASK_SIZE, 
+                                        irq);
 }
 
 /**

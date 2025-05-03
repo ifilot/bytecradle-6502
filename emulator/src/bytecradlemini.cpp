@@ -35,8 +35,12 @@ ByteCradleMini::ByteCradleMini(const std::string& romfile, const std::string& sd
     this->load_file_into_memory(romfile.c_str(), this->rom, sizeof(this->rom));
 
     // set interface chips
-    this->acia = std::make_unique<ACIA>(ACIA_MASK, ACIA_MASK_SIZE, irq);
-    this->via = std::make_unique<VIA>(VIA_MASK, VIA_MASK_SIZE, irq);
+    this->acia = std::make_unique<ACIA>(ByteCradleMini::ACIA_MASK, 
+                                        ByteCradleMini::ACIA_MASK_SIZE, 
+                                        irq);
+    this->via = std::make_unique<VIA>(ByteCradleMini::VIA_MASK, 
+                                      ByteCradleMini::VIA_MASK_SIZE, 
+                                      irq);
     this->via->create_sdcard_and_attach(sdcardfile);
 }
 
@@ -60,7 +64,7 @@ ByteCradleMini::~ByteCradleMini() {
 uint8_t ByteCradleMini::memread(VrEmu6502 *cpu, uint16_t addr, bool isDbg) {
     auto obj = static_cast<ByteCradleMini*>(vrEmu6502GetUserData(cpu));
     auto &ram = obj->get_ram();
-    auto &rom = obj->get_rom();
+    const auto &rom = obj->get_rom();
     auto& keybuffer = obj->get_keybuffer();
     auto& irq = obj->irq;
 
@@ -74,6 +78,18 @@ uint8_t ByteCradleMini::memread(VrEmu6502 *cpu, uint16_t addr, bool isDbg) {
         return ram[addr];
     }
 
+    // RAM banked region: $8000–$9FFF
+    if (addr >= 0x8000 && addr <= 0x9FFF) {
+        uint8_t rambank = obj->get_rambank();
+        return ram[(addr - 0x8000) | rambank << 13];
+    }
+    
+    // ROM banked region: $A000–$BFFF
+    if (addr >= 0xA000 && addr <= 0xBFFF) {
+        uint8_t rombank = obj->get_rombank();
+        return rom[(addr - 0xA000) | rombank << 13];
+    }
+
     // ACIA chip
     if(obj->get_acia()->responds(addr)) {
         return obj->get_acia()->read(addr);
@@ -82,6 +98,16 @@ uint8_t ByteCradleMini::memread(VrEmu6502 *cpu, uint16_t addr, bool isDbg) {
     // VIA chip
     if(obj->get_via()->responds(addr)) {
         return obj->get_via()->read(addr);
+    }
+
+    // retrieve current rombank
+    if ((addr & ByteCradleMini::BANKMASK) == ROMBANK_PATTERN) {
+        return obj->get_rombank();
+    }
+
+    // retrieve current rambank
+    if ((addr & ByteCradleMini::BANKMASK) == RAMBANK_PATTERN) {
+        return obj->get_rambank();
     }
 
     printf("[ERROR] Invalid write: %04X.\n", addr);
@@ -98,11 +124,29 @@ uint8_t ByteCradleMini::memread(VrEmu6502 *cpu, uint16_t addr, bool isDbg) {
 void ByteCradleMini::memwrite(VrEmu6502 *cpu, uint16_t addr, uint8_t val) {
     auto obj = static_cast<ByteCradleMini*>(vrEmu6502GetUserData(cpu));
     auto &ram = obj->get_ram();
-    auto &rom = obj->get_rom();
+    const auto &rom = obj->get_rom();
     
     // store in lower memory
     if (addr < 0x7F00) {
         ram[addr] = val;
+        return;
+    }
+
+    // RAM banked region: $8000–$9FFF
+    if (addr >= 0x8000 && addr <= 0x9FFF) {
+        uint8_t rambank = obj->get_rambank();
+        ram[(addr - 0x8000) | rambank << 14] = val;
+    }
+
+    // retrieve current rombank
+    if ((addr & ByteCradleMini::BANKMASK) == ROMBANK_PATTERN) {
+        obj->set_rombank(val);
+        return;
+    }
+
+    // retrieve current rambank
+    if ((addr & ByteCradleMini::BANKMASK) == RAMBANK_PATTERN) {
+        obj->set_rambank(val);
         return;
     }
 

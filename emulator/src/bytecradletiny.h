@@ -22,10 +22,6 @@
 
 #include "bytecradleboard.h"
 
-// memory mapped 65C51 ACIA
-#define ACIA_MASK       0x7F00
-#define ACIA_MASK_SIZE  12
-
 /**
  * @brief ByteCradle 6502 Tiny Board Emulator
  * 
@@ -35,6 +31,10 @@ private:
     uint8_t ram[0x8000];
     uint8_t rom[0x8000];
 public:
+    // Constants for memory-mapped device masks and mask sizes
+    static constexpr uint16_t ACIA_MASK      = 0x7F00;
+    static constexpr uint8_t  ACIA_MASK_SIZE = 12;
+
     /**
      * @brief Construct a new ByteCradleTiny object
      * 

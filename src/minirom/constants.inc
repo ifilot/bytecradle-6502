@@ -24,6 +24,9 @@
 .define VIA_IER          $7F4E  ; Register 14: Interrupt Enable Register
 .define VIA_PORTA_NOHS   $7F4F  ; Register 15: Port A w/o Handshake (alias of Reg 1)
 
+.define ROMBANKREGISTER  $7F80
+.define RAMBANKREGISTER  $7FC0
+
 ; keyboard buffer variables
 .define TBPR            $00
 .define TBPL            $01

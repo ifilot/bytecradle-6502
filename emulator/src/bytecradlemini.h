@@ -23,14 +23,6 @@
 #include "bytecradleboard.h"
 #include "via.h"
 
-// memory mapped 65C51 ACIA
-#define ACIA_MASK       0x7F00
-#define ACIA_MASK_SIZE  12
-
-// memory mapped 65C22 VIA
-#define VIA_MASK        0x7F10
-#define VIA_MASK_SIZE   12
-
 /**
  * @brief ByteCradle 6502 Tiny Board Emulator
  * 
@@ -44,6 +36,17 @@ private:
 
     std::unique_ptr<VIA> via;     // Pointer to the VIA object
 public:
+    // Constants for memory-mapped device masks and mask sizes
+    static constexpr uint16_t ACIA_MASK         = 0x7F00;
+    static constexpr uint8_t  ACIA_MASK_SIZE    = 10;
+
+    static constexpr uint16_t VIA_MASK          = 0x7F40;
+    static constexpr uint8_t  VIA_MASK_SIZE     = 10;
+
+    static constexpr uint16_t BANKMASK           = 0xFFC0;
+    static constexpr uint16_t ROMBANK_PATTERN    = 0x7F80;
+    static constexpr uint16_t RAMBANK_PATTERN    = 0x7FC0;
+
     /**
      * @brief Construct a new ByteCradleMini object
      * 
@@ -70,7 +73,35 @@ public:
      * 
      * @return reference to ROM array
      */
-    inline auto& get_rom() { return rom; }
+    inline const auto& get_rom() const { return rom; }
+
+    /**
+     * @brief Get the current RAM bank
+     * 
+     * @return uint8_t current RAM bank number
+     */
+    inline uint8_t get_rambank() const { return this->rambank; }
+
+    /**
+     * @brief Set the current RAM bank
+     * 
+     * @param bank RAM bank number to set
+     */
+    inline void set_rambank(uint8_t bank) { this->rambank = bank; }
+
+    /**
+     * @brief Get the current ROM bank
+     * 
+     * @return uint8_t current ROM bank number
+     */
+    inline uint8_t get_rombank() const { return this->rombank; }
+
+    /**
+     * @brief Set the current ROM bank
+     * 
+     * @param bank ROM bank number to set
+     */
+    inline void set_rombank(uint8_t bank) { this->rombank = bank; }
 
     /**
      * @brief Get reference to the RAM array
