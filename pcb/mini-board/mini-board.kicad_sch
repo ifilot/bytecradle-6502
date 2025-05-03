@@ -5,8 +5,8 @@
 	(uuid "70c9e9e4-d560-4927-af97-189b3a969059")
 	(paper "A4")
 	(title_block
-		(title "ByteCradle 6502 - CPU & CLOCK")
-		(date "2025-01-25")
+		(title "ByteCradle 6502 MINI BOARD")
+		(date "2025-05-03")
 		(rev "rev1")
 	)
 	(lib_symbols
