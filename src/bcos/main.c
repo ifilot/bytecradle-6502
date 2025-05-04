@@ -40,75 +40,23 @@ int main(void) {
     memset((void*)0x0800, 0xFF, 0x7700);
     putstrnl("[OK]");
 
-    // start SD card
-    sdinit();
-    sdpulse();
-    res = sdcmd00();
-    puthex(0x00);
-    puthex(res);
-    puthex(0x08);
-    res = sdcmd08(resparr);
-    puthex(res);
-    for(i=0; i<5; i++) {
-        puthex(resparr[i]);
-    }
-    puthex(0x41);
-    res = sdacmd41();
-    puthex(res);
-
-    puthex(0x58);
-    res = sdcmd58(resparr);
-    puthex(res);
-    for(i=0; i<5; i++) {
-        puthex(resparr[i]);
-    }
-
-    putcrlf();
-    puthex(0x17);
-    sdaddr = sdcmd17(0x00000000);
-    puthex(sdaddr >> 8);
-    puthex(sdaddr & 0xFF);
-    putcrlf();
-
-    for(j=0; j<32; j++) {
-        for(i=0; i<16; i++) {
-            puthex(((uint8_t*)0x8000)[j*16+i]);
-            putch(' ');
+    putstr("Connecting to SD-card... ");
+    for(i=0; i<SDMAX; i++) {
+        res = boot_sd();
+        if(res == 0x00) {
+            putstrnl("[OK]");
+            break;
         }
-        putcrlf();
     }
-
-    putcrlf();
-    puthex(0x17);
-    sdaddr = sdcmd17(0xC00);
-    puthex(sdaddr >> 8);
-    puthex(sdaddr & 0xFF);
-    putcrlf();
-
-    for(j=0; j<32; j++) {
-        for(i=0; i<16; i++) {
-            puthex(((uint8_t*)0x8000)[j*16+i]);
-            putch(' ');
-        }
-        putcrlf();
+    if(i == SDMAX) {
+        putch('\n');
+        putstrnl("Cannot open SD-card, exiting...");
+        return -1;
     }
-
-    // putstr("Connecting to SD-card... ");
-    // for(i=0; i<SDMAX; i++) {
-    //     res = boot_sd();
-    //     if(res == 0x00) {
-    //         putstrnl("[OK]");
-    //         break;
-    //     }
-    // }
-    // if(i == SDMAX) {
-    //     putch('\n');
-    //     putstrnl("Cannot open SD-card, exiting...");
-    //     return -1;
-    // }
 
     if(fat32_read_mbr() == 0x00) {
         fat32_read_partition();
+        fat32_print_partition_info();
     } else {
         putstrnl("Cannot read MBR, exiting...");
         return -1;

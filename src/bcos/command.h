@@ -86,4 +86,10 @@ uint8_t command_try_com();
  */
 void command_hexdump();
 
+/**
+ * @brief Outputs SD-CARD information to screen
+ * 
+ */
+void command_sdinfo();
+
 #endif

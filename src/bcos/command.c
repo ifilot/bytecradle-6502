@@ -31,6 +31,7 @@ static const CommandEntry command_table[] = {
     { "CD", command_cd },
     { "MORE", command_more },
     { "HEXDUMP", command_hexdump },
+    { "SDINFO", command_sdinfo },
 };
 
 /**
@@ -262,13 +263,16 @@ void command_more() {
     ptr = (uint8_t*)0x1000;
     while(*ptr != 0x00) {
         if(*ptr == '\n') {
+            ptr++;
+            putcrlf();
             linecounter++;
+        } else {
+            putch(*(ptr++));
         }
-        putch(*(ptr++));
 
         charcounter++;
         if(charcounter == 80) {
-            putch('\n');
+            putcrlf();
             charcounter = 0;
             linecounter++;
         }
@@ -350,4 +354,14 @@ void command_hexdump() {
             putstrnl("");
         }
     }
+}
+
+/**
+ * @brief Outputs SD-CARD information to screen
+ * 
+ */
+void command_sdinfo() {
+    puthex(get_rambank());
+    putcrlf();
+    fat32_print_partition_info();
 }

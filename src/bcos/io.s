@@ -1,8 +1,8 @@
 ; rambank routines
 .export set_rambank
 .export _set_rambank
-.export read_rambank
-.export _read_rambank
+.export get_rambank
+.export _get_rambank
 
 .export newline
 .export newcmdline
@@ -50,12 +50,12 @@ _set_rambank:
     rts
 
 ;-------------------------------------------------------------------------------
-; READ_RAMBANK routine
+; GET_RAMBANK routine
 ;
 ; Reads the rambank. Return value in A.
 ;-------------------------------------------------------------------------------
-read_rambank:
-_read_rambank:
+get_rambank:
+_get_rambank:
     lda RAMBANKREGISTER
     rts
 
@@ -430,7 +430,7 @@ putch:
 _putch:
     pha             ; preserve A
     sta ACIA_DATA   ; write the character to the ACIA data register
-    lda #89         ; initialize inner loop
+    lda #208        ; initialize inner loop
 @inner:
     dec             ; decrement A; 2 cycles
     bne @inner      ; check if zero; 3 cycles

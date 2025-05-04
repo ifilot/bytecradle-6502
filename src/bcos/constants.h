@@ -22,5 +22,6 @@
 #define _CONSTANTS_H
 
 #define SDBUF           0x8000
+#define SDRAMBANK       63
 
 #endif
