@@ -18,6 +18,8 @@ advanced custom builds.
 - Programmable logic: Utilizes small PLDs to minimize discrete components.
 - Ideal for learning, experimentation, and small embedded projects.
 
+[🔍 View schematic](schematics-layout.md#tiny)
+
 ### Mini SBC
 
 - Advanced design with bank switching for greater memory capabilities.
@@ -27,6 +29,8 @@ advanced custom builds.
   storage and potential peripheral expansion.
 - Perfect for exploring larger applications, file systems, and
   system-level programming.
+
+[🔍 View schematic](schematics-layout.md#tiny)
 
 ## Feature Comparison
 
