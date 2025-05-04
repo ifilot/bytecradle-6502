@@ -2,45 +2,51 @@
 #include "io.h"
 #include "crc16.h"
 
-// uint8_t boot_sd() {
-//     uint8_t c = 0;
-//     uint8_t buf[10];
-//     uint8_t* sdbuf = (uint8_t*)0x8000;
-//     uint16_t checksum = 0x0000;
-//     uint16_t checksum_sd = 0x0000;
-//     uint8_t res = 0;
-//     uint8_t resparr[6];
-//     uint8_t i;
+uint8_t boot_sd() {
+    uint8_t res;
+    uint8_t resparr[5];
 
-//     // initialize SD card
-//     init_sd();
+    sdinit();
+    sdpulse();
+    
+    res = sdcmd00();
+    if(res != 0x01) {
+        putstr("[ERROR] Failed on CMD00: ");
+        puthex(res);
+        putcrlf();
+        return 0xFF;
+    }
+    
+    res = sdcmd08(resparr);
+    if(res != 0x01) {
+        putstr("[ERROR] Failed on CMD08: ");
+        puthex(res);
+        putcrlf();
+        return 0xFF;
+    }
+    
+    res = sdacmd41();
+    if(res != 0x00) {
+        putstr("[ERROR] Failed on ACMD41: ");
+        puthex(res);
+        putcrlf();
+        return 0xFF;
+    }
 
-//     // initialize sd card
-//     res = sdcmd00();
-//     if(res != 0x01) {
-//         return -1;
-//     }
+    res = sdcmd58(resparr);
+    if(res != 0x00) {
+        putstr("[ERROR] Failed on CMD58: ");
+        puthex(res);
+        putcrlf();
+        return 0xFF;
+    }
 
-//     res = sdcmd08(resparr);
-//     if(res != 0x01) {
-//         return -1;
-//     }
+    if(resparr[1] != 0xC0) {
+        putstr("[ERROR] CMD58: not a valid SD card: ");
+        puthex(resparr[1]);
+        putcrlf();
+        return 0xFF;
+    }
 
-//     res = 0xFF;
-//     for(i=0; i<100; i++) {
-//         res = sdacmd41();
-//         if(res != 0x00) {
-//             continue;
-//         }
-//         res = sdcmd58(resparr);
-//         if(res == 0x00) {
-//             break;
-//         }
-//     }
-
-//     if(res != 0x00) {
-//         return -1;
-//     }
-
-//     return 0;
-// }
+    return 0;
+}

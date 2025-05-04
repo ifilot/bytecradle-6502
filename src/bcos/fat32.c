@@ -47,6 +47,12 @@ uint8_t fat32_read_mbr(void) {
     //     return -1;
     // }
 
+    // check partition type
+    if(sdbuf[0x1C2] != 0x0C) {
+        return -1;
+    }
+
+    // check pattern
     if(sdbuf[0x1FE] != 0x55 || sdbuf[0x1FF] != 0xAA) {
         return -1;
     }

@@ -20,9 +20,9 @@
 
 ; bit masks
 .define SD_MISO         #%00000001  ; PA0 input
-.define SD_MOSI         #%00000010  ; PA1
-.define SD_CLK          #%00000100  ; PA2
-.define SD_CS           #%00001000  ; PA3
+.define SD_MOSI         #%00000010  ; PA1 output
+.define SD_CLK          #%00000100  ; PA2 output
+.define SD_CS           #%00001000  ; PA3 output
 
 .define NOT_SD_MISO     #%11111110  ; clears PB0
 .define NOT_SD_MOSI     #%11111101  ; clears PB1
@@ -228,6 +228,16 @@ _sdcmd17:
     lda #$01
     sta RAMBANK+5
 
+;     ; print command for user
+;     ldy #0
+; @next:
+;     lda RAMBANK,y
+;     jsr puthex
+;     iny
+;     cpy #6
+;     bne @next
+;     jsr newline
+
     ; set newly formed address
     lda #<RAMBANK
     sta BUF2
@@ -258,12 +268,16 @@ _sdcmd17:
     inc BUF3
 @skiphb:
     lda BUF3
-    cmp #(>RAMBANK+3)
+    cmp #(>RAMBANK+2)
     bne @read_loop                  ; Continue until X wraps (256 bytes)
 
-    ; Skip CRC (2 bytes)
+    ; store CRC16 checksum
     jsr spi_recv
+    sta RAMBANK+$200
     jsr spi_recv
+    sta RAMBANK+$201
+    stz RAMBANK+$202                ; add two terminating zero bytes
+    stz RAMBANK+$203
 
     jsr sdclose
     jsr incsp4		                ; remove function arguments from the stack
@@ -272,6 +286,7 @@ _sdcmd17:
     rts
 
 @fail:
+    jsr puthex
     jsr sdclose
     jsr incsp4
     ldx #$FF                        ; error
