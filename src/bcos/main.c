@@ -30,10 +30,8 @@
 #define SDMAX 10        // number of attempts to connect to SD-card
 
 int main(void) {
-    uint8_t i,j;
+    uint8_t i;
     uint8_t res;
-    uint8_t resparr[6];
-    uint16_t sdaddr;
 
     putstrnl("Starting system.");
     putstr("Clearing user space...   ");

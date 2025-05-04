@@ -3,6 +3,7 @@
 .import putstr
 .import newcmdline
 .import _putch
+.import makecrctable
 
 .export init_system
 
@@ -17,6 +18,7 @@ init_system:
     jsr clear_mem
     jsr init_acia
     jsr init_screen
+    jsr makecrctable
     jsr printtitle
     cli                 ; enable interrupts
     rts
