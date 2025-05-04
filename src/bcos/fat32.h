@@ -59,6 +59,10 @@ struct FAT32File {
     uint32_t filesize;
 };
 
+#define MASK_DIR        (1 << 4)
+#define FILE_ENTRY      0
+#define FOLDER_ENTRY    1
+
 extern struct FAT32Partition fat32_partition;
 extern uint32_t fat32_linkedlist[F32_LLSZ];
 extern struct FAT32Folder fat32_current_folder;
@@ -67,8 +71,8 @@ extern struct FAT32File *fat32_files;
 extern struct FAT32Folder *fat32_fullpath;
 extern uint8_t fat32_pathdepth;
 
-#define MAXFILES         256
-#define FAT32FILESLOC   (SDBUF + 0x200)
+#define MAXFILES        255
+#define FAT32FILESLOC   (SDBUF + 0x300)
 #define FAT32FOLDERLOC  (FAT32FILESLOC + sizeof(struct FAT32File) * MAXFILES)
 
 /**
@@ -110,7 +114,7 @@ void fat32_list_dir();
 /**
  * Find a file
  */
-struct FAT32File* fat32_search_dir(const char* filename);
+struct FAT32File* fat32_search_dir(const char* filename, uint8_t entry_type);
 
 /**
  * Load a file to location in RAM

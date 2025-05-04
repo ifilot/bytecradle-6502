@@ -50,3 +50,24 @@ uint8_t boot_sd() {
 
     return 0;
 }
+
+/**
+ * @brief Read sector and verify checksum integrity
+ * 
+ * @param addr 
+ * @return uint8_t whether checksum is valid (0) or not (1)
+ */
+uint8_t read_sector(uint32_t addr) {
+    uint16_t checksum;
+    uint16_t crc16;
+
+    checksum = crc16_xmodem((uint8_t*)SDBUF, 512);
+    crc16 = sdcmd17(addr);
+
+    if(checksum == checksum) {
+        return 0;
+    } else {
+        putstrnl("[ERROR] SD-CARD checksum error: HALTING");
+        asm("loop: jmp loop");
+    }
+}

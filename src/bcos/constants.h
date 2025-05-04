@@ -21,7 +21,10 @@
 #ifndef _CONSTANTS_H
 #define _CONSTANTS_H
 
-#define SDBUF           0x8000
-#define SDRAMBANK       63
+#define ROMBANKREGISTER     0x7F80
+#define RAMBANKREGISTER     0x7FC0
+
+#define SDBUF               0x8000
+#define SDRAMBANK           63
 
 #endif

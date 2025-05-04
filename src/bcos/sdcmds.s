@@ -13,7 +13,6 @@
 .export _sdacmd41
 .export _sdcmd58
 .export _sdcmd17
-.export _read_sector
 
 .import incsp4
 .import pushax
@@ -197,7 +196,6 @@ _sdcmd58:
 ;------------------------------------------------------------------------------
 ; Read Boot Sector (Block 0) into $1000 using CMD17
 ;------------------------------------------------------------------------------
-_read_sector:
 _sdcmd17:
     ; ensure correct RAM bank is loaded
     lda #63                     ; SD-CARD bank (#63)
@@ -271,18 +269,17 @@ _sdcmd17:
     cmp #(>RAMBANK+2)
     bne @read_loop                  ; Continue until X wraps (256 bytes)
 
-    ; store CRC16 checksum
     jsr spi_recv
-    sta RAMBANK+$200
+    sta RAMBANK+$200                ; read CRC16 checksum byte 1
     jsr spi_recv
-    sta RAMBANK+$201
+    sta RAMBANK+$201                ; read CRC16 checksum byte 2
     stz RAMBANK+$202                ; add two terminating zero bytes
     stz RAMBANK+$203
 
     jsr sdclose
     jsr incsp4		                ; remove function arguments from the stack
-    lda BUF2                        ; low byte in A
-    ldx BUF3                        ; high byte in X
+    lda RAMBANK+$201                ; low byte in A
+    ldx RAMBANK+$200                ; high byte in X
     rts
 
 @fail:
