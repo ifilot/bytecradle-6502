@@ -18,10 +18,6 @@
  *                                                                        *
  **************************************************************************/
 
-#include <algorithm>
-#include <iostream>
-#include <cstring>
-
 #include "sdcardbasic.h"
 
 /**
@@ -110,7 +106,7 @@ void SdCardBasic::digest_sd() {
 
         if(cmd == cmd00) {
             if(this->verbose) {
-                std::cout << "[DEBUG] CMD00 received" << std::endl;
+                DEBUG_LOG("CMD00 received");
             }
             load_response(respcmd00);
             return;
@@ -118,7 +114,7 @@ void SdCardBasic::digest_sd() {
 
         if(cmd == cmd08) {
             if(this->verbose) {
-                std::cout << "[DEBUG] CMD08 received" << std::endl;
+                DEBUG_LOG("CMD08 received");
             }
             load_response(respcmd08);
             return;
@@ -126,7 +122,7 @@ void SdCardBasic::digest_sd() {
 
         if(cmd == cmd55) {
             if(this->verbose) {
-                std::cout << "[DEBUG] CMD55 received" << std::endl;
+                DEBUG_LOG("CMD55 received");
             }
             load_response(respcmd55);
             return;
@@ -134,7 +130,7 @@ void SdCardBasic::digest_sd() {
 
         if(cmd == acmd41) {
             if(this->verbose) {
-                std::cout << "[DEBUG] ACMD41 received" << std::endl;
+                DEBUG_LOG("ACMD41 received");
             }
             load_response(respacmd41);
             return;
@@ -142,7 +138,7 @@ void SdCardBasic::digest_sd() {
 
         if(cmd == cmd58) {
             if(this->verbose) {
-                std::cout << "[DEBUG] CMD58 received" << std::endl;
+                DEBUG_LOG("CMD58 received");
             }
             load_response(respcmd58);
             return;
@@ -150,7 +146,11 @@ void SdCardBasic::digest_sd() {
 
         if(cmd[0] == (17 | 0x40) && cmd[5] == 0x01) {
             if(this->verbose) {
-                std::cout << "[DEBUG] CMD17 received" << std::endl;
+                uint32_t addr = (cmd[1] << 24) | (cmd[2] << 16) | (cmd[3] << 8)  | (cmd[4]);
+
+                std::stringstream ss;
+                ss << "CMD17 (0x" << std::hex << std::uppercase << std::setfill('0') << std::setw(8) << addr << ") received";
+                DEBUG_LOG(ss.str());
             }
             uint32_t addr =
                 (cmd[1] << 24) |
@@ -199,6 +199,10 @@ void SdCardBasic::load_response_cmd17(uint32_t addr) {
     for (size_t i = 0; i < bytes_read; ++i) {
         miso_queue.push(static_cast<uint8_t>(buffer[i]));
     }
+
+    // if(verbose) {
+    //     print_hexdump((const uint8_t*)buffer, 512);
+    // }
 
     uint16_t checksum = crc16_xmodem(reinterpret_cast<uint8_t*>(buffer), 512);
     miso_queue.push((checksum >> 8) & 0xFF);

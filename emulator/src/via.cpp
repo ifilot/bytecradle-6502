@@ -50,8 +50,9 @@ uint8_t VIA::read(uint16_t addr) {
     return result;
 }
 
-void VIA::create_sdcard_and_attach(const std::string& image_filename) {
-    this->sdcard = std::make_unique<SdCardBasic>(image_filename);
+void VIA::create_sdcard_and_attach(const std::string& image_filename,
+                                   bool verbose) {
+    this->sdcard = std::make_unique<SdCardBasic>(image_filename, verbose);
     if (this->sdcard) {
         sdcard->set_cs(true); // Set CS high initially
         update_outputs();

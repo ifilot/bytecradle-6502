@@ -84,6 +84,8 @@ protected:
     VrEmu6502 *cpu;
     vrEmu6502Interrupt *irq;
 
+    bool debug_mode = false;
+
     inline auto& get_keybuffer() { return this->acia->get_keybuffer(); }
     inline auto& get_irq() { return irq; }
 

@@ -21,6 +21,9 @@
 #pragma once
 
 #include <cstdint>
+#include <iomanip>
+#include <cctype>
+#include <iostream>
 
 /**
  * @brief Abstract base class for an SD card device.
@@ -34,4 +37,7 @@ public:
     virtual bool get_miso() const = 0;       // Master In Slave Out (MISO) signal
 
     virtual ~SdCardDevice() = default;       // Virtual destructor for safe polymorphic use
+
+protected:
+    void print_hexdump(const uint8_t* data, size_t length, size_t start_offset = 0);    
 };

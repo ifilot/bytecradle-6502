@@ -52,8 +52,12 @@ public:
      * 
      * @param romfile path to the ROM file
      * @param sdcardfile path to the SD card file
+     * @param debug_mode whether to run in debugging mode
      */
-    ByteCradleMini(const std::string& romfile, const std::string& sdcardfile);
+    ByteCradleMini(const std::string& romfile, 
+                   const std::string& sdcardfile,
+                   bool _debug_mode = false
+                  );
 
     /**
      * @brief Destroy the Byte Cradle Tiny object

@@ -25,10 +25,14 @@
  * 
  * @param romfile path to the ROM file
  * @param sdcardfile path to the SD card file
+ * @param debug_mode whether to run in debugging mode
  */
-ByteCradleMini::ByteCradleMini(const std::string& romfile, const std::string& sdcardfile) {
+ByteCradleMini::ByteCradleMini(const std::string& romfile, 
+                               const std::string& sdcardfile,
+                               bool _debug_mode) {
     cpu = vrEmu6502New(CPU_W65C02, memread, memwrite, this);
     irq = vrEmu6502Int(cpu);
+    debug_mode = _debug_mode;
 
     // set memory
     memset(this->ram, 0x00, sizeof(this->ram));
@@ -41,7 +45,7 @@ ByteCradleMini::ByteCradleMini(const std::string& romfile, const std::string& sd
     this->via = std::make_unique<VIA>(ByteCradleMini::VIA_MASK, 
                                       ByteCradleMini::VIA_MASK_SIZE, 
                                       irq);
-    this->via->create_sdcard_and_attach(sdcardfile);
+    this->via->create_sdcard_and_attach(sdcardfile, this->debug_mode);
 }
 
 /**
@@ -80,13 +84,13 @@ uint8_t ByteCradleMini::memread(VrEmu6502 *cpu, uint16_t addr, bool isDbg) {
 
     // RAM banked region: $8000–$9FFF
     if (addr >= 0x8000 && addr <= 0x9FFF) {
-        uint8_t rambank = obj->get_rambank();
+        unsigned int rambank = obj->get_rambank();
         return ram[(addr - 0x8000) | rambank << 13];
     }
     
     // ROM banked region: $A000–$BFFF
     if (addr >= 0xA000 && addr <= 0xBFFF) {
-        uint8_t rombank = obj->get_rombank();
+        unsigned int rombank = obj->get_rombank();
         return rom[(addr - 0xA000) | rombank << 13];
     }
 
@@ -134,7 +138,7 @@ void ByteCradleMini::memwrite(VrEmu6502 *cpu, uint16_t addr, uint8_t val) {
 
     // RAM banked region: $8000–$9FFF
     if (addr >= 0x8000 && addr <= 0x9FFF) {
-        uint8_t rambank = obj->get_rambank();
+        unsigned int rambank = obj->get_rambank();
         ram[(addr - 0x8000) | rambank << 13] = val;
         return;
     }

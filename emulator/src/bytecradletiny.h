@@ -39,8 +39,9 @@ public:
      * @brief Construct a new ByteCradleTiny object
      * 
      * @param romfile path to the ROM file
+     * @param debug_mode whether to run in debugging mode
      */
-    ByteCradleTiny(const std::string& romfile);
+    ByteCradleTiny(const std::string& romfile, bool _debug_mode = false);
 
     /**
      * @brief Destroy the Byte Cradle Tiny object

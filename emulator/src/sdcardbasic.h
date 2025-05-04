@@ -20,11 +20,18 @@
 
 #pragma once
 
-#include "sdcarddevice.h"
 #include <vector>
 #include <queue>
 #include <fstream>
 #include <array>
+#include <algorithm>
+#include <iostream>
+#include <cstring>
+#include <sstream>
+#include <iomanip>
+
+#include "sdcarddevice.h"
+#include "debug.h"
 
 /**
  * @brief SD-CARD interface
@@ -36,8 +43,10 @@ public:
      * @brief Construct SD-CARD interface
      * 
      * @param path path to image file 
+     * @param path whether to show verbose output (debugging)
      */
-    SdCardBasic(const std::string& image_filename, bool _verbose = false);
+    SdCardBasic(const std::string& image_filename, 
+                bool _verbose = false);
 
     /**
      * @brief Receive /CS line signal

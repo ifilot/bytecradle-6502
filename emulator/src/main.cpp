@@ -38,33 +38,36 @@ int main(int argc, char** argv) {
         TCLAP::ValueArg<std::string> romArg("r", "rom", "Path to ROM file", true, "", "string");
         TCLAP::ValueArg<std::string> sdcardArg("s", "sdcard", "Path to SD card image (required if board=mini)", false, "", "string");
         TCLAP::ValueArg<double> clockArg("c", "clock", "Clock speed in MHz", false, 16.0, "double");
+        TCLAP::SwitchArg debugArg("d", "debug", "Enable debug mode", false);
 
         cmd.add(boardArg);
         cmd.add(romArg);
         cmd.add(sdcardArg);
         cmd.add(clockArg);
+        cmd.add(debugArg);
 
         cmd.parse(argc, argv);
 
         // Read the values
-        std::string boardType = boardArg.getValue();
-        std::string romPath = romArg.getValue();
-        std::string sdcardPath = sdcardArg.getValue();
+        std::string board_type = boardArg.getValue();
+        std::string rom_path = romArg.getValue();
+        std::string sdcard_path = sdcardArg.getValue();
         double cpuFrequency = clockArg.getValue() * 1'000'000.0; // Convert MHz to Hz
+        bool debug_mode = debugArg.getValue();
 
         // Validate board type
         std::unique_ptr<ByteCradleBoard> board;
 
-        if (boardType == "tiny") {
-            board = std::make_unique<ByteCradleTiny>(romPath);
-        } else if (boardType == "mini") {
-            if (sdcardPath.empty()) {
+        if (board_type == "tiny") {
+            board = std::make_unique<ByteCradleTiny>(rom_path, debug_mode);
+        } else if (board_type == "mini") {
+            if (sdcard_path.empty()) {
                 std::cerr << "Error: SD card image must be specified for 'mini' board.\n";
                 return 1;
             }
-            board = std::make_unique<ByteCradleMini>(romPath, sdcardPath);
+            board = std::make_unique<ByteCradleMini>(rom_path, sdcard_path, debug_mode);
         } else {
-            std::cerr << "Error: Invalid board type specified ('" << boardType << "'). Must be 'tiny' or 'mini'.\n";
+            std::cerr << "Error: Invalid board type specified ('" << board_type << "'). Must be 'tiny' or 'mini'.\n";
             return 1;
         }
 

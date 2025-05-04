@@ -24,11 +24,14 @@
  * @brief Construct a new ByteCradleTiny object
  * 
  * @param romfile path to the ROM file
+ * @param debug_mode whether to run in debugging mode
  */
-ByteCradleTiny::ByteCradleTiny(const std::string& romfile) {
+ByteCradleTiny::ByteCradleTiny(const std::string& romfile,
+                               bool _debug_mode) {
     // initialize CPU
     cpu = vrEmu6502New(CPU_W65C02, memread, memwrite, this);
     irq = vrEmu6502Int(cpu);
+    debug_mode = _debug_mode;
 
     // set memory
     memset(this->ram, 0x00, sizeof(this->ram));
