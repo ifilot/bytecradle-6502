@@ -61,13 +61,19 @@ uint8_t read_sector(uint32_t addr) {
     uint16_t checksum;
     uint16_t crc16;
 
-    checksum = crc16_xmodem((uint8_t*)SDBUF, 512);
-    crc16 = sdcmd17(addr);
+    checksum = sdcmd17(addr);
+    crc16 = crc16_xmodem((uint8_t*)SDBUF, 512);
 
-    if(checksum == checksum) {
+    if(checksum == crc16) {
         return 0;
     } else {
         putstrnl("[ERROR] SD-CARD checksum error: HALTING");
+        puthex(checksum >> 8);
+        puthex(checksum);
+        putch(' ');
+        puthex(crc16 >> 8);
+        puthex(crc16);
+        putcrlf();
         asm("loop: jmp loop");
     }
 }

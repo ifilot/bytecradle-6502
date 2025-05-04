@@ -39,9 +39,7 @@ uint8_t fat32_read_mbr(void) {
     uint16_t checksum = 0x0000;
     uint8_t* sdbuf = (uint8_t*)(SDBUF);
 
-    if(read_sector(0x00000000) != 0) {
-        return -1;
-    }
+    read_sector(0x00000000);
 
     // check partition type
     if(sdbuf[0x1C2] != 0x0C) {
@@ -67,9 +65,7 @@ void fat32_read_partition(void) {
     uint32_t lba = *(uint32_t*)(SDBUF + 0x1C6);
 
     // retrieve the partition table
-    if(read_sector(lba) != 0) {
-        return;
-    }
+    read_sector(lba);
 
     // store partition information
     fat32_partition.bytes_per_sector = *(uint16_t*)(SDBUF + 0x0B);

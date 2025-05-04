@@ -123,6 +123,10 @@ void command_parse() {
  * @brief Execute the "ls" command
  */
 void command_ls() {
+    // ensure proper RAM bank
+    asm("lda #63");
+    asm("sta %w", RAMBANKREGISTER);
+    
     fat32_read_dir();
     fat32_sort_files();
     fat32_list_dir();
@@ -324,6 +328,17 @@ uint8_t command_try_com() {
         // store first block at 0x8000; we need the first two bytes
         sdcmd17(fat32_calculate_sector_address(res->cluster, 0));
         addr = *(uint16_t*)(0x8000);
+
+        if(!(addr >= 0x0800 && addr < 0x7F00)) {
+            putstrnl("Invalid start address: file corrupt?");
+            return 0xFF;
+        }
+
+        if(addr + res->filesize >= 0x7F00) {
+            putstrnl("File too large to fit in memory");
+            return 0xFF;
+        }
+
         fat32_load_file(res, (uint8_t*)addr);
         program = (void(*)(void))(addr+2);
         program();
