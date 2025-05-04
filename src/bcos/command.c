@@ -136,6 +136,10 @@ void command_cd() {
     char dirname[12];
     uint8_t l = strlen(command_argv[1]);
 
+    // ensure proper RAM bank
+    asm("lda #63");
+    asm("sta %w", RAMBANKREGISTER);
+
     if(command_argc == 1) {
         fat32_current_folder = fat32_root_folder;
         fat32_pathdepth = 1;
@@ -160,9 +164,9 @@ void command_cd() {
 
     fat32_read_dir();
     fat32_sort_files();
-    res = fat32_search_dir(dirname);
+    res = fat32_search_dir(dirname, FOLDER_ENTRY);
 
-    if(res != NULL && (res->attrib & (1 << 4)) != 0) {
+    if(res != NULL) {
         if(res->cluster == 0) {
             fat32_current_folder = fat32_root_folder;
             fat32_pathdepth = 1;
@@ -184,6 +188,10 @@ void command_pwdcmd() {
     char *ptr;
     char *bufptr = buf;
     uint8_t i = 0;
+
+    // ensure proper RAM bank
+    asm("lda #63");
+    asm("sta %w", RAMBANKREGISTER);
 
     *(bufptr++) = ':';
     for(i=0; i<fat32_pathdepth; i++) {
@@ -221,6 +229,10 @@ void command_more() {
     uint8_t linecounter = 0;
     uint8_t charcounter = 0;
 
+    // ensure proper RAM bank
+    asm("lda #63");
+    asm("sta %w", RAMBANKREGISTER);
+
     if(command_argc != 2) {
         command_illegal();
         return;
@@ -247,17 +259,11 @@ void command_more() {
 
     fat32_read_dir();
     fat32_sort_files();
-    res = fat32_search_dir(filename);
+    res = fat32_search_dir(filename, FILE_ENTRY);
 
     // when nothing can be found
     if(res == NULL) {
         putstrnl("Cannot find file.");
-        return;
-    }
-
-    // check whether directory bit is set, if so, not a file
-    if((res->attrib & (1 << 4)) != 0) {
-        putstrnl("Not a file");
         return;
     }
 
@@ -297,6 +303,10 @@ uint8_t command_try_com() {
     uint16_t addr;
     void __fastcall__ (*program)(void) = NULL;
 
+    // ensure proper RAM bank
+    asm("lda #63");
+    asm("sta %w", RAMBANKREGISTER);
+
     l = l > 8 ? 8 : l;
     memset(filename, ' ', 8);
     memcpy(filename, command_argv[0], l);
@@ -305,10 +315,10 @@ uint8_t command_try_com() {
 
     fat32_read_dir();
     fat32_sort_files();
-    res = fat32_search_dir(filename);
+    res = fat32_search_dir(filename, FILE_ENTRY);
 
     // when nothing can be found
-    if(res == NULL || (res->attrib & (1 << 4)) != 0) {
+    if(res == NULL) {
         return 0xFF;
     } else {
         // store first block at 0x8000; we need the first two bytes
@@ -363,7 +373,5 @@ void command_hexdump() {
  * 
  */
 void command_sdinfo() {
-    puthex(get_rambank());
-    putcrlf();
     fat32_print_partition_info();
 }

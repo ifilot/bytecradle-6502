@@ -91,7 +91,7 @@ public:
      * 
      * @param bank RAM bank number to set
      */
-    inline void set_rambank(uint8_t bank) { this->rambank = bank; }
+    inline void set_rambank(uint8_t bank) { this->rambank = bank & 0x3F; }
 
     /**
      * @brief Get the current ROM bank
@@ -105,7 +105,7 @@ public:
      * 
      * @param bank ROM bank number to set
      */
-    inline void set_rombank(uint8_t bank) { this->rombank = bank; }
+    inline void set_rombank(uint8_t bank) { this->rombank = bank & 0x3F; }
 
     /**
      * @brief Get reference to the RAM array

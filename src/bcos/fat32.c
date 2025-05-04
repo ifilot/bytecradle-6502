@@ -39,13 +39,9 @@ uint8_t fat32_read_mbr(void) {
     uint16_t checksum = 0x0000;
     uint8_t* sdbuf = (uint8_t*)(SDBUF);
 
-    checksum_sd = read_sector(0x00000000);
-    // checksum = crc16_xmodem(sdbuf, 0x200);
-
-    // if(checksum != checksum_sd) {
-    //     putstrnl("Checksum error");
-    //     return -1;
-    // }
+    if(read_sector(0x00000000) != 0) {
+        return -1;
+    }
 
     // check partition type
     if(sdbuf[0x1C2] != 0x0C) {
@@ -71,7 +67,9 @@ void fat32_read_partition(void) {
     uint32_t lba = *(uint32_t*)(SDBUF + 0x1C6);
 
     // retrieve the partition table
-    read_sector(lba);
+    if(read_sector(lba) != 0) {
+        return;
+    }
 
     // store partition information
     fat32_partition.bytes_per_sector = *(uint16_t*)(SDBUF + 0x0B);
@@ -212,7 +210,7 @@ void fat32_list_dir() {
     uint8_t buf[80];
     struct FAT32File *file = fat32_files;
     for(i = 0; i<fat32_current_folder.nrfiles; i++) {
-        if(file->attrib & (1 << 4)) {
+        if(file->attrib & MASK_DIR) {
             sprintf(buf, "%.8s %.3s %08lX DIR", file->basename, file->extension, file->cluster);
         } else {
             sprintf(buf, "%.8s.%.3s %08lX %lu", file->basename, file->extension, file->cluster, file->filesize);
@@ -225,14 +223,11 @@ void fat32_list_dir() {
 /**
  * Find a file
  */
- struct FAT32File* fat32_search_dir(const char* filename) {
+ struct FAT32File* fat32_search_dir(const char* filename, uint8_t entry_type) {
     struct FAT32File key;
-
-    putstr("Searching file: ");
-    putstrnl(filename);
     memcpy(key.basename, filename, 11);
     key.termbyte = 0x00;
-    key.attrib = (1 << 4);
+    key.attrib = (entry_type == FOLDER_ENTRY) ? MASK_DIR : 0;
 
     return (struct FAT32File*)bsearch(&key, fat32_files, fat32_current_folder.nrfiles, sizeof(struct FAT32File), fat32_file_compare);
  }
@@ -321,18 +316,17 @@ int fat32_file_compare(const void* item1, const void *item2) {
     const struct FAT32File *file1 = (const struct FAT32File*)item1;
     const struct FAT32File *file2 = (const struct FAT32File*)item2;
 
-    uint8_t f1 = file1->attrib & (1 << 4);
-    uint8_t f2 = file2->attrib & (1 << 4);
+    // Extract directory bit (1 if directory, 0 otherwise)
+    uint8_t is_dir1 = (file1->attrib & MASK_DIR) != 0;
+    uint8_t is_dir2 = (file2->attrib & MASK_DIR) != 0;
 
-    putstrnl("Comparing");
-    putstrnl(file1->basename);
-    putstrnl(file2->basename);
-
-    if(f1 > f2) {
+    // Sort directories before files
+    if (is_dir1 && !is_dir2) {
         return -1;
-    } else if(f2 < f1) {
+    } else if (!is_dir1 && is_dir2) {
         return 1;
-    } else {
-        return strcmp(file1->basename, file2->basename);
     }
+
+    // if same type, compare names
+    return strcmp(file1->basename, file2->basename);
 }

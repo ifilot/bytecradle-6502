@@ -23,15 +23,17 @@
 
 #include <stdint.h>
 
+#include "constants.h"
+
 extern void __fastcall__ sdinit(void);
 extern void __fastcall__ sdpulse(void);
 extern uint8_t __fastcall__ sdcmd00(void);
 extern uint8_t __fastcall__ sdcmd08(uint8_t *resptr);
 extern uint8_t __fastcall__ sdacmd41(void);
 extern uint8_t __fastcall__ sdcmd58(uint8_t *resptr);
-extern uint16_t __cdecl__ read_sector(uint32_t addr);
 extern uint16_t __cdecl__ sdcmd17(uint32_t addr);
 
+uint8_t read_sector(uint32_t addr);
 uint8_t boot_sd(void);
 
 #endif

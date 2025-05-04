@@ -56,7 +56,6 @@ int main(void) {
 
     if(fat32_read_mbr() == 0x00) {
         fat32_read_partition();
-        fat32_print_partition_info();
     } else {
         putstrnl("Cannot read MBR, exiting...");
         return -1;
