@@ -243,6 +243,8 @@ void command_more() {
     memcpy(&filename[8], ext, 3);
     filename[11] = 0;
 
+    putstrnl(filename);
+
     fat32_read_dir();
     fat32_sort_files();
     res = fat32_search_dir(filename);
