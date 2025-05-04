@@ -72,7 +72,7 @@ L0007:
 	ldy     #$01
 	jsr     staxysp
 	txa
-L0060:	ldy     #$19
+L0062:	ldy     #$19
 	jsr     staxysp
 	ldy     #$1A
 	lda     (sp),y
@@ -95,7 +95,7 @@ L001A:	jcs     L0014
 	jsr     staxysp
 	ldx     #$00
 	txa
-L005F:	ldy     #$1B
+L0061:	ldy     #$1B
 	jsr     staxysp
 	ldy     #$1C
 	lda     (sp),y
@@ -251,10 +251,24 @@ L0034:	ldy     #$1A
 	sta     regsave
 	stx     regsave+1
 	ina
-	jne     L005F
+	jne     L0061
 	inx
-	jmp     L005F
+	jmp     L0061
 L0021:	lda     _putch
+	ldx     _putch+1
+	jsr     pushax
+	ldx     #$00
+	lda     #$0D
+	pha
+	lda     (sp)
+	sta     jmpvec+1
+	ldy     #$01
+	lda     (sp),y
+	sta     jmpvec+2
+	pla
+	jsr     jmpvec
+	jsr     incsp2
+	lda     _putch
 	ldx     _putch+1
 	jsr     pushax
 	ldx     #$00
@@ -271,9 +285,9 @@ L0021:	lda     _putch
 	ldy     #$1A
 	jsr     ldaxysp
 	ina
-	jne     L0060
+	jne     L0062
 	inx
-	jmp     L0060
+	jmp     L0062
 L0014:	ldy     #$1D
 	jmp     addysp
 

@@ -23,7 +23,7 @@ void mandelbrot() {
     int32_t zr, zi;
     int16_t zr2, zi2, zrzi;
     int16_t x_step, y_step;
-    char c;
+    uint8_t c;
 
     putstrnl("Plotting Mandelbrot set between [-2, 1] x [-1, 1]:");
 
@@ -62,6 +62,7 @@ void mandelbrot() {
 
             putch(c);
         }
+        putch('\r');  /* Move to the next line */
         putch('\n');  /* Move to the next line */
     }
 }
