@@ -13,6 +13,7 @@ nav:
       - Memory Maps: hardware/memory-maps.md
       - Schematics and PCB Layout: hardware/schematics-layout.md
   - Software:
+      - Operating System: software/operating-system.md
       - Kernel functions: software/kernel-functions.md
   - Emulator:
       - Emulator Overview: emulator/emulator-overview.md

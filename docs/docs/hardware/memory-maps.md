@@ -37,7 +37,7 @@ The Mini Board features a flexible 64 KiB memory map designed to support both
 fixed and bank-switched memory regions. The lower memory (`$0000–$7EFF`) is
 primarily RAM, with the first 256 bytes (`$0000–$00FF`) allocated as **Zero
 Page**, and the next 256 bytes (`$0100–$01FF`) serving as the stack.
-Addresses `$0200–$03FF` are reserved for OS-level functionality, while the
+Addresses `$0200–$07FF` are reserved for OS-level functionality, while the
 remainder up to `$7EFF` is available as general-purpose RAM, implemented
 across fixed banks 0–3.
 
@@ -75,8 +75,8 @@ critical system firmware.
 |:--------------|:-----------|:-----------------------------------------------------------|
 | `$0000-$00FF` | 256 bytes  | **Zero Page RAM**                                          |
 | `$0100-$01FF` | 256 bytes  | **Stack**                                                  |
-| `$0200-$03FF` | 512 bytes  | **Reserved (OS Use)**                                      |
-| `$0400-$7EFF` | ~31 KiB    | **General Purpose RAM (Fixed, Banks 0–3)**                 |
+| `$0200-$07FF` | 512 bytes  | **Reserved** (used by BCOS)                                |
+| `$0800-$7EFF` | 30 KiB     | **General Purpose RAM (Fixed, Banks 0–3)**                 |
 | `$7F00-$7F3F` | 64 bytes   | **ACIA (UART)**                                            |
 | `$7F40-$7F7F` | 64 bytes   | **VIA**                                                    |
 | `$7F80-$7FBF` | 64 bytes   | **ROM Bank Register**                                      |
