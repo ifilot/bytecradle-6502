@@ -62,7 +62,7 @@ uint8_t read_sector(uint32_t addr) {
     uint16_t crc16;
 
     checksum = sdcmd17(addr);
-    crc16 = crc16_xmodem((uint8_t*)SDBUF, 512);
+    crc16 = crc16_xmodem_sdsector();
 
     if(checksum == crc16) {
         return 0;

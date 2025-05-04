@@ -23,3 +23,4 @@
 .import getpos
 .import ischarvalid
 .import clearline
+.import makecrctable

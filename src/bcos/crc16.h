@@ -18,15 +18,26 @@
  *                                                                        *
  **************************************************************************/
 
- #ifndef _CRC16_H
- #define _CRC16_H
+#ifndef _CRC16_H
+#define _CRC16_H
  
-  #include <stdint.h>
- 
- /**
-  * Calculate CRC16 checksum using XMODEM polynomial
-  */
- uint16_t crc16_xmodem(const uint8_t *data, uint16_t length);
- 
- #endif
+#include <stdint.h>
+
+/**
+ * Calculate CRC16 checksum using XMODEM polynomial
+ * 
+ * @param data Pointer to the data buffer
+ * @param length Length of the data buffer
+ * @return uint16_t CRC16 checksum
+ */
+uint16_t crc16_xmodem(const uint8_t *data, uint16_t length);
+
+/**
+ * @brief Optimized CRC16 checksum for SD sector
+ * 
+ * @return uint16_t CRC16 checksum
+ */
+extern uint16_t __fastcall__ crc16_xmodem_sdsector(void);
+
+#endif
  

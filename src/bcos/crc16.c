@@ -18,29 +18,33 @@
  *                                                                        *
  **************************************************************************/
 
- #include "crc16.h"
+#include "crc16.h"
 
- /**
-  * Calculate CRC16 checksum using XMODEM polynomial
-  */
- uint16_t crc16_xmodem(const uint8_t *data, uint16_t length) {
-     uint16_t crc = 0x0000;
-     uint16_t polynomial = 0x1021;
-     uint16_t i = 0;
-     uint8_t j = 0;
- 
-     for (i = 0; i < length; i++) {
-         crc ^= (data[i] << 8);  // XOR the byte into the high byte of CRC
- 
-         for(j = 0; j < 8; j++) {
-             if (crc & 0x8000) {
-                 crc = (crc << 1) ^ polynomial;
-             } else {
-                 crc <<= 1;
-             }
-         }
-     }
- 
-    return crc;
- }
+/**
+ * Calculate CRC16 checksum using XMODEM polynomial
+ * 
+ * @param data Pointer to the data buffer
+ * @param length Length of the data buffer
+ * @return uint16_t CRC16 checksum
+ */
+uint16_t crc16_xmodem(const uint8_t *data, uint16_t length) {
+    uint16_t crc = 0x0000;
+    uint16_t polynomial = 0x1021;
+    uint16_t i = 0;
+    uint8_t j = 0;
+
+    for (i = 0; i < length; i++) {
+        crc ^= (data[i] << 8);  // XOR the byte into the high byte of CRC
+
+        for(j = 0; j < 8; j++) {
+            if (crc & 0x8000) {
+                crc = (crc << 1) ^ polynomial;
+            } else {
+                crc <<= 1;
+            }
+        }
+    }
+
+return crc;
+}
  
