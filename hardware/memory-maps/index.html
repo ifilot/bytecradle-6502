@@ -713,6 +713,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../software/operating-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Operating System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../software/kernel-functions/" class="md-nav__link">
         
   
@@ -1323,7 +1346,7 @@ firmware such as a monitor or BASIC interpreter.</p>
 fixed and bank-switched memory regions. The lower memory (<code>$0000–$7EFF</code>) is
 primarily RAM, with the first 256 bytes (<code>$0000–$00FF</code>) allocated as <strong>Zero
 Page</strong>, and the next 256 bytes (<code>$0100–$01FF</code>) serving as the stack.
-Addresses <code>$0200–$03FF</code> are reserved for OS-level functionality, while the
+Addresses <code>$0200–$07FF</code> are reserved for OS-level functionality, while the
 remainder up to <code>$7EFF</code> is available as general-purpose RAM, implemented
 across fixed banks 0–3.</p>
 <p>The region <code>$7F00–$7FFF</code> is dedicated to memory-mapped I/O, divided into
@@ -1374,13 +1397,13 @@ behavior.</p>
 <td style="text-align: left;"><strong>Stack</strong></td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>$0200-$03FF</code></td>
+<td style="text-align: left;"><code>$0200-$07FF</code></td>
 <td style="text-align: left;">512 bytes</td>
-<td style="text-align: left;"><strong>Reserved (OS Use)</strong></td>
+<td style="text-align: left;"><strong>Reserved</strong> (used by BCOS)</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>$0400-$7EFF</code></td>
-<td style="text-align: left;">~31 KiB</td>
+<td style="text-align: left;"><code>$0800-$7EFF</code></td>
+<td style="text-align: left;">30 KiB</td>
 <td style="text-align: left;"><strong>General Purpose RAM (Fixed, Banks 0–3)</strong></td>
 </tr>
 <tr>

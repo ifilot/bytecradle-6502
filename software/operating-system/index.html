@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../inline-assembler/">
+        <link rel="prev" href="../../hardware/schematics-layout/">
       
       
-        <link rel="next" href="../debugging/">
+        <link rel="next" href="../kernel-functions/">
       
       
       <link rel="icon" href="../../assets/img/favicon.ico">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Working with Peripherals - ByteCradle 6502</title>
+        <title>Operating System - ByteCradle 6502</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#working-with-peripherals" class="md-skip">
+        <a href="#operating-systems" class="md-skip">
           Skip to content
         </a>
       
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Working with Peripherals
+              Operating System
             
           </span>
         </div>
@@ -605,8 +605,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -617,11 +619,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
@@ -637,7 +639,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Software
@@ -648,10 +650,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../software/operating-system/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Operating System
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -662,6 +686,44 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tinyrom-operating-system-tiny-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      TINYROM operating system (TINY board)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bytecradle-operating-system-mini-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      ByteCradle Operating System (MINI board)
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -674,7 +736,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../software/kernel-functions/" class="md-nav__link">
+      <a href="../kernel-functions/" class="md-nav__link">
         
   
   
@@ -820,8 +882,6 @@
       
   
   
-    
-  
   
   
     
@@ -834,11 +894,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
         
           
           <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
@@ -854,7 +914,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             Tutorials
@@ -868,7 +928,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../inline-assembler/" class="md-nav__link">
+      <a href="../../tutorials/inline-assembler/" class="md-nav__link">
         
   
   
@@ -888,19 +948,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../tutorials/peripherals/" class="md-nav__link">
         
   
   
@@ -911,7 +962,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -924,7 +974,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../debugging/" class="md-nav__link">
+      <a href="../../tutorials/debugging/" class="md-nav__link">
         
   
   
@@ -1182,6 +1232,32 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tinyrom-operating-system-tiny-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      TINYROM operating system (TINY board)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bytecradle-operating-system-mini-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      ByteCradle Operating System (MINI board)
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1199,7 +1275,44 @@
   
 
 
-<h1 id="working-with-peripherals">Working with peripherals<a class="headerlink" href="#working-with-peripherals" title="Permanent link">&para;</a></h1>
+<h1 id="operating-systems">Operating Systems<a class="headerlink" href="#operating-systems" title="Permanent link">&para;</a></h1>
+<h2 id="tinyrom-operating-system-tiny-board">TINYROM operating system (TINY board)<a class="headerlink" href="#tinyrom-operating-system-tiny-board" title="Permanent link">&para;</a></h2>
+<p>TINYROM is a minimalist ROM-based operating system and runtime environment for
+the <code>TINY</code> board. It is designed to be as small and simple as possible, offering
+a bare-metal interface that boots directly into a menu-driven selector for
+launching built-in programs, test routines, and games — all stored within a
+compact 32 KiB ROM image.</p>
+<p>Unlike more complex operating systems that manage filesystems or dynamic storage
+(see below), TINYROM does not interface with disks or SD cards. Instead, it
+provides a tiny kernel consisting solely of 
+<a href="../kernel-functions/">low-level I/O routines</a> for
+communicating with the 65C51 ACIA serial interface. These routines allow basic
+input and output over a serial terminal and form the foundation for user
+interaction and debugging.</p>
+<p>Upon startup, TINYROM presents a static selection menu through the serial
+interface, enabling users to choose from a set of preloaded software — typically
+small utilities, diagnostics, or simple games.</p>
+<h2 id="bytecradle-operating-system-mini-board">ByteCradle Operating System (MINI board)<a class="headerlink" href="#bytecradle-operating-system-mini-board" title="Permanent link">&para;</a></h2>
+<p>The MINI board runs on BCOS (ByteCradle Operating System), a minimalist,
+single-user disk operating system (SUDOS) purpose-built for the MINI. Designed
+with clarity, compactness, and practical utility in mind, BCOS offers essential
+functionality for persistent storage access and serial communication, without
+the complexity of multitasking or modern OS abstractions.</p>
+<p>At its core, BCOS presents a simple, navigable view of the SD card’s contents,
+supporting basic file operations such as directory listing, file reading,
+writing, and — critically — the ability to load and execute binary programs
+directly from the SD card. This capability allows BCOS to serve as a lightweight
+but extensible platform for launching standalone applications with minimal
+runtime overhead.</p>
+<p>In addition to its command-line shell, BCOS exposes a set of 
+<a href="../kernel-functions/">low-level I/O routines</a> for working with the 
+65C51 ACIA serial interface. These include
+functions for reading characters, writing characters, and outputting entire
+strings over the serial port, enabling user programs to easily perform serial
+communication without reimplementing low-level logic.</p>
+<p>Communication via the 65C51 ACIA serves both as the user console and as a
+fundamental I/O channel, making BCOS suitable for both interactive and automated
+tasks on constrained 8-bit hardware.</p>
 
 
 
