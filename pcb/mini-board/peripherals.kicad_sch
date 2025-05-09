@@ -6392,6 +6392,12 @@
 		(color 0 0 0 0)
 		(uuid "9e5fd8cf-0cac-4d7a-864d-a237060ac97a")
 	)
+	(junction
+		(at 25.4 133.35)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f88391d4-b7dd-4e78-bb89-c0dcdf9bca99")
+	)
 	(no_connect
 		(at 52.07 130.81)
 		(uuid "14838cab-6d2a-4ea3-8d2e-d606d7c29bf2")
@@ -6467,6 +6473,16 @@
 			(type default)
 		)
 		(uuid "36000e12-f9e9-498d-8a22-88c61361e5ca")
+	)
+	(wire
+		(pts
+			(xy 25.4 130.81) (xy 25.4 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "40f48ece-96e9-4113-bfac-00534f6f6a73")
 	)
 	(wire
 		(pts
@@ -6590,6 +6606,16 @@
 	)
 	(wire
 		(pts
+			(xy 22.86 129.54) (xy 22.86 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "90dc164b-8b60-4b32-a6c1-e40c49c97849")
+	)
+	(wire
+		(pts
 			(xy 59.69 119.38) (xy 59.69 120.65)
 		)
 		(stroke
@@ -6630,6 +6656,16 @@
 	)
 	(wire
 		(pts
+			(xy 22.86 133.35) (xy 25.4 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aa3f6f9f-a366-46b6-b7ae-653ffcf16a81")
+	)
+	(wire
+		(pts
 			(xy 154.94 129.54) (xy 160.02 129.54)
 		)
 		(stroke
@@ -6657,6 +6693,16 @@
 			(type default)
 		)
 		(uuid "b8036246-05a4-4f9e-a99b-1da2e07ee419")
+	)
+	(wire
+		(pts
+			(xy 25.4 133.35) (xy 31.75 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c30cea50-c460-4aef-b5e4-dd559cbd75fa")
 	)
 	(polyline
 		(pts
@@ -6767,6 +6813,16 @@
 			(type default)
 		)
 		(uuid "f75e6c68-b65e-4eab-a507-c81668ec98b9")
+	)
+	(wire
+		(pts
+			(xy 22.86 130.81) (xy 25.4 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fadba61c-1a84-47ed-9d61-f929f1182905")
 	)
 	(global_label "~{RAM_OE}"
 		(shape input)
@@ -10036,7 +10092,7 @@
 	)
 	(global_label "~{IRQ51}"
 		(shape input)
-		(at 31.75 133.35 180)
+		(at 22.86 133.35 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -10046,7 +10102,7 @@
 		)
 		(uuid "f41c4196-ac54-45cf-bfea-4e54e2fcfdc1")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 23.1405 133.35 0)
+			(at 14.2505 133.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12116,6 +12172,74 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 22.86 125.73 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "624407c4-723f-4995-8c41-eaf9c4152c4e")
+		(property "Reference" "R13"
+			(at 20.574 125.73 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10k"
+			(at 22.86 125.73 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 24.638 125.73 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 22.86 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 22.86 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "188bbdcc-bc30-44a8-bf41-c8b4940f1b34")
+		)
+		(pin "1"
+			(uuid "40b11fca-42f1-461f-8f8d-c7f271bd05be")
+		)
+		(instances
+			(project "mini-board"
+				(path "/70c9e9e4-d560-4927-af97-189b3a969059/5c333674-eefb-4707-94ed-6c6ed8cb8074"
+					(reference "R13")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 36.83 93.98 0)
 		(unit 1)
@@ -14010,6 +14134,73 @@
 			(project "mini-board"
 				(path "/70c9e9e4-d560-4927-af97-189b3a969059/5c333674-eefb-4707-94ed-6c6ed8cb8074"
 					(reference "#PWR048")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VCC")
+		(at 22.86 121.92 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ce5e35c5-47c1-458c-9dd7-31c435c4d6c6")
+		(property "Reference" "#PWR030"
+			(at 22.86 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VCC"
+			(at 22.8599 118.11 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 22.86 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 22.86 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VCC\""
+			(at 22.86 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "09190ffe-5673-4dd5-9ed4-707af9de199a")
+		)
+		(instances
+			(project "mini-board"
+				(path "/70c9e9e4-d560-4927-af97-189b3a969059/5c333674-eefb-4707-94ed-6c6ed8cb8074"
+					(reference "#PWR030")
 					(unit 1)
 				)
 			)
