@@ -490,9 +490,24 @@
         <li class="md-nav__item">
   <a href="#soldering-components" class="md-nav__link">
     <span class="md-ellipsis">
-      Soldering components
+      Soldering Components
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Soldering Components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tiny-board-assembly-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tiny Board Assembly Guide
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1288,9 +1303,24 @@
         <li class="md-nav__item">
   <a href="#soldering-components" class="md-nav__link">
     <span class="md-ellipsis">
-      Soldering components
+      Soldering Components
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Soldering Components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tiny-board-assembly-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tiny Board Assembly Guide
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1347,7 +1377,70 @@
 
 
 <h1 id="assembling-the-board">Assembling the Board<a class="headerlink" href="#assembling-the-board" title="Permanent link">&para;</a></h1>
-<h2 id="soldering-components">Soldering components<a class="headerlink" href="#soldering-components" title="Permanent link">&para;</a></h2>
+<h2 id="soldering-components">Soldering Components<a class="headerlink" href="#soldering-components" title="Permanent link">&para;</a></h2>
+<p>When assembling the board, it's best to solder components in order of increasing height. This helps keep parts steady and ensures easier access during soldering. Follow the sequence below to make the process smooth and efficient.</p>
+<h3 id="tiny-board-assembly-guide">Tiny Board Assembly Guide<a class="headerlink" href="#tiny-board-assembly-guide" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>Begin with the resistors</strong>: Solder R1 through R6. These are flat and
+   easiest to place first.</p>
+</li>
+<li>
+<p><strong>Socket for CAN oscillator (X1)</strong>: If you plan to socket the CAN oscillator,
+   install its socket now before moving on.</p>
+</li>
+<li>
+<p><strong>Install the DIP sockets</strong>: Proceed with U1, U2, and U4 through U7. Note
+   that U3 does not need a socket.<br />
+   If your ceramic capacitors are taller than the DIP sockets, consider
+   soldering the capacitors first (see next step) to avoid height conflicts.</p>
+</li>
+<li>
+<p><strong>Add the ceramic capacitors</strong>: Solder C1, C3, and C5 through C10. Also add
+   C11.<br />
+   Be careful with C12 — it should be a <strong>30pF capacitor</strong>, while the others are
+   <strong>100nF</strong> and usually don’t have markings on the silkscreen.</p>
+</li>
+<li>
+<p><strong>Place the DS1813 component</strong>: This goes at U3 and should be inserted
+   carefully.</p>
+</li>
+<li>
+<p><strong>Install the tactile switches</strong>: Mount SW2 and SW3. These are 6mm tall.</p>
+</li>
+<li>
+<p><strong>Solder the LED</strong>: Install the 5mm LED at D1, making sure the orientation is
+   correct.</p>
+</li>
+<li>
+<p><strong>Attach the pin header</strong>: Solder the 2x20 male pin header at J2.</p>
+</li>
+<li>
+<p><strong>Install the USB connector</strong>: Solder the USB type B connector at J1.</p>
+</li>
+<li>
+<p><strong>Add the serial connector</strong>: Install the 9-pin SUBD serial port.</p>
+</li>
+<li>
+<p><strong>Install the 10µF electrolytic capacitors</strong>: Place C2 and C12 through C15.<br />
+    Watch the polarity — these capacitors are polarized.</p>
+</li>
+<li>
+<p><strong>Install the 100µF electrolytic capacitor</strong>: Solder C4, also making sure to
+    observe polarity.</p>
+</li>
+<li>
+<p><strong>Place the oscillator</strong>: Insert the 1.8432 MHz crystal oscillator at Y1.</p>
+</li>
+<li>
+<p><strong>Finish with the toggle switch</strong>: Finally, install SW1 — the tallest
+    component — to complete the board.</p>
+</li>
+</ol>
+<p>Once all components are soldered, the only remaining task is to <strong>insert the
+chips into their sockets</strong>. Be sure to align the chips correctly according to
+the notch or dot marking on each IC and the corresponding silkscreen indicator
+on the board.</p>
 <h2 id="flashing-the-rom">Flashing the ROM<a class="headerlink" href="#flashing-the-rom" title="Permanent link">&para;</a></h2>
 <p>Before powering up your ByteCradle board for the first time, it is essential to
 flash the appropriate ROM image onto the onboard memory chip. The required ROM
