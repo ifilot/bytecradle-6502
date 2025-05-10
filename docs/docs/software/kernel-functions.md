@@ -15,14 +15,14 @@ The jump table starts at address `$FFE5`, with each function occupying 3 bytes
 (the size of a `JMP` absolute instruction). For example:
 
 ```assembly
-jsr $FFE5  ; Call putstr
+jsr $FFE5  ; call putstr
 ```
 
 This instruction jumps to the putstr routine, allowing the user to print a
 string without needing to know where putstr is implemented in memory. This makes
 the jump table a forward-compatible interface to the kernel.
 
-## Tiny Board
+## Overview jump table
 
 Below is an overview of currently available jump table entries:
 
@@ -35,6 +35,10 @@ Below is an overview of currently available jump table entries:
 | `puthex`   | `$FFF1` | Prints a byte in hexadecimal format.                    | `A` = Byte to print                | *None*               |
 | `putdec`   | `$FFF4` | Prints a byte in decimal format.                        | `A` = Byte to print                | `X`, `Y`             |
 | `getch`    | `$FFF7` | Retrieves a character from input buffer.                | —                                  | `A`                  |
+
+!!! note 
+    The jump table is exactly the same for both the :material-chip: **TINY**
+    and :material-chip: **MINI** boards.
 
 !!! warning 
     *Garbled* refers to CPU registers whose contents

@@ -13,6 +13,7 @@ nav:
       - Memory Maps: hardware/memory-maps.md
       - Schematics and PCB Layout: hardware/schematics-layout.md
   - Software:
+      - Software overview: software/software-overview.md
       - Operating System: software/operating-system.md
       - Kernel functions: software/kernel-functions.md
   - Emulator:
@@ -83,3 +84,6 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.tabbed
   - tables
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg

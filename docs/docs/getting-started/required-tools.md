@@ -16,8 +16,8 @@ have the following tools and equipment:
 
 ### Board-Specific Requirements
 
-- **For `/TINY/` boards**: A flasher that supports programming **ATF22V10** chips.
-- **For `/MINI/` boards**: A flasher compatible with **ATF1502AS** chips.
+- **For :material-chip: TINY boards**: A flasher that supports programming **ATF22V10** chips.
+- **For :material-chip: MINI boards**: A flasher compatible with **ATF1502AS** chips.
 
 ## For Pre-Assembled Boards
 
