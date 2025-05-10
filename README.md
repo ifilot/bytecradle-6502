@@ -7,14 +7,24 @@ The **ByteCradle 6502** is a **single-board computer (SBC)** platform designed
 for understanding and experimenting with **simple operating systems** on **8-bit
 hardware**. Built around the **WDC 65C02** microprocessor, it provides a
 hands-on platform for studying **system initialization, memory management,
-device interfacing, and file system handling**.  
+device interfacing, and file system handling**.  This project offers two tiers
+of single board computers (SBCs), each tailored to different levels of
+complexity and expandability:
+
+- **Tiny SBC** (top): A simple, compact design ideal for learning or small
+  embedded projects.
+- **Mini SBC** (bottom): A more capable version with bank switching, SD card
+  storage, and an expansion bus using the 65C22 Versatile Interface Adapter
+  (VIA).
 
 ![render top](img/bytecradle-tinyboard-render-top.png)
+
+![render top](img/bytecradle-miniboard-render-top.png)
+
 
 ## 📋 Table of Contents
 
 - [BYTECRADLE 6502](#bytecradle-6502)
-- [Tier-system](#tier-system)
 - [Overview](#overview)
   - [Shared Components](#shared-components)
 - [Tier Comparison](#tier-comparison)
@@ -24,17 +34,6 @@ device interfacing, and file system handling**.
   - [Software](#software)
   - [Hardware](#hardware)
 - [Contributing](#contributing)
-
-## Tier-system
-
-This project offers two tiers of single board computers (SBCs), each tailored to
-different levels of complexity and expandability:
-
-- **Tiny SBC** (left): A simple, compact design ideal for learning or small
-  embedded projects.
-- **Mini SBC** (right): A more capable version with bank switching, SD card
-  storage, and an expansion bus using the 65C22 Versatile Interface Adapter
-  (VIA).
 
 ## Overview
 
