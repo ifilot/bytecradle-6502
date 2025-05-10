@@ -6,9 +6,13 @@ experimenting with **simple operating systems** on **8-bit hardware**. Whether
 you are new to 8-bit computers or an experienced hardware tinkerer, ByteCradle
 offers an accessible and expandable environment to explore these topics.
 
+<p align="center">
+  <img src="/assets/img/bytecradle-miniboard-render.png" width="90%">
+</p>
+
 ## 🚀 Quick Start
 
-<div class="grid cards">
+<div class="grid cards" align="center">
 
   <div class="card">
     <h3><a href="getting-started/required-tools">🚀 Getting Started</a></h3>

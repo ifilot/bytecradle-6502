@@ -20,6 +20,10 @@ advanced custom builds.
 
 [🔍 View schematic](schematics-layout.md#tiny)
 
+<p align="center">
+  <img src="/assets/img/bytecradle-tinyboard-render-top.png" width="80%">
+</p>
+
 ### Mini SBC
 
 - Advanced design with bank switching for greater memory capabilities.
@@ -31,6 +35,10 @@ advanced custom builds.
   system-level programming.
 
 [🔍 View schematic](schematics-layout.md#tiny)
+
+<p align="center">
+  <img src="/assets/img/bytecradle-miniboard-render-top.png" width="100%">
+</p>
 
 ## Feature Comparison
 

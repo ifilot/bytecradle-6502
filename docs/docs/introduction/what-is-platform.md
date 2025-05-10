@@ -21,6 +21,10 @@ reduced feature sets compared to higher tiers.
 
 ### Tiny SBC
 
+<p align="center">
+  <img src="/assets/img/bytecradle-tinyboard-render-top.png" width="60%">
+</p>
+
 - 65C02 processor running at 16 MHz
 - Simplified design with a small footprint.
 - Memory: 32 KiB RAM and 32 KiB ROM.
@@ -29,6 +33,10 @@ reduced feature sets compared to higher tiers.
 - Ideal for learning, experimentation, and small embedded projects.
 
 ### Mini SBC
+
+<p align="center">
+  <img src="/assets/img/bytecradle-miniboard-render-top.png" width="80%">
+</p>
 
 - 65C02 processor running at 8 MHz
 - Advanced design with bank switching for greater memory capabilities.

@@ -2,10 +2,10 @@
 
 ## Tiny Board
 
-The Tiny Board uses a flat 64 KiB memory map typical of 65C02-based systems. The
-first 256 bytes (`$0000–$00FF`) are Zero Page RAM, followed by the stack
-at `$0100–$01FF`. The range `$0200–$03FF` is reserved for OS use, while
-`$0400–$7EFF` serves as general-purpose RAM.
+The :material-chip: **TINY** board uses a flat 64 KiB memory map typical of
+65C02-based systems. The first 256 bytes (`$0000–$00FF`) are Zero Page RAM,
+followed by the stack at `$0100–$01FF`. The range `$0200–$03FF` is reserved for
+OS use, while `$0400–$7EFF` serves as general-purpose RAM.
 
 A small I/O region at `$7F00–$7FFF` includes only `$7F04–$7F07`, which is
 connected to a 65C51 ACIA UART for serial communication. The remainder of
@@ -33,13 +33,13 @@ firmware such as a monitor or BASIC interpreter.
 
 ## Mini Board
 
-The Mini Board features a flexible 64 KiB memory map designed to support both
-fixed and bank-switched memory regions. The lower memory (`$0000–$7EFF`) is
-primarily RAM, with the first 256 bytes (`$0000–$00FF`) allocated as **Zero
-Page**, and the next 256 bytes (`$0100–$01FF`) serving as the stack.
-Addresses `$0200–$07FF` are reserved for OS-level functionality, while the
-remainder up to `$7EFF` is available as general-purpose RAM, implemented
-across fixed banks 0–3.
+The :material-chip: **MINI** board features a flexible 64 KiB memory map
+designed to support both fixed and bank-switched memory regions. The lower
+memory (`$0000–$7EFF`) is primarily RAM, with the first 256 bytes
+(`$0000–$00FF`) allocated as **Zero Page**, and the next 256 bytes
+(`$0100–$01FF`) serving as the stack. Addresses `$0200–$07FF` are reserved for
+OS-level functionality, while the remainder up to `$7EFF` is available as
+general-purpose RAM, implemented across fixed banks 0–3.
 
 The region `$7F00–$7FFF` is dedicated to memory-mapped I/O, divided into
 four 64-byte blocks using only address lines A6 and A7. The first block
