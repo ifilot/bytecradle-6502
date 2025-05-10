@@ -25,7 +25,7 @@ reduced feature sets compared to higher tiers.
   <img src="../../assets/img/bytecradle-tinyboard-render-top.png" width="60%">
 </p>
 
-- 65C02 processor running at 16 MHz
+- 65C02 processor running at **16 MHz**
 - Simplified design with a small footprint.
 - Memory: 32 KiB RAM and 32 KiB ROM.
 - I/O communication via a 65C51 ACIA.
@@ -38,7 +38,7 @@ reduced feature sets compared to higher tiers.
   <img src="../../assets/img/bytecradle-miniboard-render-top.png" width="80%">
 </p>
 
-- 65C02 processor running at 8 MHz
+- 65C02 processor running at **12 MHz**
 - Advanced design with bank switching for greater memory capabilities.
 - Memory: 512 KiB of RAM and 512 KiB of ROM (bank-switched).
 - I/O communication via a 65C51 ACIA.
