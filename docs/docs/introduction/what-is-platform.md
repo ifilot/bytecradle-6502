@@ -22,7 +22,7 @@ reduced feature sets compared to higher tiers.
 ### Tiny SBC
 
 <p align="center">
-  <img src="/assets/img/bytecradle-tinyboard-render-top.png" width="60%">
+  <img src="../../assets/img/bytecradle-tinyboard-render-top.png" width="60%">
 </p>
 
 - 65C02 processor running at 16 MHz
@@ -35,7 +35,7 @@ reduced feature sets compared to higher tiers.
 ### Mini SBC
 
 <p align="center">
-  <img src="/assets/img/bytecradle-miniboard-render-top.png" width="80%">
+  <img src="../../assets/img/bytecradle-miniboard-render-top.png" width="80%">
 </p>
 
 - 65C02 processor running at 8 MHz
