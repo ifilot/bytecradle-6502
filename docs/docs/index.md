@@ -7,7 +7,7 @@ you are new to 8-bit computers or an experienced hardware tinkerer, ByteCradle
 offers an accessible and expandable environment to explore these topics.
 
 <p align="center">
-  <img src="../assets/img/bytecradle-miniboard-render.png" width="90%">
+  <img src="./assets/img/bytecradle-miniboard-render.png" width="90%">
 </p>
 
 ## 🚀 Quick Start

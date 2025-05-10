@@ -21,7 +21,7 @@ advanced custom builds.
 [🔍 View schematic](schematics-layout.md#tiny)
 
 <p align="center">
-  <img src="/assets/img/bytecradle-tinyboard-render-top.png" width="80%">
+  <img src="../../assets/img/bytecradle-tinyboard-render-top.png" width="80%">
 </p>
 
 ### Mini SBC
@@ -37,7 +37,7 @@ advanced custom builds.
 [🔍 View schematic](schematics-layout.md#tiny)
 
 <p align="center">
-  <img src="/assets/img/bytecradle-miniboard-render-top.png" width="100%">
+  <img src="../../assets/img/bytecradle-miniboard-render-top.png" width="100%">
 </p>
 
 ## Feature Comparison
