@@ -48,23 +48,25 @@ advanced custom builds.
 ## Programmable logic
 
 Both ByteCradle boards use programmable logic devices, a ATF22V10 PLD in the
-`TINY` board and a ATF1502 CPLD `MINI` board. These chips handle essential
-control logic like address decoding, chip selects, and bank switching. These
-devices replace traditional discrete logic chips (such as 74-series TTL),
-resulting in faster, more compact, and more reliable designs.
+:material-chip: **TINY** board and a ATF1502 CPLD for the :material-chip:
+**MINI** board. These chips handle essential control logic like address
+decoding, chip selects, and bank switching. These devices replace traditional
+discrete logic chips (such as 74-series TTL), resulting in faster, more compact,
+and more reliable designs.
 
 ### Tiny Board - ATF22V10
 
-The `TINY` Board uses an ATF22V10 PLD to implement address decoding and I/O mapping
-for RAM, ROM, and the ACIA serial interface. This chip allows tight integration
-of logic without chaining multiple discrete components, which reduces
-propagation delays. Its internal logic can respond in under 10 ns, enabling the
-system to run stably at 16 MHz—much faster than typical retro systems.
+The :material-chip: **TINY** Board uses an ATF22V10 PLD to implement address
+decoding and I/O mapping for RAM, ROM, and the ACIA serial interface. This chip
+allows tight integration of logic without chaining multiple discrete components,
+which reduces propagation delays. Its internal logic can respond in under 10 ns,
+enabling the system to run stably at 16 MHz—much faster than typical retro
+systems.
 
 ### Mini Board - ATF1502
 
-The `MINI` Board uses an ATF1502 CPLD, which offers significantly more logic
-resources. It handles complex tasks like dynamic RAM and ROM bank switching,
-peripheral selection, and reading/writing to the bank registers. Updates can be
-made through JTAG without changing hardware. The CPLD's deterministic timing is
-critical for maintaining stability at 12 MHz.
+The :material-chip: **MINI** Board uses an ATF1502 CPLD, which offers
+significantly more logic resources. It handles complex tasks like dynamic RAM
+and ROM bank switching, peripheral selection, and reading/writing to the bank
+registers. Updates can be made through JTAG without changing hardware. The
+CPLD's deterministic timing is critical for maintaining stability at 12 MHz.
