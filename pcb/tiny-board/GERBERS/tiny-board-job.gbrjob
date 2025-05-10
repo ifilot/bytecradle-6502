@@ -3,15 +3,15 @@
     "GenerationSoftware": {
       "Vendor": "KiCad",
       "Application": "Pcbnew",
-      "Version": "9.0.0"
+      "Version": "9.0.1"
     },
-    "CreationDate": "2025-05-01T20:41:37+02:00"
+    "CreationDate": "2025-05-10T17:14:16+02:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
       "Name": "tiny-board",
       "GUID": "74696e79-2d62-46f6-9172-642e6b696361",
-      "Revision": "1"
+      "Revision": "3"
     },
     "Size": {
       "X": 100.38,

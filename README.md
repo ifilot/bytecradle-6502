@@ -1,6 +1,5 @@
 # BYTECRADLE 6502
 
-![Under Construction](https://img.shields.io/badge/status-under--construction-orange?logo=github)
 [![Build](https://github.com/ifilot/bytecradle-6502/actions/workflows/build.yml/badge.svg)](https://github.com/ifilot/bytecradle-6502/actions/workflows/build.yml)
 [![Documentation](https://github.com/ifilot/bytecradle-6502/actions/workflows/docs.yml/badge.svg)](https://github.com/ifilot/bytecradle-6502/actions/workflows/docs.yml)
 
@@ -9,6 +8,10 @@ for understanding and experimenting with **simple operating systems** on **8-bit
 hardware**. Built around the **WDC 65C02** microprocessor, it provides a
 hands-on platform for studying **system initialization, memory management,
 device interfacing, and file system handling**.  
+
+<p align="center">
+  <img src="img/bytecradle-tinyboard-render.png" alt="ByteCradle Tiny SBC" width="45%" style="margin-right:10px;"/>
+</p>
 
 ## 📋 Table of Contents
 
@@ -34,11 +37,6 @@ different levels of complexity and expandability:
 - **Mini SBC** (right): A more capable version with bank switching, SD card
   storage, and an expansion bus using the 65C22 Versatile Interface Adapter
   (VIA).
-
-<p align="center">
-  <img src="img/bytecradle-tiny.PNG" alt="ByteCradle Tiny SBC" width="45%" style="margin-right:10px;"/>
-  <img src="img/bytecradle-mini.PNG" alt="ByteCradle Mini SBC" width="45%"/>
-</p>
 
 ## Overview
 
