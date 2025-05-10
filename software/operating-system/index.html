@@ -9,14 +9,14 @@
       
       
       
-        <link rel="prev" href="../../hardware/schematics-layout/">
+        <link rel="prev" href="../software-overview/">
       
       
         <link rel="next" href="../kernel-functions/">
       
       
       <link rel="icon" href="../../assets/img/favicon.ico">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.13">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -650,6 +650,29 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../software-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Software overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -709,6 +732,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="TINYROM operating system (TINY board)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -717,6 +755,30 @@
       ByteCradle Operating System (MINI board)
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="ByteCradle Operating System (MINI board)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#navigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Navigation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1245,6 +1307,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="TINYROM operating system (TINY board)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1253,6 +1330,30 @@
       ByteCradle Operating System (MINI board)
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="ByteCradle Operating System (MINI board)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#navigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Navigation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1276,12 +1377,17 @@
 
 
 <h1 id="operating-systems">Operating Systems<a class="headerlink" href="#operating-systems" title="Permanent link">&para;</a></h1>
+<p>This page describes two minimalist operating systems: TINYROM, a ROM-based OS
+for the TINY board featuring a menu-driven interface without disk storage, and
+BCOS, a lightweight disk operating system for the MINI board providing basic
+file management and serial communication using familiar Linux-style commands.</p>
 <h2 id="tinyrom-operating-system-tiny-board">TINYROM operating system (TINY board)<a class="headerlink" href="#tinyrom-operating-system-tiny-board" title="Permanent link">&para;</a></h2>
+<h3 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h3>
 <p>TINYROM is a minimalist ROM-based operating system and runtime environment for
-the <code>TINY</code> board. It is designed to be as small and simple as possible, offering
-a bare-metal interface that boots directly into a menu-driven selector for
-launching built-in programs, test routines, and games — all stored within a
-compact 32 KiB ROM image.</p>
+the <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 4h12v1h3v2h-3v2h3v2h-3v2h3v2h-3v2h3v2h-3v1H6v-1H3v-2h3v-2H3v-2h3v-2H3V9h3V7H3V5h3zm5 11v3h1v-3zm2 0v3h1v-3zm2 0v3h1v-3z"/></svg></span> <strong>TINY</strong> board. It is designed to be as small and simple as
+possible, offering a bare-metal interface that boots directly into a menu-driven
+selector for launching built-in programs, test routines, and games — all stored
+within a compact 32 KiB ROM image.</p>
 <p>Unlike more complex operating systems that manage filesystems or dynamic storage
 (see below), TINYROM does not interface with disks or SD cards. Instead, it
 provides a tiny kernel consisting solely of 
@@ -1293,11 +1399,12 @@ interaction and debugging.</p>
 interface, enabling users to choose from a set of preloaded software — typically
 small utilities, diagnostics, or simple games.</p>
 <h2 id="bytecradle-operating-system-mini-board">ByteCradle Operating System (MINI board)<a class="headerlink" href="#bytecradle-operating-system-mini-board" title="Permanent link">&para;</a></h2>
-<p>The MINI board runs on BCOS (ByteCradle Operating System), a minimalist,
-single-user disk operating system (SUDOS) purpose-built for the MINI. Designed
-with clarity, compactness, and practical utility in mind, BCOS offers essential
-functionality for persistent storage access and serial communication, without
-the complexity of multitasking or modern OS abstractions.</p>
+<h3 id="overview_1">Overview<a class="headerlink" href="#overview_1" title="Permanent link">&para;</a></h3>
+<p>The <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 4h12v1h3v2h-3v2h3v2h-3v2h3v2h-3v2h3v2h-3v1H6v-1H3v-2h3v-2H3v-2h3v-2H3V9h3V7H3V5h3zm5 11v3h1v-3zm2 0v3h1v-3zm2 0v3h1v-3z"/></svg></span> <strong>MINI</strong> board runs on BCOS (ByteCradle Operating System), a
+minimalist, single-user disk operating system (SUDOS) purpose-built for the
+MINI. Designed with clarity, compactness, and practical utility in mind, BCOS
+offers essential functionality for persistent storage access and serial
+communication, without the complexity of multitasking or modern OS abstractions.</p>
 <p>At its core, BCOS presents a simple, navigable view of the SD card’s contents,
 supporting basic file operations such as directory listing, file reading,
 writing, and — critically — the ability to load and execute binary programs
@@ -1313,6 +1420,38 @@ communication without reimplementing low-level logic.</p>
 <p>Communication via the 65C51 ACIA serves both as the user console and as a
 fundamental I/O channel, making BCOS suitable for both interactive and automated
 tasks on constrained 8-bit hardware.</p>
+<h3 id="navigation">Navigation<a class="headerlink" href="#navigation" title="Permanent link">&para;</a></h3>
+<p>BCOS leverages common Linux-style commands for file and directory management,
+offering a familiar environment to users accustomed to Linux or UNIX systems.
+Below are examples of frequently used commands:</p>
+<ul>
+<li>
+<p><strong>List directory contents (<code>ls</code>)</strong>: To view the files and directories within
+  the current directory, simply type:
+  <div class="highlight"><pre><span></span><code>ls
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Change directory (<code>cd</code>)</strong>: To navigate to another directory, use:
+  <div class="highlight"><pre><span></span><code>cd dirname
+</code></pre></div>
+  For example, to move up one directory level:
+  <div class="highlight"><pre><span></span><code>cd ..
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Executing programs</strong>: Executable files typically have a <code>.COM</code> extension. To
+  run these files, type their base name (without the <code>.COM</code> extension). For
+  instance, to execute a program named <code>MYAPP.COM</code>, simply type:
+  <div class="highlight"><pre><span></span><code>myapp
+</code></pre></div></p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>While BCOS internally manages file names in uppercase, users may
+conveniently enter commands and file names in lowercase.</p>
+</div>
 
 
 
@@ -1363,10 +1502,10 @@ tasks on constrained 8-bit hardware.</p>
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "header.autohide", "navigation.sections", "navigation.tracking", "content.tabs.link", "content.code.annotate", "content.admonitions", "content.admonitions.semantic", "content.code.copy"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "header.autohide", "navigation.sections", "navigation.tracking", "content.tabs.link", "content.code.annotate", "content.admonitions", "content.admonitions.semantic", "content.code.copy"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      <script src="../../assets/javascripts/bundle.13a4f30d.min.js"></script>
       
     
   </body>
