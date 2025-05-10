@@ -9,9 +9,7 @@ hardware**. Built around the **WDC 65C02** microprocessor, it provides a
 hands-on platform for studying **system initialization, memory management,
 device interfacing, and file system handling**.  
 
-<p align="center">
-  <img src="img/bytecradle-tinyboard-render.png" alt="ByteCradle Tiny SBC" width="45%" style="margin-right:10px;"/>
-</p>
+![render top](img/bytecradle-tinyboard-render-top.png)
 
 ## 📋 Table of Contents
 
