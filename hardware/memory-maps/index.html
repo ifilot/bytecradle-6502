@@ -1300,10 +1300,10 @@
 
 <h1 id="memory-maps">Memory Maps<a class="headerlink" href="#memory-maps" title="Permanent link">&para;</a></h1>
 <h2 id="tiny-board">Tiny Board<a class="headerlink" href="#tiny-board" title="Permanent link">&para;</a></h2>
-<p>The Tiny Board uses a flat 64 KiB memory map typical of 65C02-based systems. The
-first 256 bytes (<code>$0000–$00FF</code>) are Zero Page RAM, followed by the stack
-at <code>$0100–$01FF</code>. The range <code>$0200–$03FF</code> is reserved for OS use, while
-<code>$0400–$7EFF</code> serves as general-purpose RAM.</p>
+<p>The <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 4h12v1h3v2h-3v2h3v2h-3v2h3v2h-3v2h3v2h-3v1H6v-1H3v-2h3v-2H3v-2h3v-2H3V9h3V7H3V5h3zm5 11v3h1v-3zm2 0v3h1v-3zm2 0v3h1v-3z"/></svg></span> <strong>TINY</strong> board uses a flat 64 KiB memory map typical of
+65C02-based systems. The first 256 bytes (<code>$0000–$00FF</code>) are Zero Page RAM,
+followed by the stack at <code>$0100–$01FF</code>. The range <code>$0200–$03FF</code> is reserved for
+OS use, while <code>$0400–$7EFF</code> serves as general-purpose RAM.</p>
 <p>A small I/O region at <code>$7F00–$7FFF</code> includes only <code>$7F04–$7F07</code>, which is
 connected to a 65C51 ACIA UART for serial communication. The remainder of
 the I/O space is currently unused but mapped to RAM, meaning it is technically
@@ -1365,13 +1365,13 @@ firmware such as a monitor or BASIC interpreter.</p>
 </tbody>
 </table>
 <h2 id="mini-board">Mini Board<a class="headerlink" href="#mini-board" title="Permanent link">&para;</a></h2>
-<p>The Mini Board features a flexible 64 KiB memory map designed to support both
-fixed and bank-switched memory regions. The lower memory (<code>$0000–$7EFF</code>) is
-primarily RAM, with the first 256 bytes (<code>$0000–$00FF</code>) allocated as <strong>Zero
-Page</strong>, and the next 256 bytes (<code>$0100–$01FF</code>) serving as the stack.
-Addresses <code>$0200–$07FF</code> are reserved for OS-level functionality, while the
-remainder up to <code>$7EFF</code> is available as general-purpose RAM, implemented
-across fixed banks 0–3.</p>
+<p>The <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 4h12v1h3v2h-3v2h3v2h-3v2h3v2h-3v2h3v2h-3v1H6v-1H3v-2h3v-2H3v-2h3v-2H3V9h3V7H3V5h3zm5 11v3h1v-3zm2 0v3h1v-3zm2 0v3h1v-3z"/></svg></span> <strong>MINI</strong> board features a flexible 64 KiB memory map
+designed to support both fixed and bank-switched memory regions. The lower
+memory (<code>$0000–$7EFF</code>) is primarily RAM, with the first 256 bytes
+(<code>$0000–$00FF</code>) allocated as <strong>Zero Page</strong>, and the next 256 bytes
+(<code>$0100–$01FF</code>) serving as the stack. Addresses <code>$0200–$07FF</code> are reserved for
+OS-level functionality, while the remainder up to <code>$7EFF</code> is available as
+general-purpose RAM, implemented across fixed banks 0–3.</p>
 <p>The region <code>$7F00–$7FFF</code> is dedicated to memory-mapped I/O, divided into
 four 64-byte blocks using only address lines A6 and A7. The first block
 (<code>$7F00–$7F3F</code>) connects to a 65C51 ACIA for serial communication, while the
