@@ -9,10 +9,6 @@
       
       
       
-        <link rel="prev" href="../hello-world-assembly/">
-      
-      
-        <link rel="next" href="../peripherals/">
       
       
       <link rel="icon" href="../../assets/img/favicon.ico">
@@ -20,7 +16,7 @@
     
     
       
-        <title>Hello World in C - ByteCradle 6502</title>
+        <title>Tutorials - ByteCradle 6502</title>
       
     
     
@@ -72,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#writing-a-standalone-c-program-for-bytecradle-with-cc65" class="md-skip">
+        <a href="#tutorials" class="md-skip">
           Skip to content
         </a>
       
@@ -107,7 +103,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Hello World in C
+              Tutorials
             
           </span>
         </div>
@@ -866,8 +862,6 @@
       
   
   
-    
-  
   
   
     
@@ -880,11 +874,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
         
           
           <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
@@ -900,7 +894,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             Tutorials
@@ -957,32 +951,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Hello World in C
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../hello-world-c/" class="md-nav__link">
         
   
   
@@ -993,107 +965,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    <span class="md-ellipsis">
-      Prerequisites
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#project-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      Project Structure
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-1-write-the-startup-code" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 1: Write the Startup Code
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-2-create-io-header" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 2: Create I/O Header
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-3-write-the-main-c-program" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 3: Write the Main C Program
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-4-configure-memory-layout" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 4: Configure Memory Layout
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-5-create-the-makefile" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 5: Create the Makefile
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-6-build-the-program" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 6: Build the Program
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-7-run-the-program" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 7: Run the program
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1387,95 +1258,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    <span class="md-ellipsis">
-      Prerequisites
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#project-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      Project Structure
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-1-write-the-startup-code" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 1: Write the Startup Code
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-2-create-io-header" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 2: Create I/O Header
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-3-write-the-main-c-program" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 3: Write the Main C Program
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-4-configure-memory-layout" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 4: Configure Memory Layout
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-5-create-the-makefile" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 5: Create the Makefile
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-6-build-the-program" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 6: Build the Program
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-7-run-the-program" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 7: Run the program
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1493,217 +1275,24 @@
   
 
 
-<h1 id="writing-a-standalone-c-program-for-bytecradle-with-cc65">Writing a Standalone C Program for ByteCradle with CC65<a class="headerlink" href="#writing-a-standalone-c-program-for-bytecradle-with-cc65" title="Permanent link">&para;</a></h1>
-<p>This tutorial walks through the process of building a standalone C program for
-the <strong>ByteCradle</strong> platform using the <strong>cc65 toolchain</strong>. You'll learn how to
-set up the startup code, write a simple <code>main()</code> function, configure memory
-mapping, and compile the final binary.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>You can find several example programs in <a href="https://github.com/ifilot/bytecradle-6502/tree/master/programs">the official repository</a>.</p>
-</div>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
-<ul>
-<li>A Linux system with the <code>cc65</code> toolchain installed (<code>ca65</code>, <code>cc65</code>, <code>ld65</code>, <code>ar65</code>)</li>
-<li>Basic familiarity with 6502 architecture and C programming</li>
-<li>Make and a standard build environment</li>
-</ul>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>More information on the toolchain is provided <a href="../../software/building-programs/#toolchain">here</a>.</p>
-</div>
-<h2 id="project-structure">Project Structure<a class="headerlink" href="#project-structure" title="Permanent link">&para;</a></h2>
-<p>The project consists of the following files:</p>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>crt0.s</code></td>
-<td>Startup code (called before <code>main()</code>)</td>
-</tr>
-<tr>
-<td><code>main.c</code></td>
-<td>Your main application in C</td>
-</tr>
-<tr>
-<td><code>io.h</code></td>
-<td>Helper for system-level I/O routines</td>
-</tr>
-<tr>
-<td><code>prog.cfg</code></td>
-<td>Memory layout and segment configuration for the linker</td>
-</tr>
-<tr>
-<td><code>Makefile</code></td>
-<td>Automates the build process</td>
-</tr>
-</tbody>
-</table>
-<h2 id="step-1-write-the-startup-code">Step 1: Write the Startup Code<a class="headerlink" href="#step-1-write-the-startup-code" title="Permanent link">&para;</a></h2>
-<p>The startup assembly file initializes the stack, clears the BSS section, copies initialized data, and finally calls <code>main()</code>. It also defines an <code>_exit</code> routine for cleanup.</p>
-<div class="highlight"><pre><span></span><code>; ---------------------------------------------------------------------------
-; crt0.s
-; ---------------------------------------------------------------------------
+<h1 id="tutorials">Tutorials<a class="headerlink" href="#tutorials" title="Permanent link">&para;</a></h1>
+<div class="grid cards">
 
-.import __HEADER_LOAD__                     ; import start location
+  <div class="card">
+    <h3><a href="tutorials/inline-assembler/">🧩 Inline Assembler</a></h3>
+    <p>Learn how to code 6502 directly on your ByteCradle Board using inline-assembler available via the Monitor.</p>
+  </div>
 
-.export   _init, _exit
-.import   _main, _charout
+  <div class="card">
+    <h3><a href="tutorials/hello-world-assembly/">📟 Hello World (Assembly)</a></h3>
+    <p>Write your first stand-alone 6502 program in pure assembly and run it on the ByteCradle platform.</p>
+  </div>
 
-.export   __STARTUP__ : absolute = 1        ; Mark as startup
-.import   __RAM_START__, __RAM_SIZE__       ; Linker generated
+  <div class="card">
+    <h3><a href="tutorials/hello-world-c/">💬 Hello World (C)</a></h3>
+    <p>Create a minimal C program with cc65 and explore the basics of linking and deploying to ByteCradle.</p>
+  </div>
 
-.import    copydata, zerobss, initlib, donelib
-
-.include  &quot;zeropage.inc&quot;
-
-; ---------------------------------------------------------------------------
-
-.segment &quot;HEADER&quot;
-
-.word __HEADER_LOAD__
-
-; ---------------------------------------------------------------------------
-
-.segment  &quot;STARTUP&quot;
-
-; ---------------------------------------------------------------------------
-; Set cc65 argument stack pointer
-; ---------------------------------------------------------------------------
-_init:
-
-          LDA     #&lt;(__RAM_START__ + __RAM_SIZE__)
-          STA     sp
-          LDA     #&gt;(__RAM_START__ + __RAM_SIZE__)
-          STA     sp+1
-
-; ---------------------------------------------------------------------------
-; Initialize memory storage
-; ---------------------------------------------------------------------------
-
-          JSR     zerobss              ; Clear BSS segment
-          JSR     copydata             ; Initialize DATA segment
-          JSR     initlib              ; Run constructors
-
-; ---------------------------------------------------------------------------
-; Call main()
-; ---------------------------------------------------------------------------
-
-          JSR     _main
-
-; ---------------------------------------------------------------------------
-; Back from main (this is also the _exit entry):  force a software break
-; ---------------------------------------------------------------------------
-
-_exit:    JSR     donelib              ; Run destructors
-          RTS
-</code></pre></div>
-<h2 id="step-2-create-io-header">Step 2: Create I/O Header<a class="headerlink" href="#step-2-create-io-header" title="Permanent link">&para;</a></h2>
-<p>This header declares a function pointer to the system's ROM-based string printing routine at address <code>$FFE8</code>. This lets us call system functions from C.</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#ifndef _IO_H</span>
-<span class="cp">#define _IO_H</span>
-
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
-
-<span class="c1">// ByteCradle OS: Print null-terminated string with newline (ROM $FFE8)</span>
-<span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">putstrnl</span><span class="p">)(</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">))</span><span class="mh">0xFFE8</span><span class="p">;</span>
-
-<span class="cp">#endif </span><span class="c1">// _IO_H</span>
-</code></pre></div>
-<h2 id="step-3-write-the-main-c-program">Step 3: Write the Main C Program<a class="headerlink" href="#step-3-write-the-main-c-program" title="Permanent link">&para;</a></h2>
-<p>This is a simple "Hello World" program that prints to the screen using <code>putstrnl</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;io.h&quot;</span>
-
-<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">putstrnl</span><span class="p">(</span><span class="s">&quot;Hello World!&quot;</span><span class="p">);</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
-<h2 id="step-4-configure-memory-layout">Step 4: Configure Memory Layout<a class="headerlink" href="#step-4-configure-memory-layout" title="Permanent link">&para;</a></h2>
-<p>The linker configuration (<code>prog.cfg</code>) defines where various sections of the program go in memory, including a 2-byte header, zero page usage, and stack space.</p>
-<div class="highlight"><pre><span></span><code>MEMORY {
-    ZP:     start = $50, size = $B0, type = rw, define = yes;
-    HEADER: start = $0800, size = 2, file = %O;
-    RAM:    start = $0802, size = $7700-$0802, type = rw, define = yes;
-    STACK:  start = $7700, size = $0800, type = rw, define = yes;
-}
-
-SEGMENTS {
-    ZEROPAGE: load = ZP,        type = zp,  define   = yes;
-    HEADER:   load = HEADER,    type = ro,  define   = yes;
-    STARTUP:  load = RAM,       type = ro;
-    CODE:     load = RAM,       type = ro;
-    ONCE:     load = RAM,       type = ro,  optional = yes;
-    RODATA:   load = RAM,       type = ro;
-    DATA:     load = RAM,       type = rw,  define   = yes, run = RAM;
-    BSS:      load = RAM,       type = bss, define   = yes;
-    HEAP:     load = RAM,       type = bss, optional = yes;
-}
-
-FEATURES {
-    CONDES:    segment = STARTUP,
-               type    = constructor,
-               label   = __CONSTRUCTOR_TABLE__,
-               count   = __CONSTRUCTOR_COUNT__;
-    CONDES:    segment = STARTUP,
-               type    = destructor,
-               label   = __DESTRUCTOR_TABLE__,
-               count   = __DESTRUCTOR_COUNT__;
-}
-
-SYMBOLS {
-    # Define the stack size for the application
-    __STACKSIZE__:  value = $0200, type = weak;
-}
-</code></pre></div>
-<h2 id="step-5-create-the-makefile">Step 5: Create the Makefile<a class="headerlink" href="#step-5-create-the-makefile" title="Permanent link">&para;</a></h2>
-<p>The <code>Makefile</code> automates the build by assembling and linking your C and assembly
-files into a <code>.COM</code> binary that can be run on ByteCradle.</p>
-<div class="highlight"><pre><span></span><code><span class="nv">PROG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>HELLOC.COM
-
-<span class="nf">all</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">PROG</span><span class="k">)</span>
-
-<span class="nf">$(PROG)</span><span class="o">:</span><span class="w"> </span><span class="n">prog</span>.<span class="n">cfg</span> <span class="n">crt</span>0.<span class="n">o</span> <span class="n">main</span>.<span class="n">o</span> <span class="n">prog</span>.<span class="n">lib</span>
-<span class="w">    </span>ar65<span class="w"> </span>a<span class="w"> </span>prog.lib<span class="w"> </span>crt0.o
-<span class="w">    </span>ld65<span class="w"> </span>-C<span class="w"> </span>prog.cfg<span class="w"> </span>-m<span class="w"> </span>main.map<span class="w"> </span>main.o<span class="w"> </span>-o<span class="w"> </span><span class="k">$(</span>PROG<span class="k">)</span><span class="w"> </span>prog.lib
-
-<span class="nf">crt0.o</span><span class="o">:</span><span class="w"> </span><span class="n">crt</span>0.<span class="n">s</span>
-<span class="w">    </span>ca65<span class="w"> </span>--cpu<span class="w"> </span>65c02<span class="w"> </span>crt0.s
-
-<span class="nf">main.s</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">c</span>
-<span class="w">    </span>cc65<span class="w"> </span>-t<span class="w"> </span>none<span class="w"> </span>-O<span class="w"> </span>--cpu<span class="w"> </span>65c02<span class="w"> </span>main.c
-
-<span class="nf">prog.lib</span><span class="o">:</span><span class="w"> </span><span class="n">crt</span>0.<span class="n">o</span>
-<span class="w">    </span>cp<span class="w"> </span>-v<span class="w"> </span>/usr/share/cc65/lib/supervision.lib<span class="w"> </span>prog.lib<span class="w"> </span>
-<span class="w">    </span>ar65<span class="w"> </span>a<span class="w"> </span>prog.lib<span class="w"> </span>crt0.o
-
-<span class="nf">main.o</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">s</span>
-<span class="w">    </span>ca65<span class="w"> </span>--cpu<span class="w"> </span>65c02<span class="w"> </span>main.s
-
-<span class="nf">clean</span><span class="o">:</span>
-<span class="w">    </span>rm<span class="w"> </span>-v<span class="w"> </span>*.o<span class="w"> </span>*.lib<span class="w"> </span>main.s<span class="w"> </span><span class="k">$(</span>PROG<span class="k">)</span>
-</code></pre></div>
-<h2 id="step-6-build-the-program">Step 6: Build the Program<a class="headerlink" href="#step-6-build-the-program" title="Permanent link">&para;</a></h2>
-<p>From the terminal, run:</p>
-<div class="highlight"><pre><span></span><code>make
-</code></pre></div>
-<h2 id="step-7-run-the-program">Step 7: Run the program<a class="headerlink" href="#step-7-run-the-program" title="Permanent link">&para;</a></h2>
-<p>Copy the resulting HELLOC.COM file to the ByteCradle's SD card or upload it
-using the appropriate method. Then, on the ByteCradle shell:</p>
-<div class="highlight"><pre><span></span><code>:/&gt; helloc
-Hello World!
-:/&gt;
-</code></pre></div>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Instructions on how to deploy the program to your ByteCradle board,
-including for the TinyROM which does not have an SD-CARD, are <a href="../../software/building-programs/#bytecradle-os">provided
-here</a></p>
 </div>
 
 
