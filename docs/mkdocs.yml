@@ -22,6 +22,7 @@ nav:
       - Installing the Emulator: emulator/installing-emulator.md
       - Running the Emulator: emulator/running-emulator.md
   - Tutorials:
+      - Overview: tutorials/overview.md
       - Inline Assembler Tutorial: tutorials/inline-assembler.md
       - Hello World in assembly: tutorials/hello-world-assembly.md
       - Hello World in C: tutorials/hello-world-c.md
