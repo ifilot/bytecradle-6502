@@ -46,6 +46,8 @@
       
     
     
+      <link rel="stylesheet" href="../../assets/css/retrofont.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -523,6 +525,15 @@
   <a href="#setting-up-serial-communication" class="md-nav__link">
     <span class="md-ellipsis">
       Setting Up Serial Communication
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boot-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Boot screen
     </span>
   </a>
   
@@ -1371,6 +1382,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#boot-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Boot screen
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1451,6 +1471,49 @@ terminal program with the settings above and open the connection. Upon
 powering up the ByteCradle, you should see output from the board if the
 connection is established correctly.</p>
 </div>
+<h2 id="boot-screen">Boot screen<a class="headerlink" href="#boot-screen" title="Permanent link">&para;</a></h2>
+<p>If everything is working correctly, you should see the following boot screens
+as shown below.</p>
+<p>For the <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 4h12v1h3v2h-3v2h3v2h-3v2h3v2h-3v2h3v2h-3v1H6v-1H3v-2h3v-2H3v-2h3v-2H3V9h3V7H3V5h3zm5 11v3h1v-3zm2 0v3h1v-3zm2 0v3h1v-3z"/></svg></span> <strong>TINY</strong> board:</p>
+<div class="highlight"><pre><span></span><code>+----------------------------------------------+
+| BYTECRADLE /TINY/ ROM                        |
++----------------------------------------------+
+| RAM  : 0x0000 - 0x7EFF                       |
+| ROM  : 0x8000 - 0xFFFF                       |
+| IO   : 0x7F00 - 0x7FFF                       |
+| ACIA : 0x7F04 - 0x7F0F                       |
++----------------------------------------------+
+|     SELECT CATEGORY                          |
+|                                              |
+| (t) Test routines                            |
+| (a) Applications                             |
+| (g) Games                                    |
+| (m) Monitor                                  |
++----------------------------------------------+
+</code></pre></div>
+<p>and for the <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 4h12v1h3v2h-3v2h3v2h-3v2h3v2h-3v2h3v2h-3v1H6v-1H3v-2h3v-2H3v-2h3v-2H3V9h3V7H3V5h3zm5 11v3h1v-3zm2 0v3h1v-3zm2 0v3h1v-3z"/></svg></span> <strong>MINI</strong> board:</p>
+<div class="highlight"><pre><span></span><code> ____             __           ____                      __   ___
+/\  _`\          /\ \__       /\  _`\                   /\ \ /\_ \
+\ \ \L\ \  __  __\ \ ,_\    __\ \ \/\_\  _ __    __     \_\ \\//\ \      __
+ \ \  _ &lt;&#39;/\ \/\ \\ \ \/  /&#39;__`\ \ \/_/_/\`&#39;__\/&#39;__`\   /&#39;_` \ \ \ \   /&#39;__`\
+  \ \ \L\ \ \ \_\ \\ \ \_/\  __/\ \ \L\ \ \ \//\ \L\.\_/\ \L\ \ \_\ \_/\  __/
+   \ \____/\/`____ \\ \__\ \____\\ \____/\ \_\\ \__/.\_\ \___,_\/\____\ \____\
+    \/___/  `/___/&gt; \\/__/\/____/ \/___/  \/_/ \/__/\/_/\/__,_ /\/____/\/____/
+               /\___/
+               \/__/
+  ____  ______     __      ___
+ /&#39;___\/\  ___\  /&#39;__`\  /&#39;___`\
+/\ \__/\ \ \__/ /\ \/\ \/\_\ /\ \
+\ \  _``\ \___``\ \ \ \ \/_/// /__
+ \ \ \L\ \/\ \L\ \ \ \_\ \ // /_\ \
+  \ \____/\ \____/\ \____//\______/
+   \/___/  \/___/  \/___/ \/_____/
+
+Starting system.
+Clearing user space...   [OK]
+Connecting to SD-card... [OK]
+:/&gt;
+</code></pre></div>
 
 
 
