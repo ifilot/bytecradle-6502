@@ -1,0 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
+
+code, pre, kbd, samp {
+  font-family: 'IBM Plex Mono', monospace !important;
+  line-height: 1.2;
+}
