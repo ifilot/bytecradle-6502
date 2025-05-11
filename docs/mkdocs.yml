@@ -16,12 +16,15 @@ nav:
       - Software overview: software/software-overview.md
       - Operating System: software/operating-system.md
       - Kernel functions: software/kernel-functions.md
+      - Building programs: software/building-programs.md
   - Emulator:
       - Emulator Overview: emulator/emulator-overview.md
       - Installing the Emulator: emulator/installing-emulator.md
       - Running the Emulator: emulator/running-emulator.md
   - Tutorials:
       - Inline Assembler Tutorial: tutorials/inline-assembler.md
+      - Hello World in assembly: tutorials/hello-world-assembly.md
+      - Hello World in C: tutorials/hello-world-c.md
       - Working with Peripherals: tutorials/peripherals.md
       - Debugging and Troubleshooting: tutorials/debugging.md
   - Advanced Topics:
