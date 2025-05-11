@@ -32,3 +32,5 @@ are simpler:
     reliability, budget-friendly options may suffice for casual use, especially
     with pre-assembled boards. A budget-friendly option is the
     [PICO-SST39SF0x0-programmer](https://github.com/ifilot/pico-sst39sf0x0-programmer).
+
+[:material-arrow-right: Next: Proceed to assembling the board](assembling-the-board.md)

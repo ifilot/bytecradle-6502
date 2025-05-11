@@ -97,4 +97,6 @@ To flash the ROM, you'll need a compatible **EPROM/Flash programmer**. Options i
 4. **Install the ROM**:
     - After successful flashing, insert the ROM chip carefully into its socket, **ensuring correct orientation**.
 
-Once the ROM is programmed and installed, you're ready to proceed with the [first power-up](first-power-up.md)!
+---
+
+[:material-arrow-right: Next: Proceed to the first power up](first-power-up.md)

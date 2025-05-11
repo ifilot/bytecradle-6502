@@ -21,7 +21,7 @@ This page contains a collection of helpful external resources related to the 650
 - [The 6502 Instruction Set](http://www.6502.org/tutorials/6502opcodes.html)  
   Detailed breakdown of opcodes and addressing modes.
 
-- [Ben Eater’s 6502 Computer Series](https://www.youtube.com/playlist?list=PLowKtXNTBypFbtuVMUVXNR0z1mu7dp7eH)  
+- [Ben Eater’s 6502 Computer Series](https://www.youtube.com/playlist?list=PLowKtXNTBypFbtuVMUVXNR0z1mu7dp7eH)
   A fantastic hands-on video series building a 6502 computer from scratch and programming it.
 
 ## 🛠️ Tools

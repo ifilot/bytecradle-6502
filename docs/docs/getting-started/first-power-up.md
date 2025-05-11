@@ -57,3 +57,54 @@ Several tools are available to interface with the board over RS232:
     terminal program with the settings above and open the connection. Upon
     powering up the ByteCradle, you should see output from the board if the
     connection is established correctly.
+
+## Boot screen
+
+If everything is working correctly, you should see the following boot screens
+as shown below.
+
+For the :material-chip: **TINY** board:
+
+```
++----------------------------------------------+
+| BYTECRADLE /TINY/ ROM                        |
++----------------------------------------------+
+| RAM  : 0x0000 - 0x7EFF                       |
+| ROM  : 0x8000 - 0xFFFF                       |
+| IO   : 0x7F00 - 0x7FFF                       |
+| ACIA : 0x7F04 - 0x7F0F                       |
++----------------------------------------------+
+|     SELECT CATEGORY                          |
+|                                              |
+| (t) Test routines                            |
+| (a) Applications                             |
+| (g) Games                                    |
+| (m) Monitor                                  |
++----------------------------------------------+
+```
+
+and for the :material-chip: **MINI** board:
+
+```
+ ____             __           ____                      __   ___
+/\  _`\          /\ \__       /\  _`\                   /\ \ /\_ \
+\ \ \L\ \  __  __\ \ ,_\    __\ \ \/\_\  _ __    __     \_\ \\//\ \      __
+ \ \  _ <'/\ \/\ \\ \ \/  /'__`\ \ \/_/_/\`'__\/'__`\   /'_` \ \ \ \   /'__`\
+  \ \ \L\ \ \ \_\ \\ \ \_/\  __/\ \ \L\ \ \ \//\ \L\.\_/\ \L\ \ \_\ \_/\  __/
+   \ \____/\/`____ \\ \__\ \____\\ \____/\ \_\\ \__/.\_\ \___,_\/\____\ \____\
+    \/___/  `/___/> \\/__/\/____/ \/___/  \/_/ \/__/\/_/\/__,_ /\/____/\/____/
+               /\___/
+               \/__/
+  ____  ______     __      ___
+ /'___\/\  ___\  /'__`\  /'___`\
+/\ \__/\ \ \__/ /\ \/\ \/\_\ /\ \
+\ \  _``\ \___``\ \ \ \ \/_/// /__
+ \ \ \L\ \/\ \L\ \ \ \_\ \ // /_\ \
+  \ \____/\ \____/\ \____//\______/
+   \/___/  \/___/  \/___/ \/_____/
+
+Starting system.
+Clearing user space...   [OK]
+Connecting to SD-card... [OK]
+:/>
+```
