@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../software-overview/">
+        <link rel="prev" href="../inline-assembler/">
       
       
-        <link rel="next" href="../kernel-functions/">
+        <link rel="next" href="../hello-world-c/">
       
       
       <link rel="icon" href="../../assets/img/favicon.ico">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Operating System - ByteCradle 6502</title>
+        <title>Hello World in assembly - ByteCradle 6502</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#operating-systems" class="md-skip">
+        <a href="#tutorial-hello-world-in-assembly" class="md-skip">
           Skip to content
         </a>
       
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Operating System
+              Hello World in assembly
             
           </span>
         </div>
@@ -605,8 +605,6 @@
       
   
   
-    
-  
   
   
     
@@ -619,11 +617,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
@@ -639,7 +637,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Software
@@ -653,7 +651,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../software-overview/" class="md-nav__link">
+      <a href="../../software/software-overview/" class="md-nav__link">
         
   
   
@@ -673,32 +671,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Operating System
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../software/operating-system/" class="md-nav__link">
         
   
   
@@ -709,83 +685,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#tinyrom-operating-system-tiny-board" class="md-nav__link">
-    <span class="md-ellipsis">
-      TINYROM operating system (TINY board)
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="TINYROM operating system (TINY board)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Overview
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#bytecradle-operating-system-mini-board" class="md-nav__link">
-    <span class="md-ellipsis">
-      ByteCradle Operating System (MINI board)
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ByteCradle Operating System (MINI board)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#overview_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      Overview
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#navigation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Navigation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -798,7 +697,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../kernel-functions/" class="md-nav__link">
+      <a href="../../software/kernel-functions/" class="md-nav__link">
         
   
   
@@ -821,7 +720,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../building-programs/" class="md-nav__link">
+      <a href="../../software/building-programs/" class="md-nav__link">
         
   
   
@@ -967,8 +866,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -979,11 +880,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
         
           
           <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
@@ -999,7 +900,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             Tutorials
@@ -1013,7 +914,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/inline-assembler/" class="md-nav__link">
+      <a href="../inline-assembler/" class="md-nav__link">
         
   
   
@@ -1033,10 +934,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../tutorials/hello-world-assembly/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Hello World in assembly
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1047,6 +970,71 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-writing-the-assembly-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Writing the Assembly Code
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-writing-the-makefile" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Writing the Makefile
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-linker-configuration-romcfg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Linker Configuration (rom.cfg)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-building-the-program" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Building the Program
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-running-the-program" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Running the Program
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1059,7 +1047,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/hello-world-c/" class="md-nav__link">
+      <a href="../hello-world-c/" class="md-nav__link">
         
   
   
@@ -1082,7 +1070,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/peripherals/" class="md-nav__link">
+      <a href="../peripherals/" class="md-nav__link">
         
   
   
@@ -1105,7 +1093,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/debugging/" class="md-nav__link">
+      <a href="../debugging/" class="md-nav__link">
         
   
   
@@ -1370,59 +1358,47 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#tinyrom-operating-system-tiny-board" class="md-nav__link">
+  <a href="#step-1-writing-the-assembly-code" class="md-nav__link">
     <span class="md-ellipsis">
-      TINYROM operating system (TINY board)
+      Step 1: Writing the Assembly Code
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="TINYROM operating system (TINY board)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Overview
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#bytecradle-operating-system-mini-board" class="md-nav__link">
+  <a href="#step-2-writing-the-makefile" class="md-nav__link">
     <span class="md-ellipsis">
-      ByteCradle Operating System (MINI board)
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ByteCradle Operating System (MINI board)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#overview_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      Overview
+      Step 2: Writing the Makefile
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#navigation" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#step-3-linker-configuration-romcfg" class="md-nav__link">
     <span class="md-ellipsis">
-      Navigation
+      Step 3: Linker Configuration (rom.cfg)
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-building-the-program" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Building the Program
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-running-the-program" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Running the Program
+    </span>
+  </a>
   
 </li>
       
@@ -1445,82 +1421,114 @@
   
 
 
-<h1 id="operating-systems">Operating Systems<a class="headerlink" href="#operating-systems" title="Permanent link">&para;</a></h1>
-<p>This page describes two minimalist operating systems: TINYROM, a ROM-based OS
-for the TINY board featuring a menu-driven interface without disk storage, and
-BCOS, a lightweight disk operating system for the MINI board providing basic
-file management and serial communication using familiar Linux-style commands.</p>
-<h2 id="tinyrom-operating-system-tiny-board">TINYROM operating system (TINY board)<a class="headerlink" href="#tinyrom-operating-system-tiny-board" title="Permanent link">&para;</a></h2>
-<h3 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h3>
-<p>TINYROM is a minimalist ROM-based operating system and runtime environment for
-the <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 4h12v1h3v2h-3v2h3v2h-3v2h3v2h-3v2h3v2h-3v1H6v-1H3v-2h3v-2H3v-2h3v-2H3V9h3V7H3V5h3zm5 11v3h1v-3zm2 0v3h1v-3zm2 0v3h1v-3z"/></svg></span> <strong>TINY</strong> board. It is designed to be as small and simple as
-possible, offering a bare-metal interface that boots directly into a menu-driven
-selector for launching built-in programs, test routines, and games — all stored
-within a compact 32 KiB ROM image.</p>
-<p>Unlike more complex operating systems that manage filesystems or dynamic storage
-(see below), TINYROM does not interface with disks or SD cards. Instead, it
-provides a tiny kernel consisting solely of 
-<a href="../kernel-functions/">low-level I/O routines</a> for
-communicating with the 65C51 ACIA serial interface. These routines allow basic
-input and output over a serial terminal and form the foundation for user
-interaction and debugging.</p>
-<p>Upon startup, TINYROM presents a static selection menu through the serial
-interface, enabling users to choose from a set of preloaded software — typically
-small utilities, diagnostics, or simple games.</p>
-<h2 id="bytecradle-operating-system-mini-board">ByteCradle Operating System (MINI board)<a class="headerlink" href="#bytecradle-operating-system-mini-board" title="Permanent link">&para;</a></h2>
-<h3 id="overview_1">Overview<a class="headerlink" href="#overview_1" title="Permanent link">&para;</a></h3>
-<p>The <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 4h12v1h3v2h-3v2h3v2h-3v2h3v2h-3v2h3v2h-3v1H6v-1H3v-2h3v-2H3v-2h3v-2H3V9h3V7H3V5h3zm5 11v3h1v-3zm2 0v3h1v-3zm2 0v3h1v-3z"/></svg></span> <strong>MINI</strong> board runs on BCOS (ByteCradle Operating System), a
-minimalist, single-user disk operating system (SUDOS) purpose-built for the
-MINI. Designed with clarity, compactness, and practical utility in mind, BCOS
-offers essential functionality for persistent storage access and serial
-communication, without the complexity of multitasking or modern OS abstractions.</p>
-<p>At its core, BCOS presents a simple, navigable view of the SD card’s contents,
-supporting basic file operations such as directory listing, file reading,
-writing, and — critically — the ability to load and execute binary programs
-directly from the SD card. This capability allows BCOS to serve as a lightweight
-but extensible platform for launching standalone applications with minimal
-runtime overhead.</p>
-<p>In addition to its command-line shell, BCOS exposes a set of 
-<a href="../kernel-functions/">low-level I/O routines</a> for working with the 
-65C51 ACIA serial interface. These include
-functions for reading characters, writing characters, and outputting entire
-strings over the serial port, enabling user programs to easily perform serial
-communication without reimplementing low-level logic.</p>
-<p>Communication via the 65C51 ACIA serves both as the user console and as a
-fundamental I/O channel, making BCOS suitable for both interactive and automated
-tasks on constrained 8-bit hardware.</p>
-<h3 id="navigation">Navigation<a class="headerlink" href="#navigation" title="Permanent link">&para;</a></h3>
-<p>BCOS leverages common Linux-style commands for file and directory management,
-offering a familiar environment to users accustomed to Linux or UNIX systems.
-Below are examples of frequently used commands:</p>
-<ul>
-<li>
-<p><strong>List directory contents (<code>ls</code>)</strong>: To view the files and directories within
-  the current directory, simply type:
-  <div class="highlight"><pre><span></span><code>ls
-</code></pre></div></p>
-</li>
-<li>
-<p><strong>Change directory (<code>cd</code>)</strong>: To navigate to another directory, use:
-  <div class="highlight"><pre><span></span><code>cd dirname
+<h1 id="tutorial-hello-world-in-assembly">Tutorial: Hello World in Assembly<a class="headerlink" href="#tutorial-hello-world-in-assembly" title="Permanent link">&para;</a></h1>
+<p>This tutorial walks you through writing, building, and running a simple "Hello
+World" program in 6502 assembly for the <strong>ByteCradle OS</strong>. The example uses the
+<code>cc65</code> toolchain, a widely used suite for 6502-based development.</p>
+<h2 id="step-1-writing-the-assembly-code">Step 1: Writing the Assembly Code<a class="headerlink" href="#step-1-writing-the-assembly-code" title="Permanent link">&para;</a></h2>
+<p>Create a new file called <code>helloworld.asm</code> and enter the following code:</p>
+<div class="highlight"><pre><span></span><code>;------------------------------------------------------------------------------
+; Hello World Example for ByteCradle 6502
+;
+; This program prints &quot;Hello World!&quot; to the screen using the ByteCradle OS&#39;s
+; built-in output routine located at $FFE8.
+;------------------------------------------------------------------------------
+
+.PSC02                              ; Assembly for the 65C02 CPU
+
+.import __HEADER_LOAD__             ; Provided by the linker (.cfg) as load address
+
+.define PUTSTRNL $FFE8              ; Routine to print a null-terminated string with newline
+
+;------------------------------------------------------------------------------
+; Program Header (used by ByteCradle OS to determine deployment address)
+;------------------------------------------------------------------------------
+.segment &quot;HEADER&quot;
+.word __HEADER_LOAD__               ; Deployment address (typically $0800), little-endian
+
+;------------------------------------------------------------------------------
+; Main Code Segment
+;------------------------------------------------------------------------------
+.segment &quot;CODE&quot;
+
+start:                              ; Entry point
+    lda #&lt;hwstr                     ; Load low byte of string address
+    ldx #&gt;hwstr                     ; Load high byte of string address
+    jsr PUTSTRNL                    ; Call OS routine to print string with newline
+    rts                             ; Return to OS
+
+hwstr:
+    .asciiz &quot;Hello World!&quot;          ; Null-terminated string
 </code></pre></div>
-  For example, to move up one directory level:
-  <div class="highlight"><pre><span></span><code>cd ..
-</code></pre></div></p>
-</li>
-<li>
-<p><strong>Executing programs</strong>: Executable files typically have a <code>.COM</code> extension. To
-  run these files, type their base name (without the <code>.COM</code> extension). For
-  instance, to execute a program named <code>MYAPP.COM</code>, simply type:
-  <div class="highlight"><pre><span></span><code>myapp
-</code></pre></div></p>
-</li>
+<p><strong>How it works:</strong></p>
+<ul>
+<li>The program starts at the label start, which is called by the OS.</li>
+<li>It loads the address of a null-terminated string and calls 
+  <a href="../../software/kernel-functions">the OS function</a> at
+  <code>$FFE8</code>, which prints the string followed by a newline.</li>
+<li>The .segment "HEADER" section includes a 2-byte deployment address required by
+  ByteCradle OS .COM files.</li>
+<li>The program ends with rts (return from subroutine), allowing the OS to regain
+  control.</li>
 </ul>
+<h2 id="step-2-writing-the-makefile">Step 2: Writing the Makefile<a class="headerlink" href="#step-2-writing-the-makefile" title="Permanent link">&para;</a></h2>
+<p>Create a file called Makefile in the same directory:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">PROG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>HELLO.COM
+<span class="nv">OBJ</span><span class="w">  </span><span class="o">=</span><span class="w"> </span>helloworld.o
+<span class="nv">CFG</span><span class="w">  </span><span class="o">=</span><span class="w"> </span>rom.cfg
+
+<span class="nf">all</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">PROG</span><span class="k">)</span>
+
+<span class="nf">$(OBJ)</span><span class="o">:</span><span class="w"> </span><span class="n">helloworld</span>.<span class="n">asm</span>
+<span class="w">    </span>ca65<span class="w"> </span>helloworld.asm<span class="w"> </span>-o<span class="w"> </span><span class="k">$(</span>OBJ<span class="k">)</span>
+
+<span class="nf">$(PROG)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">OBJ</span><span class="k">)</span>
+<span class="w">    </span>ld65<span class="w"> </span>-o<span class="w"> </span><span class="k">$(</span>PROG<span class="k">)</span><span class="w"> </span>-C<span class="w"> </span><span class="k">$(</span>CFG<span class="k">)</span><span class="w"> </span><span class="k">$(</span>OBJ<span class="k">)</span>
+</code></pre></div>
+<p>This Makefile automates the build process:</p>
+<ul>
+<li>Assembles the source using <code>ca65</code></li>
+<li>Links the program using <code>ld65</code> with a linker configuration file (<code>rom.cfg</code>)</li>
+<li>Produces an output file named <code>HELLO.COM</code></li>
+</ul>
+<h2 id="step-3-linker-configuration-romcfg">Step 3: Linker Configuration (rom.cfg)<a class="headerlink" href="#step-3-linker-configuration-romcfg" title="Permanent link">&para;</a></h2>
+<p>You will also need a linker configuration file called <code>rom.cfg</code>. This tells the
+linker how to place the code in memory:</p>
+<div class="highlight"><pre><span></span><code>MEMORY {
+    HEADER: start = $0800, size = 2, file = %O;             # Explicit start position
+    ROM:    start = $0802, size = $7FFE, file = %O;         # Start right after HEADER
+}
+
+SEGMENTS {
+    HEADER: load = HEADER, type = ro, define = yes;
+    CODE:   load = ROM, type = ro;
+}
+</code></pre></div>
+<p>This layout matches the expectations of the ByteCradle OS, which reads the first
+two bytes of a .COM file to determine where to load it into memory.</p>
+<h2 id="step-4-building-the-program">Step 4: Building the Program<a class="headerlink" href="#step-4-building-the-program" title="Permanent link">&para;</a></h2>
+<p>To compile and link your program, simply run:</p>
+<div class="highlight"><pre><span></span><code>make
+</code></pre></div>
+<p>This will produce a file called <code>HELLO.COM</code>, ready for deployment.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>While BCOS internally manages file names in uppercase, users may
-conveniently enter commands and file names in lowercase.</p>
+<p>The resulting <code>HELLO.COM</code> file is only 23 bytes in size, very small. This
+is because the program basically only contains an instruction for a kernel
+function and nothing more.</p>
 </div>
+<h2 id="step-5-running-the-program">Step 5: Running the Program<a class="headerlink" href="#step-5-running-the-program" title="Permanent link">&para;</a></h2>
+<p>Copy <code>HELLO.COM</code> to the SD card used by the ByteCradle system.</p>
+<p>From the ByteCradle OS shell:</p>
+<ul>
+<li>Navigate to the folder containing the file using <code>cd</code>.</li>
+<li>Type the base name of the file (without the .COM extension):</li>
+</ul>
+<div class="highlight"><pre><span></span><code>hello
+</code></pre></div>
+<p>You should see:</p>
+<div class="highlight"><pre><span></span><code>Hello World!
+</code></pre></div>
 
 
 

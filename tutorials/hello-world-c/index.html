@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../software-overview/">
+        <link rel="prev" href="../hello-world-assembly/">
       
       
-        <link rel="next" href="../kernel-functions/">
+        <link rel="next" href="../peripherals/">
       
       
       <link rel="icon" href="../../assets/img/favicon.ico">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Operating System - ByteCradle 6502</title>
+        <title>Hello World in C - ByteCradle 6502</title>
       
     
     
@@ -71,11 +71,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#operating-systems" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -107,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Operating System
+              Hello World in C
             
           </span>
         </div>
@@ -605,8 +600,6 @@
       
   
   
-    
-  
   
   
     
@@ -619,11 +612,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
@@ -639,7 +632,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Software
@@ -653,7 +646,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../software-overview/" class="md-nav__link">
+      <a href="../../software/software-overview/" class="md-nav__link">
         
   
   
@@ -673,32 +666,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Operating System
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../software/operating-system/" class="md-nav__link">
         
   
   
@@ -709,83 +680,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#tinyrom-operating-system-tiny-board" class="md-nav__link">
-    <span class="md-ellipsis">
-      TINYROM operating system (TINY board)
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="TINYROM operating system (TINY board)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Overview
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#bytecradle-operating-system-mini-board" class="md-nav__link">
-    <span class="md-ellipsis">
-      ByteCradle Operating System (MINI board)
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ByteCradle Operating System (MINI board)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#overview_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      Overview
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#navigation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Navigation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -798,7 +692,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../kernel-functions/" class="md-nav__link">
+      <a href="../../software/kernel-functions/" class="md-nav__link">
         
   
   
@@ -821,7 +715,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../building-programs/" class="md-nav__link">
+      <a href="../../software/building-programs/" class="md-nav__link">
         
   
   
@@ -967,8 +861,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -979,11 +875,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
         
           
           <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
@@ -999,7 +895,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             Tutorials
@@ -1013,7 +909,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/inline-assembler/" class="md-nav__link">
+      <a href="../inline-assembler/" class="md-nav__link">
         
   
   
@@ -1036,7 +932,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/hello-world-assembly/" class="md-nav__link">
+      <a href="../hello-world-assembly/" class="md-nav__link">
         
   
   
@@ -1056,10 +952,17 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../tutorials/hello-world-c/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1070,6 +973,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -1082,7 +986,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/peripherals/" class="md-nav__link">
+      <a href="../peripherals/" class="md-nav__link">
         
   
   
@@ -1105,7 +1009,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/debugging/" class="md-nav__link">
+      <a href="../debugging/" class="md-nav__link">
         
   
   
@@ -1360,73 +1264,6 @@
   
   
   
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#tinyrom-operating-system-tiny-board" class="md-nav__link">
-    <span class="md-ellipsis">
-      TINYROM operating system (TINY board)
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="TINYROM operating system (TINY board)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Overview
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#bytecradle-operating-system-mini-board" class="md-nav__link">
-    <span class="md-ellipsis">
-      ByteCradle Operating System (MINI board)
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ByteCradle Operating System (MINI board)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#overview_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      Overview
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#navigation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Navigation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
   
 </nav>
                   </div>
@@ -1445,82 +1282,9 @@
   
 
 
-<h1 id="operating-systems">Operating Systems<a class="headerlink" href="#operating-systems" title="Permanent link">&para;</a></h1>
-<p>This page describes two minimalist operating systems: TINYROM, a ROM-based OS
-for the TINY board featuring a menu-driven interface without disk storage, and
-BCOS, a lightweight disk operating system for the MINI board providing basic
-file management and serial communication using familiar Linux-style commands.</p>
-<h2 id="tinyrom-operating-system-tiny-board">TINYROM operating system (TINY board)<a class="headerlink" href="#tinyrom-operating-system-tiny-board" title="Permanent link">&para;</a></h2>
-<h3 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h3>
-<p>TINYROM is a minimalist ROM-based operating system and runtime environment for
-the <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 4h12v1h3v2h-3v2h3v2h-3v2h3v2h-3v2h3v2h-3v1H6v-1H3v-2h3v-2H3v-2h3v-2H3V9h3V7H3V5h3zm5 11v3h1v-3zm2 0v3h1v-3zm2 0v3h1v-3z"/></svg></span> <strong>TINY</strong> board. It is designed to be as small and simple as
-possible, offering a bare-metal interface that boots directly into a menu-driven
-selector for launching built-in programs, test routines, and games — all stored
-within a compact 32 KiB ROM image.</p>
-<p>Unlike more complex operating systems that manage filesystems or dynamic storage
-(see below), TINYROM does not interface with disks or SD cards. Instead, it
-provides a tiny kernel consisting solely of 
-<a href="../kernel-functions/">low-level I/O routines</a> for
-communicating with the 65C51 ACIA serial interface. These routines allow basic
-input and output over a serial terminal and form the foundation for user
-interaction and debugging.</p>
-<p>Upon startup, TINYROM presents a static selection menu through the serial
-interface, enabling users to choose from a set of preloaded software — typically
-small utilities, diagnostics, or simple games.</p>
-<h2 id="bytecradle-operating-system-mini-board">ByteCradle Operating System (MINI board)<a class="headerlink" href="#bytecradle-operating-system-mini-board" title="Permanent link">&para;</a></h2>
-<h3 id="overview_1">Overview<a class="headerlink" href="#overview_1" title="Permanent link">&para;</a></h3>
-<p>The <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 4h12v1h3v2h-3v2h3v2h-3v2h3v2h-3v2h3v2h-3v1H6v-1H3v-2h3v-2H3v-2h3v-2H3V9h3V7H3V5h3zm5 11v3h1v-3zm2 0v3h1v-3zm2 0v3h1v-3z"/></svg></span> <strong>MINI</strong> board runs on BCOS (ByteCradle Operating System), a
-minimalist, single-user disk operating system (SUDOS) purpose-built for the
-MINI. Designed with clarity, compactness, and practical utility in mind, BCOS
-offers essential functionality for persistent storage access and serial
-communication, without the complexity of multitasking or modern OS abstractions.</p>
-<p>At its core, BCOS presents a simple, navigable view of the SD card’s contents,
-supporting basic file operations such as directory listing, file reading,
-writing, and — critically — the ability to load and execute binary programs
-directly from the SD card. This capability allows BCOS to serve as a lightweight
-but extensible platform for launching standalone applications with minimal
-runtime overhead.</p>
-<p>In addition to its command-line shell, BCOS exposes a set of 
-<a href="../kernel-functions/">low-level I/O routines</a> for working with the 
-65C51 ACIA serial interface. These include
-functions for reading characters, writing characters, and outputting entire
-strings over the serial port, enabling user programs to easily perform serial
-communication without reimplementing low-level logic.</p>
-<p>Communication via the 65C51 ACIA serves both as the user console and as a
-fundamental I/O channel, making BCOS suitable for both interactive and automated
-tasks on constrained 8-bit hardware.</p>
-<h3 id="navigation">Navigation<a class="headerlink" href="#navigation" title="Permanent link">&para;</a></h3>
-<p>BCOS leverages common Linux-style commands for file and directory management,
-offering a familiar environment to users accustomed to Linux or UNIX systems.
-Below are examples of frequently used commands:</p>
-<ul>
-<li>
-<p><strong>List directory contents (<code>ls</code>)</strong>: To view the files and directories within
-  the current directory, simply type:
-  <div class="highlight"><pre><span></span><code>ls
-</code></pre></div></p>
-</li>
-<li>
-<p><strong>Change directory (<code>cd</code>)</strong>: To navigate to another directory, use:
-  <div class="highlight"><pre><span></span><code>cd dirname
-</code></pre></div>
-  For example, to move up one directory level:
-  <div class="highlight"><pre><span></span><code>cd ..
-</code></pre></div></p>
-</li>
-<li>
-<p><strong>Executing programs</strong>: Executable files typically have a <code>.COM</code> extension. To
-  run these files, type their base name (without the <code>.COM</code> extension). For
-  instance, to execute a program named <code>MYAPP.COM</code>, simply type:
-  <div class="highlight"><pre><span></span><code>myapp
-</code></pre></div></p>
-</li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>While BCOS internally manages file names in uppercase, users may
-conveniently enter commands and file names in lowercase.</p>
-</div>
+  <h1>Hello World in C</h1>
+
+
 
 
 
