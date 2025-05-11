@@ -3,11 +3,23 @@
 ## Introduction
 
 This page explains how to build stand-alone programs for the ByteCradle system
-using the cc65 toolchain. It covers tool installation, memory layout, linker
-configuration, and Makefile-based build processes for both assembly and C-based
-programs. Whether targeting the minimal TinyROM or the more capable ByteCradle
-OS, this guide provides the necessary structure to compile, link, and deploy
-reliable 6502 software.
+using the cc65 toolchain, a complete suite for developing software targeting the
+65(C)02 processor. It covers the full development workflow, including tool
+installation, memory layout planning, linker configuration, and Makefile-based
+build processes for both assembly and C-based programs.
+
+A key concept in this process is **cross-compilation**, the practice of building
+software on a modern host system (such as Linux, macOS, or Windows) that is
+intended to run on a different target system, in this case, a 6502-based
+platform like ByteCradle. Since the target hardware is typically much more
+limited and may not support native development tools, cross-compilation enables
+developers to leverage the power and convenience of modern systems to build code
+for retro or embedded environments.
+
+By following this guide, you will learn how to prepare your code and toolchain
+for effective cross-compilation and deploy programs to either target system
+using the appropriate method—file-based for ByteCradle OS, or raw memory writes
+for TinyROM.
 
 ## Toolchain
 
@@ -384,9 +396,118 @@ This approach avoids unnecessary dependencies and gives the developer direct con
 
 ## Deployment
 
+This document outlines the deployment process for stand-alone programs on two
+distinct platforms: ByteCradle OS and TinyROM. While both systems are designed
+for simplicity and low-level control, they offer different approaches to program
+execution. ByteCradle OS provides a file-based interface that simplifies running
+compiled applications, whereas TinyROM offers a more hands-on experience,
+requiring direct memory interaction through a built-in monitor.
+
+!!! note 
+    ByteCradle OS uses the same monitor as TinyROM, so you can deploy
+    programs using the TinyROM method (writing raw hex via the monitor) on
+    ByteCradle OS as well.
+
+## ByteCradle OS
+
 Deploying a stand-alone program on the ByteCradle OS is straightforward. Simply
 copy the compiled `.COM` file to the SD card used by the system. Once the card
 is mounted and the system is running, navigate to the appropriate directory
 using the shell, and type the **base name** of the file (without the `.COM`
 extension) to execute it. For example, if your file is named `HELLO.COM`, you
 can run it by typing `HELLO` at the prompt.
+
+An example is provided below:
+
+```
+ ____             __           ____                      __   ___
+/\  _`\          /\ \__       /\  _`\                   /\ \ /\_ \
+\ \ \L\ \  __  __\ \ ,_\    __\ \ \/\_\  _ __    __     \_\ \\//\ \      __
+ \ \  _ <'/\ \/\ \\ \ \/  /'__`\ \ \/_/_/\`'__\/'__`\   /'_` \ \ \ \   /'__`\
+  \ \ \L\ \ \ \_\ \\ \ \_/\  __/\ \ \L\ \ \ \//\ \L\.\_/\ \L\ \ \_\ \_/\  __/
+   \ \____/\/`____ \\ \__\ \____\\ \____/\ \_\\ \__/.\_\ \___,_\/\____\ \____\
+    \/___/  `/___/> \\/__/\/____/ \/___/  \/_/ \/__/\/_/\/__,_ /\/____/\/____/
+               /\___/
+               \/__/
+  ____  ______     __      ___
+ /'___\/\  ___\  /'__`\  /'___`\
+/\ \__/\ \ \__/ /\ \/\ \/\_\ /\ \
+\ \  _``\ \___``\ \ \ \ \/_/// /__
+ \ \ \L\ \/\ \L\ \ \ \_\ \ // /_\ \
+  \ \____/\ \____/\ \____//\______/
+   \/___/  \/___/  \/___/ \/_____/
+
+Starting system.
+Clearing user space...   [OK]
+Connecting to SD-card... [OK]
+:/> ls
+FIBO    .COM 00000007 2302
+HELLO   .COM 00000008 23
+MANDEL  .COM 00000006 1406
+:/> hello
+Hello World!
+:/>
+```
+
+## TinyROM
+
+Deploying programs to the TinyROM system is a bit more involved than on
+ByteCradle OS. TinyROM relies on its built-in monitor for program loading. To
+begin, power on the system and access the monitor prompt. From there, type
+`W0800` to enter write mode starting at memory address `$0800`. In this mode,
+you'll input the raw machine code of your program as a continuous stream of
+hexadecimal values—with no spaces or line breaks.
+
+For instance, to deploy a simple "Hello World" program, you would enter:
+
+```
+0008A90AA20820E8FF6048656C6C6F20576F726C642100
+```
+
+!!! tip 
+    Need the raw hex of an executable? On Linux, use this one-liner to dump
+    it as a continuous stream of HEX characters: `hexdump -v -e '/1 "%02X"' HELLO.COM`
+
+!!! warning 
+    When pasting "large" files (e.g., several hundred bytes), the
+    ByteCradle system may struggle to keep up with the incoming data stream,
+    leading to dropped or corrupted input. To prevent this, consider using
+    terminal programs like Tera Term, which allow you to insert small delays
+    between characters during transmission.
+
+After typing the entire sequence, press Enter to exit write mode. Then, to
+execute the program, type:
+
+```
+G0802
+```
+
+The result below shows how it should look like.
+
+```
++----------------------------------------------+
+|             BYTECRADLE MONITOR               |
++----------------------------------------------+
+| FREE ZERO PAGE :     0x40 - 0xFF             |
+| FREE RAM       : 0x0400 - 0x7F00             |
+| ROM            : 0x8000 - 0xFFFF             |
++----------------------------------------------+
+| COMMANDS                                     |
+| R<XXXX>[:<XXXX>] read memory                 |
+| W<XXXX>          write to memory             |
+| G<XXXX>          run from address            |
+| A<XXXX>          assemble from address       |
+| D<XXXX>          disassemble from address    |
+| M                show this menu              |
+| Q                quit                        |
++----------------------------------------------+
+
+@:W0800
+ > Enabling WRITE MODE. Enter HEX values. Hit RETURN to quit.
+    0800: 00 08 A9 0A A2 08 20 E8 FF 60 48 65 6C 6C 6F 20
+    0810: 57 6F 72 6C 64 21 00
+@:G0802
+Hello World!
+
+@:
+```

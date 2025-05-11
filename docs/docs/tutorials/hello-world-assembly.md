@@ -131,3 +131,7 @@ You should see:
 ```
 Hello World!
 ```
+
+!!! tip
+    Instructions on how to deploy the program to your ByteCradle board are
+    [provided here](../software/building-programs.md/#bytecradle-os)
