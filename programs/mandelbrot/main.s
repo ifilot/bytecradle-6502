@@ -11,21 +11,21 @@
 	.importzp	tmp1, tmp2, tmp3, tmp4, ptr1, ptr2, ptr3, ptr4
 	.macpack	longbranch
 	.forceimport	__STARTUP__
-	.export		_putch
-	.export		_putstrnl
 	.export		_putstr
+	.export		_putstrnl
+	.export		_putch
 	.export		_gradient
 	.export		_mandelbrot
 	.export		_main
 
 .segment	"DATA"
 
-_putch:
-	.word	$FFF1
-_putstrnl:
-	.word	$FFF4
 _putstr:
-	.word	$FFF7
+	.word	$FFE5
+_putstrnl:
+	.word	$FFE8
+_putch:
+	.word	$FFEB
 
 .segment	"RODATA"
 
@@ -236,7 +236,6 @@ L0034:	ldy     #$1A
 	jsr     pushax
 	ldy     #$02
 	lda     (sp),y
-	ldx     #$00
 	pha
 	lda     (sp)
 	sta     jmpvec+1
@@ -257,7 +256,6 @@ L0034:	ldy     #$1A
 L0021:	lda     _putch
 	ldx     _putch+1
 	jsr     pushax
-	ldx     #$00
 	lda     #$0D
 	pha
 	lda     (sp)
@@ -271,7 +269,6 @@ L0021:	lda     _putch
 	lda     _putch
 	ldx     _putch+1
 	jsr     pushax
-	ldx     #$00
 	lda     #$0A
 	pha
 	lda     (sp)

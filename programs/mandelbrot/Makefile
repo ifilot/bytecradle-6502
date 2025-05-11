@@ -1,10 +1,10 @@
-PROGNAME = mandelbrot
+PROG = MANDEL.COM
 
-all: $(PROGNAME).bin
+all: $(PROG)
 
-$(PROGNAME).bin: prog.cfg crt0.o main.o prog.lib
+$(PROG): prog.cfg crt0.o main.o prog.lib
 	ar65 a prog.lib crt0.o
-	ld65 -C prog.cfg -m main.map main.o -o $(PROGNAME).bin prog.lib
+	ld65 -C prog.cfg -m main.map main.o -o $(PROG) prog.lib
 
 crt0.o: crt0.s
 	ca65 --cpu 65c02 crt0.s
@@ -20,10 +20,4 @@ main.o: main.s
 	ca65 --cpu 65c02 main.s
 
 clean:
-	rm -v *.bin *.o *.lib
-
-run: $(PROGNAME).bin
-	../../emulator/build/bc6502emu \
-	-r ../../bcos/bin/os.bin \
-	-s ../../emulator/script/sdcard.img \
-	-p $(PROGNAME).bin
+	rm -v *.o *.lib main.s $(PROG)

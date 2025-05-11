@@ -18,7 +18,7 @@
 .segment	"DATA"
 
 _putstrnl:
-	.word	$FFF4
+	.word	$FFE8
 
 .segment	"RODATA"
 

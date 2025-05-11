@@ -1,8 +1,13 @@
-#ifndef _IO_H
-#define _IO_H
+#ifndef IO_H
+#define IO_H
 
-void (*putch)(uint8_t) = (void (*)(uint8_t*))0xFFF1;
-void (*putstrnl)(uint8_t*) = (void (*)(uint8_t*))0xFFF4;
-void (*putstr)(uint8_t*) = (void (*)(uint8_t*))0xFFF7;
+#include <stdint.h>
 
-#endif // _IO_H
+// ByteCradle OS jump table function pointers
+// These addresses correspond to fixed entry points in ROM
+
+void (*putstr)(const uint8_t*)   = (void (*)(const uint8_t*))0xFFE5;
+void (*putstrnl)(const uint8_t*) = (void (*)(const uint8_t*))0xFFE8;
+void (*putch)(uint8_t)           = (void (*)(uint8_t))0xFFEB;
+
+#endif // IO_H
