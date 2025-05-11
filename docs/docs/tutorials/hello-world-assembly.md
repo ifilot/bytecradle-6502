@@ -47,7 +47,7 @@ hwstr:
 
 * The program starts at the label start, which is called by the OS.
 * It loads the address of a null-terminated string and calls 
-  [the OS function](../../software/kernel-functions) at
+  [the OS function](../software/kernel-functions.md) at
   `$FFE8`, which prints the string followed by a newline.
 * The .segment "HEADER" section includes a 2-byte deployment address required by
   ByteCradle OS .COM files.

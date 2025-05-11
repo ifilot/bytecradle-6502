@@ -71,11 +71,11 @@ stand-alone program must take full responsibility for:
 
 * Preserving system integrity: The program must leave the system in a consistent
   state when it finishes, including cleaning up the stack and registers as needed.
-* Memory management: The program must fit within the [memory region](../../hardware/memory-maps) made
+* Memory management: The program must fit within the [memory region](../hardware/memory-maps.md) made
   available by the environment.
-    - Under [TinyROM](../../software/operating-system/#tinyrom-operating-system-tiny-board), 
+    - Under [TinyROM](../software/operating-system.md#tinyrom-operating-system-tiny-board), 
       this region spans from $0400 to $7EFF.
-    - Under the [ByteCradle Operating System](../../software/operating-system/#bytecradle-operating-system-mini-board), 
+    - Under the [ByteCradle Operating System](../software/operating-system.md#bytecradle-operating-system-mini-board), 
       it spans from $0800 to $7EFF.
 * Stack usage: The program shares the system stack at page $01xx (starting at
   $0100) with the operating system. If compiled with cc65, the program may also
@@ -276,8 +276,8 @@ and reducing errors.
 
 !!! tip
     For a more detailed tutorial on how to write a stand-alone program, consider
-    the [Hello World in assembly](../../tutorials/hello-world-assembly) and 
-    [Hello World in C](../../tutorials/hello-world-assembly) tutorials.
+    the [Hello World in assembly](../tutorials/hello-world-assembly.md) and 
+    [Hello World in C](../tutorials/hello-world-assembly.md) tutorials.
 
 ### Makefile for assembly source
 
