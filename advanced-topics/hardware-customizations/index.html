@@ -73,6 +73,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#hardware-customization" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -1128,6 +1133,21 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Hardware Customizations
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -1140,6 +1160,34 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#upgrading-serial-communication-speed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upgrading Serial Communication Speed
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1289,6 +1337,25 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#upgrading-serial-communication-speed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upgrading Serial Communication Speed
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1307,9 +1374,181 @@
   
 
 
-  <h1>Hardware Customizations</h1>
-
-
+<h1 id="hardware-customization">Hardware customization<a class="headerlink" href="#hardware-customization" title="Permanent link">&para;</a></h1>
+<p>ByteCradle was built from the ground up with openness and user empowerment in
+mind. As an open-source single board computer, it invites users not only to
+explore the software but to dive deep into the hardware itself. The system is
+designed to be educational, extendable, and hackable—encouraging curiosity and
+experimentation at every level.</p>
+<p>To support this vision, we provide a number of hardware customization options
+that users can implement with basic tools and an understanding of the 6502
+platform.</p>
+<h2 id="upgrading-serial-communication-speed">Upgrading Serial Communication Speed<a class="headerlink" href="#upgrading-serial-communication-speed" title="Permanent link">&para;</a></h2>
+<p>By default, the ByteCradle board uses a <strong>65C51 ACIA</strong> for serial communication,
+clocked by a 1.8432 MHz crystal (or resonator). With the ACIA's fixed ×16
+clock divider, this yields a standard 115200 BAUD rate.</p>
+<p>For users seeking faster serial communication, this BAUD rate can be increased
+by replacing the crystal with a higher frequency one. The following
+configurations have been tested and shown to provide stable operation:</p>
+<table>
+<thead>
+<tr>
+<th>Crystal Frequency</th>
+<th>Effective BAUD Rate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.8432 MHz</td>
+<td>115200</td>
+</tr>
+<tr>
+<td>3.6864 MHz</td>
+<td>230400</td>
+</tr>
+<tr>
+<td>7.3728 MHz</td>
+<td>460800</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you replace the crystal of the ACIA crystal, you <strong>need</strong> to adjust the
+software accordingly. More information is provided below.</p>
+</div>
+<p>To upgrade your board:</p>
+<ol>
+<li><strong>Physically replace</strong> the 1.8432 MHz crystal with a compatible 3.6864 MHz or
+   7.3728 MHz crystal.</li>
+<li><strong>Update your terminal or serial communication software</strong> to match the new
+   BAUD rate.</li>
+<li><strong>Adjust the initialization script</strong> or system configuration to reflect the
+   new BAUD rate. Example code can be found below.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Not all USB-to-Serial adapters or operating systems handle higher
+BAUD rates reliably. Be sure to test stability under your specific setup.</p>
+</div>
+<p>The script below is the default assembly subroutine, found in <code>io.s</code> that prints
+out a single character to the serial port. If you replace the crystal resonator,
+you <strong>need</strong> to adjust the delay value. For example, if you use a Tiny Board
+running at 16 MHz with a 7.3728 MHz crystal and a 460800 BAUD rate, you need a
+delay of 16e6 * 10 / 460800 / 7 = 50.</p>
+<div class="highlight"><pre><span></span><code>;-------------------------------------------------------------------------------
+; putchar routine
+;
+; Converves A
+;
+; Prints a character to the ACIA; note that software delay is needed to prevent
+; transmitting data to the ACIA while it is still transmitting.
+; At 12 MhZ, we need to wait 12e6 * 10 / 115200 / 7 = 149 clock cycles,
+; where the 5 corresponds to the combination of &quot;DEC&quot; and &quot;BNE&quot; taking 5 clock
+; cyles.
+;
+;  4.000 MHz    :  50
+; 10.000 MHz    : 124
+; 12.000 MHz    : 149 (works on Tiny; works on Mini)
+; 16.000 MHz    : 198 (works on Tiny; does *not* work on Mini)
+;-------------------------------------------------------------------------------
+_putch
+putch:
+    pha             ; preserve A
+    sta ACIA_DATA   ; write the character to the ACIA data register
+    lda #149        ; initialize inner loop
+@inner:
+    nop             ; NOP; 2 cycles
+    dec             ; decrement A; 2 cycles
+    bne @inner      ; check if zero; 3 cycles
+    pla             ; retrieve A from stack
+    rts
+</code></pre></div>
+<p>For your convenience, you can consult the table as shown below.</p>
+<table>
+<thead>
+<tr>
+<th>CPU Clock</th>
+<th>ACIA Crystal</th>
+<th>BAUD Rate</th>
+<th>Delay Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4.000 MHz</td>
+<td>1.8432 MHz</td>
+<td>115200</td>
+<td>50</td>
+</tr>
+<tr>
+<td>10.000 MHz</td>
+<td>1.8432 MHz</td>
+<td>115200</td>
+<td>124</td>
+</tr>
+<tr>
+<td>12.000 MHz</td>
+<td>1.8432 MHz</td>
+<td>115200</td>
+<td>149</td>
+</tr>
+<tr>
+<td>16.000 MHz</td>
+<td>1.8432 MHz</td>
+<td>115200</td>
+<td>198</td>
+</tr>
+<tr>
+<td>4.000 MHz</td>
+<td>3.6864 MHz</td>
+<td>230400</td>
+<td>25</td>
+</tr>
+<tr>
+<td>10.000 MHz</td>
+<td>3.6864 MHz</td>
+<td>230400</td>
+<td>62</td>
+</tr>
+<tr>
+<td>12.000 MHz</td>
+<td>3.6864 MHz</td>
+<td>230400</td>
+<td>74</td>
+</tr>
+<tr>
+<td>16.000 MHz</td>
+<td>3.6864 MHz</td>
+<td>230400</td>
+<td>99</td>
+</tr>
+<tr>
+<td>4.000 MHz</td>
+<td>7.3728 MHz</td>
+<td>460800</td>
+<td>12</td>
+</tr>
+<tr>
+<td>10.000 MHz</td>
+<td>7.3728 MHz</td>
+<td>460800</td>
+<td>31</td>
+</tr>
+<tr>
+<td>12.000 MHz</td>
+<td>7.3728 MHz</td>
+<td>460800</td>
+<td>37</td>
+</tr>
+<tr>
+<td>16.000 MHz</td>
+<td>7.3728 MHz</td>
+<td>460800</td>
+<td>50</td>
+</tr>
+</tbody>
+</table>
 
 
 

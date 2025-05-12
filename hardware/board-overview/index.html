@@ -1595,6 +1595,16 @@ advanced custom builds.</p>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Tiny Board operates at a higher clock frequency due to its
+optimized internal timings. Unlike the Mini Board, the Tiny Board lacks bank
+switching, which reduces propagation delay and enables stable performance at
+16 MHz. In contrast, the Mini Board's architecture limits reliable operation
+to 12 MHz. However, certain speed enhancements—particularly for the ACIA—are
+possible. Details can be found in the 
+<a href="../../advanced-topics/hardware-customizations/">hardware customization section</a>.</p>
+</div>
 <h2 id="programmable-logic">Programmable logic<a class="headerlink" href="#programmable-logic" title="Permanent link">&para;</a></h2>
 <p>Both ByteCradle boards use programmable logic devices, a ATF22V10 PLD in the
 <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 4h12v1h3v2h-3v2h3v2h-3v2h3v2h-3v2h3v2h-3v1H6v-1H3v-2h3v-2H3v-2h3v-2H3V9h3V7H3V5h3zm5 11v3h1v-3zm2 0v3h1v-3zm2 0v3h1v-3z"/></svg></span> <strong>TINY</strong> board and a ATF1502 CPLD for the <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 4h12v1h3v2h-3v2h3v2h-3v2h3v2h-3v2h3v2h-3v1H6v-1H3v-2h3v-2H3v-2h3v-2H3V9h3V7H3V5h3zm5 11v3h1v-3zm2 0v3h1v-3zm2 0v3h1v-3z"/></svg></span>
