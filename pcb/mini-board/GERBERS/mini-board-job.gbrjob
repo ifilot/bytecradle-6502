@@ -5,13 +5,13 @@
       "Application": "Pcbnew",
       "Version": "9.0.1"
     },
-    "CreationDate": "2025-05-09T19:11:10+02:00"
+    "CreationDate": "2025-05-12T07:37:06+02:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
       "Name": "mini-board",
       "GUID": "6d696e69-2d62-46f6-9172-642e6b696361",
-      "Revision": "rev1"
+      "Revision": "rev2"
     },
     "Size": {
       "X": 132.13,

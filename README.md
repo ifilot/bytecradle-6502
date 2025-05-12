@@ -1,4 +1,4 @@
-# BYTECRADLE 6502
+# ByteCradle 6502
 
 [![Build](https://github.com/ifilot/bytecradle-6502/actions/workflows/build.yml/badge.svg)](https://github.com/ifilot/bytecradle-6502/actions/workflows/build.yml)
 [![Documentation](https://github.com/ifilot/bytecradle-6502/actions/workflows/docs.yml/badge.svg)](https://github.com/ifilot/bytecradle-6502/actions/workflows/docs.yml)
@@ -17,12 +17,13 @@ device interfacing, and file system handling**.
 - [Overview](#overview)
   - [Shared Components](#shared-components)
 - [Tier Comparison](#tier-comparison)
-- [About the Mini SBC](#about-the-mini-sbc)
+- [Obtaining PCBs](#obtaining-pcbs)
 - [Download ROMs](#download-roms)
 - [License](#license)
   - [Software](#software)
   - [Hardware](#hardware)
 - [Contributing](#contributing)
+- [Acknowledgements](#acknowledgements)
 
 ## Overview
 
@@ -52,6 +53,7 @@ different levels of complexity and expandability:
 
 | Feature              | Tiny SBC                          | Mini SBC                             |
 |----------------------|-----------------------------------|--------------------------------------|
+| **PCB**              | Two layer                         | Four layer                           |
 | **RAM**              | 32 KiB                            | 512 KiB (bank switched)              |
 | **ROM**              | 32 KiB                            | 512 KiB (bank switched)              |
 | **Bank Switching**   | ❌                               | ✅ (64 x 8 Kib banks)                |
@@ -59,20 +61,44 @@ different levels of complexity and expandability:
 | **I/O Interface**    | WDC 65C51 ACIA                    | WDC 65C51 ACIA                       |
 | **Expansion Options**| Exposes system bus                | Exposes system bus and VIA bus       |
 
-## About the Mini SBC
+## Obtaining PCBs
 
-The Mini SBC expands significantly on the Tiny version by incorporating a large
-memory map through bank switching and adding persistent storage with an SD card
-interface. It uses the versatile 65C22 VIA for managing SD card communication
-and possibly other peripherals in future expansions.
+You can have the ByteCradle PCBs manufactured at any PCB fabrication service of
+your choice. However, for convenience and ease of ordering, we recommend using
+[PCBWay](https://www.pcbway.com).
+
+The following links will take you directly to the shared projects on PCBWay, where you can order the boards:
+
+- [Order the Mini Board from PCBWay](https://www.pcbway.com/project/shareproject/ByteCradle_6502_Mini_Board_becc5f96.html)
+- [Order the Tiny Board from PCBWay](https://www.pcbway.com/project/shareproject/ByteCradle_6502_Tiny_Board_7606b02a.html)
+
+> [!NOTE]  
+> These links direct you to the official project pages for the Mini and Tiny
+> Boards on PCBWay.
 
 ## Download ROMs
 
-* [TinyROM](https://github.com/ifilot/bytecradle-6502/releases/download/tinyrom-latest/tinyrom.bin)
+Below are the available ROM images for use with the ByteCradle single-board
+computers. These ROMs can be flashed onto your device depending on the board you
+are using.
+
+- **[TinyROM](https://github.com/ifilot/bytecradle-6502/releases/download/tinyrom-latest/tinyrom.bin)**  
+  A lightweight ROM designed specifically for the Tiny Board. Ideal for minimal
+  setups, testing, or basic 6502 development.
+
+- **[ByteCradle Operating System ROM](https://github.com/ifilot/bytecradle-6502/releases/download/bcos-latest/bcos.bin)**  
+  A more feature-rich ROM intended for the Mini Board. This includes support for
+  SD card storage and is better suited for more complex applications and
+  multitasking environments.
+
+> [!IMPORTANT]  
+> Make sure to select the appropriate ROM for your board model. Flashing the
+> incorrect ROM may result in system instability.
 
 ## License
 
 ### Software
+
 All software (including ROM code, tools, and firmware) in this repository is
 licensed under the [GNU General Public License v3.0](LICENSE-GPL).
 
@@ -81,6 +107,7 @@ This means:
 - If you distribute modified versions, you must also release them under the GPLv3.
 
 ### Hardware
+
 All hardware design files (schematics, PCB layouts, bills of materials, etc.)
 are licensed under the [CERN Open Hardware License v2 - Weakly Reciprocal
 (CERN-OHL-W)](LICENSE-HARDWARE).
@@ -94,3 +121,10 @@ This means:
 
 Contributions, ideas, and improvements are always welcome. Open an issue or
 submit a pull request to get involved!
+
+## Acknowledgements
+
+We gratefully acknowledge [PCBWay](https://www.pcbway.com/) for their generous
+support in sponsoring the prototype PCB manufacturing of the Mini Board. Their
+assistance helped accelerate the development and testing of the hardware, and we
+appreciate their commitment to supporting open hardware projects.
