@@ -27,8 +27,10 @@ configurations have been tested and shown to provide stable operation:
 | 7.3728 MHz        | 460800              |
 
 !!! warning
-    If you replace the crystal of the ACIA crystal, you **need** to adjust the
-    software accordingly. More information is provided below.
+    * If you replace the crystal of the ACIA crystal, you **need** to adjust the
+      software accordingly. More information is provided below.
+    * When selecting a resonator crystal, ensure it is paired with the 
+      appropriate load capacitors to achieve the correct resonance frequency.
 
 To upgrade your board:
 
