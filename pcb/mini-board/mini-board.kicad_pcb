@@ -4725,7 +4725,7 @@
 				(type dash)
 			)
 			(layer "F.SilkS")
-			(uuid "43f8758c-748f-4366-aeb3-319f6203d0b2")
+			(uuid "e63e0281-1fa3-4fc1-8ba3-7198cc2f59bf")
 		)
 		(fp_line
 			(start -35.814 14.732)
@@ -4735,7 +4735,7 @@
 				(type dash)
 			)
 			(layer "F.SilkS")
-			(uuid "478f8186-d195-473f-af36-c6fcc1e3dc08")
+			(uuid "c3abe853-688d-43fb-bc59-090ec244c1e5")
 		)
 		(fp_line
 			(start 2.032 14.732)
@@ -4745,7 +4745,7 @@
 				(type dash)
 			)
 			(layer "F.SilkS")
-			(uuid "e33185ca-189c-4f4c-bb9f-4c866cfbcf7b")
+			(uuid "8f8a4d06-74e5-4c5c-b0e7-4c0ecf368c8d")
 		)
 		(fp_line
 			(start -1.33 14.03)
@@ -4755,7 +4755,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "d0584f6e-d293-4ebc-94ac-c70a9162ae99")
+			(uuid "e4740ed6-c0b0-4bb9-a425-a73200fbc2b0")
 		)
 		(fp_line
 			(start -1.33 1.27)
@@ -4765,7 +4765,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "9f0785da-3892-4cbf-903f-51f1681024e9")
+			(uuid "13662321-aa58-43b6-bd97-fc5415f17070")
 		)
 		(fp_line
 			(start -1.33 1.27)
@@ -4775,7 +4775,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "861d1b2d-d742-480b-a3c7-4b13839c64f1")
+			(uuid "f7123cbd-64b6-4228-9e8a-76a067096493")
 		)
 		(fp_line
 			(start 1.33 1.27)
@@ -4785,7 +4785,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "70de88df-7cfd-4e6d-9f68-b4b3050850e3")
+			(uuid "0b81a556-d8ee-433e-a422-6b68ea50d226")
 		)
 		(fp_line
 			(start 0 -1.33)
@@ -4795,7 +4795,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "e1404c79-e881-46bb-b30b-7a27484640e0")
+			(uuid "65e36060-4404-4f0c-97c8-999df83ef876")
 		)
 		(fp_line
 			(start 1.33 -1.33)
@@ -4805,7 +4805,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "b78c52c9-b456-4ede-816e-f29b5873e8d1")
+			(uuid "c3732ba2-4467-48c9-9e7b-91b603d197f2")
 		)
 		(fp_line
 			(start -34.29 -3.556)
@@ -4815,7 +4815,7 @@
 				(type dash)
 			)
 			(layer "F.SilkS")
-			(uuid "e57124de-3ae0-4610-8f9c-907b0a599443")
+			(uuid "4aeccfc7-ee37-4998-9bed-4143a1f08021")
 		)
 		(fp_line
 			(start 0.254 -3.556)
@@ -4825,7 +4825,7 @@
 				(type dash)
 			)
 			(layer "F.SilkS")
-			(uuid "31a037e4-45e0-4324-90cb-9ec77c60b317")
+			(uuid "980ae763-4e01-4c07-94ea-6fd64cdbe52d")
 		)
 		(fp_line
 			(start -1.8 14.45)
@@ -4835,7 +4835,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "d00f22a9-6129-4b07-a33c-279d4759b90d")
+			(uuid "c4f745ac-740b-4a46-8b37-295bc52bdb5c")
 		)
 		(fp_line
 			(start 1.75 14.45)
@@ -4845,7 +4845,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "9393daaa-fff2-4200-9bb4-c63d8309accd")
+			(uuid "f61e4f97-cccd-43dd-baae-ad49bd2ae800")
 		)
 		(fp_line
 			(start -1.8 -1.8)
@@ -4855,7 +4855,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "31daa69c-9879-4494-bd56-494c4bc474ae")
+			(uuid "63c0081a-08ae-422c-a64d-8d232d134acf")
 		)
 		(fp_line
 			(start 1.75 -1.8)
@@ -4865,7 +4865,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "d03b98d8-62c2-4c88-afdc-4806738280c4")
+			(uuid "a34ccfd1-4fc1-45f9-87d0-b65641b29b78")
 		)
 		(fp_line
 			(start -1.27 13.97)
@@ -4875,7 +4875,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "72aa0337-57b6-489d-b925-fa55d5e390b7")
+			(uuid "ce2be6e6-da6c-4f3e-bbce-2534324178ec")
 		)
 		(fp_line
 			(start 1.27 13.97)
@@ -4885,7 +4885,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "bfac5f9b-7400-4a85-a00f-7ef82e8d5740")
+			(uuid "cfaa8ce7-4d31-4f9a-8f1e-da01b627aea4")
 		)
 		(fp_line
 			(start 1.27 -0.635)
@@ -4895,7 +4895,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "5f9ab3d6-386b-403c-9970-b227b62ee534")
+			(uuid "6cda3287-234d-4cda-a6f2-1e7e4639ae6a")
 		)
 		(fp_line
 			(start -1.27 -1.27)
@@ -4905,7 +4905,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "131976cf-8676-442d-9e3e-2bc8dd198847")
+			(uuid "d66a651b-bc7c-4db8-8e15-b302fbb19214")
 		)
 		(fp_line
 			(start 0.635 -1.27)
@@ -4915,7 +4915,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "f2bed5cc-9b0b-40a0-942f-4dbf506009ca")
+			(uuid "2594c206-b3e8-4f3e-b787-60c825b865c9")
 		)
 		(fp_text user "${REFERENCE}"
 			(at 0 6.35 0)
@@ -4928,33 +4928,37 @@
 				)
 			)
 		)
-		(pad "" np_thru_hole circle
+		(pad "" thru_hole circle
 			(at -36 -3.65 270)
 			(size 3 3)
 			(drill 2.5)
 			(layers "*.Cu" "*.Mask")
-			(uuid "d6bd7fc6-d368-4f23-a389-e7402fd0bc7a")
+			(remove_unused_layers no)
+			(uuid "a4c4ba5f-cdd8-43be-aa90-ffb49628d60a")
 		)
-		(pad "" np_thru_hole circle
+		(pad "" thru_hole circle
 			(at -36 16.35 270)
 			(size 3 3)
 			(drill 2.5)
 			(layers "*.Cu" "*.Mask")
-			(uuid "6223a0d8-7a6f-4420-8ed3-8fe25f260c03")
+			(remove_unused_layers no)
+			(uuid "97ae35e7-bb94-4442-9f38-693afdf853f4")
 		)
-		(pad "" np_thru_hole circle
+		(pad "" thru_hole circle
 			(at 2 -3.65 270)
 			(size 3 3)
 			(drill 2.5)
 			(layers "*.Cu" "*.Mask")
-			(uuid "aff19c79-4f98-420e-a428-fb325fe5f243")
+			(remove_unused_layers no)
+			(uuid "39fa320a-6251-42d3-b5fb-c135200d17cd")
 		)
-		(pad "" np_thru_hole circle
+		(pad "" thru_hole circle
 			(at 2 16.35 270)
 			(size 3 3)
 			(drill 2.5)
 			(layers "*.Cu" "*.Mask")
-			(uuid "51f46743-dafa-4c6c-86fa-881302c5ae74")
+			(remove_unused_layers no)
+			(uuid "fa407e54-99dc-4c50-8e50-3ded50800aca")
 		)
 		(pad "1" thru_hole rect
 			(at 0 0 270)
@@ -5032,61 +5036,6 @@
 			)
 			(rotate
 				(xyz 0 0 0)
-			)
-		)
-		(model "D:/PROGRAMMING/KiCAD/bytecradle-6502/pcb/components/sdcard-adapter.step"
-			(offset
-				(xyz -63.6 31.4 11)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz -0 -0 -0)
-			)
-		)
-		(model "D:/PROGRAMMING/KiCAD/bytecradle-6502/pcb/components/M3_F_TO_F_10MM_STANDOFF.STEP"
-			(offset
-				(xyz 2 3.6 5.5)
-			)
-			(scale
-				(xyz 1 1 1.2)
-			)
-			(rotate
-				(xyz -0 -0 -0)
-			)
-		)
-		(model "D:/PROGRAMMING/KiCAD/bytecradle-6502/pcb/components/M3_F_TO_F_10MM_STANDOFF.STEP"
-			(offset
-				(xyz 2 -16.4 5)
-			)
-			(scale
-				(xyz 1 1 1.2)
-			)
-			(rotate
-				(xyz -0 -0 -0)
-			)
-		)
-		(model "D:/PROGRAMMING/KiCAD/bytecradle-6502/pcb/components/M3_F_TO_F_10MM_STANDOFF.STEP"
-			(offset
-				(xyz -36 -16.4 5)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz -0 -0 -0)
-			)
-		)
-		(model "D:/PROGRAMMING/KiCAD/bytecradle-6502/pcb/components/M3_F_TO_F_10MM_STANDOFF.STEP"
-			(offset
-				(xyz -36 3.6 5)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz -0 -0 -0)
 			)
 		)
 	)
