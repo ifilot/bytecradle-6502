@@ -1,4 +1,6 @@
-all: os.bin
+ROMNAME = bcos.bin
+
+all: $(ROMNAME)
 
 # define compilers, assemblers and linkers
 AS = ca65
@@ -42,12 +44,12 @@ $(OBJDIR)/%.o: %.s | $(OBJDIR)
 $(BINDIR)/sbc.lib: $(BINDIR)
 	cp -v /usr/share/cc65/lib/supervision.lib $(BINDIR)/sbc.lib
 
-os.bin: sbc.cfg $(BINDIR)/sbc.lib $(OBJS) | $(BINDIR)
+$(ROMNAME): sbc.cfg $(BINDIR)/sbc.lib $(OBJS) | $(BINDIR)
 	$(AR) a sbc.lib $(OBJDIR)/crt0.o
-	$(LD) -C sbc.cfg $(OBJS) -o $(BINDIR)/os.bin $(BINDIR)/sbc.lib -m $(BINDIR)/sbc.map
+	$(LD) -C sbc.cfg $(OBJS) -o $(BINDIR)/$(ROMNAME) $(BINDIR)/sbc.lib -m $(BINDIR)/sbc.map
 
-run: os.bin
-	../../emulator/build/bc6502emu -b mini -r $(BINDIR)/os.bin -s ../../emulator/script/sdcard.img
+run: $(ROMNAME)
+	../../emulator/build/bc6502emu -b mini -r $(BINDIR)/$(ROMNAME) -s ../../emulator/script/sdcard.img
 
 clean:
 	rm -rf $(BINDIR) $(OBJDIR) $(ASMDIR)
