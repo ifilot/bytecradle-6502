@@ -503,16 +503,16 @@ printnibble:
 ;
 ; Prints a character to the ACIA; note that software delay is needed to prevent
 ; transmitting data to the ACIA while it is still transmitting.
-; At 12 MhZ, we need to wait 10e6 * 10 / 115200 / 7 = 124 clock cycles,
+; At 12 MhZ, we need to wait 12e6 * 10 / 115200 / 7 = 149 clock cycles,
 ; where the 5 corresponds to the combination of "DEC" and "BNE" taking 5 clock
 ; cyles.
 ;
 ;  4.000 MHz    :  50
 ;  5.120 MHz    :  64
 ; 10.000 MHz    : 124
-; 12.000 MHz    : 149 (works on Tiny)
-; 14.310 MHz    : 177 (works on Tiny)
-; 16.000 MHz    : 198 (works on Tiny)
+; 12.000 MHz    : 149 (works on Tiny; works on Mini)
+; 14.310 MHz    : 177 (works on Tiny; does *not* work on Mini)
+; 16.000 MHz    : 198 (works on Tiny; does *not* work on Mini)
 ;-------------------------------------------------------------------------------
 putch:
     pha             ; preserve A

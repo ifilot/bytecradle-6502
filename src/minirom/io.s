@@ -420,7 +420,7 @@ printnibble:
 ;
 ; Prints a character to the ACIA; note that software delay is needed to prevent
 ; transmitting data to the ACIA while it is still transmitting.
-; At 12 MhZ, we need to wait 10e6 * 10 / 115200 / 7 = 124 clock cycles,
+; At 12 MhZ, we need to wait 12e6 * 10 / 115200 / 7 = 149 clock cycles,
 ; where the 5 corresponds to the combination of "DEC" and "BNE" taking 5 clock
 ; cyles.
 ;

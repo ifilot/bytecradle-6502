@@ -53,6 +53,15 @@ advanced custom builds.
 | **I/O mapping**        | ATF22V10                         | ATF1502                              |
 | **Expansion Options**  | Exposes system bus               | Exposes system bus and VIA bus       |
 
+!!! note 
+    The Tiny Board operates at a higher clock frequency due to its
+    optimized internal timings. Unlike the Mini Board, the Tiny Board lacks bank
+    switching, which reduces propagation delay and enables stable performance at
+    16 MHz. In contrast, the Mini Board's architecture limits reliable operation
+    to 12 MHz. However, certain speed enhancements—particularly for the ACIA—are
+    possible. Details can be found in the 
+    [hardware customization section](../advanced-topics/hardware-customizations.md).
+
 ## Programmable logic
 
 Both ByteCradle boards use programmable logic devices, a ATF22V10 PLD in the
