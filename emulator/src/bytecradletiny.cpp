@@ -108,5 +108,15 @@ void ByteCradleTiny::memwrite(VrEmu6502 *cpu, uint16_t addr, uint8_t val) {
         return;
     }
 
+    if(addr == 0x7F00) {
+        // control line 1; does not require any output
+        return;
+    }
+
+    if(addr == 0x7F01) {
+        // control line 2; does not require any output
+        return;
+    }
+
     printf("[ERROR] Invalid write: %04X.\n", addr);
 }

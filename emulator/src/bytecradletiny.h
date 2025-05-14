@@ -32,8 +32,8 @@ private:
     uint8_t rom[0x8000];
 public:
     // Constants for memory-mapped device masks and mask sizes
-    static constexpr uint16_t ACIA_MASK      = 0x7F00;
-    static constexpr uint8_t  ACIA_MASK_SIZE = 12;
+    static constexpr uint16_t ACIA_MASK      = 0x7F04;
+    static constexpr uint8_t  ACIA_MASK_SIZE = 14;
 
     /**
      * @brief Construct a new ByteCradleTiny object

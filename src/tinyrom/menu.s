@@ -12,6 +12,7 @@
 .import monitor
 .import asciitest
 .import ansitest
+.import blinkenlights
 
 .import gitid
 
@@ -106,25 +107,25 @@ printmenu:
     ply                     ; clean stack
     rts
 
-;-------------------------------------------------------------------------------
-; LINES OF MAIN MENU TO PRINT
-;-------------------------------------------------------------------------------
+; MAIN MENU STRINGS
+.align 2
 mainmenu_table:
-    .byte $FF, $FF                      ; dashed line
-    .byte <@titlestr,       >@titlestr
-    .byte $FF, $FF                      ; dashed line
-    .byte <@strram,         >@strram
-    .byte <@strrom,         >@strrom
-    .byte <@strio,          >@strio
-    .byte <@stracia,        >@stracia
-    .byte $FF, $FF                      ; dashed line
-    .byte <@strmenu,        >@strmenu
-    .byte <@strempty,       >@strempty
-    .byte <@strmenutests,   >@strmenutests
-    .byte <@strmenuapps,    >@strmenuapps
-    .byte <@strmenugames,   >@strmenugames
-    .byte <@strmonitor,     >@strmonitor
-    .byte $FF, $FF                      ; dashed line
+    .byte $FF, $FF              ; dashed line
+    .byte <@titlestr,           >@titlestr
+    .byte $FF, $FF              ; dashed line
+    .byte <@strram,             >@strram
+    .byte <@strrom,             >@strrom
+    .byte <@strio,              >@strio
+    .byte <@stracia,            >@stracia
+    .byte $FF, $FF              ; dashed line
+    .byte <@strmenu,            >@strmenu
+    .byte <@strempty,           >@strempty
+    .byte <@strmenutests,       >@strmenutests
+    .byte <@strmenuapps,        >@strmenuapps
+    .byte <@strmenugames,       >@strmenugames
+    .byte <@strmonitor,         >@strmonitor
+    .byte <@strdaughterboards,  >@strdaughterboards
+    .byte $FF, $FF              ; dashed line
     .byte 0
 
 @titlestr:
@@ -147,17 +148,18 @@ mainmenu_table:
     .asciiz "(g) Games"
 @strmonitor:
     .asciiz "(m) Monitor"
+@strdaughterboards:
+    .asciiz "(d) Daughterboards"
 @strempty:
     .asciiz ""
 
-;-------------------------------------------------------------------------------
-; MAIN MENU CATEGORIES
-;-------------------------------------------------------------------------------
+; MAIN MENU ENTRIES
 mainmenu_entries:
-    .byte 't', <testmenu,   >testmenu
-    .byte 'g', <gamesmenu,  >gamesmenu
-    .byte 'a', <appmenu,    >appmenu
-    .byte 'm', <runmonitor, >runmonitor
+    .byte 't', <testmenu,           >testmenu
+    .byte 'g', <gamesmenu,          >gamesmenu
+    .byte 'a', <appmenu,            >appmenu
+    .byte 'm', <runmonitor,         >runmonitor
+    .byte 'd', <daughterboardmenu,  >daughterboardmenu
     .byte 0
 
 ;-------------------------------------------------------------------------------
@@ -173,6 +175,8 @@ testmenu:
     jsr buildmenu
     jmp testmenu
 
+; TEST MENU STRINGS
+.align 2
 testmenu_table:
     .byte $FF, $FF                      ; dashed line
     .byte <@titlestr,       >@titlestr
@@ -198,9 +202,7 @@ testmenu_table:
 @strback:
     .asciiz "(b) Back"
 
-;-------------------------------------------------------------------------------
-; TEST MENU TABLE
-;-------------------------------------------------------------------------------
+; TEST MENU ENTRIES
 testmenu_entries:
     .byte '1', <asciitest,      >asciitest
     .byte '2', <ansitest,       >ansitest
@@ -222,6 +224,8 @@ gamesmenu:
     jsr buildmenu
     jmp gamesmenu
 
+; GAMES MENU STRINGS
+.align 2
 gamesmenu_table:
     .byte $FF, $FF                      ; dashed line
     .byte <@titlestr,       >@titlestr
@@ -238,11 +242,9 @@ gamesmenu_table:
 @strback:
     .asciiz "(b) Back"
 
-;-------------------------------------------------------------------------------
-; GAMES MENU TABLE
-;-------------------------------------------------------------------------------
+; GAMES MENU ENTRIES
 gamesmenu_entries:
-    .byte '1', <startchess,    >startchess
+    .byte '1', <startchess,     >startchess
     .byte 'b', <mainmenu,       >mainmenu
     .byte 0
 
@@ -259,6 +261,8 @@ appmenu:
     jsr buildmenu
     jmp appmenu
 
+; APP MENU STRINGS
+.align 2
 appmenu_table:
     .byte $FF, $FF                      ; dashed line
     .byte <@titlestr,       >@titlestr
@@ -275,17 +279,56 @@ appmenu_table:
 @strback:
     .asciiz "(b) Back"
 
-;-------------------------------------------------------------------------------
-; APP MENU TABLE
-;-------------------------------------------------------------------------------
+; APP MENU ENTRIES
 appmenu_entries:
     .byte '1', <sieve,          >sieve
     .byte 'b', <mainmenu,       >mainmenu
     .byte 0
 
+;-------------------------------------------------------------------------------
+; MONITOR
+;-------------------------------------------------------------------------------
 runmonitor:
     jsr monitor
     jmp mainmenu
+
+;-------------------------------------------------------------------------------
+; DAUGHTERBOARD MENU
+;-------------------------------------------------------------------------------
+daughterboardmenu:
+    lda #<daughterboardmenu_entries
+    sta BUF6
+    lda #>daughterboardmenu_entries
+    sta BUF7
+    lda #<daughterboardmenu_table
+    ldx #>daughterboardmenu_table
+    jsr buildmenu
+    jmp daughterboardmenu
+
+.align 2
+daughterboardmenu_table:
+    .byte $FF, $FF                      ; dashed line
+    .byte <@titlestr,       >@titlestr
+    .byte $FF, $FF                      ; dashed line
+    .byte <@strmicrochess,  >@strmicrochess
+    .byte <@strback,        >@strback
+    .byte $FF, $FF                      ; dashed line
+    .byte 0
+
+@titlestr:
+    .asciiz "CATEGORY: DAUGHTERBOARDS"
+@strmicrochess:
+    .asciiz "(1) Blinkenlights"
+@strback:
+    .asciiz "(b) Back"
+
+;-------------------------------------------------------------------------------
+; DAUGHTERBOARD MENU TABLE
+;-------------------------------------------------------------------------------
+daughterboardmenu_entries:
+    .byte '1', <blinkenlights,  >blinkenlights
+    .byte 'b', <mainmenu,       >mainmenu
+    .byte 0
 
 ;-------------------------------------------------------------------------------
 ; PRINTDASHEDLINE routine for menu
@@ -328,17 +371,3 @@ printmenuline:
     jsr putch
     jsr newline
     rts
-
-;-------------------------------------------------------------------------------
-; GAMES MENU
-;-------------------------------------------------------------------------------
-games_menu:
-    .byte '1', <startchess, >startchess
-    .byte 0
-
-;-------------------------------------------------------------------------------
-; APPLICATIONS MENU
-;-------------------------------------------------------------------------------
-applications_menu:
-    .byte '1', <sieve, >sieve
-    .byte 0

@@ -1,5 +1,9 @@
 .PSC02
 
+; memory mapped control lines, used for daughterboards
+.define CTRLB1          $7F00  ; control line 1; active LOW
+.define CTRLB2          $7F01  ; control line 2; active LOW
+
 ; 65C51 ACIA
 .define ACIA_DATA       $7F04  ; Transmit/Receive Data Register
 .define ACIA_STAT       $7F05  ; Status Register (read) - flags like TDRE, RDRF, DCD, etc.
