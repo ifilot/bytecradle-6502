@@ -32,6 +32,7 @@
 .export ischarvalid
 .export clearline
 .export _putcrlf
+.export delayms10
 
 .PSC02
 
@@ -407,6 +408,30 @@ printnibble:
     adc #'A'-10
 @exit:
     jsr putch
+    rts
+
+;-------------------------------------------------------------------------------
+; DELAYMS10 routine
+;
+; Input A - Delay in increments of 10ms, i.e. A=50 -> 500ms delay
+; Garbles: A,X,Y
+; Uses: BUF1 to store delay value
+;
+; Note: actual delay per value of A is 9.9796 ms (~0.2% error)
+;-------------------------------------------------------------------------------
+delayms10:
+    sta BUF1            ; store delay value in BUF1
+@delayouter:
+    ldx #125
+@delay_x:
+    ldy #$FF
+@delay_y:
+    dey
+    bne @delay_y
+    dex
+    bne @delay_x
+    dec BUF1            ; decrement delay value
+    bne @delayouter
     rts
 
 ;-------------------------------------------------------------------------------

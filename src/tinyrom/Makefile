@@ -22,7 +22,7 @@ all: $(TARGET)
 
 # Link all object files into final binary
 $(TARGET): $(OBJ) $(CFG) gitid.o
-	$(LD) -o $(TARGET) -C $(CFG) $(OBJ) gitid.o
+	$(LD) -o $(TARGET) --mapfile mem.map -C $(CFG) $(OBJ) gitid.o
 
 # Run in emulator
 run: $(TARGET)
