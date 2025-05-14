@@ -25,3 +25,4 @@
 .import putcursor
 .import strlen
 .import putrepch
+.import delayms10

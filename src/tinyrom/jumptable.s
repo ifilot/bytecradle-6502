@@ -3,6 +3,7 @@
 .segment "JUMPTABLE"
 
 jumptable:
+    jmp delayms10   ; $FFE2
     jmp putstr      ; $FFE5
     jmp putstrnl    ; $FFE8
     jmp putch       ; $FFEB
