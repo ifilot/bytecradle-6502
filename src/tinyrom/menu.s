@@ -13,7 +13,7 @@
 .import asciitest
 .import ansitest
 .import blinkenlights
-
+.import spigotrun
 .import gitid
 
 .define MENUWIDTH 45
@@ -268,6 +268,7 @@ appmenu_table:
     .byte <@titlestr,       >@titlestr
     .byte $FF, $FF                      ; dashed line
     .byte <@strsieve,       >@strsieve
+    .byte <@strpispigot,    >@strpispigot
     .byte <@strback,        >@strback
     .byte $FF, $FF                      ; dashed line
     .byte 0
@@ -276,12 +277,16 @@ appmenu_table:
     .asciiz "CATEGORY: APPLICATIONS"
 @strsieve:
     .asciiz "(1) Sieve of Eratosthenes"
+@strpispigot:
+    .asciiz "(2) Pi Spigot Algorithm"
 @strback:
     .asciiz "(b) Back"
 
 ; APP MENU ENTRIES
+.align 16
 appmenu_entries:
     .byte '1', <sieve,          >sieve
+    .byte '2', <spigotrun,          >spigotrun
     .byte 'b', <mainmenu,       >mainmenu
     .byte 0
 
