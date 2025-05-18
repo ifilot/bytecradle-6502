@@ -13,6 +13,7 @@
 .import asciitest
 .import ansitest
 .import blinkenlights
+.import strobe
 
 .import gitid
 
@@ -305,28 +306,33 @@ daughterboardmenu:
     jsr buildmenu
     jmp daughterboardmenu
 
-.align 2
+.align 32
 daughterboardmenu_table:
     .byte $FF, $FF                      ; dashed line
-    .byte <@titlestr,       >@titlestr
+    .byte <@titlestr,           >@titlestr
     .byte $FF, $FF                      ; dashed line
-    .byte <@strmicrochess,  >@strmicrochess
-    .byte <@strback,        >@strback
+    .byte <@strblinkenlights,   >@strblinkenlights
+    .byte <@strstrobe,          >@strstrobe
+    .byte <@strback,            >@strback
     .byte $FF, $FF                      ; dashed line
     .byte 0
 
 @titlestr:
     .asciiz "CATEGORY: DAUGHTERBOARDS"
-@strmicrochess:
+@strblinkenlights:
     .asciiz "(1) Blinkenlights"
+@strstrobe:
+    .asciiz "(2) Strobe"
 @strback:
     .asciiz "(b) Back"
 
 ;-------------------------------------------------------------------------------
 ; DAUGHTERBOARD MENU TABLE
 ;-------------------------------------------------------------------------------
+.align 16
 daughterboardmenu_entries:
     .byte '1', <blinkenlights,  >blinkenlights
+    .byte '2', <strobe,         >strobe
     .byte 'b', <mainmenu,       >mainmenu
     .byte 0
 
