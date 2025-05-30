@@ -50,4 +50,5 @@
 ; print characters
 .define LF              $0A     ; LF character (line feed)
 .define CR              $0D     ; CR character (carriage return)
+.define BS              $7F     ; BS character (backspace)
 .define ESC             $1B     ; VT100 escape character

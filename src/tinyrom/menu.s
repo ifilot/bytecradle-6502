@@ -4,7 +4,7 @@
 .include "functions.inc"
 
 .export mainmenu
-
+.export printmenu
 .import memtest
 .import numbertest
 .import sieve
@@ -13,8 +13,8 @@
 .import asciitest
 .import ansitest
 .import blinkenlights
+.import spigotrun
 .import strobe
-
 .import gitid
 
 .define MENUWIDTH 45
@@ -109,7 +109,7 @@ printmenu:
     rts
 
 ; MAIN MENU STRINGS
-.align 2
+.align 32
 mainmenu_table:
     .byte $FF, $FF              ; dashed line
     .byte <@titlestr,           >@titlestr
@@ -155,6 +155,7 @@ mainmenu_table:
     .asciiz ""
 
 ; MAIN MENU ENTRIES
+.align 16
 mainmenu_entries:
     .byte 't', <testmenu,           >testmenu
     .byte 'g', <gamesmenu,          >gamesmenu
@@ -177,7 +178,7 @@ testmenu:
     jmp testmenu
 
 ; TEST MENU STRINGS
-.align 2
+.align 32
 testmenu_table:
     .byte $FF, $FF                      ; dashed line
     .byte <@titlestr,       >@titlestr
@@ -204,6 +205,7 @@ testmenu_table:
     .asciiz "(b) Back"
 
 ; TEST MENU ENTRIES
+.align 16
 testmenu_entries:
     .byte '1', <asciitest,      >asciitest
     .byte '2', <ansitest,       >ansitest
@@ -226,7 +228,7 @@ gamesmenu:
     jmp gamesmenu
 
 ; GAMES MENU STRINGS
-.align 2
+.align 16
 gamesmenu_table:
     .byte $FF, $FF                      ; dashed line
     .byte <@titlestr,       >@titlestr
@@ -263,12 +265,13 @@ appmenu:
     jmp appmenu
 
 ; APP MENU STRINGS
-.align 2
+.align 16
 appmenu_table:
     .byte $FF, $FF                      ; dashed line
     .byte <@titlestr,       >@titlestr
     .byte $FF, $FF                      ; dashed line
     .byte <@strsieve,       >@strsieve
+    .byte <@strpispigot,    >@strpispigot
     .byte <@strback,        >@strback
     .byte $FF, $FF                      ; dashed line
     .byte 0
@@ -277,12 +280,16 @@ appmenu_table:
     .asciiz "CATEGORY: APPLICATIONS"
 @strsieve:
     .asciiz "(1) Sieve of Eratosthenes"
+@strpispigot:
+    .asciiz "(2) Pi Spigot Algorithm"
 @strback:
     .asciiz "(b) Back"
 
 ; APP MENU ENTRIES
+.align 16
 appmenu_entries:
     .byte '1', <sieve,          >sieve
+    .byte '2', <spigotrun,          >spigotrun
     .byte 'b', <mainmenu,       >mainmenu
     .byte 0
 
