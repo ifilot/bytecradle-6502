@@ -5,7 +5,6 @@
 .include "constants.inc"
 .include "functions.inc"
 
-.export clearcmdbuf
 .export monitor
 .import assemble
 .import disassemble
@@ -222,23 +221,6 @@ cmdquit:			; quit the program
     rts
 
 exit_invalid:
-    rts
-
-;-------------------------------------------------------------------------------
-; CLEANCMDBUF routine
-;
-; Clean the command buffer
-;-------------------------------------------------------------------------------
-clearcmdbuf:
-    ldx #0
-@next:
-    stz CMDBUF,x
-    inx
-    cpx #10
-    bne @next
-    stz CMDLENGTH
-    stz TBPL            ; reset text buffer
-    stz TBPR
     rts
 
 ;-------------------------------------------------------------------------------

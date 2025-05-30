@@ -23,12 +23,30 @@
 .export strlen
 .export putrepch
 .export delayms10
+.export clearcmdbuf
 
 .PSC02
 
 .include "constants.inc"
 
 .segment "CODE"
+
+;-------------------------------------------------------------------------------
+; CLEANCMDBUF routine
+;
+; Clean the command buffer
+;-------------------------------------------------------------------------------
+clearcmdbuf:
+    ldx #0
+@next:
+    stz CMDBUF,x
+    inx
+    cpx #10
+    bne @next
+    stz CMDLENGTH
+    stz TBPL            ; reset text buffer
+    stz TBPR
+    rts
 
 ;-------------------------------------------------------------------------------
 ; GETCHAR routine
