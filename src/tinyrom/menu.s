@@ -14,6 +14,7 @@
 .import ansitest
 .import blinkenlights
 .import spigotrun
+.import strobe
 .import gitid
 
 .define MENUWIDTH 45
@@ -108,7 +109,7 @@ printmenu:
     rts
 
 ; MAIN MENU STRINGS
-.align 2
+.align 32
 mainmenu_table:
     .byte $FF, $FF              ; dashed line
     .byte <@titlestr,           >@titlestr
@@ -154,6 +155,7 @@ mainmenu_table:
     .asciiz ""
 
 ; MAIN MENU ENTRIES
+.align 16
 mainmenu_entries:
     .byte 't', <testmenu,           >testmenu
     .byte 'g', <gamesmenu,          >gamesmenu
@@ -176,7 +178,7 @@ testmenu:
     jmp testmenu
 
 ; TEST MENU STRINGS
-.align 2
+.align 32
 testmenu_table:
     .byte $FF, $FF                      ; dashed line
     .byte <@titlestr,       >@titlestr
@@ -203,6 +205,7 @@ testmenu_table:
     .asciiz "(b) Back"
 
 ; TEST MENU ENTRIES
+.align 16
 testmenu_entries:
     .byte '1', <asciitest,      >asciitest
     .byte '2', <ansitest,       >ansitest
@@ -225,7 +228,7 @@ gamesmenu:
     jmp gamesmenu
 
 ; GAMES MENU STRINGS
-.align 2
+.align 16
 gamesmenu_table:
     .byte $FF, $FF                      ; dashed line
     .byte <@titlestr,       >@titlestr
@@ -262,7 +265,7 @@ appmenu:
     jmp appmenu
 
 ; APP MENU STRINGS
-.align 2
+.align 16
 appmenu_table:
     .byte $FF, $FF                      ; dashed line
     .byte <@titlestr,       >@titlestr
@@ -283,7 +286,7 @@ appmenu_table:
     .asciiz "(b) Back"
 
 ; APP MENU ENTRIES
-.align 3
+.align 16
 appmenu_entries:
     .byte '1', <sieve,          >sieve
     .byte '2', <spigotrun,          >spigotrun
@@ -310,28 +313,33 @@ daughterboardmenu:
     jsr buildmenu
     jmp daughterboardmenu
 
-.align 2
+.align 32
 daughterboardmenu_table:
     .byte $FF, $FF                      ; dashed line
-    .byte <@titlestr,       >@titlestr
+    .byte <@titlestr,           >@titlestr
     .byte $FF, $FF                      ; dashed line
-    .byte <@strmicrochess,  >@strmicrochess
-    .byte <@strback,        >@strback
+    .byte <@strblinkenlights,   >@strblinkenlights
+    .byte <@strstrobe,          >@strstrobe
+    .byte <@strback,            >@strback
     .byte $FF, $FF                      ; dashed line
     .byte 0
 
 @titlestr:
     .asciiz "CATEGORY: DAUGHTERBOARDS"
-@strmicrochess:
+@strblinkenlights:
     .asciiz "(1) Blinkenlights"
+@strstrobe:
+    .asciiz "(2) Strobe"
 @strback:
     .asciiz "(b) Back"
 
 ;-------------------------------------------------------------------------------
 ; DAUGHTERBOARD MENU TABLE
 ;-------------------------------------------------------------------------------
+.align 16
 daughterboardmenu_entries:
     .byte '1', <blinkenlights,  >blinkenlights
+    .byte '2', <strobe,         >strobe
     .byte 'b', <mainmenu,       >mainmenu
     .byte 0
 

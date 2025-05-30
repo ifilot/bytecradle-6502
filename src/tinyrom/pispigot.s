@@ -23,6 +23,7 @@ ARRAY = $0400 ; max 31486 bytes 0400 - 7EFE reserved in memory for max 4723 digi
 ; import and exporting functions / constants
 .include "constants.inc"
 .include "functions.inc"
+
 .import printmenu
 .export spigotrun
 
@@ -125,7 +126,7 @@ invalidinputstr:
     .asciiz "Invalid input provided!"
 
 ; pi spigot table
-.align 2
+.align 32
 pispigottable:
     .byte $FF, $FF                      ; dashed line
     .byte <@pispigotstr,    >@pispigotstr
