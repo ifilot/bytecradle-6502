@@ -1,30 +1,29 @@
-; this code is a simple monitor class for the ByteCradle 6502
-
 .PSC02
 
 ; zp memory allocation
-strptr       = $40  ; 2 bytes
-arrayptr     = $42  ; 2 bytes
-predigit     = $44  ; 1 byte
-message      = $45  ; 2 bytes
-nines        = $47  ; 1 byte
-length       = $48  ; 2 bytes
-digits       = $4A  ; 2 bytes
-temp         = $4C  ; 1 byte
-arrayend     = $4D  ; 2 bytes
-print_dot    = $4F  ; 1 byte
-carry        = $50  ; 3 bytes 
-index        = $53  ; 3 bytes
-ten          = $56  ; 1 bytes
-arrayvalue   = $57  ; 3 bytes
-den          = $5A  ; 2 bytes
-multiplier   = $5C  ; 2 bytes
+ARRAYPTR     = $40  ; 2 bytes
+ARRAYEND     = $42  ; 2 bytes
+ARRAYLENGTH  = $44  ; 2 bytes
+ARRAYVALUE   = $46  ; 3 bytes
+CARRY        = $49  ; 3 bytes 
+PREDIGIT     = $4C  ; 1 byte
+DIGITS       = $4D  ; 2 bytes
+PRINTDOT     = $4F  ; 1 byte
+INDEX        = $50  ; 3 bytes
+DEN          = $53  ; 2 bytes
+COLUMNS      = $55  ; 1 byte
+COLUMNCTR    = $56  ; 1 byte
+NINES        = $57  ; 1 byte
+ZPBUF1       = $58  ; 2 byte
+ZPBUF2       = $5A  ; 2 byte
 
-; array memory allocation
-array = $0400 ; max 31486 bytes 0400 - 7EFE reserved in memory for max 4723 digits of pi
+; array memory allocation 
+ARRAY = $0400 ; max 31486 bytes 0400 - 7EFE reserved in memory for max 4723 digits of pi
 
+; import and exporting functions / constants
 .include "constants.inc"
 .include "functions.inc"
+.import printmenu
 .export spigotrun
 
 ;-------------------------------------------------------------------------------
@@ -33,499 +32,641 @@ array = $0400 ; max 31486 bytes 0400 - 7EFE reserved in memory for max 4723 digi
 
 .segment "CODE"
 
-;------------------------------------------------------
-; Main routine
+;-------------------------------------------------------------------------------
+; SPIGOTRUN routine
+; Conserves:    Y
+; Garbles:      A, X
+; Uses:         ZPBUF1, ZPBUF2, DIGITS, COLUMNCTR, COLUMNS
+; 
+; Handles user input for number of Pi digits and screen width, validates input,
+; sets global parameters for the Pi spigot algorithm, then launches calculation.
 ;-------------------------------------------------------------------------------
 spigotrun:
+    lda #<pispigottable       ; Print the algorithm header using predefined pispigot_table
+    ldx #>pispigottable
+    jsr printmenu              
+    lda #<digitsinputstr       ; Prompt user for digit count by printing digitsinputstr
+    ldx #>digitsinputstr
+    jsr putstr
+    jsr userinput              ; getting user input, stored in ZPBUF1/2
+    lda ZPBUF2                 ; Validate digit count (must be <= 4723)
+    cmp #>4723
+    bcc @validdigit            ; Definitely below limit
+    bne @invalidinput          ; Definitely above limit
+    lda ZPBUF1                 ; Low byte
+    cmp #<4723
+    bcc @validdigit            ; Valid input
+    bne @invalidinput          ; Input too large
+@validdigit:
+    lda ZPBUF2                 ; Store digit count in DIGITS (16-bit value)
+    sta DIGITS + 1  
+    lda ZPBUF1
+    sta DIGITS
+    jsr calcarray              ; Compute array size for Pi generation based on digit count
     jsr newline
-    ; loads pi string address into strptr which is the pointer used in the print subroutine
-    lda #<beginstr
-    ldx #>beginstr
-    jsr putstrnl
-
+    lda #<screensizestr        ; Prompt user for screen width by printing screensizestr
+    ldx #>screensizestr
+    jsr putstr
+    jsr userinput
+    lda ZPBUF2                 ; Validate screen width (must be <= 254)
+    cmp #0
+    bne @invalidinput          ; High byte must be zero
+    lda ZPBUF1
+    cmp #255
+    bcc @validcolumn
+    bne @invalidinput          ; Too large
+@validcolumn:
+    sec                        ; Store screen width
+    lda ZPBUF1
+    sta COLUMNS                ; Full column width (raw input)
+    sbc #3
+    sta COLUMNCTR              ; First row needs space for pispigotstr
     jsr newline
     jsr newline
-
-    ; loads pi string address into strptr which is the pointer used in the print subroutine
-    lda #<pispigotstr
+    lda #<pispigotstr          ; Print Pi label string before output
     ldx #>pispigotstr
+    jsr putstr
+    jsr pispigot               ; go to main routine
+    jsr newline
+    jsr newline
+    rts
+@invalidinput:
+    jsr newline                ; Print error message for invalid input
+    lda #<invalidinputstr
+    ldx #>invalidinputstr
     jsr putstrnl
-
-    ; initializing array pointer to the begin of the array
-    lda #<array
-    sta arrayptr
-    lda #>array
-    sta arrayptr + 1
-
-    ; initializing the number of digits - 1 
-    lda #<30
-    sta digits
-    lda #>30
-    sta digits + 1
-
-    ; Initialize the length of the array
-    lda #<100
-    sta length
-    lda #>100
-    sta length + 1
-
-
-    ; going to the pispigot routine
-    jsr pispigot
-
     rts
 
-beginstr: .asciiz "Implementing the Pi Spigot Algorithm by Rabinowitz and Wagon:"
-pispigotstr: .asciiz "Pi ="
+;-------------------------------------------------------------------------------
+; SPIGOTQUIT routine
+; Garbles:      A, X
+; Uses:         SP
+; 
+; Exits the spigot program cleanly by adjusting the return stack.
+; Skips over the return address of the main loop to effectively quit.
+;-------------------------------------------------------------------------------
+spigotquit:
+    jsr newline         
+    tsx                 ; Transfer stack pointer to X (get current SP value)
+    inx
+    inx
+    inx
+    inx                 ; Skip over 4 bytes (simulate return from nested calls)
+    txs                 ; Set the updated SP
+    rts 
+
+pispigotstr: 
+    .asciiz "Pi ="
+digitsinputstr:
+    .asciiz "Digits of Pi (max 4723): "
+screensizestr:
+    .asciiz "Screen Width (max 255): "
+invalidinputstr:
+    .asciiz "Invalid input provided!"
+
+; pi spigot table
+.align 2
+pispigottable:
+    .byte $FF, $FF                      ; dashed line
+    .byte <@pispigotstr,    >@pispigotstr
+    .byte $FF, $FF                      ; dashed line
+    .byte <@creditstr,      >@creditstr
+    .byte <@davidstr,       >@davidstr
+    .byte <@exitstr,        >@exitstr
+    .byte $FF, $FF                      ; dashed line
+    .byte 0
+
+; pi spigot strings
+@pispigotstr:
+    .asciiz "PI SPIGOT ALGORITHM"
+@creditstr:
+    .asciiz "ORIGINAL ALGORITHM BY RABINOWITS AND WAGON"
+@davidstr:
+    .asciiz "IMPLEMENTED BY DAVID WARRAND"
+@exitstr:
+    .asciiz "(Q) TO QUIT"
 
 ;-------------------------------------------------------------------------------
-; Pi Spigot routine
+; USERINPUT routine
+; Garbles:      A, X, Y
+; Uses:         CMDBUF, CMDLENGTH, ZPBUF1, ZPBUF2
+; 
+; Handles character-by-character user input, including uppercase conversion,
+; backspace handling, and command parsing into a decimal number in ZPBUF1/2.
+;-------------------------------------------------------------------------------
+userinput:
+    jsr getch                ; Read character from keyboard
+    cmp #0
+    beq userinput            ; Ignore null characters
+    jsr chartoupper          ; Convert to uppercase for consistent handling
+    cmp #CR
+    beq @userinputcomplete   ; If carriage return, input is done
+    cmp #BS
+    beq @backspace           ; Handle backspace manually
+    cmp #'Q'
+    bne :+                   ; If 'Q', quit the program
+    jsr spigotquit
+:
+    ldx CMDLENGTH
+    cpx #$05
+    beq @userinputcomplete   ; Max 5 characters allowed in buffer
+    jsr ischarnum
+    bcs userinput            ; Skip non-numeric characters
+    sta CMDBUF,x             ; Store valid number character
+    jsr putch                ; Echo typed character
+    inc CMDLENGTH
+    jmp userinput            ; Loop for next character
+@backspace:
+    lda CMDLENGTH
+    beq @exitbs              ; Ignore if buffer is empty
+    jsr putbackspace         ; Visually remove character
+    dec CMDLENGTH
+@exitbs:
+    jmp userinput            ; Continue accepting input
+@userinputcomplete:
+    ldx #0                
+    stz ZPBUF1
+    stz ZPBUF2
+@decimalroutine:
+    asl ZPBUF1               ; Multiply current ZPBUF by 10 using shifts (×2 + ×8)
+    rol ZPBUF2               ; ×2
+    lda ZPBUF2
+    tay                      ; Store current hi-byte
+    lda ZPBUF1
+    asl ZPBUF1
+    rol ZPBUF2               ; ×4
+    asl ZPBUF1
+    rol ZPBUF2               ; ×8 (cumulative)
+    clc
+    adc ZPBUF1               ; Add ×2 + ×8 = ×10
+    sta ZPBUF1
+    tya
+    adc ZPBUF2
+    sta ZPBUF2
+    lda CMDBUF,x             ; Add current digit (CMDBUF[x] - '0') to ZPBUF
+    sec
+    sbc #'0'
+    clc
+    adc ZPBUF1
+    sta ZPBUF1
+    lda #0
+    adc ZPBUF2
+    sta ZPBUF2
+    inx
+    cpx CMDLENGTH
+    bne @decimalroutine      ; Repeat for all characters
+    jsr clearcmdbuf          ; Reset buffer for next use
+    rts
+
+;-------------------------------------------------------------------------------
+; PISPIGOT routine
+; Garbles:      A, X, Y
+; Uses:         ARRAY, ARRAYPTR, ARRAYEND, CARRY, PREDIGIT, NINES, PRINTDOT
+;
+; Computes digits of Pi using a spigot algorithm and prints them as they are produced.
 ;-------------------------------------------------------------------------------
 pispigot:
-    ; initializing variables 
-
-    ; nine counter to zero
-    lda #0
-    sta nines 
-
-    ; loading 2 into counter used to print a dot after first digit
-    lda #2  
-    sta print_dot 
-
-    ; loading space as first predigit
-    lda #$F0 
-    sta predigit 
-
-    ldx length  ; loading low byte of array length into x
-    ldy length + 1 ; loading high byte of array length into x
-
-    ; loop which Initializes the array values to 2
-@InitializeArray:
-    ; loading 2 into low byte of array
-    lda #2 
-    sta (arrayptr)
-
-    ; incrementing array pointer to high byte
-    inc arrayptr
+    stz NINES               ; Reset counter for trailing 9s
+    lda #2
+    sta PRINTDOT            ; Set dot printing state (prints dot after first digit)
+    lda #$F0
+    sta PREDIGIT            ; Initialize predigit to space (non-digit placeholder)
+    lda #<ARRAY
+    sta ARRAYPTR
+    lda #>ARRAY
+    sta ARRAYPTR+1          ; Set pointer to start of array
+    ldx ARRAYLENGTH
+    ldy ARRAYLENGTH+1       ; Load array size into X and Y
+@initializearray:
+    lda #2
+    sta (ARRAYPTR)          ; Store 2 in low byte of array element
+    inc ARRAYPTR
     bne :+
-    inc arrayptr+1
+    inc ARRAYPTR+1
 :
-    ; loading 0 into low byte of array
     lda #0
-    sta (arrayptr)
-
-    ; incrementing array pointer to low byte of next array value
-    inc arrayptr
+    sta (ARRAYPTR)          ; Store 0 in high byte of array element
+    inc ARRAYPTR
     bne :+
-    inc arrayptr+1
+    inc ARRAYPTR+1
 :
-
-    ; checking if low byte (X) is zero if it is decremnt high byte first
     cpx #0
     bne :+
-    dey
+    dey                     ; Decrement high byte of counter if low byte hit 0
 :
     dex
-    bne @InitializeArray
-
-    ; checking if high byte is zero if it is array initializing is done
+    bne @initializearray
     cpy #0
-    bne @InitializeArray
-    
-    ; array pointer is now pointing one value after the array
-    ; correct by decrementing array pointer to high byte of last array value
-    lda arrayptr
+    bne @initializearray    ; Loop until X and Y are both zero (array fully initialized)
+    lda ARRAYPTR
     bne :+
-    dec arrayptr+1
+    dec ARRAYPTR+1
 :
-    dec arrayptr
-
-    ; store high byte address of final array value
-    lda arrayptr
-    sta arrayend
-    lda arrayptr + 1
-    sta arrayend + 1
-
-    ; main loop which computes the digits of pi
+    dec ARRAYPTR            ; Adjust pointer to last high byte in array
+    lda ARRAYPTR
+    sta ARRAYEND
+    lda ARRAYPTR+1
+    sta ARRAYEND+1          ; Save final pointer location as ARRAYEND
 @mainloop:
-    ; start from end of array
-    lda arrayend
-    sta arrayptr
-    lda arrayend + 1
-    sta arrayptr + 1
-
-    ; loading length of array into X and Y
-    ldy length + 1
-    ldx length
-
-    ; carry for first value is zero
-    lda #0
-    sta carry
-    sta carry+1
-    sta carry+2
-
-    ; go to inner loop
-    jsr Carryloop
-
-    ; final step which generates a final carry value
-    jsr divmod_carry_10
-
-    ; check final carry value and turn it into appropriate predigit or hold
-    jsr predigit_check
-
-    ; degrement degit if both low and high are zero then routine is done
-    lda digits
-    bne :+       
-    lda digits + 1
-    beq @exit         
-    dec digits + 1   
+    jsr getch
+    cmp #'q'
+    bne :+
+    jsr spigotquit
 :
-    dec digits
+    cmp #'Q'
+    bne :+
+    jsr spigotquit          ; Allow both 'q' and 'Q' to quit
+:
+    lda ARRAYEND
+    sta ARRAYPTR
+    lda ARRAYEND+1
+    sta ARRAYPTR+1          ; Reset pointer to end of array
+    ldy ARRAYLENGTH+1
+    ldx ARRAYLENGTH         ; Load array length into X/Y again
+    stz CARRY
+    stz CARRY+1
+    stz CARRY+2             ; Clear multi-byte carry register
+    jsr carryloop           ; Core processing loop for array transformation
+    jsr divmodcarry10       ; Extract one digit using final carry division
+    jsr predigitcheck       ; Print or defer digit depending on predigit/carry state
+    lda DIGITS
+    bne :+
+    lda DIGITS+1
+    beq @exit               ; Exit if DIGITS == 0
+    dec DIGITS+1
+:
+    dec DIGITS              ; Decrement digit counter
     jmp @mainloop
-
 @exit:
-    ; print final predigit
-    lda predigit
-    adc '0'
-    jsr putch
-
+    jsr columncheck
+    lda PREDIGIT
+    adc #'0'
+    jsr putch               ; Print final predigit and exit
     rts
 
-; routine which checks the final carry value
-predigit_check:
-    phx
+;-------------------------------------------------------------------------------
+; COLUMNCHECK routine
+; Conserves     X, Y
+; Garbles:      A
+; Uses:         COLUMNCTR, COLUMNS
+;
+; Decrements the column counter and prints a newline when it wraps to zero.
+;-------------------------------------------------------------------------------
+columncheck:
+    dec COLUMNCTR           ; Decrement printable column count
+    bne :+                  ; If not zero, skip newline
+    lda COLUMNS
+    sta COLUMNCTR           ; Reset counter to full width
+    jsr newline             ; Print newline after full row
+:
+    rts
 
-    ; special conditions if carry is nine or ten
-    lda carry
+
+;-------------------------------------------------------------------------------
+; PREDIGITCHECK routine
+; Conserves:    X, Y
+; Garbles:      A
+; Uses:         CARRY, PREDIGIT, NINES, PRINTDOT
+;
+; Handles formatting and output of the next digit based on carry result.
+;-------------------------------------------------------------------------------
+predigitcheck:
+    phx                            ; Save X register
+    lda CARRY                      ; Check if carry is 9
     cmp #9
     beq @nine
-
-    cmp #10
+    cmp #10                        ; Check if carry is 10
     beq @ten
-
-    ; print predigit
-    lda predigit
-    adc #'0' 
+    jsr columncheck                ; Normal case: print predigit
+    lda PREDIGIT
+    adc #'0'
     jsr putch
-
-    ; check if dot needs to be placed
-    lda print_dot
+    lda PRINTDOT                   ; Check if dot should be printed
     beq :+
-    dec print_dot
+    dec PRINTDOT
     bne :+
-    lda #'.' 
+    lda #'.'
+    jsr columncheck
     jsr putch
 :
-
-    ; check if any nines need to be printed
-    ldx nines
-    beq @update_predigit
-
-    ; flushing nines
+    ldx NINES                      ; If any held 9s, flush them
+    beq @updatepredigit
 :
-    lda #'9' 
+    jsr columncheck
+    lda #'9'
     jsr putch
     dex
     bne :-
-    lda #0
-    sta nines
-
-@update_predigit:
-    lda carry
-    sta predigit
+    stz NINES
+@updatepredigit:
+    lda CARRY                      ; Update predigit with current digit
+    sta PREDIGIT
     jmp @exit
-
-    ; carry is 10
 @ten:
-    ; incrementing predigit and printing
-    clc
-    inc predigit    
-    lda predigit
-    adc #'0' 
+    clc                            ; Carry was 10: increment predigit and flush zeros
+    inc PREDIGIT
+    jsr columncheck
+    lda PREDIGIT
+    adc #'0'
     jsr putch
-
-    ; checking if any nines
-    ldx nines
-    beq @reset_after_ten
-
-    ; flushing nines as zeros
+    ldx NINES
+    beq @resetafterten
 :
-    lda #'0' 
+    jsr columncheck
+    lda #'0'
     jsr putch
     dex
     bne :-
-
-@reset_after_ten:
-    lda #0
-    sta predigit
-    sta nines
+@resetafterten:
+    stz PREDIGIT
+    stz NINES
     jmp @exit
-
-    ; carry is 9
 @nine:
-    ; number of nines held increassed by 1
-    inc nines
-
+    inc NINES                      ; Carry is 9: hold the 9
 @exit:
-    plx
+    plx                            ; Restore X register
     rts
 
-; carry loop which genererates the digits of pi
-Carryloop:
-    ; initializing
-    lda #0
-    sta index + 2
-
-    ; generating numerator = index and denominator of mixed radix
-    ; mixed radix is used to decode the array into the digits of pi
-    txa 
-    sta index
-    sta den
+;-------------------------------------------------------------------------------
+; CARRYLOOP routine
+; Garbles:      A, X, Y
+; Uses:         ARRAYPTR, ARRAYVALUE, CARRY, INDEX, DEN
+;
+; Core loop of the Pi spigot algorithm that updates the carry by walking through
+; the array in reverse, using mixed radix arithmetic.
+;-------------------------------------------------------------------------------
+carryloop:
+    stz INDEX+2                          ; Clear high byte of 24-bit INDEX (not used but good practice)
+    txa
+    sta INDEX                            ; Set INDEX = YX (current array index)
+    sta DEN                              ; Same value is used as denominator base
     tya
-    sta index + 1
-    sta den + 1
-    asl den
-    rol den + 1
-
-    ; Subtract 1 from the 16-bit value
-    lda den
+    sta INDEX+1
+    sta DEN+1
+    asl DEN
+    rol DEN+1                            ; Multiply DEN by 2 (DEN = INDEX * 2)
+    lda DEN                              ; Subtract 1 from DEN (DEN = 2*INDEX - 1)
     cmp #0
-    bne @skip_borrow1
-    dec den + 1
-@skip_borrow1:
-    dec den
-
-    ; multiplying carry by numerator of mixed radix
-    jsr multipy_carry_by_num
-
-    ; loading array
-    lda (arrayptr)
-    sta arrayvalue + 1
-    lda arrayptr
     bne :+
-    dec arrayptr+1
+    dec DEN+1
 :
-    dec arrayptr
-    lda (arrayptr)
-    sta arrayvalue
-
-    ; multiplying array by 10 and adding to carry
-    jsr multipy_array_by_10_and_add_to_carry
-
-    ; dividing carry by denominator of mixed radix
-    ; remainder is new array value and quotient is carry
-    jsr divmod_carry_den
-
-    ; decrement twice to point to the high byte of the next array value
-    lda arrayptr
+    dec DEN
+    jsr multipycarrybynum                ; carry = carry * numerator (INDEX)
+    lda (ARRAYPTR)
+    sta ARRAYVALUE+1                     ; Load high byte of array element
+    lda ARRAYPTR
     bne :+
-    dec arrayptr+1
+    dec ARRAYPTR+1
 :
-    dec arrayptr
-    lda arrayptr
+    dec ARRAYPTR
+    lda (ARRAYPTR)
+    sta ARRAYVALUE                       ; Load low byte of array element
+    jsr multipyarrayby10andaddtocarry    ; carry += array * 10
+    jsr divmodcarryden                   ; array = carry % DEN, carry = carry / DEN
+    lda ARRAYPTR
     bne :+
-    dec arrayptr+1
+    dec ARRAYPTR+1
 :
-    dec arrayptr
-
+    dec ARRAYPTR                         ; Move to previous array element (2 bytes per element)
+    lda ARRAYPTR
+    bne :+
+    dec ARRAYPTR+1
+:
+    dec ARRAYPTR
     cpx #0
     bne :+
     dey
 :
     dex
-    bne Carryloop
-
+    bne carryloop                        ; Loop while X ≠ 0
     cpy #0
-    bne Carryloop
-
+    bne carryloop                        ; Loop while Y ≠ 0
     rts
 
-
-; 16 bits / 8 bits (10) = 16 bit division algorithm
-divmod_carry_10:
-    phx
-    phy
-    ; Clear quotient and remainder
-    lda #0
-
-    sta arrayvalue
-    sta arrayvalue + 1
-    sta arrayvalue + 2
-
-    ldx #8  ; 8 bits to process
+;-------------------------------------------------------------------------------
+; DIVMODCARRY10 routine
+; Conserves     X, Y
+; Garbles:      A
+; Uses:         CARRY, ARRAYVALUE, array
+;
+; Performs 16-bit divided by 8-bit division: (CARRY / 10), remainder into 
+; ARRAYVALUE, and quotient into CARRY
+;-------------------------------------------------------------------------------
+divmodcarry10:
+    phx                             ; Preserve X
+    stz ARRAYVALUE                  ; Clear quotient low byte
+    stz ARRAYVALUE + 1              ; Clear quotient high byte
+    ldx #8                          ; 8 bits to divide
 @divloop:
-    ; Shift dividend left into remainder
-    rol carry 
-    rol arrayvalue
-
-    ; Try subtracting divisor from remainder
+    rol CARRY                       ; Shift dividend into remainder
+    rol ARRAYVALUE
     sec
-    lda arrayvalue
-    sbc #10         ; subtract low byte
-    sta temp
-    lda arrayvalue + 1
-    sbc #0     ; subtract high byte
-    bcc @no_subtract    ; if remainder < divisor, skip setting quotient bit
-
-    ; If subtraction succeeded, store result
-    sta arrayvalue + 1
-    lda temp
-    sta arrayvalue
-
-@no_subtract:
+    lda ARRAYVALUE
+    sbc #10                         ; Subtract divisor low byte
+    sta ZPBUF1
+    lda ARRAYVALUE + 1
+    sbc #0                          ; Subtract high byte
+    bcc @nosubtract                 ; Skip if remainder < 10
+    sta ARRAYVALUE + 1              ; Store result high byte
+    lda ZPBUF1
+    sta ARRAYVALUE                  ; Store result low byte
+@nosubtract:
     dex
-    bne @divloop
-
-    rol carry
-
-    lda arrayvalue + 1
-    sta array + 1
-    lda arrayvalue
-    sta array
-
-    ply
+    bne @divloop                    ; Loop until all bits processed
+    rol CARRY                       ; Shift final quotient bit into carry
+    lda ARRAYVALUE + 1
+    sta ARRAY + 1                   ; Store remainder high byte
+    lda ARRAYVALUE
+    sta ARRAY                       ; Store remainder low byte
     plx
     rts
 
-; 24 bits / 16 bits = 16 bit division algorithm
-divmod_carry_den:
-    phx
-    phy
-    ; Clear quotient and remainder
-    lda #0
-    sta arrayvalue
-    sta arrayvalue + 1
-
-    ldx #24  ; 24 bits to process
+;-------------------------------------------------------------------------------
+; DIVMODCARRYDEN routine
+; Conserves     X, Y
+; Garbles:      A
+; Uses:         CARRY (24-bit), DEN (16-bit), ARRAYVALUE, ARRAYPTR
+;
+; Performs 24-bit ÷ 16-bit division: (CARRY / DEN)
+; Stores remainder in array and keeps quotient in CARRY.
+;-------------------------------------------------------------------------------
+divmodcarryden:
+    phx                             ; Preserve X
+    stz ARRAYVALUE                  ; Clear remainder low byte
+    stz ARRAYVALUE + 1              ; Clear remainder high byte
+    ldx #24                         ; 24 bits to divide
 @divloop:
-    ; Shift dividend left into remainder
-    rol carry        
-    rol carry + 1
-    rol carry + 2    
-    rol arrayvalue
-    rol arrayvalue + 1
-
-    ; Try subtracting divisor from remainder
+    rol CARRY                       ; Shift dividend into remainder
+    rol CARRY + 1
+    rol CARRY + 2
+    rol ARRAYVALUE
+    rol ARRAYVALUE + 1
     sec
-    lda arrayvalue
-    sbc den         ; subtract low byte
-    sta temp
-    lda arrayvalue + 1
-    sbc den+1       ; subtract high byte
-    bcc @no_subtract    ; if remainder < divisor, skip setting quotient bit
-
-    ; If subtraction succeeded, store result and set quotient bit = 1
-    sta arrayvalue + 1
-    lda temp
-    sta arrayvalue
-
-@no_subtract:
+    lda ARRAYVALUE
+    sbc DEN                         ; Subtract divisor low byte
+    sta ZPBUF1
+    lda ARRAYVALUE + 1
+    sbc DEN + 1                     ; Subtract high byte
+    bcc @nosubtract                ; Skip if remainder < divisor
+    sta ARRAYVALUE + 1              ; Store updated high byte
+    lda ZPBUF1
+    sta ARRAYVALUE                  ; Store updated low byte
+@nosubtract:
     dex
-    bne @divloop
-
-    rol carry
-    rol carry + 1
-    rol carry + 2
-
-    lda arrayvalue
-    sta (arrayptr)
-    inc arrayptr
+    bne @divloop                    ; Continue loop
+    rol CARRY
+    rol CARRY + 1
+    rol CARRY + 2                   ; Final shift to complete quotient
+    lda ARRAYVALUE
+    sta (ARRAYPTR)                  ; Store remainder low byte
+    inc ARRAYPTR
     bne :+
-    inc arrayptr+1
+    inc ARRAYPTR + 1
 :
-    lda arrayvalue + 1
-    sta (arrayptr)
-
-    ply
+    lda ARRAYVALUE + 1
+    sta (ARRAYPTR)                 ; Store remainder high byte
     plx
     rts
 
-; 16 bits * 16 bits = 24 bit multiplication algorithm
-; note: checked and product is 24 bits not 32 bits for number of digits
-multipy_carry_by_num:
-    phx
-    ; Clear product (3 bytes)
-
-    lda carry
-    sta multiplier
-    lda carry + 1
-    sta multiplier+1
-
-    lda #0
-    sta carry
-    sta carry+1
-    sta carry+2
-
-    ; Ensure multiplicand is 16-bit, and use 3-byte temp
-    sta index+2
-
-    ldx #16  ; 16 bits in multiplier
+;-------------------------------------------------------------------------------
+; MULTIPYCARRYBYNUM routine
+; Conserves     X, Y
+; Garbles:      A
+; Uses:         CARRY, INDEX, ZPBUF1
+;
+; Performs 16-bit × 16-bit multiplication, result stored as 24-bit in CARRY.
+; CARRY × INDEX → CARRY (result)
+;-------------------------------------------------------------------------------
+multipycarrybynum:
+    phx                            ; Save X
+    lda CARRY
+    sta ZPBUF1                     ; Copy CARRY to ZPBUF1 (multiplier)
+    lda CARRY+1
+    sta ZPBUF1+1
+    stz CARRY                      ; Clear result low
+    stz CARRY+1                    ; Clear result mid
+    stz CARRY+2                    ; Clear result high
+    stz INDEX+2                    ; Ensure multiplicand is 16-bit
+    ldx #16                        ; 16 bits in multiplier
 @loop:
-    ; Shift right multiplier (LSB into carry flag)
-    lsr multiplier + 1
-    ror multiplier
-
-    bcc @skip_add      ; if bit was 0, skip
-
-    ; Add multiplicand to product (24-bit add)
+    lsr ZPBUF1+1                   ; Shift right into carry
+    ror ZPBUF1
+    bcc @skipadd                  ; If bit is 0, skip addition
     clc
-    lda carry
-    adc index
-    sta carry
-
-    lda carry+1
-    adc index+1
-    sta carry+1
-
-    lda carry+2
-    adc index+2
-    sta carry+2
-
-@skip_add:
-    ; Shift multiplicand left 
-    asl index
-    rol index+1
-    rol index+2
-
+    lda CARRY
+    adc INDEX
+    sta CARRY
+    lda CARRY+1
+    adc INDEX+1
+    sta CARRY+1
+    lda CARRY+2
+    adc INDEX+2
+    sta CARRY+2
+@skipadd:
+    asl INDEX                      ; Shift multiplicand left
+    rol INDEX+1
+    rol INDEX+2
     dex
     bne @loop
-
     plx
     rts
 
 ;-------------------------------------------------------------------------------
-; Multiply Array by 10 and add to Carry
+; MULTIPYARRAYBY10ANDADDTOCARRY routine
+; Conserves:    X, Y
+; Garbles:      A
+; Uses:         ARRAYVALUE, CARRY
+;
+; Multiplies ARRAYVALUE (16 bits) by 10 and adds result to CARRY (24-bit add).
 ;-------------------------------------------------------------------------------
-multipy_array_by_10_and_add_to_carry:
-    lda #0
-    sta arrayvalue + 2           ; Ensure multiplicand is 16-bit, and use 3-byte temp
-    asl arrayvalue               ; multiply by 2
-    rol arrayvalue + 1
-    rol arrayvalue + 2
-    clc                          ; 24 bit add, adding array times 2 to carry
-    lda arrayvalue
-    adc carry
-    sta carry
-    lda arrayvalue + 1
-    adc carry + 1
-    sta carry + 1
-    lda arrayvalue + 2
-    adc carry + 2
-    sta carry + 2
-    asl arrayvalue               ; shift 24 bits left twice, multiply by 4
-    rol arrayvalue + 1
-    rol arrayvalue + 2
-    asl arrayvalue
-    rol arrayvalue + 1
-    rol arrayvalue + 2
-    clc                          ; 24 bit add, adding array times 8 to carry
-    lda carry
-    adc arrayvalue
-    sta carry
-    lda carry + 1
-    adc arrayvalue + 1
-    sta carry + 1
-    lda carry + 2
-    adc arrayvalue + 2
-    sta carry + 2
+multipyarrayby10andaddtocarry:
+    stz ARRAYVALUE+2               ; Extend to 24 bits
+    asl ARRAYVALUE                 ; ×2
+    rol ARRAYVALUE+1
+    rol ARRAYVALUE+2
+    clc
+    lda ARRAYVALUE
+    adc CARRY
+    sta CARRY
+    lda ARRAYVALUE+1
+    adc CARRY+1
+    sta CARRY+1
+    lda ARRAYVALUE+2
+    adc CARRY+2
+    sta CARRY+2
+    asl ARRAYVALUE                 ; ×4 (shift again)
+    rol ARRAYVALUE+1
+    rol ARRAYVALUE+2
+    asl ARRAYVALUE                 ; ×8 (shift again)
+    rol ARRAYVALUE+1
+    rol ARRAYVALUE+2
+    clc
+    lda CARRY
+    adc ARRAYVALUE
+    sta CARRY
+    lda CARRY+1
+    adc ARRAYVALUE+1
+    sta CARRY+1
+    lda CARRY+2
+    adc ARRAYVALUE+2
+    sta CARRY+2
+    rts
+
+;-------------------------------------------------------------------------------
+; CALCARRAY routine
+; Conserves:    Y
+; Garbles:      A,X
+; Uses:         ZPBUF1, ZPBUF2
+; Input: DIGITS
+;
+; Mulitplies DIGITS by 10 then divides by 3 
+; is found. Assumes that STRLB is used on the zero page to store the address of
+; the string.
+;-------------------------------------------------------------------------------
+calcarray:
+    lda DIGITS                      ; loading digits into length
+    sta ARRAYLENGTH
+    lda DIGITS + 1
+    sta ARRAYLENGTH + 1
+    clc
+    rol ARRAYLENGTH                 ; multiplying length by 2
+    rol ARRAYLENGTH + 1
+    lda ARRAYLENGTH                 ; storing length times 2 in X and Y
+    tax 
+    lda ARRAYLENGTH + 1
+    tay 
+    rol ARRAYLENGTH                 ; multiplying length times 4
+    rol ARRAYLENGTH + 1
+    rol ARRAYLENGTH
+    rol ARRAYLENGTH + 1
+    clc
+    txa                             ; adding length times 2 to length times 8
+    adc ARRAYLENGTH
+    sta ARRAYLENGTH                 ; resulting low byte after times 10 operation
+    tya 
+    adc ARRAYLENGTH + 1
+    sta ARRAYLENGTH + 1             ; resulting high byte after times 10 operation
+    stz ZPBUF1                      ; using ZPBUF1 as remainder
+    stz ZPBUF1 + 1
+    ldx #16                         ; 16 bits to process for long division
+@divloop:                           ; dividing by 3 cannot be done simply thus long division is performed
+    rol ARRAYLENGTH                 ; Shift dividend left into remainder
+    rol ARRAYLENGTH + 1
+    rol ZPBUF1
+    rol ZPBUF1 + 1
+    sec                             ; Try subtracting divisor from remainder
+    lda ZPBUF1
+    sbc #3                          ; subtract low byte
+    sta ZPBUF2                      ; using ZPBUF2 as a temporary value holder
+    lda ZPBUF1 + 1
+    sbc #0                          ; subtract high byte
+    bcc @nosubtract                ; if remainder < divisor, skip setting quotient bit
+    sta ZPBUF1 + 1                  ; If subtraction succeeded, store result
+    lda ZPBUF2
+    sta ZPBUF1
+@nosubtract:
+    dex
+    bne @divloop
+    rol ARRAYLENGTH                 ; final rol to have the quotient in the correct format
+    rol ARRAYLENGTH + 1   
     rts
