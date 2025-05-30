@@ -5,7 +5,6 @@
 .include "constants.inc"
 .include "functions.inc"
 
-.export clearcmdbuf
 .export monitor
 .import assemble
 .import disassemble
@@ -108,9 +107,9 @@ loop:
     cmp #0
     beq loop
     jsr chartoupper     ; always convert character to upper case
-    cmp #$0D            ; check for carriage return
+    cmp #CR             ; check for carriage return
     beq exec
-    cmp #$7F            ; check for delete key
+    cmp #BS             ; check for delete key
     beq backspace
 
     ldx CMDLENGTH       ; load command length
@@ -135,12 +134,7 @@ exec:
 backspace:
     lda CMDLENGTH       ; skip if buffer is empty
     beq exitbp
-    lda #$08
-    jsr putch  
-    lda #' '
-    jsr putch  
-    lda #$08
-    jsr putch  
+    jsr putbackspace  
     dec CMDLENGTH
 exitbp:
     jmp loop
@@ -227,23 +221,6 @@ cmdquit:			; quit the program
     rts
 
 exit_invalid:
-    rts
-
-;-------------------------------------------------------------------------------
-; CLEANCMDBUF routine
-;
-; Clean the command buffer
-;-------------------------------------------------------------------------------
-clearcmdbuf:
-    ldx #0
-@next:
-    stz CMDBUF,x
-    inx
-    cpx #10
-    bne @next
-    stz CMDLENGTH
-    stz TBPL            ; reset text buffer
-    stz TBPR
     rts
 
 ;-------------------------------------------------------------------------------

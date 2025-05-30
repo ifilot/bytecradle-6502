@@ -13,20 +13,40 @@
 .export putds
 .export putspace
 .export puttab
+.export putbackspace
 .export printnibble
 .export ischarvalid
+.export ischarnum
 .export clearline
 .export clearscreen
 .export putcursor
 .export strlen
 .export putrepch
 .export delayms10
+.export clearcmdbuf
 
 .PSC02
 
 .include "constants.inc"
 
 .segment "CODE"
+
+;-------------------------------------------------------------------------------
+; CLEANCMDBUF routine
+;
+; Clean the command buffer
+;-------------------------------------------------------------------------------
+clearcmdbuf:
+    ldx #0
+@next:
+    stz CMDBUF,x
+    inx
+    cpx #10
+    bne @next
+    stz CMDLENGTH
+    stz TBPL            ; reset text buffer
+    stz TBPR
+    rts
 
 ;-------------------------------------------------------------------------------
 ; GETCHAR routine
@@ -270,6 +290,23 @@ ischarvalid:
     cmp #$20                ; if less than $20, set carry flag and exit
     bcc @invalid
     cmp #$7F                ; compare with $7F, comparison yields desired result
+    rts
+@invalid:
+    sec
+    rts
+
+;-------------------------------------------------------------------------------
+; ISCHARNUM routine
+;
+; Assess whether character stored in A is a decimal numerical value, i.e., lies between $'0' and 
+; $'9' (inclusive, $':' is character after $'9'). If so, clear carry, else set the carry.
+;
+; Conserves: A, X, Y
+;-------------------------------------------------------------------------------
+ischarnum:
+    cmp #'0'               ; if less than $'0', set carry flag and exit
+    bcc @invalid
+    cmp #':'               ; compare with $':', comparison yields desired result
     rts
 @invalid:
     sec
