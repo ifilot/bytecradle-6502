@@ -4,7 +4,7 @@
 .include "functions.inc"
 
 .export mainmenu
-
+.export printmenu
 .import memtest
 .import numbertest
 .import sieve
@@ -283,7 +283,7 @@ appmenu_table:
     .asciiz "(b) Back"
 
 ; APP MENU ENTRIES
-.align 16
+.align 3
 appmenu_entries:
     .byte '1', <sieve,          >sieve
     .byte '2', <spigotrun,          >spigotrun

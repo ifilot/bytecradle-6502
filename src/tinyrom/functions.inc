@@ -17,11 +17,14 @@
 .import putspace
 .import putds
 .import puttab
+.import putbackspace
 .import printnibble
 .import getpos
 .import ischarvalid
+.import ischarnum
 .import clearline
 .import clearscreen
+.import clearcmdbuf
 .import putcursor
 .import strlen
 .import putrepch
