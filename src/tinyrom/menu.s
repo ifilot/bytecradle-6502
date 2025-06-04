@@ -5,6 +5,7 @@
 
 .export mainmenu
 .export printmenu
+.import rungameoflife
 .import memtest
 .import numbertest
 .import sieve
@@ -234,6 +235,7 @@ gamesmenu_table:
     .byte <@titlestr,       >@titlestr
     .byte $FF, $FF                      ; dashed line
     .byte <@strmicrochess,  >@strmicrochess
+    .byte <@strgameoflife,  >@strgameoflife
     .byte <@strback,        >@strback
     .byte $FF, $FF                      ; dashed line
     .byte 0
@@ -242,12 +244,15 @@ gamesmenu_table:
     .asciiz "CATEGORY: GAMES"
 @strmicrochess:
     .asciiz "(1) Micro chess"
+@strgameoflife:
+    .asciiz "(2) Conways Game of Life"
 @strback:
     .asciiz "(b) Back"
 
 ; GAMES MENU ENTRIES
 gamesmenu_entries:
     .byte '1', <startchess,     >startchess
+    .byte '2', <rungameoflife,  >rungameoflife
     .byte 'b', <mainmenu,       >mainmenu
     .byte 0
 
