@@ -42,7 +42,7 @@ IO_N = !(!A15 & A14 & A13 & A12 & A11 & A10 & A9 & A8);
 ACIACS_N = !(!IO_N & !A7 & !A6 & !A5 & !A4 & !A3 & A2);
 
 /* RAM selected when A15 is low, ACIACS_N is low and CLK high */
-RAMCS_N = !(!A15 & ACIACS_N & CLK);
+RAMCS_N = !(!A15 & IO_N & CLK);
 
 /* ROM selected when A15 is high (0x8000-0xFFFF) */
 ROMCS_N = !A15;
@@ -50,7 +50,7 @@ ROMCS_N = !A15;
 /* B1 = active low on address 0x7F00 */
 B1 = !(!IO_N & !A7 & !A6 & !A5 & !A4 & !A3 & !A2 & !A1 & !A0);
 
-/* B2 = active low on address 0x7F01 */
-B2 = !(!IO_N & !A7 & !A6 & !A5 & !A4 & !A3 & !A2 & !A1 &  A0);
+/* B2 = active low on address 0x7F20 - 0x7F3F */
+B2 = !(!IO_N & !A7 & !A6 & A5);
 
 /* *************** END *************** */
