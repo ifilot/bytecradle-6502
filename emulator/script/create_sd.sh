@@ -61,10 +61,10 @@ mkdir $ROOT_MOUNT/PROGRAMS
 # Helloworld program
 pushd ../../programs
 make
-cp -v helloworld/helloworld.bin $ROOT_MOUNT/PROGRAMS/HELLO.COM
-cp -v fibonacci/fibonacci.bin $ROOT_MOUNT/PROGRAMS/FIBO.COM
+cp -v helloworld/HELLO.COM $ROOT_MOUNT/PROGRAMS/HELLO.COM
+cp -v fibonacci/FIBO.COM $ROOT_MOUNT/PROGRAMS/FIBO.COM
 cp -v monitor/monitor.bin $ROOT_MOUNT/PROGRAMS/MONITOR.COM
-cp -v mandelbrot/mandelbrot.bin $ROOT_MOUNT/PROGRAMS/MANDEL.COM
+cp -v mandelbrot/MANDEL.COM $ROOT_MOUNT/PROGRAMS/MANDEL.COM
 popd
 
 # Step 9: Cleanup

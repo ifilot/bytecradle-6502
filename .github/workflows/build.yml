@@ -40,7 +40,7 @@ jobs:
 
       - name: Build TINY ROM
         run: |
-          cd src/tinyrom
+          cd src/environments/tinyrom
           make
 
       - name: Update tinyrom release
@@ -50,7 +50,7 @@ jobs:
           tag_name: tinyrom-latest
           name: Latest TinyROM Build
           files: |
-            src/tinyrom/tinyrom.bin
+            src/environments/tinyrom/tinyrom.bin
           make_latest: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -69,9 +69,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential make cc65 git
 
-      - name: Build TINY ROM
+      - name: Build BCOS
         run: |
-          cd src/bcos
+          cd src/os/bcos
           make
 
       - name: Update bcos release
@@ -81,7 +81,7 @@ jobs:
           tag_name: bcos-latest
           name: Latest BCOS Build
           files: |
-            src/bcos/bin/bcos.bin
+            src/os/bcos/bin/bcos.bin
           make_latest: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

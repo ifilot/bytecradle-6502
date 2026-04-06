@@ -1,0 +1,8 @@
+*.lib
+bin/*
+obj/*
+asm/*
+
+jumptable.inc
+jumptable.s
+sbc.cfg

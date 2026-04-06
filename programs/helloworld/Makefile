@@ -9,3 +9,8 @@ $(OBJ): helloworld.asm
 
 $(PROG): $(OBJ)
 	ld65 -o $(PROG) -C $(CFG) $(OBJ)
+
+clean:
+	rm -vf $(OBJ) $(PROG)
+
+.PHONY: all clean

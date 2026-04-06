@@ -20,4 +20,4 @@ main.o: main.s
 	ca65 --cpu 65c02 main.s
 
 clean:
-	rm -v *.o *.lib main.s $(PROG)
+	rm -vf *.o *.lib main.s $(PROG)

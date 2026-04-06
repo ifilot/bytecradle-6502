@@ -12,6 +12,8 @@ ROMs and optional SD card images.
 - SD card image support for the "mini" board variant.
 - Configurable CPU clock speed (default: 16 MHz).
 - Terminal input handling (keyboard polling every 20ms).
+- Graceful quit via `Ctrl+C` (SIGINT), `Ctrl+D` (EOT), or stdin EOF.
+- Startup check for a minimum terminal size of `80x25`.
 - Lightweight and simple C++ codebase.
 
 ## Compilation
@@ -35,31 +37,40 @@ cmake ../src
 make -j
 ```
 
-This will generate an executable called `bytecradle` inside the `build/` directory.
+This will generate an executable called `bc6502emu` inside the `build/` directory.
 
 ## Usage
 
 ```bash
-./bytecradle --board <tiny|mini> --rom <path_to_rom> [--sdcard <path_to_sdcard>] [--clock <mhz>]
+./bc6502emu --board <tiny|mini> --rom <path_to_rom> [--sdcard <path_to_sdcard>] [--clock <mhz>]
 ```
 
 ### Arguments:
 
-| Argument         | Description                                    | Required |
-|:-----------------|:-----------------------------------------------|:---------|
-| `-b, --board`     | Select the board type: `tiny` or `mini`.       | Yes      |
-| `-r, --rom`       | Path to the ROM file to load.                  | Yes      |
+| Argument          | Description                                     | Required |
+|-------------------|-------------------------------------------------|----------|
+| `-b, --board`     | Select the board type: `tiny` or `mini`.        | Yes      |
+| `-r, --rom`       | Path to the ROM file to load.                   | Yes      |
 | `-s, --sdcard`    | Path to the SD card image (only for `mini`).    | No       |
 | `-c, --clock`     | CPU clock speed in MHz (default: 16.0 MHz).     | No       |
 
 ### Example:
 
 ```bash
-./bytecradle --board tiny --rom <romfile>.bin
+./bc6502emu --board tiny --rom <romfile>.bin
 ```
 
 or for a mini board with an SD card image:
 
 ```bash
-./bytecradle --board mini --rom <romfile>.bin --sdcard disk.img --clock 8.0
+./bc6502emu --board mini --rom <romfile>.bin --sdcard disk.img --clock 8.0
 ```
+
+## Terminal behavior notes
+
+- **Preferred quit key:** use `Ctrl+C` (SIGINT). This is the most robust and
+  conventional way to terminate an interactive emulator.
+- `Ctrl+D` is also supported as an in-band quit shortcut.
+- If stdin is closed (EOF), the emulator exits cleanly.
+- On startup, the emulator verifies your terminal is at least **80 columns x 25
+  rows**.

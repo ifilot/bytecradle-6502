@@ -1,12 +1,17 @@
-SUBDIRS := helloworld fibonacci monitor
+GEN := ../src/os/bcos/generate_bcos_artifacts.py
 
-.PHONY: all clean
+SUBDIRS := helloworld fibonacci monitor mandelbrot
 
-all:
+.PHONY: all generate clean
+
+all: generate
 	@for dir in $(SUBDIRS); do \
 		echo "Building in $$dir..."; \
 		$(MAKE) -C $$dir || exit 1; \
 	done
+
+generate:
+	python3 $(GEN)
 
 clean:
 	@for dir in $(SUBDIRS); do \

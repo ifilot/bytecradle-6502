@@ -11,17 +11,11 @@
 	.importzp	tmp1, tmp2, tmp3, tmp4, ptr1, ptr2, ptr3, ptr4
 	.macpack	longbranch
 	.forceimport	__STARTUP__
-	.export		_putstrnl
 	.export		_main
-
-.segment	"DATA"
-
-_putstrnl:
-	.word	$FFE8
 
 .segment	"RODATA"
 
-L0004:
+L0009:
 	.byte	$48,$65,$6C,$6C,$6F,$20,$57,$6F,$72,$6C,$64,$21,$00
 
 ; ---------------------------------------------------------------
@@ -34,11 +28,19 @@ L0004:
 
 .segment	"CODE"
 
-	lda     _putstrnl
-	ldx     _putstrnl+1
+	ldx     #$FF
+	lda     #$DC
+	jsr     callax
+	eor     #$01
+	beq     L0002
+	ldx     #$00
+	lda     #$01
+	rts
+L0002:	ldx     #$FF
+	lda     #$E8
 	jsr     pushax
-	lda     #<(L0004)
-	ldx     #>(L0004)
+	lda     #<(L0009)
+	ldx     #>(L0009)
 	pha
 	lda     (sp)
 	sta     jmpvec+1

@@ -11,28 +11,16 @@
 	.importzp	tmp1, tmp2, tmp3, tmp4, ptr1, ptr2, ptr3, ptr4
 	.macpack	longbranch
 	.forceimport	__STARTUP__
-	.export		_putstr
-	.export		_putstrnl
-	.export		_putch
 	.export		_gradient
 	.export		_mandelbrot
 	.export		_main
-
-.segment	"DATA"
-
-_putstr:
-	.word	$FFE5
-_putstrnl:
-	.word	$FFE8
-_putch:
-	.word	$FFEB
 
 .segment	"RODATA"
 
 _gradient:
 	.byte	$20,$2E,$2D,$27,$7C,$2B,$2F,$3D,$2A,$24,$26,$23,$40,$4D,$57,$58
 	.byte	$00
-L0007:
+L0005:
 	.byte	$50,$6C,$6F,$74,$74,$69,$6E,$67,$20,$4D,$61,$6E,$64,$65,$6C,$62
 	.byte	$72,$6F,$74,$20,$73,$65,$74,$20,$62,$65,$74,$77,$65,$65,$6E,$20
 	.byte	$5B,$2D,$32,$2C,$20,$31,$5D,$20,$78,$20,$5B,$2D,$31,$2C,$20,$31
@@ -50,11 +38,11 @@ L0007:
 
 	ldy     #$1D
 	jsr     subysp
-	lda     _putstrnl
-	ldx     _putstrnl+1
+	ldx     #$FF
+	lda     #$E8
 	jsr     pushax
-	lda     #<(L0007)
-	ldx     #>(L0007)
+	lda     #<(L0005)
+	ldx     #>(L0005)
 	pha
 	lda     (sp)
 	sta     jmpvec+1
@@ -72,16 +60,16 @@ L0007:
 	ldy     #$01
 	jsr     staxysp
 	txa
-L0062:	ldy     #$19
+L0068:	ldy     #$19
 	jsr     staxysp
 	ldy     #$1A
 	lda     (sp),y
 	cmp     #$00
-	bne     L001A
+	bne     L0018
 	dey
 	lda     (sp),y
 	cmp     #$18
-L001A:	jcs     L0014
+L0018:	jcs     L0012
 	ldy     #$1C
 	jsr     pushwysp
 	ldy     #$04
@@ -95,16 +83,16 @@ L001A:	jcs     L0014
 	jsr     staxysp
 	ldx     #$00
 	txa
-L0061:	ldy     #$1B
+L0067:	ldy     #$1B
 	jsr     staxysp
 	ldy     #$1C
 	lda     (sp),y
 	cmp     #$00
-	bne     L0027
+	bne     L0025
 	dey
 	lda     (sp),y
 	cmp     #$50
-L0027:	jcs     L0021
+L0025:	jcs     L001F
 	ldy     #$1E
 	jsr     pushwysp
 	ldy     #$06
@@ -130,8 +118,8 @@ L0027:	jcs     L0021
 	jsr     steaxysp
 	ldy     #$0B
 	jsr     steaxysp
-	jmp     L004E
-L0033:	ldy     #$12
+	jmp     L004C
+L0031:	ldy     #$12
 	jsr     ldeaxysp
 	jsr     pusheax
 	ldy     #$16
@@ -199,25 +187,25 @@ L0033:	ldy     #$12
 	cmp     #$01
 	txa
 	sbc     #$04
-	bvs     L004C
+	bvs     L004A
 	eor     #$80
-L004C:	bmi     L0034
+L004A:	bmi     L0032
 	ldy     #$18
 	jsr     ldaxysp
 	ina
-	bne     L004E
+	bne     L004C
 	inx
-L004E:	ldy     #$17
+L004C:	ldy     #$17
 	jsr     staxysp
 	ldy     #$18
 	lda     (sp),y
 	cmp     #$00
-	bne     L0037
+	bne     L0035
 	dey
 	lda     (sp),y
 	cmp     #$40
-L0037:	jcc     L0033
-L0034:	ldy     #$1A
+L0035:	jcc     L0031
+L0032:	ldy     #$1A
 	jsr     pushwysp
 	lda     #$0F
 	jsr     tosumula0
@@ -231,8 +219,8 @@ L0034:	ldy     #$1A
 	ldy     #<(_gradient)
 	lda     (ptr1),y
 	sta     (sp)
-	lda     _putch
-	ldx     _putch+1
+	ldx     #$FF
+	lda     #$EB
 	jsr     pushax
 	ldy     #$02
 	lda     (sp),y
@@ -250,11 +238,11 @@ L0034:	ldy     #$1A
 	sta     regsave
 	stx     regsave+1
 	ina
-	jne     L0061
+	jne     L0067
 	inx
-	jmp     L0061
-L0021:	lda     _putch
-	ldx     _putch+1
+	jmp     L0067
+L001F:	ldx     #$FF
+	lda     #$EB
 	jsr     pushax
 	lda     #$0D
 	pha
@@ -266,8 +254,8 @@ L0021:	lda     _putch
 	pla
 	jsr     jmpvec
 	jsr     incsp2
-	lda     _putch
-	ldx     _putch+1
+	ldx     #$FF
+	lda     #$EB
 	jsr     pushax
 	lda     #$0A
 	pha
@@ -282,10 +270,10 @@ L0021:	lda     _putch
 	ldy     #$1A
 	jsr     ldaxysp
 	ina
-	jne     L0062
+	jne     L0068
 	inx
-	jmp     L0062
-L0014:	ldy     #$1D
+	jmp     L0068
+L0012:	ldy     #$1D
 	jmp     addysp
 
 .endproc
@@ -300,7 +288,15 @@ L0014:	ldy     #$1D
 
 .segment	"CODE"
 
-	jsr     _mandelbrot
+	ldx     #$FF
+	lda     #$DC
+	jsr     callax
+	eor     #$01
+	beq     L005D
+	ldx     #$00
+	lda     #$01
+	rts
+L005D:	jsr     _mandelbrot
 	ldx     #$00
 	txa
 	rts

@@ -10,6 +10,10 @@ int main() {
     char buf[10];
     uint8_t i = 0;
 
+    if((uint8_t)(bcos_abi_major() ^ BCOS_ABI_MAJOR) != 0u) {
+        return 1;
+    }
+
     for(i=0; i<20; i++) {
         c = a+b;
         a = b;
