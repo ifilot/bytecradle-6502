@@ -6,6 +6,9 @@
 .import _getch
 .import _putch
 .import _puthex
+.import bcos_get_abi_major
+.import bcos_get_abi_minor
+.import bcos_reserved
 .import char2nibble
 .import char2num
 .import chartoupper

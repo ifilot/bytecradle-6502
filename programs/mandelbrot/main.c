@@ -68,6 +68,10 @@ void mandelbrot() {
 }
 
 int main() {
+    if(!BCOS_ABI_COMPATIBLE()) {
+        return 1;
+    }
+
     mandelbrot();
     return 0;
 }

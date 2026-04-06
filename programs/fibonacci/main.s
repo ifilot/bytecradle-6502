@@ -12,17 +12,11 @@
 	.macpack	longbranch
 	.forceimport	__STARTUP__
 	.import		_sprintf
-	.export		_putstrnl
 	.export		_main
-
-.segment	"DATA"
-
-_putstrnl:
-	.word	$FFE8
 
 .segment	"RODATA"
 
-L0018:
+L0021:
 	.byte	$25,$69,$00
 
 ; ---------------------------------------------------------------
@@ -43,9 +37,28 @@ L0018:
 	jsr     subysp
 	lda     #$00
 	jsr     pusha
-L0021:	sta     (sp)
+	ldx     #$FF
+	lda     #$DC
+	jsr     callax
+	cmp     #$01
+	bne     L000C
+	ldx     #$FF
+	lda     #$DF
+	jsr     callax
+	lda     #$01
+	bra     L000F
+L000C:	lda     #$00
+L000F:	jsr     bnega
+	beq     L0007
+	ldx     #$00
+	lda     #$01
+	bra     L0001
+L0007:	lda     #$00
+	sta     (sp)
+	tax
+L002A:	lda     (sp)
 	cmp     #$14
-	bcs     L0020
+	bcs     L002B
 	ldy     #$0E
 	jsr     ldaxysp
 	clc
@@ -70,15 +83,15 @@ L0021:	sta     (sp)
 	lda     #$01
 	jsr     leaa0sp
 	jsr     pushax
-	lda     #<(L0018)
-	ldx     #>(L0018)
+	lda     #<(L0021)
+	ldx     #>(L0021)
 	jsr     pushax
 	ldy     #$16
 	jsr     pushwysp
 	ldy     #$06
 	jsr     _sprintf
-	lda     _putstrnl
-	ldx     _putstrnl+1
+	ldx     #$FF
+	lda     #$E8
 	jsr     pushax
 	lda     #$03
 	jsr     leaa0sp
@@ -94,9 +107,10 @@ L0021:	sta     (sp)
 	ldx     #$00
 	lda     (sp)
 	ina
-	bra     L0021
-L0020:	lda     #$00
-	ldy     #$11
+	sta     (sp)
+	bra     L002A
+L002B:	txa
+L0001:	ldy     #$11
 	jmp     addysp
 
 .endproc

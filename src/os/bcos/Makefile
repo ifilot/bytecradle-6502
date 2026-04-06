@@ -8,6 +8,7 @@ AR := ar65
 
 EMU := ../../../emulator/build/bc6502emu
 SDCARD := ../../../emulator/script/sdcard.img
+GEN := generate_bcos_artifacts.py
 
 # directories
 BINDIR := bin
@@ -25,9 +26,12 @@ CASMS := $(patsubst %.c,$(ASMDIR)/%.s,$(CSRCS))
 OBJS := $(patsubst $(ASMDIR)/%.s,$(OBJDIR)/%.o,$(CASMS)) \
         $(patsubst %.s,$(OBJDIR)/%.o,$(ASRCS))
 
-.PHONY: all run clean
+.PHONY: all generate run clean
 
-all: $(BINDIR)/$(ROMNAME)
+all: generate $(BINDIR)/$(ROMNAME)
+
+generate:
+	python3 $(GEN)
 
 # ensure directories exist
 $(OBJDIR) $(ASMDIR) $(BINDIR):
@@ -51,7 +55,7 @@ $(BINDIR)/sbc.lib: $(OBJDIR)/crt0.o | $(BINDIR)
 	$(AR) a $@ $<
 
 # link
-$(BINDIR)/$(ROMNAME): sbc.cfg $(OBJS) $(BINDIR)/sbc.lib | $(BINDIR)
+$(BINDIR)/$(ROMNAME): generate sbc.cfg $(OBJS) $(BINDIR)/sbc.lib | $(BINDIR)
 	$(LD) -C sbc.cfg $(OBJS) -o $@ $(BINDIR)/sbc.lib -m $(BINDIR)/sbc.map
 
 # run with safety checks
@@ -65,3 +69,4 @@ run: $(BINDIR)/$(ROMNAME)
 # clean
 clean:
 	rm -rf $(BINDIR) $(OBJDIR) $(ASMDIR)
+	rm -vf jumptable.inc jumptable.s sbc.cfg
