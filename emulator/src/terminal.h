@@ -22,6 +22,12 @@
 
 #include <optional>
 #include <termios.h>
+#include <cstdint>
+
+struct TerminalPollResult {
+    std::optional<uint8_t> key;
+    bool eof = false;
+};
 
 // Simple RAII class to set terminal into raw, non-blocking mode
 class TerminalRawMode {
@@ -41,10 +47,20 @@ public:
     /**
      * @brief Poll for a key press
      * 
-     * @return std::optional<char> character if a key was pressed, std::nullopt otherwise
+     * @return TerminalPollResult poll result containing optional key and EOF state
      */
-    static std::optional<char> poll_key();
+    static TerminalPollResult poll_key();
+
+    /**
+     * @brief Check whether terminal is at least the requested size
+     *
+     * @param min_cols minimum number of columns
+     * @param min_rows minimum number of rows
+     * @return true when terminal is large enough, false otherwise
+     */
+    static bool has_minimum_terminal_size(unsigned short min_cols, unsigned short min_rows);
 
 private:
-    struct termios origTerm_;
+    struct termios orig_term_;
+    int orig_flags_ = 0;
 };

@@ -12,6 +12,8 @@ ROMs and optional SD card images.
 - SD card image support for the "mini" board variant.
 - Configurable CPU clock speed (default: 16 MHz).
 - Terminal input handling (keyboard polling every 20ms).
+- Graceful quit via `Ctrl+C` (SIGINT), `Ctrl+D` (EOT), or stdin EOF.
+- Startup check for a minimum terminal size of `80x25`.
 - Lightweight and simple C++ codebase.
 
 ## Compilation
@@ -63,3 +65,12 @@ or for a mini board with an SD card image:
 ```bash
 ./bc6502emu --board mini --rom <romfile>.bin --sdcard disk.img --clock 8.0
 ```
+
+## Terminal behavior notes
+
+- **Preferred quit key:** use `Ctrl+C` (SIGINT). This is the most robust and
+  conventional way to terminate an interactive emulator.
+- `Ctrl+D` is also supported as an in-band quit shortcut.
+- If stdin is closed (EOF), the emulator exits cleanly.
+- On startup, the emulator verifies your terminal is at least **80 columns x 25
+  rows**.

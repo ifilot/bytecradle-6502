@@ -22,12 +22,28 @@
 #include <chrono>
 #include <memory>
 #include <iostream>
+#include <atomic>
+#include <csignal>
 
 #include <tclap/CmdLine.h>
 
 #include "bytecradletiny.h"
 #include "bytecradlemini.h"
 #include "terminal.h"
+
+// anonymous namespace
+namespace {
+    std::atomic<bool> g_should_exit { false };
+
+    void handle_sigint(int) {
+        g_should_exit = true;
+    }
+
+    bool is_exit_key(uint8_t key) {
+        constexpr uint8_t ctrl_d = 0x04;
+        return key == ctrl_d;
+    }
+}
 
 int main(int argc, char** argv) {
     try {
@@ -71,6 +87,13 @@ int main(int argc, char** argv) {
             return 1;
         }
 
+        if (!TerminalRawMode::has_minimum_terminal_size(80, 25)) {
+            std::cerr << "Error: Terminal size too small. Need at least 80x25.\n";
+            return 1;
+        }
+
+        std::signal(SIGINT, handle_sigint);
+
         TerminalRawMode terminal;
         board->reset();
 
@@ -80,7 +103,7 @@ int main(int argc, char** argv) {
         auto lastTickTime = std::chrono::steady_clock::now();
         auto lastKeyPollTime = lastTickTime;
 
-        while (true) {
+        while (!g_should_exit.load()) {
             auto now = std::chrono::steady_clock::now();
 
             // CPU ticking at precise frequency
@@ -91,12 +114,25 @@ int main(int argc, char** argv) {
 
             // Poll keyboard every 20ms independently
             if (now - lastKeyPollTime >= keyboardPollInterval) {
-                if (auto key = TerminalRawMode::poll_key()) {
-                    board->keypress(*key);
+                auto poll_result = TerminalRawMode::poll_key();
+                if (poll_result.eof) {
+                    g_should_exit = true;
+                    break;
+                }
+
+                if (poll_result.key.has_value()) {
+                    if (is_exit_key(*poll_result.key)) {
+                        g_should_exit = true;
+                        break;
+                    }
+
+                    board->keypress(static_cast<char>(*poll_result.key));
                 }
                 lastKeyPollTime += keyboardPollInterval;
             }
         }
+
+        std::cout << "\n[emulator] Exit requested. Shutting down...\n";
 
     } catch (TCLAP::ArgException& e) {
         std::cerr << "Error: " << e.error() << " for arg " << e.argId() << std::endl;

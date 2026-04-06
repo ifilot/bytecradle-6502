@@ -23,6 +23,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <termios.h>
+#include <sys/ioctl.h>
 
 /**
  * @brief Construct a new Terminal Raw Mode object
@@ -30,14 +31,14 @@
  */
 TerminalRawMode::TerminalRawMode() {
     // Save original terminal settings
-    tcgetattr(STDIN_FILENO, &origTerm_);
-    termios raw = origTerm_;
+    tcgetattr(STDIN_FILENO, &orig_term_);
+    termios raw = orig_term_;
     raw.c_lflag &= ~(ICANON | ECHO);
     tcsetattr(STDIN_FILENO, TCSANOW, &raw);
 
     // Set stdin to non-blocking
-    int flags = fcntl(STDIN_FILENO, F_GETFL, 0);
-    fcntl(STDIN_FILENO, F_SETFL, flags | O_NONBLOCK);
+    orig_flags_ = fcntl(STDIN_FILENO, F_GETFL, 0);
+    fcntl(STDIN_FILENO, F_SETFL, orig_flags_ | O_NONBLOCK);
 }
 
 /**
@@ -46,26 +47,46 @@ TerminalRawMode::TerminalRawMode() {
  */
 TerminalRawMode::~TerminalRawMode() {
     // Restore original terminal settings
-    tcsetattr(STDIN_FILENO, TCSANOW, &origTerm_);
+    tcsetattr(STDIN_FILENO, TCSANOW, &orig_term_);
 
     // Remove non-blocking flag
-    int flags = fcntl(STDIN_FILENO, F_GETFL, 0);
-    flags &= ~O_NONBLOCK;
-    fcntl(STDIN_FILENO, F_SETFL, flags);
+    fcntl(STDIN_FILENO, F_SETFL, orig_flags_);
 }
 
 /**
  * @brief Poll for a key press
  * 
- * @return std::optional<char> character if a key was pressed, std::nullopt otherwise
+ * @return TerminalPollResult poll result containing optional key and EOF state
  */
-std::optional<char> TerminalRawMode::poll_key() {
-    char ch;
+TerminalPollResult TerminalRawMode::poll_key() {
+    TerminalPollResult result;
+    uint8_t ch = 0;
     ssize_t nread = read(STDIN_FILENO, &ch, 1);
 
     if (nread > 0) {
-        return ch;
+        result.key = ch;
+        return result;
     }
-    
-    return std::nullopt;
+
+    if (nread == 0) {
+        result.eof = true;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Check whether terminal is at least the requested size
+ *
+ * @param min_cols minimum number of columns
+ * @param min_rows minimum number of rows
+ * @return true when terminal is large enough, false otherwise
+ */
+bool TerminalRawMode::has_minimum_terminal_size(unsigned short min_cols, unsigned short min_rows) {
+    struct winsize ws {};
+    if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1) {
+        return true; // if query fails, do not block startup
+    }
+
+    return ws.ws_col >= min_cols && ws.ws_row >= min_rows;
 }
