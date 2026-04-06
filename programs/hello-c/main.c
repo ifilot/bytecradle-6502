@@ -1,7 +1,7 @@
 #include "io.h"
 
 int main() {
-    if(!BCOS_ABI_COMPATIBLE()) {
+    if((uint8_t)(bcos_abi_major() ^ BCOS_ABI_MAJOR) != 0u) {
         return 1;
     }
 

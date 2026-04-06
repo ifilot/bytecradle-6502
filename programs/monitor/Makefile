@@ -20,6 +20,11 @@ OBJS	:= $(sort $(SRCS:.s=.o) jumptable.o)
 %.o: %.s *.inc
 	$(AS) $< -o $@
 
+jumptable.o: jumptable.s
+	$(AS) $< -o $@
+
+jumptable.s jumptable.inc: | generate
+
 $(OBJS): | generate
 
 $(PROGNAME).bin: $(OBJS) rom.cfg

@@ -16,7 +16,7 @@
 
 .segment	"RODATA"
 
-L0021:
+L001C:
 	.byte	$25,$69,$00
 
 ; ---------------------------------------------------------------
@@ -40,25 +40,16 @@ L0021:
 	ldx     #$FF
 	lda     #$DC
 	jsr     callax
-	cmp     #$01
-	bne     L000C
-	ldx     #$FF
-	lda     #$DF
-	jsr     callax
-	lda     #$01
-	bra     L000F
-L000C:	lda     #$00
-L000F:	jsr     bnega
-	beq     L0007
+	eor     #$01
+	beq     L0024
 	ldx     #$00
 	lda     #$01
 	bra     L0001
-L0007:	lda     #$00
-	sta     (sp)
+L0024:	sta     (sp)
 	tax
-L002A:	lda     (sp)
+L0026:	lda     (sp)
 	cmp     #$14
-	bcs     L002B
+	bcs     L0027
 	ldy     #$0E
 	jsr     ldaxysp
 	clc
@@ -83,8 +74,8 @@ L002A:	lda     (sp)
 	lda     #$01
 	jsr     leaa0sp
 	jsr     pushax
-	lda     #<(L0021)
-	ldx     #>(L0021)
+	lda     #<(L001C)
+	ldx     #>(L001C)
 	jsr     pushax
 	ldy     #$16
 	jsr     pushwysp
@@ -108,8 +99,8 @@ L002A:	lda     (sp)
 	lda     (sp)
 	ina
 	sta     (sp)
-	bra     L002A
-L002B:	txa
+	bra     L0026
+L0027:	txa
 L0001:	ldy     #$11
 	jmp     addysp
 
