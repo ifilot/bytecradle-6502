@@ -1,4 +1,4 @@
-SUBDIRS := helloworld fibonacci monitor
+SUBDIRS := helloworld fibonacci monitor mandelbrot
 
 .PHONY: all clean
 

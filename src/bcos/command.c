@@ -78,7 +78,7 @@ void command_exec() {
     }
 
     // try to see if we can find a match
-    for(i=0; i<sizeof(command_table); i++) {
+    for(i=0; i<(sizeof(command_table) / sizeof(command_table[0])); i++) {
         if(strcmp(command_table[i].str, command_argv[0]) == 0) {
             command_table[i].func();
             break;
@@ -86,7 +86,7 @@ void command_exec() {
     }
 
     // throw illegal command
-    if(i == sizeof(command_table)) {
+    if(i == (sizeof(command_table) / sizeof(command_table[0]))) {
         if(!command_try_com() == 0) {
             command_illegal();
         }

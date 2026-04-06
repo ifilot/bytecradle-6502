@@ -35,31 +35,31 @@ cmake ../src
 make -j
 ```
 
-This will generate an executable called `bytecradle` inside the `build/` directory.
+This will generate an executable called `bc6502emu` inside the `build/` directory.
 
 ## Usage
 
 ```bash
-./bytecradle --board <tiny|mini> --rom <path_to_rom> [--sdcard <path_to_sdcard>] [--clock <mhz>]
+./bc6502emu --board <tiny|mini> --rom <path_to_rom> [--sdcard <path_to_sdcard>] [--clock <mhz>]
 ```
 
 ### Arguments:
 
-| Argument         | Description                                    | Required |
-|:-----------------|:-----------------------------------------------|:---------|
-| `-b, --board`     | Select the board type: `tiny` or `mini`.       | Yes      |
-| `-r, --rom`       | Path to the ROM file to load.                  | Yes      |
+| Argument          | Description                                     | Required |
+|-------------------|-------------------------------------------------|----------|
+| `-b, --board`     | Select the board type: `tiny` or `mini`.        | Yes      |
+| `-r, --rom`       | Path to the ROM file to load.                   | Yes      |
 | `-s, --sdcard`    | Path to the SD card image (only for `mini`).    | No       |
 | `-c, --clock`     | CPU clock speed in MHz (default: 16.0 MHz).     | No       |
 
 ### Example:
 
 ```bash
-./bytecradle --board tiny --rom <romfile>.bin
+./bc6502emu --board tiny --rom <romfile>.bin
 ```
 
 or for a mini board with an SD card image:
 
 ```bash
-./bytecradle --board mini --rom <romfile>.bin --sdcard disk.img --clock 8.0
+./bc6502emu --board mini --rom <romfile>.bin --sdcard disk.img --clock 8.0
 ```
