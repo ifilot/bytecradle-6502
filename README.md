@@ -1,6 +1,5 @@
 # ByteCradle 6502
 
-[![Build](https://github.com/ifilot/bytecradle-6502/actions/workflows/build.yml/badge.svg)](https://github.com/ifilot/bytecradle-6502/actions/workflows/build.yml)
 [![Documentation](https://github.com/ifilot/bytecradle-6502/actions/workflows/docs.yml/badge.svg)](https://github.com/ifilot/bytecradle-6502/actions/workflows/docs.yml)
 
 The **ByteCradle 6502** is a **single-board computer (SBC)** platform designed
@@ -8,6 +7,10 @@ for understanding and experimenting with **simple operating systems** on **8-bit
 hardware**. Built around the **WDC 65C02** microprocessor, it provides a
 hands-on platform for studying **system initialization, memory management,
 device interfacing, and file system handling**.
+
+> [!NOTE]  
+> The source code for the ByteCradle 6502 operating system for the Mini is found
+> in [a separate repository](https://github.com/ifilot/bytecradle-6502-operating-system).
 
 ![render top](img/bytecradle-miniboard-render.png)
 
@@ -56,8 +59,8 @@ different levels of complexity and expandability:
 | **PCB**              | Two layer                         | Four layer                           |
 | **RAM**              | 32 KiB                            | 512 KiB (bank switched)              |
 | **ROM**              | 32 KiB                            | 512 KiB (bank switched)              |
-| **Bank Switching**   | ❌                               | ✅ (64 x 8 Kib banks)                |
-| **SD Card Support**  | ❌                               | ✅ (via WDC 65C22 VIA)               |
+| **Bank Switching**   | No                                | Yes - 64 x 8 Kib banks               |
+| **SD Card Support**  | No                                | Yes - Using WDC 65C22 VIA            |
 | **I/O Interface**    | WDC 65C51 ACIA                    | WDC 65C51 ACIA                       |
 | **Expansion Options**| Exposes system bus                | Exposes system bus and VIA bus       |
 
@@ -85,11 +88,6 @@ are using.
 - **[TinyROM](https://github.com/ifilot/bytecradle-6502/releases/download/tinyrom-latest/tinyrom.bin)**  
   A lightweight ROM designed specifically for the Tiny Board. Ideal for minimal
   setups, testing, or basic 6502 development.
-
-- **[ByteCradle Operating System ROM](https://github.com/ifilot/bytecradle-6502/releases/download/bcos-latest/bcos.bin)**  
-  A more feature-rich ROM intended for the Mini Board. This includes support for
-  SD card storage and is better suited for more complex applications and
-  multitasking environments.
 
 > [!IMPORTANT]  
 > Make sure to select the appropriate ROM for your board model. Flashing the
