@@ -7,35 +7,58 @@ on:
   pull_request:
     branches:
       - master
+  workflow_dispatch:
 
 permissions:
-  contents: write  # Grants write access to the repository contents
+  contents: read
 
 jobs:
   build:
-    name: Build and Deploy MkDocs Documentation
+    name: Build MkDocs Documentation
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v7
       with:
-        python-version: "3.13.1"
+        python-version: "3.13"
 
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install mkdocs mkdocs-material mkdocs-material[extras]
+        python -m pip install mkdocs mkdocs-material
 
     - name: Build Documentation
       run: |
         mkdocs build --config-file docs/mkdocs.yml
 
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
+    - name: Upload GitHub Pages artifact
+      if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
+      uses: actions/upload-pages-artifact@v5
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: docs/site
+        path: docs/site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - name: Configure GitHub Pages
+      uses: actions/configure-pages@v6
+
+    - name: Deploy GitHub Pages artifact
+      id: deployment
+      uses: actions/deploy-pages@v5
