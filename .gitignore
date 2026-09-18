@@ -13,3 +13,7 @@ fp-info-cache
 *.wrl
 .vscode
 .venv
+
+# Python bytecode caches
+__pycache__/
+*.py[cod]
