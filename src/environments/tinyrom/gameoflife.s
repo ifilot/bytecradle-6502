@@ -1,5 +1,7 @@
 .PSC02
 
+; David Warrand's Game of Life, imported from PR #5 (0ecfde9484666e271081833e4177211dd91d4c99).
+
 ; Zero-page memory layout
 HEIGHT            = $40      ; 1 byte
 HEIGHTMIN1        = $41      ; 1 byte
@@ -35,7 +37,7 @@ ARRAY    = $0400     ; max 31486 bytes 0400 - 7EFE
 .segment "CODE"
 
 ; game of life main menu table
-.align 3
+.align 32
 gameoflifetable:
     .byte $FF, $FF                            ; dashed line
     .byte <@gameoflifestr,  >@gameoflifestr
@@ -55,7 +57,7 @@ gameoflifetable:
     .byte <@controlstr6,    >@controlstr6
     .byte <@exitstr,        >@exitstr
     .byte $FF, $FF                            ; dashed line
-    .byte 0
+    .word 0
 
 ; game of life strings used in main menu
 @gameoflifestr:
@@ -86,7 +88,7 @@ gameoflifetable:
     .asciiz "(P) TO PAUSE"
 
 ; special starting position menu table
-.align 3
+.align 32
 startingpositiontable:
     .byte $FF, $FF                                          ; dashed line
     .byte <@startingpositionsstr,  >@startingpositionsstr
@@ -102,7 +104,7 @@ startingpositiontable:
     .byte <@gospergunstr,          >@gospergunstr
     .byte <@thanksstr,             >@thanksstr
     .byte $FF, $FF                                          ; dashed line
-    .byte 0
+    .word 0
 
 ; special starting positions strings used in special menu
 @startingpositionsstr:
@@ -261,7 +263,7 @@ specialmenu:
     inx
     txs
     jsr newline
-    jsr rungameoflife               ; Go back to main menu
+    jmp rungameoflife               ; Re-enter without leaving a return into initializegame
 
 ;-------------------------------------------------------------------------------
 ; INITIALIZEGAME routine

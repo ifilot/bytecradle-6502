@@ -68,12 +68,18 @@ buildmenu:
     lda (BUF6),y
     sta BUF3
     jmp (BUF2)
-    jmp @loop
+
+; Discard this submenu's buildmenu return address, then return to its parent.
+backmenu:
+    pla
+    pla
+    rts
 
 ;-------------------------------------------------------------------------------
 ; PRINT MENU ROUTINE
 ;
 ; print menu using a pointer X:A to lines table
+; Entries are string addresses, $FFFF for a dashed line, or $0000 to end.
 ;
 ; BUF1-3 is used by printmenuline
 ; BUF1 is also used by this routine, but does not overlap
@@ -86,11 +92,13 @@ printmenu:
 @next_line:
     phy
     lda (BUF4),y            ; load lower byte of string
-    beq @done               ; check if zero, if so done
-    sta BUF1                ; else, store in buffer
+    sta BUF1                ; save low byte while checking the full address
     iny
     lda (BUF4),y            ; load upper byte of string
     tax
+    ora BUF1
+    beq @done               ; only the full address $0000 ends the table
+    txa
     and BUF1
     cmp #$FF
     beq @dashedline
@@ -128,7 +136,7 @@ mainmenu_table:
     .byte <@strmonitor,         >@strmonitor
     .byte <@strdaughterboards,  >@strdaughterboards
     .byte $FF, $FF              ; dashed line
-    .byte 0
+    .word 0
 
 @titlestr:
     .asciiz "BYTECRADLE /TINY/ ROM"
@@ -190,7 +198,7 @@ testmenu_table:
     .byte <@strmemorytest,  >@strmemorytest
     .byte <@strback,        >@strback
     .byte $FF, $FF                      ; dashed line
-    .byte 0
+    .word 0
 
 @titlestr:
     .asciiz "CATEGORY: TESTS"
@@ -212,7 +220,7 @@ testmenu_entries:
     .byte '2', <ansitest,       >ansitest
     .byte '3', <numbertest,     >numbertest
     .byte '4', <memtest,        >memtest
-    .byte 'b', <mainmenu,       >mainmenu
+    .byte 'b', <backmenu,       >backmenu
     .byte 0
 
 ;-------------------------------------------------------------------------------
@@ -238,7 +246,7 @@ gamesmenu_table:
     .byte <@strgameoflife,  >@strgameoflife
     .byte <@strback,        >@strback
     .byte $FF, $FF                      ; dashed line
-    .byte 0
+    .word 0
 
 @titlestr:
     .asciiz "CATEGORY: GAMES"
@@ -253,7 +261,7 @@ gamesmenu_table:
 gamesmenu_entries:
     .byte '1', <startchess,     >startchess
     .byte '2', <rungameoflife,  >rungameoflife
-    .byte 'b', <mainmenu,       >mainmenu
+    .byte 'b', <backmenu,       >backmenu
     .byte 0
 
 ;-------------------------------------------------------------------------------
@@ -279,7 +287,7 @@ appmenu_table:
     .byte <@strpispigot,    >@strpispigot
     .byte <@strback,        >@strback
     .byte $FF, $FF                      ; dashed line
-    .byte 0
+    .word 0
 
 @titlestr:
     .asciiz "CATEGORY: APPLICATIONS"
@@ -295,15 +303,14 @@ appmenu_table:
 appmenu_entries:
     .byte '1', <sieve,          >sieve
     .byte '2', <spigotrun,          >spigotrun
-    .byte 'b', <mainmenu,       >mainmenu
+    .byte 'b', <backmenu,       >backmenu
     .byte 0
 
 ;-------------------------------------------------------------------------------
 ; MONITOR
 ;-------------------------------------------------------------------------------
 runmonitor:
-    jsr monitor
-    jmp mainmenu
+    jmp monitor             ; RTS returns through the existing buildmenu call
 
 ;-------------------------------------------------------------------------------
 ; DAUGHTERBOARD MENU
@@ -327,7 +334,7 @@ daughterboardmenu_table:
     .byte <@strstrobe,          >@strstrobe
     .byte <@strback,            >@strback
     .byte $FF, $FF                      ; dashed line
-    .byte 0
+    .word 0
 
 @titlestr:
     .asciiz "CATEGORY: DAUGHTERBOARDS"
@@ -345,7 +352,7 @@ daughterboardmenu_table:
 daughterboardmenu_entries:
     .byte '1', <blinkenlights,  >blinkenlights
     .byte '2', <strobe,         >strobe
-    .byte 'b', <mainmenu,       >mainmenu
+    .byte 'b', <backmenu,       >backmenu
     .byte 0
 
 ;-------------------------------------------------------------------------------

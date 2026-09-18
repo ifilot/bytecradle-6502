@@ -23,6 +23,7 @@ ARRAY = $0400 ; max 31486 bytes 0400 - 7EFE reserved in memory for max 4723 digi
 ; import and exporting functions / constants
 .include "constants.inc"
 .include "functions.inc"
+
 .import printmenu
 .export spigotrun
 
@@ -42,7 +43,7 @@ ARRAY = $0400 ; max 31486 bytes 0400 - 7EFE reserved in memory for max 4723 digi
 ; sets global parameters for the Pi spigot algorithm, then launches calculation.
 ;-------------------------------------------------------------------------------
 spigotrun:
-    lda #<pispigottable        ; Print the algorithm header using predefined pispigot_table
+    lda #<pispigottable       ; Print the algorithm header using predefined pispigot_table
     ldx #>pispigottable
     jsr printmenu              
     lda #<digitsinputstr       ; Prompt user for digit count by printing digitsinputstr
@@ -134,7 +135,7 @@ pispigottable:
     .byte <@davidstr,       >@davidstr
     .byte <@exitstr,        >@exitstr
     .byte $FF, $FF                      ; dashed line
-    .byte 0
+    .word 0
 
 ; pi spigot strings
 @pispigotstr:
