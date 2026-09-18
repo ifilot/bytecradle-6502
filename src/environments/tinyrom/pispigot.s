@@ -135,7 +135,7 @@ pispigottable:
     .byte <@davidstr,       >@davidstr
     .byte <@exitstr,        >@exitstr
     .byte $FF, $FF                      ; dashed line
-    .byte 0
+    .word 0
 
 ; pi spigot strings
 @pispigotstr:
